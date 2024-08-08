@@ -164,9 +164,6 @@ endif (WINDOWS)
 if (LINUX)
   set(CMAKE_SKIP_RPATH TRUE)
 
-   # EXTERNAL_TOS
-   # force this platform to accept TOS via external browser
-
    # LL_IGNORE_SIGCHLD
    # don't catch SIGCHLD in our base application class for the viewer - some of
    # our 3rd party libs may need their *own* SIGCHLD handler to work. Sigh! The
@@ -174,34 +171,37 @@ if (LINUX)
 
   add_compile_definitions(
           _REENTRANT
-          _FORTIFY_SOURCE=2
-          EXTERNAL_TOS
           APPID=secondlife
           LL_IGNORE_SIGCHLD
+          $<$<CONFIG:Release>:_FORTIFY_SOURCE=2>
   )
   add_compile_options(
+          $<$<OR:$<CONFIG:Release>,$<CONFIG:RelWithDebInfo>>:-fstack-protector>
           -fexceptions
           -fno-math-errno
           -fno-strict-aliasing
           -fsigned-char
-          -msse2
-          -mfpmath=sse
+          -g
           -pthread
           -Wno-parentheses
           -Wno-deprecated
           -fvisibility=hidden
   )
 
-  if (ADDRESS_SIZE EQUAL 32)
-    add_compile_options(-march=pentium4)
-  endif (ADDRESS_SIZE EQUAL 32)
+  if("${simd_lower}" STREQUAL "avx2")
+    string(REPLACE "-march=x86-64-v2" "-march=x86-64-v3" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+    string(REPLACE "-march=x86-64-v2" "-march=x86-64-v3" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
+    string(REPLACE "-march=x86-64-v2" "-march=x86-64-v3" CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE}")
+    string(REPLACE "-march=x86-64-v2" "-march=x86-64-v3" CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")
+    string(REPLACE "-march=x86-64-v2" "-march=x86-64-v3" CMAKE_C_FLAGS_RELWITHDEBINFO "${CMAKE_C_FLAGS_RELWITHDEBINFO}")
+  endif()
 
-  # this stops us requiring a really recent glibc at runtime
-  add_compile_options(-fno-stack-protector)
-  # linking can be very memory-hungry, especially the final viewer link
-  set(CMAKE_CXX_LINK_FLAGS "-Wl,--no-keep-memory")
+  if (USE_ASAN OR USE_LEAKSAN OR USE_UBSAN OR USE_THDSAN)
+    add_compile_options(-Og)
+  endif ()
 
-  set(CMAKE_CXX_FLAGS_DEBUG "-fno-inline ${CMAKE_CXX_FLAGS_DEBUG}")
+  # Enable these flags so we have a read only GOT and some linking opts
+  add_link_options("LINKER:-z,relro" "LINKER:-z,now" "LINKER:--as-needed" "LINKER:--build-id=uuid")
 endif (LINUX)
 
 if (DARWIN)
