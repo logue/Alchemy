@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel label="標高" name="panel_settings_terrain_elevation">
-	<spinner label="水面の高さ" name="water_height_spin" />
+	<spinner label="水面の高さ" name="water_height_spin"/>
 	<spinner label="地形の最大標高" name="terrain_raise_spin"/>
 	<spinner label="地形の最低標高" name="terrain_lower_spin"/>
 	<view_border/>

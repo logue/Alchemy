@@ -37,10 +37,12 @@
 	<slider name="QualityPerformanceSelection"/>
 	<!-- This block shows Basic Settings -->
 	<slider control_name="RenderFarClip" label="描画距離：" name="DrawDistance"/>
-	<text name="DrawDistanceMeterText2">ｍ</text>
+	<text name="DrawDistanceMeterText2">
+		ｍ
+	</text>
 	<button label="自動調整設定" name="AutoAdjustmentsButton"/>
 	<text name="AvatarComplexityModeLabel">
-        アバターの描画設定：
+		アバターの描画設定：
 	</text>
 	<combo_box name="AvatarComplexityMode">
 		<combo_box.item label="複雑度で制限" name="0" value="0"/>

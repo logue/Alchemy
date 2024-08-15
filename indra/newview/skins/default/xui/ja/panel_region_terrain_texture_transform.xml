@@ -14,13 +14,13 @@
 	</text>
 	<check_box label="ＰＢＲメタリック粗さ" name="terrain_material_type" tool_tip="チェックされている場合、地形にＰＢＲメタリック粗さマテリアルを使用します。チェックされていない場合は、テクスチャを使用します。"/>
 	<texture_picker name="texture_detail_0"/>
-	<texture_picker name="texture_detail_1" />
+	<texture_picker name="texture_detail_1"/>
 	<texture_picker name="texture_detail_2"/>
 	<texture_picker name="texture_detail_3"/>
 	<texture_picker name="material_detail_0"/>
 	<texture_picker name="material_detail_1"/>
 	<texture_picker name="material_detail_2"/>
-	<texture_picker name="material_detail_3" />
+	<texture_picker name="material_detail_3"/>
 	<text name="height_text_lbl">
 		１（最低）
 	</text>
@@ -36,8 +36,8 @@
 	<layout_stack name="terrain_features_stack">
 		<layout_panel name="frame_settings_terrain">
 			<tab_container name="terrain_tabs">
-				<panel label="標高" name="terrain_elevation_panel" />
-				<panel label="変形" name="terrain_transform_panel" />
+				<panel label="標高" name="terrain_elevation_panel"/>
+				<panel label="変形" name="terrain_transform_panel"/>
 			</tab_container>
 		</layout_panel>
 	</layout_stack>

@@ -32,7 +32,7 @@
 		回転
 	</text>
 	<spinner label="回転" name="terrain0Rotation"/>
-	<spinner label="スケールＵ" name="terrain1Rotation" />
+	<spinner label="スケールＵ" name="terrain1Rotation"/>
 	<spinner label="スケールＵ" name="terrain2Rotation"/>
 	<spinner label="スケールＵ" name="terrain3Rotation"/>
 	<view_border name="terrainRotation_horizontal"/>
