@@ -972,6 +972,7 @@ bool LLAppViewer::init()
         return false;
     }
 
+#if defined(LL_X86) || defined(LL_X86_64)
     // Without SSE2 support we will crash almost immediately, warn here.
     if (!gSysCPU.hasSSE2())
     {
@@ -983,6 +984,7 @@ bool LLAppViewer::init()
         // quit immediately
         return false;
     }
+#endif
 
     // alert the user if they are using unsupported hardware
     if (!gSavedSettings.getBOOL("AlertedUnsupportedHardware"))
@@ -1268,7 +1270,7 @@ void LLAppViewer::initMaxHeapSize()
     //------------------------------------------------------------------------------------------
     //currently SL is built under 32-bit setting, we set its max heap size no more than 1.6 GB.
 
- #ifndef LL_X86_64
+ #if !defined(LL_X86_64) && !defined(LL_ARM64)
     F32Gigabytes max_heap_size_gb = (F32Gigabytes)gSavedSettings.getF32("MaxHeapSize") ;
 #else
     F32Gigabytes max_heap_size_gb = (F32Gigabytes)gSavedSettings.getF32("MaxHeapSize64");
@@ -1324,6 +1326,7 @@ bool LLAppViewer::frame()
 bool LLAppViewer::doFrame()
 {
     LL_RECORD_BLOCK_TIME(FTM_FRAME);
+    LL_PROFILE_GPU_ZONE("Frame");
     {
     // and now adjust the visuals from previous frame.
     if(LLPerfStats::tunables.userAutoTuneEnabled && LLPerfStats::tunables.tuningFlag != LLPerfStats::Tunables::Nothing)
@@ -1413,24 +1416,26 @@ bool LLAppViewer::doFrame()
 
         if (!LLApp::isExiting())
         {
-            LL_PROFILE_ZONE_NAMED_CATEGORY_APP("df JoystickKeyboard");
-            pingMainloopTimeout("Main:JoystickKeyboard");
-
-            // Scan keyboard for movement keys.  Command keys and typing
-            // are handled by windows callbacks.  Don't do this until we're
-            // done initializing.  JC
-            if (gViewerWindow
-                && (gHeadlessClient || gViewerWindow->getWindow()->getVisible())
-                && gViewerWindow->getActive()
-                && !gViewerWindow->getWindow()->getMinimized()
-                && LLStartUp::getStartupState() == STATE_STARTED
-                && (gHeadlessClient || !gViewerWindow->getShowProgress())
-                && !gFocusMgr.focusLocked())
             {
-                LLPerfStats::RecordSceneTime T (LLPerfStats::StatType_t::RENDER_IDLE);
-                joystick->scanJoystick();
-                gKeyboard->scanKeyboard();
-                gViewerInput.scanMouse();
+                LL_PROFILE_ZONE_NAMED_CATEGORY_APP("df JoystickKeyboard");
+                pingMainloopTimeout("Main:JoystickKeyboard");
+
+                // Scan keyboard for movement keys.  Command keys and typing
+                // are handled by windows callbacks.  Don't do this until we're
+                // done initializing.  JC
+                if (gViewerWindow
+                    && (gHeadlessClient || gViewerWindow->getWindow()->getVisible())
+                    && gViewerWindow->getActive()
+                    && !gViewerWindow->getWindow()->getMinimized()
+                    && LLStartUp::getStartupState() == STATE_STARTED
+                    && (gHeadlessClient || !gViewerWindow->getShowProgress())
+                    && !gFocusMgr.focusLocked())
+                {
+                    LLPerfStats::RecordSceneTime T(LLPerfStats::StatType_t::RENDER_IDLE);
+                    joystick->scanJoystick();
+                    gKeyboard->scanKeyboard();
+                    gViewerInput.scanMouse();
+                }
             }
 
             // Update state based on messages, user input, object idle.
@@ -3243,6 +3248,11 @@ LLSD LLAppViewer::getViewerInfo() const
     info["VIEWER_VERSION_STR"] = versionInfo.getVersion();
     info["CHANNEL"] = versionInfo.getChannel();
     info["ADDRESS_SIZE"] = ADDRESS_SIZE;
+#if LL_ARM64
+    info["ARCHITECTURE"] = "ARM";
+#else
+    info["ARCHITECTURE"] = "x86";
+#endif
     std::string build_config = versionInfo.getBuildConfig();
     if (build_config != "Release")
     {
@@ -5535,7 +5545,9 @@ void LLAppViewer::forceErrorBreakpoint()
 #ifdef LL_WINDOWS
     DebugBreak();
 #else
+#if defined(LL_X86) || defined(LL_X86_64)
     asm ("int $3");
+#endif
 #endif
     return;
 }
