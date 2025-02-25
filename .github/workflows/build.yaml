@@ -4,7 +4,7 @@ on:
   pull_request:
   push:
     branches: ["main", "release/*", "project/*"]
-    tags: ["Second_Life*"]
+    tags: ["Alchemy*"]
 
 jobs:
   # The whole point of the setup job is that we want to set variables once
@@ -16,12 +16,12 @@ jobs:
       configurations: ${{ steps.setvar.outputs.configurations }}
       bugsplat_db: ${{ steps.setvar.outputs.bugsplat_db }}
     env:
-      # Build with a tag like "Second_Life#abcdef0" to generate a release page
+      # Build with a tag like "Alchemy#abcdef0" to generate a release page
       # (used for builds we are planning to deploy).
       # When you want to use a string variable as a workflow YAML boolean, it's
       # important to ensure it's the empty string when false. If you omit || '',
       # its value when false is "false", which is interpreted as true.
-      RELEASE_RUN: ${{ (github.event.inputs.release_run || github.ref_type == 'tag' && startsWith(github.ref_name, 'Second_Life')) && 'Y' || '' }}
+      RELEASE_RUN: ${{ (github.event.inputs.release_run || github.ref_type == 'tag' && startsWith(github.ref_name, 'Alchemy')) && 'Y' || '' }}
       FROM_FORK: ${{ github.event.pull_request.head.repo.fork }}
     steps:
       - name: Set Variables
@@ -29,20 +29,22 @@ jobs:
         shell: bash
         run: |
           echo "release_run=$RELEASE_RUN" >> "$GITHUB_OUTPUT"
+          echo 'configurations=["ReleaseOS"]' >> $GITHUB_OUTPUT
+          echo "bugsplat_db=" >> $GITHUB_OUTPUT
 
-          if [[ "$FROM_FORK" == "true" ]]; then
-            # PR from fork; don't build with Bugsplat, proprietary libs
-            echo 'configurations=["ReleaseOS"]' >> $GITHUB_OUTPUT
-            echo "bugsplat_db=" >> $GITHUB_OUTPUT
-          else
-            echo 'configurations=["Release"]' >> $GITHUB_OUTPUT
-            echo "bugsplat_db=SecondLife_Viewer_2018" >> $GITHUB_OUTPUT
-          fi
+          # if [[ "$FROM_FORK" == "true" ]]; then
+          #   # PR from fork; don't build with Bugsplat, proprietary libs
+          #   echo 'configurations=["ReleaseOS"]' >> $GITHUB_OUTPUT
+          #   echo "bugsplat_db=" >> $GITHUB_OUTPUT
+          # else
+          #   echo 'configurations=["Release"]' >> $GITHUB_OUTPUT
+          #   echo "bugsplat_db=SecondLife_Viewer_2018" >> $GITHUB_OUTPUT
+          # fi
   build:
     needs: setup
     strategy:
       matrix:
-        runner: [windows-large, macos-15-xlarge]
+        runner: [windows-2022, macos-15]
         configuration: ${{ fromJSON(needs.setup.outputs.configurations) }}
     runs-on: ${{ matrix.runner }}
     outputs:
@@ -64,7 +66,7 @@ jobs:
       # autobuild-package.xml.
       AUTOBUILD_VCS_INFO: "true"
       AUTOBUILD_VSVER: "170"
-      DEVELOPER_DIR: "/Applications/Xcode_16.1.app/Contents/Developer"
+      DEVELOPER_DIR: "/Applications/Xcode_16.2.app/Contents/Developer"
       # Ensure that Linden viewer builds engage Bugsplat.
       BUGSPLAT_DB: ${{ needs.setup.outputs.bugsplat_db }}
       build_coverity: false
@@ -92,12 +94,12 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.13"
 
       - name: Checkout build variables
         uses: actions/checkout@v4
         with:
-          repository: secondlife/build-variables
+          repository: AlchemyViewer/build-variables
           ref: master
           path: .build-variables
 
@@ -122,7 +124,7 @@ jobs:
 
       - name: Determine source branch
         id: which-branch
-        uses: secondlife/viewer-build-util/which-branch@v2
+        uses: AlchemyViewer/viewer-build-util/which-branch@v2
         with:
           token: ${{ github.token }}
 
@@ -308,7 +310,7 @@ jobs:
     steps:
       - name: Sign and package Windows viewer
         if: env.AZURE_KEY_VAULT_URI && env.AZURE_CERT_NAME && env.AZURE_CLIENT_ID && env.AZURE_CLIENT_SECRET && env.AZURE_TENANT_ID
-        uses: secondlife/viewer-build-util/sign-pkg-windows@v2
+        uses: AlchemyViewer/viewer-build-util/sign-pkg-windows@v2
         with:
           vault_uri: "${{ env.AZURE_KEY_VAULT_URI }}"
           cert_name: "${{ env.AZURE_CERT_NAME }}"
@@ -347,7 +349,7 @@ jobs:
 
       - name: Sign and package Mac viewer
         if: env.SIGNING_CERT_MACOS && env.SIGNING_CERT_MACOS_IDENTITY && env.SIGNING_CERT_MACOS_PASSWORD && steps.note-creds.outputs.note_user && steps.note-creds.outputs.note_pass && steps.note-creds.outputs.note_team
-        uses: secondlife/viewer-build-util/sign-pkg-mac@v2
+        uses: AlchemyViewer/viewer-build-util/sign-pkg-mac@v2
         with:
           channel: ${{ needs.build.outputs.viewer_channel }}
           imagename: ${{ needs.build.outputs.imagename }}
