@@ -49,7 +49,7 @@ void mirrorClip(vec3 pos)
 
 vec2 OctWrap( vec2 v )
 {
-    return ( 1.0 - abs( v.yx ) ) * vec2(v.x >= 0.0 ? 1.0 : -1.0, v.y >= 0.0 ? 1.0 : -1.0); 
+    return ( 1.0 - abs( v.yx ) ) * vec2(v.x >= 0.0 ? 1.0 : -1.0, v.y >= 0.0 ? 1.0 : -1.0);
 }
 
 vec4 encodeNormal(vec3 n, float env, float gbuffer_flag)
@@ -64,7 +64,7 @@ vec4 decodeNormal(vec4 norm)
 {
     vec2 f = norm.xy;
     f = f * 2.0 - 1.0;
- 
+
     // https://twitter.com/Stubbesaurus/status/937994790553227264
     vec4 n;
     n.xyz = vec3( f.x, f.y, 1.0 - abs( f.x ) - abs( f.y ) );
