@@ -2059,11 +2059,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>39007a526bffffd0bde691f616491b70cf284496</string>
+              <string>303b1be2f568e7b70b92fbadab2e41ec4e6e8c258468145f7f49b8116339db722a4b725e39bd48167f0ed568c49fa0b48e2e105fcb55d1951045505e02dfd1df</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-openjpeg/releases/download/v2.5.2-r2/openjpeg-2.5.2.11968808495-darwin64-11968808495.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-openjpeg2/releases/download/v2.4.0-2df27b6/openjpeg-2.4.0-darwin64-9458201901.tar.zst</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
@@ -2073,11 +2073,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>066e7b1ee58d5aff8efe065d598d56226c249a94</string>
+              <string>78559bf7495a58759798fb28b308ee53bec8000e72b1a6abba74b0a0f1fc6f4b8c7bcd9334989c1ad437e7eee5c5d80988cd2b018893ebf73d67aea6140df453</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-openjpeg/releases/download/v2.5.2-r2/openjpeg-2.5.2.11968808495-linux64-11968808495.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-openjpeg2/releases/download/v2.4.0-2df27b6/openjpeg-2.4.0-linux64-9458201901.tar.zst</string>
             </map>
             <key>name</key>
             <string>linux64</string>
@@ -2087,11 +2087,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>fe98fc9f4f3d94399c3078cad1bdcfdb37ce397b</string>
+              <string>0a357dd5a28d20f9215805f8f3df38f3c1868ddc84cc8f92964da598bf3c9af173007fa46469c9f1f1136cda01b5cb7d7e9ce792653e1d1f1ec5847c42558b88</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-openjpeg/releases/download/v2.5.2-r2/openjpeg-2.5.2.11968808495-windows64-11968808495.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-openjpeg2/releases/download/v2.4.0-2df27b6/openjpeg-2.4.0-windows64-9458201901.tar.zst</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -2102,9 +2102,9 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
         <key>license_file</key>
         <string>LICENSES/openjpeg.txt</string>
         <key>copyright</key>
-        <string>Copyright (c) 2002-2007, Communications and Remote Sensing Laboratory, Universite catholique de Louvain (UCL), Belgium; Copyright (c) 2002-2007, Professor Benoit Macq; Copyright (c) 2001-2003, David Janssens; Copyright (c) 2002-2003, Yannick Verschueren; Copyright (c) 2003-2007, Francois-Olivier Devaux and Antonin Descampe; Copyright (c) 2005, Herve Drolon, FreeImage Team; Copyright (c) 2006-2007, Parvatha Elangovan; Copyright (c) 2008, Jerome Fimes, Communications &amp; Systemes &lt;jerome.fimes@c-s.fr&gt;; Copyright (c) 2010-2011, Kaori Hagihara; Copyright (c) 2011-2012, Centre National d'Etudes Spatiales (CNES), France; Copyright (c) 2012, CS Systemes d'Information, France;</string>
+        <string>Copyright (c) 2002-2014, Universite catholique de Louvain, Belgium, Copyright (c) 2002-2012, Professor Benoit Macq, Copyright (c) 2003-2012, Antonin Descampe, Copyright (c) 2003-2009, Francois-Olivier Devaux, Copyright (c) 2005, Herve Drolon, FreeImage Team, Copyright (c) 2002-2003, Yannick Verschueren, Copyright (c) 2001-2003, David Janssens</string>
         <key>version</key>
-        <string>2.5.2.11968808495</string>
+        <string>2.4.0</string>
         <key>name</key>
         <string>openjpeg</string>
         <key>description</key>
