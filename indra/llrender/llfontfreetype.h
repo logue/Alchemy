@@ -156,7 +156,6 @@ public:
 
     void setStyle(U8 style);
     U8 getStyle() const;
-    S32 getAddedGlyphs() const { return mAddGlyphCount; }
 
 private:
     void resetBitmapCache();
@@ -191,7 +190,6 @@ private:
     mutable LLFontBitmapCache* mFontBitmapCachep;
 
     mutable S32 mRenderGlyphCount;
-    mutable S32 mAddGlyphCount;
 };
 
 #endif // LL_FONTFREETYPE_H
