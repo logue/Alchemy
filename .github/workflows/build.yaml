@@ -100,7 +100,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: AlchemyViewer/build-variables
-          ref: master
+          ref: main
           path: .build-variables
 
       - name: Checkout master-message-template
