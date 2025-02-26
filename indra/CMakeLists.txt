@@ -33,16 +33,20 @@ if (NOT DEFINED CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 20)
 endif()
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_SKIP_TEST_ALL_DEPENDENCY FALSE)
 
 include(Variables)
 include(BuildVersion)
+
+if (LL_TESTS)
+  set(CTEST_TEST_TARGET_ALIAS tests_ok)
+  include(CTest)
+endif ()
 
 if (NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING
       "Build type.  One of: Debug Release RelWithDebInfo" FORCE)
 endif (NOT CMAKE_BUILD_TYPE)
-
-add_custom_target(all_tests_ok)
 
 add_subdirectory(cmake)
 
@@ -121,13 +125,13 @@ endif (USE_BUGSPLAT)
 add_subdirectory(${VIEWER_PREFIX}newview)
 add_dependencies(viewer secondlife-bin)
 
-add_subdirectory(${VIEWER_PREFIX}doxygen EXCLUDE_FROM_ALL)
-
 # sets the 'startup project' for debugging from visual studio.
 set_property(
         DIRECTORY ${VIEWER_PREFIX}
         PROPERTY VS_STARTUP_PROJECT ${VIEWER_BINARY_NAME}
         )
+
+add_subdirectory(${VIEWER_PREFIX}doxygen EXCLUDE_FROM_ALL)
 
 if (LL_TESTS)
   # Define after the custom targets are created so

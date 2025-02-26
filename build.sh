@@ -248,9 +248,10 @@ build()
   then
     begin_section "autobuild $variant tests"
     # honor autobuild_build_parameters same as sling-buildscripts
+    export CTEST_OUTPUT_ON_FAILURE=1 # Output log on test failure
     eval_autobuild_build_parameters=$(eval $(echo echo $autobuild_build_parameters))
     "$autobuild" build --no-configure -c $variant \
-         $eval_autobuild_build_parameters -- --target all_tests_ok \
+         $eval_autobuild_build_parameters -- --target tests_ok \
     || fatal "failed building $variant"
     echo true >"$build_dir"/build_ok
     end_section "autobuild $variant tests"
