@@ -1,8 +1,8 @@
 # -*- cmake -*-
+include_guard()
+
 include(Linking)
 include(Prebuilt)
-
-include_guard()
 
 # ND: Turn this off by default, the openal code in the viewer isn't very well maintained, seems
 # to have memory leaks, has no option to play music streams
@@ -32,6 +32,7 @@ if (USE_OPENAL)
   find_library(ALUT_LIBRARY
       NAMES
       alut
+      libalut.dylib
       PATHS "${ARCH_PREBUILT_DIRS_RELEASE}" REQUIRED NO_DEFAULT_PATH)
 
   target_link_libraries(ll::openal INTERFACE ${OPENAL_LIBRARY} ${ALUT_LIBRARY})
