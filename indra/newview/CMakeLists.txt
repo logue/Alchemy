@@ -1725,6 +1725,7 @@ endif(USE_PRECOMPILED_HEADERS)
 if (WINDOWS)
     set_target_properties(${VIEWER_BINARY_NAME}
         PROPERTIES
+        VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}" # Sets VS debugger working director
         # *TODO -reenable this once we get server usage sorted out
         LINK_FLAGS "/debug /NODEFAULTLIB:LIBCMT /SUBSYSTEM:WINDOWS /LARGEADDRESSAWARE"
         LINK_FLAGS_DEBUG "/NODEFAULTLIB:\"LIBCMT;LIBCMTD;MSVCRT\" /INCREMENTAL:NO /LARGEADDRESSAWARE"
@@ -1860,15 +1861,6 @@ if (WINDOWS)
     endif (EXISTS ${CMAKE_SOURCE_DIR}/copy_win_scripts)
 
     add_dependencies(${VIEWER_BINARY_NAME} SLPlugin)
-
-    # sets the 'working directory' for debugging from visual studio.
-    # Condition for version can be moved to requirements once build agents will be updated (see TOOL-3865)
-    if (NOT UNATTENDED)
-        set_property(
-          TARGET ${VIEWER_BINARY_NAME}
-          PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-          )
-    endif (NOT UNATTENDED)
 
     if (PACKAGE)
       add_custom_command(
