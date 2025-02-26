@@ -118,8 +118,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .autobuild-installables
-          key: ${{ runner.os }}-64-${{ matrix.configuration }}-${{ hashFiles('autobuild.xml') }}
+          key: ${{ runner.os }}-64-${{ matrix.configuration }}-${{ matrix.build_variant }}-${{ hashFiles('autobuild.xml') }}
           restore-keys: |
+            ${{ runner.os }}-64-${{ matrix.configuration }}-${{ matrix.build_variant }}
             ${{ runner.os }}-64-${{ matrix.configuration }}-
             ${{ runner.os }}-64-
 
