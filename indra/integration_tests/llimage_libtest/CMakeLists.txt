@@ -9,7 +9,6 @@ include(00-Common)
 include(LLCommon)
 include(LLImage)
 include(LLMath)
-include(LLKDU)
 
 set(llimage_libtest_SOURCE_FILES
     llimage_libtest.cpp
@@ -33,8 +32,6 @@ target_link_libraries(llimage_libtest
         llfilesystem
         llmath
         llimage
-        llkdu
-        llimagej2coj
         )
 
 # Ensure people working on the viewer don't break this library

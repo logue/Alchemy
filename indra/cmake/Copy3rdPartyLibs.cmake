@@ -127,7 +127,6 @@ if(WINDOWS)
             msvcp${MSVC_VER}_2.dll
             msvcp${MSVC_VER}_atomic_wait.dll
             msvcp${MSVC_VER}_codecvt_ids.dll
-            msvcr${MSVC_VER}.dll
             vcruntime${MSVC_VER}.dll
             vcruntime${MSVC_VER}_1.dll
             vcruntime${MSVC_VER}_threads.dll
