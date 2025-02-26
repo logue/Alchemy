@@ -148,6 +148,7 @@ pre_build()
 
     RELEASE_CRASH_REPORTING=OFF
     HAVOK=OFF
+    TESTING=OFF
     SIGNING=()
     if [[ "$variant" != *OS ]]
     then
@@ -161,6 +162,11 @@ pre_build()
             SIGNING=("-DENABLE_SIGNING:BOOL=YES" \
                           "-DSIGNING_IDENTITY:STRING=Developer ID Application: Linden Research, Inc.")
         fi
+    fi
+
+    if $build_tests
+    then
+      TESTING=ON
     fi
 
     if [ "${RELEASE_CRASH_REPORTING:-}" != "OFF" ]
@@ -187,7 +193,7 @@ pre_build()
 
     "$autobuild" configure --quiet -c $variant \
      ${eval_autobuild_configure_parameters:---} \
-     -DLL_TESTS:BOOL=ON \
+     -DLL_TESTS:BOOL="$TESTING" \
      -DPACKAGE:BOOL=ON \
      -DHAVOK:BOOL="$HAVOK" \
      -DRELEASE_CRASH_REPORTING:BOOL="$RELEASE_CRASH_REPORTING" \
@@ -238,7 +244,17 @@ package_llphysicsextensions_tpv()
 build()
 {
   local variant="$1"
-  if $build_viewer
+  if $build_tests
+  then
+    begin_section "autobuild $variant tests"
+    # honor autobuild_build_parameters same as sling-buildscripts
+    eval_autobuild_build_parameters=$(eval $(echo echo $autobuild_build_parameters))
+    "$autobuild" build --no-configure -c $variant \
+         $eval_autobuild_build_parameters -- --target all_tests_ok \
+    || fatal "failed building $variant"
+    echo true >"$build_dir"/build_ok
+    end_section "autobuild $variant tests"
+  elif $build_viewer
   then
     begin_section "autobuild $variant"
     # honor autobuild_build_parameters same as sling-buildscripts

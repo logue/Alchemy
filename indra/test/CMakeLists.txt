@@ -107,7 +107,8 @@ set(test_results ${CMAKE_CURRENT_BINARY_DIR}/cpp_tests_ok.txt)
 # tests up to date with any code changes changes even if 
 # developers choose to disable LL_TESTS.
 if (LL_TESTS)  
-    add_custom_target(tests_ok ALL DEPENDS ${test_results})
+    add_custom_target(lltest_ok ALL DEPENDS ${test_results})
+    add_dependencies(all_tests_ok lltest_ok)
     if(DARWIN)
       # Support our "@executable_path/../Resources" load path for our test
       # executable. This SHOULD properly be "$<TARGET_FILE_DIR:lltest>/Resources",

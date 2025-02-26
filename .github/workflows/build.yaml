@@ -72,6 +72,7 @@ jobs:
       build_coverity: false
       build_log_dir: ${{ github.workspace }}/.logs
       build_viewer: true
+      build_tests: false
       BUILDSCRIPTS_SHARED: ${{ github.workspace }}/.shared
       # extracted and committed to viewer repo
       BUILDSCRIPTS_SUPPORT_FUNCTIONS: ${{ github.workspace }}/buildscripts_support_functions
@@ -298,6 +299,205 @@ jobs:
           path: |
             ${{ steps.build.outputs.physicstpv }}
 
+  test:
+    needs: setup
+    strategy:
+      matrix:
+        runner: [windows-2022, macos-15]
+        configuration: ${{ fromJSON(needs.setup.outputs.configurations) }}
+    runs-on: ${{ matrix.runner }}
+    env:
+      AUTOBUILD_ADDRSIZE: 64
+      AUTOBUILD_BUILD_ID: ${{ github.run_id }}
+      AUTOBUILD_CONFIGURATION: ${{ matrix.configuration }}
+      # authorizes fetching private constituent packages
+      AUTOBUILD_GITHUB_TOKEN: ${{ secrets.SHARED_AUTOBUILD_GITHUB_TOKEN }}
+      AUTOBUILD_INSTALLABLE_CACHE: ${{ github.workspace }}/.autobuild-installables
+      AUTOBUILD_VARIABLES_FILE: ${{ github.workspace }}/.build-variables/variables
+      # Direct autobuild to store vcs_url, vcs_branch and vcs_revision in
+      # autobuild-package.xml.
+      AUTOBUILD_VCS_INFO: "true"
+      AUTOBUILD_VSVER: "170"
+      DEVELOPER_DIR: "/Applications/Xcode_16.2.app/Contents/Developer"
+      # Ensure that Linden viewer builds engage Bugsplat.
+      BUGSPLAT_DB: ${{ needs.setup.outputs.bugsplat_db }}
+      build_coverity: false
+      build_log_dir: ${{ github.workspace }}/.logs
+      build_viewer: false
+      build_tests: true
+      BUILDSCRIPTS_SHARED: ${{ github.workspace }}/.shared
+      # extracted and committed to viewer repo
+      BUILDSCRIPTS_SUPPORT_FUNCTIONS: ${{ github.workspace }}/buildscripts_support_functions
+      GIT_REF: ${{ github.head_ref || github.ref }}
+      LL_SKIP_REQUIRE_SYSROOT: 1
+      # Setting this variable directs Linden's TUT test driver code to capture
+      # test-program log output at the specified level, but to display it only if
+      # the individual test fails.
+      LOGFAIL: DEBUG
+      master_message_template_checkout: ${{ github.workspace }}/.master-message-template
+      # Only set variants to the one configuration: don't let build.sh loop
+      # over variants, let GitHub distribute variants over multiple hosts.
+      variants: ${{ matrix.configuration }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Checkout build variables
+        uses: actions/checkout@v4
+        with:
+          repository: AlchemyViewer/build-variables
+          ref: main
+          path: .build-variables
+
+      - name: Checkout master-message-template
+        uses: actions/checkout@v4
+        with:
+          repository: secondlife/master-message-template
+          path: .master-message-template
+
+      - name: Install autobuild and python dependencies
+        run: pip3 install autobuild llsd
+
+      - name: Cache autobuild packages
+        id: cache-installables
+        uses: actions/cache@v4
+        with:
+          path: .autobuild-installables
+          key: ${{ runner.os }}-64-${{ matrix.configuration }}-${{ hashFiles('autobuild.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-64-${{ matrix.configuration }}-
+            ${{ runner.os }}-64-
+
+      - name: Determine source branch
+        id: which-branch
+        uses: AlchemyViewer/viewer-build-util/which-branch@v2
+        with:
+          token: ${{ github.token }}
+
+      - name: Build
+        id: build
+        shell: bash
+        env:
+          AUTOBUILD_VCS_BRANCH: ${{ steps.which-branch.outputs.branch }}
+          RUNNER_OS: ${{ runner.os }}
+        run: |
+          # set up things the viewer's build.sh script expects
+          set -x
+          mkdir -p "$build_log_dir"
+          mkdir -p "$BUILDSCRIPTS_SHARED/packages/lib/python"
+          source "$BUILDSCRIPTS_SUPPORT_FUNCTIONS"
+          if [[ "$OSTYPE" =~ cygwin|msys ]]
+          then
+            native_path() { cygpath --windows "$1"; }
+            shell_path()  { cygpath --unix "$1"; }
+          else
+            native_path() { echo "$1"; }
+            shell_path()  { echo "$1"; }
+          fi
+          finalize()
+          {
+            case "$1" in
+              true|0)
+                record_success "Build Succeeded"
+                ;;
+              *)
+                record_failure "Build Failed with $1"
+                ;;
+            esac
+          }
+          initialize_build()
+          {
+            echo "initialize_build"
+          }
+          initialize_version()
+          {
+            export revision="$AUTOBUILD_BUILD_ID"
+          }
+          python_cmd()
+          {
+              if [[ "x${1:0:1}" == "x-" ]]    # -m, -c, etc.
+              then # if $1 is a switch, don't try to twiddle paths
+                   "$(shell_path "$PYTHON_COMMAND")" "$@"
+              elif [[ "$(basename "$1")" == "codeticket.py" ]]
+              then # ignore any attempt to contact codeticket
+                   echo "## $@"
+              else # running a script at an explicit path: fix path for Python
+                   local script="$1"
+                   shift
+                   "$(shell_path "$PYTHON_COMMAND")" "$(native_path "$script")" "$@"
+              fi
+          }
+          repo_branch()
+          {
+            echo "$AUTOBUILD_VCS_BRANCH"
+          }
+          record_dependencies_graph()
+          {
+            echo "TODO: generate and post dependency graph"
+          }
+          # Since we're not uploading to codeticket, DO NOT sleep for minutes.
+          sleep()
+          {
+            echo "Not sleeping for $1 seconds"
+          }
+          export -f native_path shell_path finalize initialize_build initialize_version
+          export -f python_cmd repo_branch record_dependencies_graph sleep
+          ## Useful for diagnosing Windows LLProcess/LLLeap test failures
+          ##export APR_LOG="${RUNNER_TEMP}/apr.log"
+          export arch=$(uname | cut -b-6)
+          # Surprise! GH Windows runner's MINGW6 is a $arch value we've never
+          # seen before, so numerous tests don't know about it.
+          [[ "$arch" == "MINGW6" ]] && arch=CYGWIN
+          export AUTOBUILD="$(which autobuild)"
+
+          # determine the viewer channel from the branch or tag name
+          # trigger an EDU build by including "edu" in the tag
+          edu=${{ github.ref_type == 'tag' && contains(github.ref_name, 'edu') }}
+          echo "ref_type=${{ github.ref_type }}, ref_name=${{ github.ref_name }}, edu='$edu'"
+          branch=$AUTOBUILD_VCS_BRANCH
+          if [[ "$edu" == "true" ]]
+          then
+              export viewer_channel="Second Life Release edu"
+          elif  [[ "$branch" == "develop" ]];
+          then
+              export viewer_channel="Second Life Develop"
+          else
+              IFS='/' read -ra ba <<< "$branch"
+              prefix=${ba[0]}
+              if [ "$prefix" == "project" ]; then
+                  IFS='_' read -ra prj <<< "${ba[1]}"
+                  # uppercase first letter of each word
+                  export viewer_channel="Second Life Project ${prj[*]^}"
+              elif  [[ "$prefix" == "release" || "$prefix" == "main" ]];
+              then
+                  export viewer_channel="Second Life Release"
+              else
+                  export viewer_channel="Second Life Test"
+              fi
+          fi
+          echo "viewer_channel=$viewer_channel"
+          echo "viewer_channel=$viewer_channel" >> "$GITHUB_OUTPUT"
+          # On windows we need to point the build to the correct python
+          # as neither CMake's FindPython nor our custom Python.cmake module
+          # will resolve the correct interpreter location.
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            export PYTHON="$(native_path "$(which python)")"
+            echo "Python location: $PYTHON"
+            export PYTHON_COMMAND="$PYTHON"
+          else
+            export PYTHON_COMMAND="python3"
+          fi
+          export PYTHON_COMMAND_NATIVE="$(native_path "$PYTHON_COMMAND")"
+
+          ./build.sh
+
   sign-and-package-windows:
     env:
       AZURE_KEY_VAULT_URI: ${{ secrets.AZURE_KEY_VAULT_URI }}
@@ -305,7 +505,7 @@ jobs:
       AZURE_CLIENT_ID:     ${{ secrets.AZURE_CLIENT_ID }}
       AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
       AZURE_TENANT_ID:     ${{ secrets.AZURE_TENANT_ID }}
-    needs: build
+    needs: [build, test]
     runs-on: windows-2022
     steps:
       - name: Sign and package Windows viewer
@@ -324,7 +524,7 @@ jobs:
       SIGNING_CERT_MACOS:          ${{ secrets.SIGNING_CERT_MACOS }}
       SIGNING_CERT_MACOS_IDENTITY: ${{ secrets.SIGNING_CERT_MACOS_IDENTITY }}
       SIGNING_CERT_MACOS_PASSWORD: ${{ secrets.SIGNING_CERT_MACOS_PASSWORD }}
-    needs: build
+    needs: [build, test]
     runs-on: macos-latest
     steps:
       - name: Unpack Mac notarization credentials
@@ -364,7 +564,7 @@ jobs:
     env:
       BUGSPLAT_USER: ${{ secrets.BUGSPLAT_USER }}
       BUGSPLAT_PASS: ${{ secrets.BUGSPLAT_PASS }}
-    needs: build
+    needs: [build, test]
     if: needs.build.outputs.configuration == 'Release'
     runs-on: ubuntu-latest
     steps:
@@ -399,7 +599,7 @@ jobs:
     env:
       BUGSPLAT_USER: ${{ secrets.BUGSPLAT_USER }}
       BUGSPLAT_PASS: ${{ secrets.BUGSPLAT_PASS }}
-    needs: build
+    needs: [build, test]
     if: needs.build.outputs.configuration == 'Release'
     runs-on: ubuntu-latest
     steps:
@@ -421,7 +621,7 @@ jobs:
           files: "**/*.xcarchive.zip"
 
   release:
-    needs: [setup, build, sign-and-package-windows, sign-and-package-mac]
+    needs: [setup, build, test, sign-and-package-windows, sign-and-package-mac]
     runs-on: ubuntu-latest
     if: needs.setup.outputs.release_run
     steps:
@@ -466,6 +666,6 @@ jobs:
             *-autobuild-package.xml
             *-viewer_version.txt
 
-      - name: post release URL
+      - name: post release URL 
         run: |
           echo "::notice::Release ${{ steps.release.outputs.url }}"

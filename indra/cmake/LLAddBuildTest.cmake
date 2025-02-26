@@ -171,6 +171,7 @@ MACRO(LL_ADD_PROJECT_UNIT_TESTS project sources)
   # (replaces old _test_ok targets all over the place)
   add_custom_target(${project}_tests ALL DEPENDS ${${project}_TEST_OUTPUT})
   add_dependencies(${project} ${project}_tests)
+  add_dependencies(all_tests_ok ${project}_tests)
 ENDMACRO(LL_ADD_PROJECT_UNIT_TESTS)
 
 #*****************************************************************************
@@ -280,6 +281,7 @@ FUNCTION(LL_ADD_INTEGRATION_TEST
           COMMAND ${TEST_SCRIPT_CMD}
   )
 
+  add_dependencies(all_tests_ok INTEGRATION_TEST_${testname})
   # Use CTEST? Not sure how to yet...
   # ADD_TEST(INTEGRATION_TEST_RUNNER_${testname} ${TEST_SCRIPT_CMD})
 
