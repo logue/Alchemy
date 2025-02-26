@@ -43,7 +43,6 @@ include(UI)
 include(ViewerMiscLibs)
 include(ViewerManager)
 include(VisualLeakDetector)
-include(VulkanGltf)
 include(ZLIBNG)
 include(LLPrimitive)
 

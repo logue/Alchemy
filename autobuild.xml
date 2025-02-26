@@ -390,11 +390,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>e03eb77224290c875ff84f75b7fe3d0e7c162c94</string>
+              <string>0f03accad0b518bb3896b606edd66bfb64d3828a532316fdd7393c919f0f4c06160b0869fe3596833e41b90c584ca6fa820f7b99d917e2225b2e5b30b7dc0643</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-dictionaries/releases/download/v1-a01bb6c/dictionaries-1.a01bb6c-common-a01bb6c.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-dictionaries/releases/download/v1.0.1-r1/dictionaries-1.0.0-common-13540331603.tar.zst</string>
             </map>
             <key>name</key>
             <string>common</string>
@@ -405,13 +405,13 @@
         <key>license_file</key>
         <string>LICENSES/dictionaries.txt</string>
         <key>copyright</key>
-        <string>Copyright 2014 Apache OpenOffice software</string>
+        <string>various contributors</string>
         <key>version</key>
-        <string>1.a01bb6c</string>
+        <string>1.0.0</string>
         <key>name</key>
         <string>dictionaries</string>
         <key>description</key>
-        <string>Spell checking dictionaries to bundled into the viewer</string>
+        <string>Spell checking dictionaries to bundle into the viewer</string>
       </map>
       <key>dullahan</key>
       <map>
@@ -730,11 +730,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>353ae3a560143732503a8e14499ae12db1e66056</string>
+              <string>55cb3b725556933b77a2603a5abb9290f35e3a0b90dbd40e84561d56d1cf8426bcb6a1cb3907702a76c62719acf4a33a556a2a3af889bfd270c7e009f1aaa9eb</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-glm/releases/download/v1.0.1-r1/glm-v1.0.1-common-9066386153.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-glm/releases/download/v1.0.1-r1/glm-1.0.1-r1-common-13542126166.tar.zst</string>
             </map>
             <key>name</key>
             <string>common</string>
@@ -747,7 +747,7 @@
         <key>copyright</key>
         <string>Copyright (c) 2005 - G-Truc Creation</string>
         <key>version</key>
-        <string>v1.0.1</string>
+        <string>1.0.1-r1</string>
         <key>name</key>
         <string>glm</string>
         <key>vcs_branch</key>
@@ -1760,7 +1760,7 @@
         <key>name</key>
         <string>minizip-ng</string>
         <key>canonical_repo</key>
-        <string>https://bitbucket.org/lindenlab/3p-minizip-ng</string>
+        <string>https://github.com/AlchemyViewer/3p-minizip-ng</string>
         <key>description</key>
         <string>minizip-ng is a zip manipulation library. Based on work of Gilles Vollant.</string>
       </map>
@@ -1768,41 +1768,19 @@
       <map>
         <key>platforms</key>
         <map>
-          <key>darwin64</key>
+          <key>common</key>
           <map>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>32ead724319c2ea6f65fc5be0e3157cc</string>
+              <string>ad5277db881fbf29b75bc6138e78bb221d9d20806719f751ed0f3db341b95d21be20ee43b2e8d17b3fbb0d2c2c863c7b7481371589dacb6f60c15da28a968204</string>
+              <key>hash_algorithm</key>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://automated-builds-secondlife-com.s3.amazonaws.com/ct2/115452/994130/nanosvg-2022.09.27-darwin64-580364.tar.bz2</string>
+              <string>https://github.com/AlchemyViewer/3p-nanosvg/releases/download/v2024.12.19-r1/nanosvg-2024.12.19-common-13542872204.tar.zst</string>
             </map>
             <key>name</key>
-            <string>darwin64</string>
-          </map>
-          <key>linux</key>
-          <map>
-            <key>archive</key>
-            <map>
-              <key>hash</key>
-              <string>84698f044598ff79e255965f3d1c3e80</string>
-              <key>url</key>
-              <string>https://automated-builds-secondlife-com.s3.amazonaws.com/ct2/115397/993664/nanosvg-2022.09.27-linux-580337.tar.bz2</string>
-            </map>
-            <key>name</key>
-            <string>linux</string>
-          </map>
-          <key>windows64</key>
-          <map>
-            <key>archive</key>
-            <map>
-              <key>hash</key>
-              <string>ee61ff8b866be04c325f1fe2db516d71</string>
-              <key>url</key>
-              <string>https://automated-builds-secondlife-com.s3.amazonaws.com/ct2/115454/994144/nanosvg-2022.09.27-windows64-580364.tar.bz2</string>
-            </map>
-            <key>name</key>
-            <string>windows64</string>
+            <string>common</string>
           </map>
         </map>
         <key>license</key>
@@ -1812,7 +1790,7 @@
         <key>copyright</key>
         <string>Copyright (c) 2013-14 Mikko Mononen</string>
         <key>version</key>
-        <string>2022.09.27</string>
+        <string>2024.12.19</string>
         <key>name</key>
         <string>nanosvg</string>
         <key>canonical_repo</key>
@@ -2363,11 +2341,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>a9649f85e20c0b83acfd7b02ca19c1dcdd15f01e</string>
+              <string>d34dfc16b9daadbdd691da4884867757741215680427839d3a1a94cfc4c4461e8702fa37d9b5fecd06919f8c989e1c1cd95ac94706829896d7c3c20fc9f9c907</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-tinyexr/releases/download/v1.0.9-5e8947c/tinyexr-1.0.9-5e8947c-common-10475846787.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-tinyexr/releases/download/v1.0.10-r1/tinyexr-1.0.10-r1-common-13542336513.tar.zst</string>
             </map>
             <key>name</key>
             <string>common</string>
@@ -2380,7 +2358,7 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
         <key>copyright</key>
         <string>Copyright (c) 2014 - 2021, Syoyo Fujita and many contributors.</string>
         <key>version</key>
-        <string>1.0.9-5e8947c</string>
+        <string>1.0.10-r1</string>
         <key>name</key>
         <string>tinyexr</string>
         <key>vcs_branch</key>
@@ -2403,11 +2381,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>005d23bb2606ae2cc9e844adc1a0edf112c69812</string>
+              <string>c690ed031e5696bb207fa9c5d1e2d64c75f2889d8e74af2f8d9ad71665f1b886f0a0fdc195358e7376e9bfde910f19a6668196288e6b02eb2d41201fa39d3d20</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-tinygltf/releases/download/v2.9.3-r1/tinygltf-2.9.3-r1-common-10341018043.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-tinygltf/releases/download/v2.9.5-r1/tinygltf-2.9.5-r1-common-13541792278.tar.zst</string>
             </map>
             <key>name</key>
             <string>common</string>
@@ -2420,15 +2398,15 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
         <key>copyright</key>
         <string>// Copyright (c) 2015 - Present Syoyo Fujita, Aurélien Chatelain and many contributors.</string>
         <key>version</key>
-        <string>2.9.3-r1</string>
+        <string>2.9.5-r1</string>
         <key>name</key>
         <string>tinygltf</string>
         <key>canonical_repo</key>
-        <string>https://bitbucket.org/lindenlab/3p-tinygltf</string>
+        <string>https://github.com/AlchemyViewer/3p-tinygltf</string>
         <key>description</key>
         <string>tinygltf import library</string>
         <key>source</key>
-        <string>https://bitbucket.org/lindenlab/3p-tinygltf</string>
+        <string>https://github.com/AlchemyViewer/3p-tinygltf</string>
         <key>source_type</key>
         <string>git</string>
       </map>
@@ -2490,11 +2468,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
         <key>name</key>
         <string>tracy</string>
         <key>canonical_repo</key>
-        <string>https://bitbucket.org/lindenlab/3p-tracy</string>
+        <string>https://github.com/AlchemyViewer/3p-tracy</string>
         <key>description</key>
         <string>Tracy Profiler Library</string>
         <key>source</key>
-        <string>https://bitbucket.org/lindenlab/3p-tracy</string>
+        <string>https://github.com/AlchemyViewer/3p-tracy</string>
         <key>source_type</key>
         <string>git</string>
       </map>
@@ -2670,40 +2648,6 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
         <key>name</key>
         <string>vlc-bin</string>
       </map>
-      <key>vulkan_gltf</key>
-      <map>
-        <key>platforms</key>
-        <map>
-          <key>common</key>
-          <map>
-            <key>archive</key>
-            <map>
-              <key>hash</key>
-              <string>8e365eff8dcace48d91e2530f8b13e420849aefc</string>
-              <key>hash_algorithm</key>
-              <string>sha1</string>
-              <key>url</key>
-              <string>https://github.com/secondlife/3p-vulkan-gltf-pbr/releases/download/v1.0.0-d7c372f/vulkan_gltf-1.0.0-common-d7c372f.tar.zst</string>
-            </map>
-            <key>name</key>
-            <string>common</string>
-          </map>
-        </map>
-        <key>license</key>
-        <string>Copyright (c) 2018 Sascha Willems</string>
-        <key>license_file</key>
-        <string>vulkan_gltf.txt</string>
-        <key>copyright</key>
-        <string>Copyright (c) 2018 Sascha Willems</string>
-        <key>version</key>
-        <string>1.0.0</string>
-        <key>name</key>
-        <string>vulkan_gltf</string>
-        <key>canonical_repo</key>
-        <string>https://bitbucket.org/lindenlab/3p-vulkan-gltf-pbr</string>
-        <key>description</key>
-        <string>Vulkan GLTF Sample Implementation</string>
-      </map>
       <key>webrtc</key>
       <map>
         <key>platforms</key>
@@ -2779,28 +2723,28 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>fc9362865e33391d55c64d6101726da0a25d924e</string>
+              <string>bbca369d027ba99827cdacdb1464e4e2401fd2694ffa17ba70e1d717ad79cfc4c2727346ca86aadf5381ecb6110467068e56c034b86a5b4c50b768f9f3610bb3</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-xxhash/releases/download/v0.8.2-r1/xxhash-0.8.2-10285735820-common-10285735820.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-xxhash/releases/download/v0.8.3-r1/xxhash-0.8.3-r1-common-13542566844.tar.zst</string>
             </map>
             <key>name</key>
             <string>common</string>
           </map>
         </map>
         <key>license</key>
-        <string>xxhash</string>
+        <string>BSD 2-Clause</string>
         <key>license_file</key>
         <string>LICENSES/xxhash.txt</string>
         <key>copyright</key>
         <string>Copyright (c) 2012-2021 Yann Collet</string>
         <key>version</key>
-        <string>0.8.2-10285735820</string>
+        <string>0.8.3-r1</string>
         <key>name</key>
         <string>xxhash</string>
         <key>description</key>
-        <string>xxHash Library</string>
+        <string>Extremely fast non-cryptographic hash algorithm</string>
       </map>
       <key>zlib-ng</key>
       <map>
@@ -2860,7 +2804,7 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
         <key>name</key>
         <string>zlib-ng</string>
         <key>canonical_repo</key>
-        <string>https://bitbucket.org/lindenlab/3p-zlib-ng</string>
+        <string>https://github.com/AlchemyViewer/3p-zlib-ng</string>
         <key>description</key>
         <string>zlib data compression library for the next generation systems</string>
       </map>
