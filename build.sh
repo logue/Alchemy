@@ -404,7 +404,7 @@ do
       if `cat "$build_dir/build_ok"`
       then
           case "$variant" in
-            Release)
+            Release*)
               if [ -r "$build_dir/autobuild-package.xml" ]
               then
                   begin_section "Autobuild metadata"
