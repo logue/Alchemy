@@ -247,23 +247,7 @@ jobs:
 
           ./build.sh
 
-          # Each artifact is downloaded as a distinct .zip file. Multiple jobs
-          # (per the matrix above) writing the same filepath to the same
-          # artifact name will *overwrite* that file. Moreover, they can
-          # interfere with each other, causing the upload to fail.
-          # https://github.com/actions/upload-artifact#uploading-to-the-same-artifact
-          # Given the size of our installers, and the fact that we typically
-          # only want to download just one instead of a single zip containing
-          # several, generate a distinct artifact name for each installer.
-          # If the matrix above can run multiple builds on the same
-          # platform, we must disambiguate on more than the platform name.
-          # e.g. if we were still running Windows 32-bit builds, we'd need to
-          # qualify the artifact with bit width.
-          if [[ "$AUTOBUILD_CONFIGURATION" == "ReleaseOS" ]]
-          then cfg_suffix='OS'
-          else cfg_suffix=''
-          fi
-          echo "artifact=$RUNNER_OS$cfg_suffix" >> $GITHUB_OUTPUT
+          echo "artifact=$RUNNER_OS" >> $GITHUB_OUTPUT
 
       - name: Upload executable
         if: matrix.build_variant == 'Viewer' && steps.build.outputs.viewer_app
@@ -312,7 +296,6 @@ jobs:
     runs-on: windows-2022
     steps:
       - name: Sign and package Windows viewer
-        if: env.AZURE_KEY_VAULT_URI && env.AZURE_CERT_NAME && env.AZURE_CLIENT_ID && env.AZURE_CLIENT_SECRET && env.AZURE_TENANT_ID
         uses: AlchemyViewer/viewer-build-util/sign-pkg-windows@v2
         with:
           vault_uri: "${{ env.AZURE_KEY_VAULT_URI }}"
@@ -351,7 +334,6 @@ jobs:
           [[ -n "$USERNAME" && -n "$PASSWORD" && -n "$TEAM_ID" ]]
 
       - name: Sign and package Mac viewer
-        if: env.SIGNING_CERT_MACOS && env.SIGNING_CERT_MACOS_IDENTITY && env.SIGNING_CERT_MACOS_PASSWORD && steps.note-creds.outputs.note_user && steps.note-creds.outputs.note_pass && steps.note-creds.outputs.note_team
         uses: AlchemyViewer/viewer-build-util/sign-pkg-mac@v2
         with:
           channel: ${{ needs.build.outputs.viewer_channel }}
