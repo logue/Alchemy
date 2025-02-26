@@ -26,6 +26,7 @@ if (USE_OPENAL)
       NAMES
       OpenAL32
       openal
+      libopenal.dylib
       PATHS "${ARCH_PREBUILT_DIRS_RELEASE}" REQUIRED NO_DEFAULT_PATH)
 
   find_library(ALUT_LIBRARY
