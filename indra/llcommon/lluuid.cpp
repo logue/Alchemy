@@ -950,6 +950,7 @@ void LLUUID::setNull()
     word[3] = 0;
 }
 
+#if !defined(LL_X86) && !defined(LL_ARM64)
 
 // Compare
 bool LLUUID::operator==(const LLUUID& rhs) const
@@ -1002,28 +1003,6 @@ bool LLUUID::isNull() const
     return !(word[0] | word[1] | word[2] | word[3]);
 }
 
-LLUUID::LLUUID(const char* in_string)
-{
-    if (!in_string || in_string[0] == 0)
-    {
-        setNull();
-        return;
-    }
-
-    set(in_string);
-}
-
-LLUUID::LLUUID(const std::string& in_string)
-{
-    if (in_string.empty())
-    {
-        setNull();
-        return;
-    }
-
-    set(in_string);
-}
-
 // IW: DON'T "optimize" these w/ U32s or you'll scoogie the sort order
 // IW: this will make me very sad
 bool LLUUID::operator<(const LLUUID& rhs) const
@@ -1052,6 +1031,30 @@ bool LLUUID::operator>(const LLUUID& rhs) const
     return (mData[UUID_BYTES - 1] > rhs.mData[UUID_BYTES - 1]);
 }
 
+#endif
+
+LLUUID::LLUUID(const char* in_string)
+{
+    if (!in_string || in_string[0] == 0)
+    {
+        setNull();
+        return;
+    }
+
+    set(in_string);
+}
+
+LLUUID::LLUUID(const std::string& in_string)
+{
+    if (in_string.empty())
+    {
+        setNull();
+        return;
+    }
+
+    set(in_string);
+}
+
 U16 LLUUID::getCRC16() const
 {
     // A UUID is 16 bytes, or 8 shorts.
@@ -1070,6 +1073,10 @@ U16 LLUUID::getCRC16() const
 
 U32 LLUUID::getCRC32() const
 {
-    U32* tmp = (U32*)mData;
-    return tmp[0] + tmp[1] + tmp[2] + tmp[3];
+    U32 ret = 0;
+    for(U32 i = 0;i < 4;++i)
+    {
+        ret += (mData[i*4]) | (mData[i*4+1]) << 8 | (mData[i*4+2]) << 16 | (mData[i*4+3]) << 24;
+    }
+    return ret;
 }

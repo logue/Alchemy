@@ -85,6 +85,11 @@ if (WINDOWS)
       _CRT_NONSTDC_NO_DEPRECATE       # Allow use of sprintf etc
       _CRT_OBSOLETE_NO_WARNINGS
       _WINSOCK_DEPRECATED_NO_WARNINGS # Disable deprecated WinSock API warnings
+      __SSE3__=1
+      __SSSE3__=1
+      __SSE4__=1
+      __SSE4_1__=1
+      __SSE4_2__=1
       )
   add_compile_options(
           /Zo
