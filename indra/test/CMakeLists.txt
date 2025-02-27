@@ -66,6 +66,11 @@ target_link_libraries(lltest
         llcorehttp
         )
 
+set_target_properties(lltest
+        PROPERTIES
+        FOLDER "Tests"
+        )
+
 if (WINDOWS)
   set_target_properties(lltest
           PROPERTIES
@@ -99,7 +104,7 @@ if (LL_TESTS)
 
     add_test(NAME "C++ unit tests" COMMAND ${command} WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
-    add_dependencies(tests_ok lltest)
+    add_dependencies(BUILD_TESTS lltest)
     if(DARWIN)
       # Support our "@executable_path/../Resources" load path for our test
       # executable. This SHOULD properly be "$<TARGET_FILE_DIR:lltest>/Resources",

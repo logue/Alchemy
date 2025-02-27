@@ -78,7 +78,7 @@ MACRO(LL_ADD_PROJECT_UNIT_TESTS project sources)
     endif()
 
     # Setup target
-    add_executable(PROJECT_${project}_TEST_${name} ${${name}_test_SOURCE_FILES})
+    add_executable(PROJECT_${project}_TEST_${name} EXCLUDE_FROM_ALL ${${name}_test_SOURCE_FILES})
 
     # Cannot declare a dependency on ${project} because the executable create above will later declare
     # add_dependencies( ${project} ${project}_tests)
@@ -122,7 +122,9 @@ MACRO(LL_ADD_PROJECT_UNIT_TESTS project sources)
     set_target_properties(PROJECT_${project}_TEST_${name}
             PROPERTIES
             COMPILE_FLAGS "${${name}_test_additional_CFLAGS}"
-            COMPILE_DEFINITIONS "LL_TEST=${name};LL_TEST_${name}")
+            COMPILE_DEFINITIONS "LL_TEST=${name};LL_TEST_${name}"
+            FOLDER "Tests"
+    )
     if(LL_TEST_VERBOSE)
       message("LL_ADD_PROJECT_UNIT_TESTS ${name}_test_additional_CFLAGS ${${name}_test_additional_CFLAGS}")
     endif()
@@ -159,7 +161,7 @@ MACRO(LL_ADD_PROJECT_UNIT_TESTS project sources)
             WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     )
 
-    add_dependencies(tests_ok PROJECT_${project}_TEST_${name})
+    add_dependencies(BUILD_TESTS PROJECT_${project}_TEST_${name})
     list(APPEND ${project}_TEST_OUTPUT ${TEST_OUTPUT})
   endforeach (source)
 ENDMACRO(LL_ADD_PROJECT_UNIT_TESTS)
@@ -203,11 +205,12 @@ FUNCTION(LL_ADD_INTEGRATION_TEST
     message(STATUS "ADD_EXECUTABLE(INTEGRATION_TEST_${testname} ${source_files})")
   endif()
 
-  add_executable(INTEGRATION_TEST_${testname} ${source_files})
+  add_executable(INTEGRATION_TEST_${testname} EXCLUDE_FROM_ALL ${source_files})
   set_target_properties(INTEGRATION_TEST_${testname}
           PROPERTIES
           RUNTIME_OUTPUT_DIRECTORY "${EXE_STAGING_DIR}"
           COMPILE_DEFINITIONS "LL_TEST=${testname};LL_TEST_${testname}"
+          FOLDER "Tests"
           )
 
   # The following was copied to llcorehttp/CMakeLists.txt's texture_load target.
@@ -267,7 +270,7 @@ FUNCTION(LL_ADD_INTEGRATION_TEST
 
   add_test(NAME INTEGRATION_TEST_RUNNER_${testname} COMMAND ${TEST_SCRIPT_CMD})
 
-  add_dependencies(tests_ok INTEGRATION_TEST_${testname})
+  add_dependencies(BUILD_TESTS INTEGRATION_TEST_${testname})
 
 ENDFUNCTION(LL_ADD_INTEGRATION_TEST)
 

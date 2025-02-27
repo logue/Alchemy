@@ -268,6 +268,11 @@ add_custom_target(
         DEPENDS ${third_party_targets}
 )
 
+set_target_properties(stage_third_party_libs
+        PROPERTIES
+        FOLDER "BuildUtils"
+        )
+
 if(DARWIN)
     # Support our "@executable_path/../Resources" load path for executables
     # that end up in any of the above SHARED_LIB_STAGING_DIR_MUMBLE

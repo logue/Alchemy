@@ -145,12 +145,14 @@ if (LL_TESTS AND LLCOREHTTP_TESTS)
           llcommon
       )
 
-  add_executable(http_texture_load
+  add_executable(http_texture_load EXCLUDE_FROM_ALL
                  ${llcorehttp_EXAMPLE_SOURCE_FILES}
                  )
+
   set_target_properties(http_texture_load
                         PROPERTIES
                         RUNTIME_OUTPUT_DIRECTORY "${EXE_STAGING_DIR}"
+                        FOLDER "Tests"
                         )
 
   if (WINDOWS)
@@ -164,5 +166,7 @@ if (LL_TESTS AND LLCOREHTTP_TESTS)
   endif (WINDOWS)
 
   target_link_libraries(http_texture_load ${example_libs})
+
+  add_dependencies(BUILD_TESTS http_texture_load)
 
 endif (LL_TESTS AND LLCOREHTTP_TESTS)

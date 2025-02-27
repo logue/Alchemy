@@ -1812,6 +1812,11 @@ if (WINDOWS)
 
     add_custom_target(copy_w_viewer_manifest ALL DEPENDS ${CMAKE_CFG_INTDIR}/copy_touched.bat)
 
+    set_target_properties(copy_w_viewer_manifest
+            PROPERTIES
+            FOLDER "BuildUtils"
+            )
+
     add_dependencies(${VIEWER_BINARY_NAME} stage_third_party_libs llcommon llwebrtc copy_w_viewer_manifest)
 
     # Useful for remote debugging or profiling if set to target a shared drive. for example, brad sets it to "dist/secondlife" to deploy under

@@ -39,8 +39,22 @@ include(Variables)
 include(BuildVersion)
 
 if (LL_TESTS)
-  set(CTEST_TEST_TARGET_ALIAS tests_ok)
+  # Set up our test targets
+  set(CTEST_TEST_TARGET_ALIAS BUILD_AND_RUN_TESTS)
   include(CTest)
+
+  set_target_properties(BUILD_AND_RUN_TESTS
+        PROPERTIES
+        FOLDER "CMakePredefinedTargets"
+        )
+
+  add_custom_target(BUILD_TESTS)
+  add_dependencies(BUILD_AND_RUN_TESTS BUILD_TESTS)
+
+  set_target_properties(BUILD_TESTS
+        PROPERTIES
+        FOLDER "CMakePredefinedTargets"
+        )
 endif ()
 
 if (NOT CMAKE_BUILD_TYPE)
@@ -73,7 +87,13 @@ if (WINDOWS AND EXISTS ${LIBS_CLOSED_DIR}copy_win_scripts)
   add_subdirectory(${LIBS_CLOSED_PREFIX}copy_win_scripts)
 endif (WINDOWS AND EXISTS ${LIBS_CLOSED_DIR}copy_win_scripts)
 
-add_custom_target(viewer)
+add_custom_target(BUILD_VIEWER)
+
+set_target_properties(BUILD_VIEWER
+      PROPERTIES
+      FOLDER "CMakePredefinedTargets"
+      )
+
 
 if (NOT USE_BUGSPLAT)
 add_subdirectory(${LIBS_OPEN_PREFIX}llcrashlogger)
@@ -123,7 +143,7 @@ else (USE_BUGSPLAT)
 endif (USE_BUGSPLAT)
 
 add_subdirectory(${VIEWER_PREFIX}newview)
-add_dependencies(viewer secondlife-bin)
+add_dependencies(BUILD_VIEWER secondlife-bin)
 
 # sets the 'startup project' for debugging from visual studio.
 set_property(

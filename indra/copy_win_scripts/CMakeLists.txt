@@ -33,3 +33,8 @@ copy_if_different(
     )
 
 add_custom_target(copy_win_scripts ALL DEPENDS ${win_scripts-targets})
+
+set_target_properties(copy_win_scripts
+        PROPERTIES
+        FOLDER "BuildUtils"
+        )

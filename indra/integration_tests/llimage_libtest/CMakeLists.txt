@@ -21,9 +21,14 @@ set(llimage_libtest_HEADER_FILES
 
 list(APPEND llimage_libtest_SOURCE_FILES ${llimage_libtest_HEADER_FILES})
 
-add_executable(llimage_libtest
+add_executable(llimage_libtest EXCLUDE_FROM_ALL
     ${llimage_libtest_SOURCE_FILES}
     )
+
+set_target_properties(llimage_libtest
+                    PROPERTIES
+                    FOLDER "Tests"
+                    )
 
 # Libraries on which this application depends on
 # Sort by high-level to low-level
@@ -35,6 +40,6 @@ target_link_libraries(llimage_libtest
         )
 
 # Ensure people working on the viewer don't break this library
-add_dependencies(viewer llimage_libtest)
+add_dependencies(BUILD_TESTS llimage_libtest)
 
 endif(LL_TESTS)
