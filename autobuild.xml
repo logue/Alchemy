@@ -750,18 +750,10 @@
         <string>1.0.1-r1</string>
         <key>name</key>
         <string>glm</string>
-        <key>vcs_branch</key>
-        <string>refs/tags/v1.0.1-r1</string>
-        <key>vcs_revision</key>
-        <string>399cd5ba57a9267a560ce07e50a0f8c5fe3dc66f</string>
-        <key>vcs_url</key>
-        <string>git://github.com/secondlife/3p-glm.git</string>
         <key>canonical_repo</key>
-        <string>https://github.com/secondlife/3p-glm</string>
+        <string>https://github.com/AlchemyViewer/3p-glm</string>
         <key>description</key>
         <string>OpenGL Mathematics</string>
-        <key>source_type</key>
-        <string>git</string>
       </map>
       <key>gstreamer</key>
       <map>
@@ -885,47 +877,19 @@
       <map>
         <key>platforms</key>
         <map>
-          <key>darwin64</key>
+          <key>common</key>
           <map>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>b05374300cdd40c381614f2ee4497de340eda991</string>
+              <string>31d503e153a52b823cf50923dee8da6871e0c35d8c93d44d511b24d6fd0b9a6f2490699acf84a2d992d7bedb0f8eed47f786784c1e673a433f14f380e25bbf0a</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-jpeg_encoder_js/releases/download/v1.0-790015a/jpegencoderbasic-1.0-darwin64-790015a.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-jpeg_encoder_js/releases/download/v1.0-r1/jpegencoderbasic-1.0-common-13568493279.tar.zst</string>
             </map>
             <key>name</key>
-            <string>darwin64</string>
-          </map>
-          <key>linux64</key>
-          <map>
-            <key>archive</key>
-            <map>
-              <key>hash</key>
-              <string>23daab838f4b8f92e5dc1a2f6c568cb7b0cb43b7</string>
-              <key>hash_algorithm</key>
-              <string>sha1</string>
-              <key>url</key>
-              <string>https://github.com/secondlife/3p-jpeg_encoder_js/releases/download/v1.0-790015a/jpegencoderbasic-1.0-linux64-790015a.tar.zst</string>
-            </map>
-            <key>name</key>
-            <string>linux64</string>
-          </map>
-          <key>windows64</key>
-          <map>
-            <key>archive</key>
-            <map>
-              <key>hash</key>
-              <string>23e8ba22aadf88d249a21844bfcdd01138c05937</string>
-              <key>hash_algorithm</key>
-              <string>sha1</string>
-              <key>url</key>
-              <string>https://github.com/secondlife/3p-jpeg_encoder_js/releases/download/v1.0-790015a/jpegencoderbasic-1.0-windows64-790015a.tar.zst</string>
-            </map>
-            <key>name</key>
-            <string>windows64</string>
+            <string>common</string>
           </map>
         </map>
         <key>license</key>
@@ -948,11 +912,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>10f14875ce5c7f5028217c8b7468733190fd333d</string>
+              <string>403df0e4a388e24eb53c83e1dc992eab62f3b19ca5d3d92defe733ef34f0f61f738a7497005aa6250efbc3869aa87b17cd4cf7ec38b17ea6832d7e9ecf6ecfd6</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-libjpeg-turbo/releases/download/v3.0.4-r1/libjpeg_turbo-3.0.4-r1-windows64-11968659895.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-libjpeg-turbo/releases/download/v3.1.0-r1/libjpeg_turbo-3.1.0-r1-windows64-13569560234.tar.zst</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -962,11 +926,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>d3b1b0fde28c8cf0c33fed167dba87bba5c6cc64</string>
+              <string>702584641b461fdc224405925443907b2fbdcf4f1d84548cded7d61adf821362aac54475c2970c5b7ebe075304aa62245e1201bd9dc20e33775b8244a12a461d</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-libjpeg-turbo/releases/download/v3.0.4-r1/libjpeg_turbo-3.0.4-r1-linux64-11968659895.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-libjpeg-turbo/releases/download/v3.1.0-r1/libjpeg_turbo-3.1.0-r1-linux64-13569560234.tar.zst</string>
             </map>
             <key>name</key>
             <string>linux64</string>
@@ -976,11 +940,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>79e78cbaaec9a99c0ae4a5cdd4a98535c8fa3c6d</string>
+              <string>52f6bac3b991692678f9e854417e68f8fd2b7722273895d56e52512d8b5b6bcc75eb99bef732d2f099af134ca7eb9817a33dc35495e0f0d3c92c68ce854404e9</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-libjpeg-turbo/releases/download/v3.0.4-r1/libjpeg_turbo-3.0.4-r1-darwin64-11968659895.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-libjpeg-turbo/releases/download/v3.1.0-r1/libjpeg_turbo-3.1.0-r1-darwin64-13569560234.tar.zst</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
@@ -993,11 +957,11 @@
         <key>copyright</key>
         <string>Copyright (C)2009-2024 D. R. Commander. All Rights Reserved. Copyright (C)2015 Viktor Szathmáry. All Rights Reserved.</string>
         <key>version</key>
-        <string>3.0.4-r1</string>
+        <string>3.1.0-r1</string>
         <key>name</key>
         <string>libjpeg-turbo</string>
         <key>canonical_repo</key>
-        <string>https://github.com/secondlife/3p-libjpeg-turbo</string>
+        <string>https://https://github.com/AlchemyViewer/3p-libjpeg-turbo</string>
         <key>description</key>
         <string>JPEG encoding, decoding library</string>
       </map>
@@ -1644,47 +1608,19 @@
       <map>
         <key>platforms</key>
         <map>
-          <key>darwin64</key>
+          <key>common</key>
           <map>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>65edf85c36a10001e32bdee582bec4732137208b</string>
+              <string>41a84a0c444fa13ce8f20559d0bbf707bc9d590ed72d0b8c8055593be597b41f4e24824c6c114f6658893b4d1b5489eadca6a2ec06a8d7127ab70cbcb5674ef9</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-mikktspace/releases/download/v2-e967e1b/mikktspace-1-darwin64-8756084692.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-mikktspace/releases/download/v2.0.0-r1/mikktspace-2-common-13568329490.tar.zst</string>
             </map>
             <key>name</key>
-            <string>darwin64</string>
-          </map>
-          <key>linux64</key>
-          <map>
-            <key>archive</key>
-            <map>
-              <key>hash</key>
-              <string>fa9dcee4584df7e7271fdf69c08e6fd3122a47fc</string>
-              <key>hash_algorithm</key>
-              <string>sha1</string>
-              <key>url</key>
-              <string>https://github.com/secondlife/3p-mikktspace/releases/download/v2-e967e1b/mikktspace-1-linux64-8756084692.tar.zst</string>
-            </map>
-            <key>name</key>
-            <string>linux64</string>
-          </map>
-          <key>windows64</key>
-          <map>
-            <key>archive</key>
-            <map>
-              <key>hash</key>
-              <string>130b33a70bdb3a8a188376c6a91840bdb61380a8</string>
-              <key>hash_algorithm</key>
-              <string>sha1</string>
-              <key>url</key>
-              <string>https://github.com/secondlife/3p-mikktspace/releases/download/v2-e967e1b/mikktspace-1-windows64-8756084692.tar.zst</string>
-            </map>
-            <key>name</key>
-            <string>windows64</string>
+            <string>common</string>
           </map>
         </map>
         <key>license</key>
@@ -1694,11 +1630,11 @@
         <key>copyright</key>
         <string>Copyright (C) 2011 by Morten S. Mikkelsen, Copyright (C) 2022 Blender Authors</string>
         <key>version</key>
-        <string>1</string>
+        <string>2</string>
         <key>name</key>
         <string>mikktspace</string>
         <key>canonical_repo</key>
-        <string>https://bitbucket.org/lindenlab/3p-mikktspace</string>
+        <string>https://github.com/AlchemyViewer/3p-mikktspace</string>
         <key>description</key>
         <string>Mikktspace Tangent Generator</string>
       </map>
@@ -1794,7 +1730,7 @@
         <key>name</key>
         <string>nanosvg</string>
         <key>canonical_repo</key>
-        <string>https://bitbucket.org/lindenlab/3p-nanosvg</string>
+        <string>https://github.com/AlchemyViewer/3p-nanosvg</string>
         <key>description</key>
         <string>NanoSVG is a simple single-header-file SVG parser and rasterizer</string>
       </map>
@@ -1870,11 +1806,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>bc574ea89164387a6c12bb49e1bac091c1d4da27</string>
+              <string>3366f7f1d5faf984c75a5878e088869777e34e2627b936054b453adb8bca44200f4774d92f0db42bdaaa32bb9699b3778ea41dc1c4ce015f58a1fa484999eb63</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-nvapi/releases/download/v560-r1/nvapi-560.0.0-r1-windows64-10390321492.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-nvapi/releases/download/v570-r1/nvapi-570.0.0-r1-windows64-13568815783.tar.zst</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -1887,7 +1823,7 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
         <key>copyright</key>
         <string>Copyright (c) 2024 NVIDIA CORPORATION and AFFILIATES. All rights reserved.</string>
         <key>version</key>
-        <string>560.0.0-r1</string>
+        <string>570.0.0-r1</string>
         <key>name</key>
         <string>nvapi</string>
         <key>description</key>
@@ -2298,7 +2234,7 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
         <key>name</key>
         <string>sse2neon</string>
         <key>canonical_repo</key>
-        <string>https://github.com/secondlife/3p-sse2neon</string>
+        <string>https://github.com/AlchemyViewer/3p-sse2neon</string>
         <key>description</key>
         <string>A translator from Intel SSE intrinsics to Arm/Aarch64 NEON implementation</string>
       </map>
@@ -2361,16 +2297,8 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
         <string>1.0.10-r1</string>
         <key>name</key>
         <string>tinyexr</string>
-        <key>vcs_branch</key>
-        <string>dependabot/github_actions/secondlife/action-autobuild-4</string>
-        <key>vcs_revision</key>
-        <string>4dc4d1d90d82a22843e2adf5130f9ecb5ee5769e</string>
-        <key>vcs_url</key>
-        <string>https://github.com/secondlife/3p-tinyexr</string>
         <key>description</key>
         <string>tinyexr import library</string>
-        <key>source_type</key>
-        <string>git</string>
       </map>
       <key>tinygltf</key>
       <map>
@@ -3267,7 +3195,7 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
       <key>name</key>
       <string>Second Life Viewer</string>
       <key>canonical_repo</key>
-      <string>https://github.com/secondlife/viewer</string>
+      <string>https://github.com/AlchemyViewer/Alchemy</string>
       <key>description</key>
       <string>Second Life Viewer</string>
     </map>
