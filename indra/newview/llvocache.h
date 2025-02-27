@@ -249,21 +249,28 @@ class LLVOCache : public LLParamSingleton<LLVOCache>
     ~LLVOCache() ;
 
 private:
+#if LL_WINDOWS
+#pragma pack(push,1)
+#endif
     struct HeaderEntryInfo
     {
-        HeaderEntryInfo() : mIndex(0), mHandle(0), mTime(0) {}
-        S32 mIndex;
-        U64 mHandle ;
-        U32 mTime ;
+        HeaderEntryInfo() = default;
+        U64 mHandle = 0;
+        S32 mIndex = 0;
+        U32 mTime = 0;
     };
 
     struct HeaderMetaInfo
     {
-        HeaderMetaInfo() : mVersion(0), mAddressSize(0) {}
+        HeaderMetaInfo() = default;
 
-        U32 mVersion;
-        U32 mAddressSize;
+        U32 mVersion = 0;
+        U32 mAddressSize = 0;
     };
+
+#if LL_WINDOWS
+#pragma pack(pop)
+#endif
 
     struct header_entry_less
     {
