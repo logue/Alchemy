@@ -46,11 +46,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>a21487f4e3a68721fd97edef117795a1b7212a77</string>
+              <string>e1c6911733008ae5335886cdccb3ac2be07e55c6ccca549645dc0dc0c2c5e425ef41c5dc317180289c2553e23f575a67fccd8acfe26c2ea05982b8dbefa77da8</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-apr_suite/releases/download/v1.7.5-r1/apr_suite-1.7.5-12259255574-darwin64-12259255574.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-apr_suite/releases/download/v1.7.5-r1/apr_suite-1.7.5-13575960945-darwin64-13575960945.tar.zst</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
@@ -60,11 +60,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>45baf82d3366734e542a2a3749f495b64f5513b4</string>
+              <string>76d21ecd945ccd8a08ca9594d2e7cc8fcede7e96691c2c3a34b026d91b230f49d7077add04aeb37f650e1442c9a4e25ec24b709755ae3f4ff8b4c20a631a4f80</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-apr_suite/releases/download/v1.7.5-r1/apr_suite-1.7.5-12259255574-linux64-12259255574.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-apr_suite/releases/download/v1.7.5-r1/apr_suite-1.7.5-13575960945-linux64-13575960945.tar.zst</string>
             </map>
             <key>name</key>
             <string>linux64</string>
@@ -74,11 +74,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>bdd35d3b9580d3cdcb98afae639936aaa40e24c4</string>
+              <string>2c93c09eaf9cc5999b19f65f7bcf8f0f24b7cecbd7e043100057078fe3af06e8c6b8de9fc01a28ac42ee933d1d4ba7575ab625a1d1de62a0b2949f2b7e699133</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-apr_suite/releases/download/v1.7.5-r1/apr_suite-1.7.5-12259255574-windows64-12259255574.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-apr_suite/releases/download/v1.7.5-r1/apr_suite-1.7.5-13575960945-windows64-13575960945.tar.zst</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -91,7 +91,7 @@
         <key>copyright</key>
         <string>Copyright © 2012 The Apache Software Foundation, Licensed under the Apache License, Version 2.0.</string>
         <key>version</key>
-        <string>1.7.5-12259255574</string>
+        <string>1.7.5-13575960945</string>
         <key>name</key>
         <string>apr_suite</string>
         <key>description</key>
@@ -482,11 +482,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>9c58108270fbad15a321f75501cdfb9c6b78a6f2</string>
+              <string>0d5fe44c7ee465ee670ffadd5cf380041b9affeb653e9fbe2a2b23d290fbee2c4ac8508c8d7b05858c8a4564ab2a13d9c980a67534fa7b95f4044e8791c60d7b</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-emoji-shortcodes/releases/download/v15.3.2-r1/emoji_shortcodes-15.3.2.10207138275-common-10207138275.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-emoji-shortcodes/releases/download/v16.0.2-r1/emoji_shortcodes-16.0.2.13572527428-common-13572527428.tar.zst</string>
             </map>
             <key>name</key>
             <string>common</string>
@@ -499,11 +499,11 @@
         <key>copyright</key>
         <string>Copyright 2017-2019 Miles Johnson.</string>
         <key>version</key>
-        <string>15.3.2.10207138275</string>
+        <string>16.0.2.13572527428</string>
         <key>name</key>
         <string>emoji_shortcodes</string>
         <key>canonical_repo</key>
-        <string>https://github.com/secondlife/3p-emoji-shortcodes</string>
+        <string>https://github.com/AlchemyViewer/3p-emoji-shortcodes</string>
         <key>description</key>
         <string>Emoji shortcodes</string>
       </map>
@@ -516,11 +516,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>e0ba69946f2203c03faf89c1f6d5bbc48d88d2a9</string>
+              <string>1e3b97c660b1dc7182ed5d16798655a8a8514c68935de434426c2f8e83a851eaa06f66dd217ec0c65785790d779bf5a3e3ff1ec26a922c2e32a63cbc756c644a</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-expat/releases/download/v2.6.4-r1/expat-2.6.4-r1-darwin64-11943227858.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-expat/releases/download/v2.6.4-r1/expat-2.6.4-dev0.g85b326c.d20250227-darwin64-13575577896.tar.zst</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
@@ -530,11 +530,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>13483477c1f8b4bad9055fba561c64137453c3da</string>
+              <string>f0a71c5179df1153b386f81279d4218717b131245d14068a33aa32bbfa5eaf67e7e9d0c4a479fbfa2fac9e22f9dc5aaddd233b2d58d2215d2a08296947a51e70</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-expat/releases/download/v2.6.4-r1/expat-2.6.4-r1-linux64-11943227858.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-expat/releases/download/v2.6.4-r1/expat-2.6.4-dev0.g85b326c.d20250227-linux64-13575577896.tar.zst</string>
             </map>
             <key>name</key>
             <string>linux64</string>
@@ -544,11 +544,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>542af7d8bb8de3297c80c23a771bbcb513a630b7</string>
+              <string>6750c3cda295733735697f7e92930cf9ab40c0fa70e84067eccc56ff376c9ef0cad273d3874b5161f52a0c65917896549147db7cb3a640b1d0eaa7dc7cac3fa0</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-expat/releases/download/v2.6.4-r1/expat-2.6.4-r1-windows64-11943227858.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-expat/releases/download/v2.6.4-r1/expat-2.6.4-dev0.g85b326c.d20250227-windows64-13575577896.tar.zst</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -561,7 +561,7 @@
         <key>copyright</key>
         <string>Copyright (c) 1998-2000 Thai Open Source Software Center Ltd and Clark Cooper - Copyright (c) 2001-2022 Expat maintainers.</string>
         <key>version</key>
-        <string>2.6.4-r1</string>
+        <string>2.6.4-dev0.g85b326c.d20250227</string>
         <key>name</key>
         <string>expat</string>
         <key>description</key>
@@ -666,11 +666,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>7cc58b3acb230a7e65ea5f0ff800be393eb4aa1b</string>
+              <string>64d6a3ea63788c63ef21535fd24235bd205e1840b40dd3a405535b4b69648d815a3cfd4cf95840c9acba733a419580d0bfa6becbc43f7a88a8c0be869d3fb26f</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-glext/releases/download/v69/glext-68-common-685b36e.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-glext/releases/download/v20240327-5691615/glext-20240327-common-9429975081.tar.zst</string>
             </map>
             <key>name</key>
             <string>common</string>
@@ -683,7 +683,7 @@
         <key>copyright</key>
         <string>Copyright (c) 2007-2010 The Khronos Group Inc.</string>
         <key>version</key>
-        <string>68</string>
+        <string>20240327</string>
         <key>name</key>
         <string>glext</string>
         <key>description</key>
@@ -698,11 +698,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>066625e7aa7f697a4b6cd461aad960c57181011f</string>
+              <string>027c4811ae7374deab834ecb2cc38245af1fcb089d62fc3468b111b61502d4312e1826715a974dcdd74cdf9d146bd04769ae6bd16e58fb1a025209cdd799615a</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-glh_linear/releases/download/v1.0.1-dev4-984c397/glh_linear-1.0.1-dev4-common-984c397.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-glh_linear/releases/download/v1.0.1-dev4-5efd005/glh_linear-1.0.1-dev4-common-9430188124.tar.zst</string>
             </map>
             <key>name</key>
             <string>common</string>
@@ -1040,11 +1040,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>91acd05f450162b07ca2f68094778c483d28128d</string>
+              <string>9eef2dee8fffc35c896e95890c643ab37748af9c6dc56efc6e66f0ca1caad544a5a8c7e57ef3f4642b9c0daf024559a922b65963e031d421d31383dcffa815f4</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-libhunspell/releases/download/v1.7.2-r2/libhunspell-1.7.2.11968900321-darwin64-11968900321.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-libhunspell/releases/download/v1.7.2-r1/libhunspell-1.7.2.13573869087-darwin64-13573869087.tar.zst</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
@@ -1054,11 +1054,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>10e5b5d793c3c5cb5335dea89734302bda5a9f59</string>
+              <string>0eac884d22499b32bbe3a7040c92edac9cfaa7bfd0652427ea481f82dfc0e413b096b1243c4d87e423dd9052522d0bc4a2ba6465afcb4da3e0b705d48faf887e</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-libhunspell/releases/download/v1.7.2-r2/libhunspell-1.7.2.11968900321-linux64-11968900321.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-libhunspell/releases/download/v1.7.2-r1/libhunspell-1.7.2.13573869087-linux64-13573869087.tar.zst</string>
             </map>
             <key>name</key>
             <string>linux64</string>
@@ -1068,11 +1068,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>0f7b9c46dc4e81a6296e4836467f5fe52aa5761d</string>
+              <string>da3bedeaba1aff6c0bd905d45eb1136061827d532b84e8540b68f4ed97b79f794ba168848cd9410d5b8673ef06085dc696a89ba4d26050a8c01f81fcb987c924</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-libhunspell/releases/download/v1.7.2-r2/libhunspell-1.7.2.11968900321-windows64-11968900321.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-libhunspell/releases/download/v1.7.2-r1/libhunspell-1.7.2.13573869087-windows64-13573869087.tar.zst</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -1085,7 +1085,7 @@
         <key>copyright</key>
         <string>LGPL 2.1</string>
         <key>version</key>
-        <string>1.7.2.11968900321</string>
+        <string>1.7.2.13573869087</string>
         <key>name</key>
         <string>libhunspell</string>
         <key>description</key>
@@ -1100,11 +1100,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>d1638886671b31935ea7e3c824e015ea1a45b12e</string>
+              <string>58bd09261cfe4d53d75009396ac60999e898d368becfe31268270d6b8d415e4107ebc81e5a7c176b77f3e344fc598c741e052ffc2b18e727e5aa34d6086adfa6</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-libndofdev/releases/download/v0.1.a0b7d99/libndofdev-0.1.11968678219-darwin64-11968678219.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-libndofdev/releases/download/v0.1.0-r2/libndofdev-0.1.0.13572284760-darwin64-13572284760.tar.zst</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
@@ -1114,11 +1114,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>7b3e504885c4c0cc75db298e682f408c4f2e95f7</string>
+              <string>20844b860081ca050fd060bce457191e0df22606f027ba8d2c8e66e00f2c0cd487810cfa6281316b98799120655653678e671ae03d60d670e964e70d3e8332e6</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-libndofdev/releases/download/v0.1.a0b7d99/libndofdev-0.1.11968678219-windows64-11968678219.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-libndofdev/releases/download/v0.1.0-r2/libndofdev-0.1.0.13572284760-windows64-13572284760.tar.zst</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -1131,7 +1131,7 @@
         <key>copyright</key>
         <string>Copyright (c) 2007, 3Dconnexion, Inc. - All rights reserved.</string>
         <key>version</key>
-        <string>0.1.11968678219</string>
+        <string>0.1.0.13572284760</string>
         <key>name</key>
         <string>libndofdev</string>
         <key>description</key>
@@ -1551,11 +1551,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>874a7d2bc843554aa4facd03b3a6d681f2b5150c</string>
+              <string>9747f993392c965efb57bfe5b0306117661c81813cd1bd4a299cd645cb26b7128c9653bd50329b9955dc03fc443e237608f76c4a95ae5feeacfa3adc276a63d8</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-meshoptimizer/releases/download/v220-r1/meshoptimizer-220.0.0-r1-darwin64-11968851109.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-meshoptimizer/releases/download/v0.22-r1/meshoptimizer-0.22.0-dev0.g2d9ae6b.d20250227-darwin64-13572012399.tar.zst</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
@@ -1565,11 +1565,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>31a537f1a3d38ef85443214315111dd56a534d9a</string>
+              <string>4ddca3188b7294dc6f5c87aa94f7ee0a34d2ae770aa55ee5731066efba9e006cdf233d87e68b82c7b23e73edca835d5a0b4e9648a43c140409d61cfefe42b16b</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-meshoptimizer/releases/download/v220-r1/meshoptimizer-220.0.0-r1-linux64-11968851109.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-meshoptimizer/releases/download/v0.22-r1/meshoptimizer-0.22.0-dev0.g2d9ae6b.d20250227-linux64-13572012399.tar.zst</string>
             </map>
             <key>name</key>
             <string>linux64</string>
@@ -1579,11 +1579,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>6fd727a9ccb3e7a6c6b4ffef8179e266c032eb3e</string>
+              <string>a043f78289ff7474a9bf1cdea7eecc0bb1cee00f4192a58f3ccea644c69e22ad32876068a3a01cd76551f6e037454ee91887f1ce83decb00c80f0781c5944823</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-meshoptimizer/releases/download/v220-r1/meshoptimizer-220.0.0-r1-windows64-11968851109.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-meshoptimizer/releases/download/v0.22-r1/meshoptimizer-0.22.0-dev0.g2d9ae6b.d20250227-windows64-13572012399.tar.zst</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -1594,13 +1594,13 @@
         <key>license_file</key>
         <string>LICENSES/meshoptimizer.txt</string>
         <key>copyright</key>
-        <string>Copyright (c) 2016-2021 Arseny Kapoulkine</string>
+        <string>Copyright (c) 2016-2025 Arseny Kapoulkine</string>
         <key>version</key>
-        <string>220.0.0-r1</string>
+        <string>0.22.0-dev0.g2d9ae6b.d20250227</string>
         <key>name</key>
         <string>meshoptimizer</string>
         <key>canonical_repo</key>
-        <string>https://bitbucket.org/lindenlab/3p-meshoptimizer</string>
+        <string>https://github.com/AlchemyViewer/3p-meshoptimizer</string>
         <key>description</key>
         <string>Meshoptimizer. Mesh optimization library.</string>
       </map>
@@ -1838,11 +1838,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>68657c5c161c3fe8ff64eac3787172fcb06da972</string>
+              <string>f71e2921a587ac32568547afcfacbcb7aaebc0cbcfd3d008bd89ddd6852a6c7f240e24dd839db142a18f6ca01be55bce9d998f72ce332bb04e3849fb39fcb226</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-ogg_vorbis/releases/download/v1.3.5-1.3.7-r2/ogg_vorbis-1.3.5-1.3.7.11968798109-darwin64-11968798109.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-ogg_vorbis/releases/download/v1.3.5-1.3.7-r1/ogg_vorbis-1.3.5-1.3.7.13574871926-darwin64-13574871926.tar.zst</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
@@ -1852,11 +1852,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>9a6ffad7b4186a158c019c5a5a5d7b8badb441da</string>
+              <string>a655524ac8b109c36b46ed42b793f8da068203c3335ae6a08b3f61639183e4f33db72ecaafc5da9ac9a4d37ab1e9068b5bb7adbff84d4e317a18511e1d20629c</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-ogg_vorbis/releases/download/v1.3.5-1.3.7-r2/ogg_vorbis-1.3.5-1.3.7.11968798109-linux64-11968798109.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-ogg_vorbis/releases/download/v1.3.5-1.3.7-r1/ogg_vorbis-1.3.5-1.3.7.13574871926-linux64-13574871926.tar.zst</string>
             </map>
             <key>name</key>
             <string>linux64</string>
@@ -1866,11 +1866,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>5f4cbb928ebfe774a9c07d3f2c255fd38bd6b4d6</string>
+              <string>d99559fc3b43ac0bc590d5320144c43b56bafb8aeb10b9351d2827106651876145ea6f82ad94e48108b13c9274f91c8199f01ebd68f25ae16ccf044fc7f5f520</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-ogg_vorbis/releases/download/v1.3.5-1.3.7-r2/ogg_vorbis-1.3.5-1.3.7.11968798109-windows64-11968798109.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-ogg_vorbis/releases/download/v1.3.5-1.3.7-r1/ogg_vorbis-1.3.5-1.3.7.13574871926-windows64-13574871926.tar.zst</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -1883,7 +1883,7 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
         <key>copyright</key>
         <string>Copyright (c) 2002, Xiph.org Foundation</string>
         <key>version</key>
-        <string>1.3.5-1.3.7.11968798109</string>
+        <string>1.3.5-1.3.7.13574871926</string>
         <key>name</key>
         <string>ogg_vorbis</string>
         <key>description</key>
@@ -1913,11 +1913,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>a3cc405d48a48a474d05b3de3d28da2005d80037</string>
+              <string>d2fef3bfe319c6401e548b4b835baaccecd1accca0d817ba6cf975a0c37ae86e93d81a4fc2d8526151982a2bb16313dd41b343af714b7c3999282b41ba5daf22</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-openal-soft/releases/download/v1.24.2-r1/openal-1.24.2-r1-darwin64-13245988487.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-openal-soft/releases/download/v1.24.2-r1/openal-1.24.2-r1-darwin64-13574206340.tar.zst</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
@@ -1927,11 +1927,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>a2b63f0f85ca156c59ee1d34ef96c8e50b89153c</string>
+              <string>20ff6fd3a1eeb29bcdcbeb7e6bbef12e1662673f23de5b249e82f7c4ecb14ed2e806156616037b1b1f9df3e2c4123633f0eabd25d0f18530263e2b03874d5a87</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-openal-soft/releases/download/v1.24.2-r1/openal-1.24.2-r1-linux64-13245988487.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-openal-soft/releases/download/v1.24.2-r1/openal-1.24.2-r1-linux64-13574206340.tar.zst</string>
             </map>
             <key>name</key>
             <string>linux64</string>
@@ -1941,11 +1941,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>8ad24fba1191c9cb0d2ab36e64b04b4648a99f43</string>
+              <string>9114e84a5b9ac2d58d92f095ce57682c88029cd903717c77cf4d2d6266a91ebf0093b38c43a3e7d91a7d986d14e1cccc68cf3acd907b1c416588953cfddd9189</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-openal-soft/releases/download/v1.24.2-r1/openal-1.24.2-r1-windows64-13245988487.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-openal-soft/releases/download/v1.24.2-r1/openal-1.24.2-r1-windows64-13574206340.tar.zst</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -2285,11 +2285,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>0c3d01b7e9e39c23f0f40c56a1a04d1fba08ead0</string>
+              <string>5f3d1c70117cb3b91d9cbe4010ed286af84e91d3464a4d210953b533e150bc23dc0271aae801fc1554cb7b2c88058982e5a08f1a47867bf654ff7f2952b13dea</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-tracy/releases/download/v0.11.1-r1/tracy-v0.11.1.11706699176-darwin64-11706699176.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-tracy/releases/download/v0.11.1-r1/tracy-v0.11.1.13574068108-darwin64-13574068108.tar.zst</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
@@ -2299,11 +2299,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>b46cef5646a8d0471ab6256fe5119220fa238772</string>
+              <string>22865c3b78d30010b9faf552fcc9c751e55fbccd10f906338e89b430203c8810bb98134fe3a24212b2cb8dfa3cf5aedc08b6fa245979a746e580d96d871c20f5</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-tracy/releases/download/v0.11.1-r1/tracy-v0.11.1.11706699176-windows64-11706699176.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-tracy/releases/download/v0.11.1-r1/tracy-v0.11.1.13574068108-windows64-13574068108.tar.zst</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -2313,11 +2313,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>beab04c9ea6036b1851a485b65c66cf6a38f0be4</string>
+              <string>d10e7dad94d4e397515600b186b723e55333b861b11edd018d20ed5a1b92c66a7050f6a56478320e1b5d0db67fc1a943e2faaeb2f6358aa3a957f56adc52cb07</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-tracy/releases/download/v0.11.1-r1/tracy-v0.11.1.11706699176-linux64-11706699176.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-tracy/releases/download/v0.11.1-r1/tracy-v0.11.1.13574068108-linux64-13574068108.tar.zst</string>
             </map>
             <key>name</key>
             <string>linux64</string>
@@ -2330,7 +2330,7 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
         <key>copyright</key>
         <string>Copyright (c) 2017-2024, Bartosz Taudul (wolf@nereid.pl)</string>
         <key>version</key>
-        <string>v0.11.1.11706699176</string>
+        <string>v0.11.1.13574068108</string>
         <key>name</key>
         <string>tracy</string>
         <key>canonical_repo</key>
@@ -2351,11 +2351,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>9f0bf4545f08df5381e0f39ccce3a57c6ec4b0f4</string>
+              <string>d6a58e633ddefb94df1d1b000cc90a76bdfd6ad5596c93a5a68b4e25449312e72ea962ab8b46813761dce7b89ae3953d0b251812b7b735c5e53f94589ac2888d</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-tut/releases/download/v2008.11.30-409bce5/tut-2008.11.30-common-409bce5.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-tut/releases/download/v2008.11.30-da9df71/tut-2008.11.30-common-9430907772.tar.zst</string>
             </map>
             <key>name</key>
             <string>common</string>
@@ -2466,7 +2466,7 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
         <key>description</key>
         <string>Linden Lab Viewer Management Process suite.</string>
         <key>source</key>
-        <string>https://bitbucket.org/lindenlab/vmp-standalone</string>
+        <string>https://github.com/secondlife/viewer-manager</string>
         <key>source_type</key>
         <string>hg</string>
       </map>
