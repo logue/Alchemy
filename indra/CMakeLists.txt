@@ -39,6 +39,12 @@ include(Variables)
 include(BuildVersion)
 
 if (LL_TESTS)
+  include(ProcessorCount)
+  ProcessorCount(NUM_CORES)
+
+  # Set parallel level to decrease test runtime
+  set(CMAKE_CTEST_ARGUMENTS -j${NUM_CORES})
+
   # Set up our test targets
   set(CTEST_TEST_TARGET_ALIAS BUILD_AND_RUN_TESTS)
   include(CTest)
