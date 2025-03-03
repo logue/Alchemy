@@ -422,11 +422,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>7fde76e3f0e62d0e0593b6157f4d740ecef2429d</string>
+              <string>762bcc18b99df0ccb6f3b55be36bd6899c52dc97275b7f0da2730008b736090cffd50ce8ce202b90f3a5798ec5714e389656e0ed3e04a1c463e6b96181cc8893</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/dullahan/releases/download/v1.14.0-r3/dullahan-1.14.0.202408091638_118.4.1_g3dd6078_chromium-118.0.5993.54-darwin64-10322607516.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/dullahan/releases/download/v1.14.0-cef118-r2/dullahan-1.14.0.202503020951_118.4.1_g3dd6078_chromium-118.0.5993.54-darwin64-13614255946.tar.zst</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
@@ -436,11 +436,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>209d031ae67bc66d8e8f8509c71d259014c65ceb</string>
+              <string>41192f922035cc52fed35950b75115383c96d69a2be2e47e91dd1395e6b533f816a2a91e461a3b46a27ed7eb7deb18592b46d68614165f9d15ddede57e5b8832</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/dullahan/releases/download/v1.14.0-r3/dullahan-1.14.0.202408091637_118.4.1_g3dd6078_chromium-118.0.5993.54-linux64-10322607516.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/dullahan/releases/download/v1.14.0-cef118-r2/dullahan-1.14.0.202503020952_118.4.1_g3dd6078_chromium-118.0.5993.54-linux64-13614255946.tar.zst</string>
             </map>
             <key>name</key>
             <string>linux64</string>
@@ -450,11 +450,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>4124c79d8b0e319877ffa4c12581d5c1318b4d93</string>
+              <string>cde10a41e5cfda690eebd358f07f325f98d6c059e001a588324b0a4bee15744aff2a03ff0fd4de6fa701f940c8afcedc7a79aaa4686aa7dd6e0091894a06215c</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/dullahan/releases/download/v1.14.0-r3/dullahan-1.14.0.202408091639_118.4.1_g3dd6078_chromium-118.0.5993.54-windows64-10322607516.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/dullahan/releases/download/v1.14.0-cef118-r2/dullahan-1.14.0.202503020950_118.4.1_g3dd6078_chromium-118.0.5993.54-windows64-13614255946.tar.zst</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -467,7 +467,7 @@
         <key>copyright</key>
         <string>Copyright (c) 2017, Linden Research, Inc.</string>
         <key>version</key>
-        <string>1.14.0.202408091639_118.4.1_g3dd6078_chromium-118.0.5993.54</string>
+        <string>1.14.0.202503020952_118.4.1_g3dd6078_chromium-118.0.5993.54</string>
         <key>name</key>
         <string>dullahan</string>
         <key>description</key>
@@ -2479,11 +2479,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>6d72afd5cc21446c65899615909b1f09f155585d</string>
+              <string>e38ad9b832b5a15e3ed0550d087ab16486a7aaff18384da272e4ca69063ee44c6397130005921d5e59c1bb8ef16125cce81bc90c5914abf4f5f9d74097464f93</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-vlc-bin/releases/download/v3.0.21.296d9f4/vlc_bin-3.0.21.11968962952-darwin64-11968962952.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-vlc-bin/releases/download/v3.0.21-r1/vlc_bin-3.0.21-darwin64-13624852351.tar.zst</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
@@ -2493,11 +2493,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>f986e6e93acf8a32a8be5b638f0bd0e2e07d7507</string>
+              <string>a38edfd07a787aa29879cf5be75f2a5dd0e87cc784f40238364e89a415391f66475c80dcb928c7b14eddc27f619bb02b004be7656282983fe34f65c1e74f6773</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-vlc-bin/releases/download/v3.0.21.296d9f4/vlc_bin-3.0.21.11968962952-windows64-11968962952.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-vlc-bin/releases/download/v3.0.21-r1/vlc_bin-3.0.21-windows64-13624852351.tar.zst</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -2508,9 +2508,9 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
         <key>license_file</key>
         <string>LICENSES/vlc.txt</string>
         <key>copyright</key>
-        <string>Copyright (C) 1998-2016 VLC authors and VideoLAN</string>
+        <string>Copyright (C) 1998-2020 VLC authors and VideoLAN</string>
         <key>version</key>
-        <string>3.0.21.11968962952</string>
+        <string>3.0.21</string>
         <key>name</key>
         <string>vlc-bin</string>
       </map>
@@ -2571,12 +2571,6 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
         <string>m114.5735.08.73-alpha.11958809572</string>
         <key>name</key>
         <string>webrtc</string>
-        <key>vcs_branch</key>
-        <string>secondlife</string>
-        <key>vcs_revision</key>
-        <string>d3f62d32bac8694d3c7423c731ae30c113bf6a11</string>
-        <key>vcs_url</key>
-        <string>https://github.com/secondlife/3p-webrtc-build</string>
         <key>canonical_repo</key>
         <string>https://github.com/secondlife/3p-webrtc-build</string>
       </map>
