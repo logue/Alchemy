@@ -24,6 +24,8 @@
  * $/LicenseInfo$
  */
 
+#include "linden_common.h"
+
 #include "lltextutil.h"
 
 #include "lluicolor.h"

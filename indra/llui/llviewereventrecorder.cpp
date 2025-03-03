@@ -23,6 +23,7 @@
  * $/LicenseInfo$
  */
 
+#include "linden_common.h"
 
 #include "llviewereventrecorder.h"
 #include "llui.h"

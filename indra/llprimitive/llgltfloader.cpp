@@ -24,6 +24,8 @@
  * $/LicenseInfo$
  */
 
+#include "linden_common.h"
+
 #include "llgltfloader.h"
 
 // Import & define single-header gltf import/export lib
