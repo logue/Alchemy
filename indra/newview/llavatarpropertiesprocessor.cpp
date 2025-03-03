@@ -388,21 +388,21 @@ void LLAvatarPropertiesProcessor::processAvatarLegacyPropertiesReply(LLMessageSy
     msg->getStringFast( _PREHASH_PropertiesData,    _PREHASH_AboutText,     avatar_data.about_text);
     msg->getStringFast( _PREHASH_PropertiesData,    _PREHASH_FLAboutText,   avatar_data.fl_about_text);
     msg->getStringFast( _PREHASH_PropertiesData,    _PREHASH_BornOn,        birth_date);
-    msg->getString(     _PREHASH_PropertiesData,    _PREHASH_ProfileURL,    avatar_data.profile_url);
+    msg->getStringFast(     _PREHASH_PropertiesData,    _PREHASH_ProfileURL,    avatar_data.profile_url);
     msg->getU32Fast(    _PREHASH_PropertiesData,    _PREHASH_Flags,         avatar_data.flags);
 
     LLDateUtil::dateFromPDTString(avatar_data.born_on, birth_date);
     avatar_data.caption_index = 0;
 
     S32 charter_member_size = 0;
-    charter_member_size = msg->getSize(_PREHASH_PropertiesData, _PREHASH_CharterMember);
+    charter_member_size = msg->getSizeFast(_PREHASH_PropertiesData, _PREHASH_CharterMember);
     if (1 == charter_member_size)
     {
-        msg->getBinaryData(_PREHASH_PropertiesData, _PREHASH_CharterMember, &avatar_data.caption_index, 1);
+        msg->getBinaryDataFast(_PREHASH_PropertiesData, _PREHASH_CharterMember, &avatar_data.caption_index, 1);
     }
     else if (1 < charter_member_size)
     {
-        msg->getString(_PREHASH_PropertiesData, _PREHASH_CharterMember, avatar_data.caption_text);
+        msg->getStringFast(_PREHASH_PropertiesData, _PREHASH_CharterMember, avatar_data.caption_text);
     }
     LLAvatarPropertiesProcessor* self = getInstance();
     // Request processed, no longer pending
