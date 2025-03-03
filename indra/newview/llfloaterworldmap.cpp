@@ -1708,7 +1708,7 @@ void LLFloaterWorldMap::updateSims(bool found_null_sim)
         std::string sim_name_lower = info->getName();
         LLStringUtil::toLower(sim_name_lower);
 
-        if (sim_name_lower.substr(0, name_length) == mCompletingRegionName)
+        if (sim_name_lower.find(mCompletingRegionName) != std::string::npos)
         {
             if (sim_name_lower == mCompletingRegionName)
             {
