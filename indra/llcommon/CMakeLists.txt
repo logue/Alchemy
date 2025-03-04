@@ -259,6 +259,12 @@ set(llcommon_HEADER_FILES
 if (DARWIN)
   list(APPEND llcommon_HEADER_FILES llsys_objc.h)
   list(APPEND llcommon_SOURCE_FILES llsys_objc.mm)
+
+  set_source_files_properties(
+    llsys_objc.mm
+    PROPERTIES
+    SKIP_PRECOMPILE_HEADERS TRUE
+  )
 endif (DARWIN)
 
 if (USE_TRACY)
@@ -271,6 +277,7 @@ add_library (llcommon ${llcommon_SOURCE_FILES})
 
 target_link_libraries(
         llcommon
+        llmath
         ll::apr
         ll::expat
         ll::zlib-ng
@@ -281,7 +288,10 @@ target_link_libraries(
     )
 
 target_include_directories(llcommon INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
-target_include_directories(llcommon PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+
+if (USE_PRECOMPILED_HEADERS)
+  target_precompile_headers(llcommon REUSE_FROM llprecompiled)
+endif ()
 
 add_dependencies(llcommon stage_third_party_libs)
 

@@ -1417,11 +1417,6 @@ if (DARWIN)
 
   set_source_files_properties(
     llappviewermacosx-objc.mm
-    PROPERTIES
-    SKIP_PRECOMPILE_HEADERS TRUE
-  )
-
-  set_source_files_properties(
     llfilepicker_mac.mm
     PROPERTIES
     SKIP_PRECOMPILE_HEADERS TRUE

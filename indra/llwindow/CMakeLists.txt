@@ -109,6 +109,13 @@ if (DARWIN)
       PROPERTIES
       COMPILE_FLAGS "-Wno-deprecated-declarations -fpascal-strings"
       )
+
+  set_source_files_properties(
+    llwindowmacosx-objc.mm
+    llopenglview-objc.mm
+    PROPERTIES
+    SKIP_PRECOMPILE_HEADERS TRUE
+  )
 endif (DARWIN)
 
 
@@ -159,6 +166,10 @@ if (BUILD_HEADLESS)
     PROPERTY COMPILE_DEFINITIONS LL_MESA=1 LL_MESA_HEADLESS=1
     )
   target_link_libraries (llwindowheadless ${llwindowheadless_LINK_LIBRARIES} dl)
+
+  if (USE_PRECOMPILED_HEADERS)
+    target_precompile_headers(llwindowheadless REUSE_FROM llprecompiled)
+  endif ()
 endif (BUILD_HEADLESS)
 
 if (llwindow_HEADER_FILES)
@@ -178,8 +189,12 @@ if (SDL_FOUND)
     )
 endif (SDL_FOUND)
 
-  target_link_libraries (llwindow ${llwindow_LINK_LIBRARIES})
-  target_include_directories(llwindow INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
+target_link_libraries (llwindow ${llwindow_LINK_LIBRARIES})
+target_include_directories(llwindow INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
+
+if (USE_PRECOMPILED_HEADERS)
+  target_precompile_headers(llwindow REUSE_FROM llprecompiled)
+endif ()
 
 if (DARWIN)
   target_link_libraries(llwindow ${CARBON_LIBRARY})

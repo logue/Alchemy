@@ -33,7 +33,7 @@
 
 #include "llsdutil.h"
 #include "llerror.h"
-#include "../llmath/llmath.h"
+#include "llmath.h"
 
 #include <boost/json/src.hpp>
 
