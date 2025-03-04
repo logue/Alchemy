@@ -71,9 +71,9 @@ def proper_windows_path(path, current_platform = sys.platform):
     path = path.strip()
     drive_letter = None
     rel = None
-    match = re.match("/cygdrive/([a-z])/(.*)", path)
+    match = re.match(r"/cygdrive/([a-z])/(.*)", path)
     if not match:
-        match = re.match('([a-zA-Z]):\\\(.*)', path)
+        match = re.match(r'([a-zA-Z]):\\\(.*)', path)
     if not match:
         return None         # not an absolute path
     drive_letter = match.group(1)
@@ -309,7 +309,7 @@ def main(extra=[]):
 class LLManifestRegistry(type):
     def __init__(cls, name, bases, dct):
         super(LLManifestRegistry, cls).__init__(name, bases, dct)
-        match = re.match("(\w+)Manifest", name)
+        match = re.match(r"(\w+)Manifest", name)
         if match:
            cls.manifests[match.group(1).lower()] = cls
 
