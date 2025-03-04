@@ -120,7 +120,7 @@ if (WINDOWS)
 
   #ND: When using something like buildcache (https://github.com/mbitsnbites/buildcache)
   # to make those wrappers work /Zi must be changed to /Z7, as /Zi due to it's nature is not compatible with caching
-  if(${CMAKE_CXX_COMPILER_LAUNCHER} MATCHES ".*cache.*" OR USE_PRECOMPILED_HEADERS)
+  if(${CMAKE_CXX_COMPILER_LAUNCHER} MATCHES ".*cache.*")
     add_compile_options( /Z7 )
     string(REPLACE "/Zi" "/Z7" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
     string(REPLACE "/Zi" "/Z7" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
