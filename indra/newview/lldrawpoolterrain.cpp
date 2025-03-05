@@ -145,7 +145,8 @@ void LLDrawPoolTerrain::renderDeferred(S32 pass)
     renderFullShader();
 
     // Special-case for land ownership feedback
-    if (gSavedSettings.getBOOL("ShowParcelOwners"))
+    static LLCachedControl<bool> show_parcel_owners(gSavedSettings, "ShowParcelOwners", false);
+    if (show_parcel_owners)
     {
         hilightParcelOwners();
     }
