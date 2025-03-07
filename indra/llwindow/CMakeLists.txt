@@ -12,12 +12,14 @@ project(llwindow)
 
 include(00-Common)
 include(DragDrop)
+include(Linking)
 include(LLCommon)
 include(LLImage)
 include(LLWindow)
 include(UI)
 include(ViewerMiscLibs)
 include(GLM)
+include(SDL3)
 
 set(llwindow_SOURCE_FILES
     llcursortypes.cpp
@@ -58,34 +60,21 @@ set(llwindow_LINK_LIBRARIES
         ll::glm
         ll::glext
         ll::uilibraries
-        ll::SDL
+        ll::SDL3
         )
+
 # Libraries on which this library depends, needed for Linux builds
 # Sort by high-level to low-level
-if (LINUX)
-  list(APPEND viewer_SOURCE_FILES
-       llkeyboardsdl.cpp
-       llwindowsdl.cpp
-       )
-  list(APPEND viewer_HEADER_FILES
-       llkeyboardsdl.h
-       llwindowsdl.h
-       )
-
-  if (BUILD_HEADLESS)
-    set(llwindowheadless_LINK_LIBRARIES
-        ${LLCOMMON_LIBRARIES}
-        ${LLIMAGE_LIBRARIES}
-        ${LLMATH_LIBRARIES}
-        ${LLRENDER_HEADLESS_LIBRARIES}
-        ${LLFILESYSTEM_LIBRARIES}
-        ${LLWINDOW_HEADLESS_LIBRARIES}
-        ${LLXML_LIBRARIES}
-        fontconfig          # For FCInit and other FC* functions.
-        )
-  endif (BUILD_HEADLESS)
-
-endif (LINUX)
+# if (LINUX)
+#   list(APPEND viewer_SOURCE_FILES
+#        llkeyboardsdl.cpp
+#        llwindowsdl.cpp
+#        )
+#   list(APPEND viewer_HEADER_FILES
+#        llkeyboardsdl.h
+#        llwindowsdl.h
+#        )
+# endif (LINUX)
 
 if (DARWIN)
   list(APPEND llwindow_SOURCE_FILES
@@ -133,6 +122,7 @@ if (WINDOWS)
        lldragdropwin32.h
        )
   list(APPEND llwindow_LINK_LIBRARIES
+       wbemuuid
        comdlg32     # Common Dialogs for ChooseColor
        ole32
        dxgi
@@ -140,36 +130,52 @@ if (WINDOWS)
        )
 endif (WINDOWS)
 
-if (SOLARIS)
-  list(APPEND llwindow_SOURCE_FILES
-       llwindowsolaris.cpp
-       )
-  list(APPEND llwindow_HEADER_FILES
-       llwindowsolaris.h
-       )
-endif (SOLARIS)
-
 if (BUILD_HEADLESS)
   set(llwindowheadless_SOURCE_FILES
-       llwindowmesaheadless.cpp
-       llmousehandler.cpp
-       )
+      llcursortypes.cpp
+      llkeyboard.cpp
+      llkeyboardheadless.cpp
+      llwindowheadless.cpp
+      llwindowcallbacks.cpp
+      llwindow.cpp
+      llwindowmesaheadless.cpp
+      llmousehandler.cpp
+      )
+
   set(llwindowheadless_HEADER_FILES
-       llwindowmesaheadless.h
-       llmousehandler.h
-    )
+      llcursortypes.h
+      llkeyboard.h
+      llkeyboardheadless.h
+      llwindowheadless.h
+      llwindowcallbacks.h
+      llwindowmesaheadless.h
+      llmousehandler.h
+      )
+
   add_library (llwindowheadless
-    ${llwindow_SOURCE_FILES}
     ${llwindowheadless_SOURCE_FILES}
+    ${llwindowheadless_HEADER_FILES}
     )
+
   set_property(TARGET llwindowheadless
     PROPERTY COMPILE_DEFINITIONS LL_MESA=1 LL_MESA_HEADLESS=1
     )
-  target_link_libraries (llwindowheadless ${llwindowheadless_LINK_LIBRARIES} dl)
 
-  if (USE_PRECOMPILED_HEADERS)
-    target_precompile_headers(llwindowheadless REUSE_FROM llprecompiled)
-  endif ()
+  target_link_libraries (llwindowheadless 
+  llcommon
+  llimage
+  llmath
+  llrenderheadless
+  llfilesystem
+  llxml
+  ll::glm
+  ll::glext
+  ll::zlib-ng
+  PkgConfig::OSMESA 
+  fontconfig 
+  dl
+  )
+  target_include_directories(llwindowheadless INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 endif (BUILD_HEADLESS)
 
 if (llwindow_HEADER_FILES)
@@ -183,11 +189,11 @@ endif (llwindow_HEADER_FILES)
     ${viewer_SOURCE_FILES}
     )
 
-if (SDL_FOUND)
-  set_property(TARGET llwindow
-    PROPERTY COMPILE_DEFINITIONS LL_SDL=1
-    )
-endif (SDL_FOUND)
+# if (SDL3_FOUND)
+#   set_property(TARGET llwindow
+#     PROPERTY COMPILE_DEFINITIONS LL_SDL=1
+#     )
+# endif (SDL3_FOUND)
 
 target_link_libraries (llwindow ${llwindow_LINK_LIBRARIES})
 target_include_directories(llwindow INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})

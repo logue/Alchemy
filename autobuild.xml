@@ -7,33 +7,65 @@
     <string>autobuild</string>
     <key>installables</key>
     <map>
-      <key>SDL</key>
+      <key>SDL3</key>
       <map>
         <key>platforms</key>
         <map>
+          <key>windows64</key>
+          <map>
+            <key>archive</key>
+            <map>
+              <key>hash</key>
+              <string>f88a2b61b476019b44789583475c7af16f7b0dd153977043a3317e262eb24064f3ce31de386994259e83475a8ad74b841d2d8ab4b1309d9c3801e3ce69545bc2</string>
+              <key>hash_algorithm</key>
+              <string>blake2b</string>
+              <key>url</key>
+              <string>https://github.com/AlchemyViewer/3p-sdl3/releases/download/v3.2.8-r1/SDL3-3.2.8-r1-windows64-13702972961.tar.zst</string>
+            </map>
+            <key>name</key>
+            <string>windows64</string>
+          </map>
           <key>linux64</key>
           <map>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>7ea2df03bfc35c06acf23dd9e734adac</string>
+              <string>ad6d15e97f78d413612061af8929c0a6b54ef297cc7dc5c21959d295d4263d48ed9c71b524a62a9bc68df534abb4aa3f61ed5d7e1dd64f414170547511d2eb73</string>
+              <key>hash_algorithm</key>
+              <string>blake2b</string>
               <key>url</key>
-              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/ct2/1103/2554/SDL-1.2.15-linux64-501092.tar.bz2</string>
+              <string>https://github.com/AlchemyViewer/3p-sdl3/releases/download/v3.2.8-r1/SDL3-3.2.8-r1-linux64-13702972961.tar.zst</string>
             </map>
             <key>name</key>
             <string>linux64</string>
+          </map>
+          <key>darwin64</key>
+          <map>
+            <key>archive</key>
+            <map>
+              <key>hash</key>
+              <string>6f8c2e943f9a5f4e7c0f8b712edec20991af90893009fd4b93ac03f7db70892f8222b63fff321625bae2203bf92eda1e5ed0ba10374e45ac0693407410c61157</string>
+              <key>hash_algorithm</key>
+              <string>blake2b</string>
+              <key>url</key>
+              <string>https://github.com/AlchemyViewer/3p-sdl3/releases/download/v3.2.8-r1/SDL3-3.2.8-r1-darwin64-13702972961.tar.zst</string>
+            </map>
+            <key>name</key>
+            <string>darwin64</string>
           </map>
         </map>
         <key>license</key>
         <string>lgpl</string>
         <key>license_file</key>
-        <string>LICENSES/SDL.txt</string>
+        <string>LICENSES/SDL3.txt</string>
         <key>copyright</key>
-        <string>Copyright (C) 1997-2012 Sam Lantinga</string>
+        <string>Copyright (C) 1997-2022 Sam Lantinga (slouken@libsdl.org)</string>
         <key>version</key>
-        <string>1.2.15</string>
+        <string>3.2.8-r1</string>
+        <key>use_scm_version</key>
+        <boolean>true</boolean>
         <key>name</key>
-        <string>SDL</string>
+        <string>SDL3</string>
         <key>description</key>
         <string>Simple DirectMedia Layer is a cross-platform multimedia library designed to provide low level access to audio, keyboard, mouse, joystick, 3D hardware via OpenGL, and 2D video framebuffer.</string>
       </map>
@@ -351,36 +383,6 @@
         <key>description</key>
         <string>Library for transferring data specified with URL syntax</string>
       </map>
-      <key>dbus_glib</key>
-      <map>
-        <key>platforms</key>
-        <map>
-          <key>linux64</key>
-          <map>
-            <key>archive</key>
-            <map>
-              <key>hash</key>
-              <string>7ee7b9aed3c0c8c09e7bf26bba7af8e1</string>
-              <key>url</key>
-              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/p64_3p-dbus-glib/rev/314266/arch/Linux/installer/dbus_glib-0.76-linux64-314266.tar.bz2</string>
-            </map>
-            <key>name</key>
-            <string>linux64</string>
-          </map>
-        </map>
-        <key>license</key>
-        <string>Academic Free License v. 2.1</string>
-        <key>license_file</key>
-        <string>LICENSES/dbus-glib.txt</string>
-        <key>copyright</key>
-        <string>Copyright (C) Red Hat Inc.</string>
-        <key>version</key>
-        <string>0.76</string>
-        <key>name</key>
-        <string>dbus_glib</string>
-        <key>description</key>
-        <string>D-Bus bindings for glib</string>
-      </map>
       <key>dictionaries</key>
       <map>
         <key>platforms</key>
@@ -567,36 +569,6 @@
         <key>description</key>
         <string>Expat is an XML parser library written in C</string>
       </map>
-      <key>fontconfig</key>
-      <map>
-        <key>platforms</key>
-        <map>
-          <key>linux64</key>
-          <map>
-            <key>archive</key>
-            <map>
-              <key>hash</key>
-              <string>e2419d56960c160670051fbb055fb729</string>
-              <key>url</key>
-              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/p64_3p-fontconfig/rev/314281/arch/Linux/installer/fontconfig-2.11.0-linux64-314281.tar.bz2</string>
-            </map>
-            <key>name</key>
-            <string>linux64</string>
-          </map>
-        </map>
-        <key>license</key>
-        <string>bsd</string>
-        <key>license_file</key>
-        <string>LICENSES/fontconfig.txt</string>
-        <key>copyright</key>
-        <string>Copyright (C) 2000,2001,2002,2003,2004,2006,2007 Keith Packard, 2005 Patrick Lam, 2009 Roozbeh Pournader, 2008,2009 Red Hat, Inc., 2008 Danilo Šegan, 2012 Google, Inc.</string>
-        <key>version</key>
-        <string>2.11.0</string>
-        <key>name</key>
-        <string>fontconfig</string>
-        <key>description</key>
-        <string>Fontconfig is a library for configuring and customizing font access.</string>
-      </map>
       <key>freetype</key>
       <map>
         <key>platforms</key>
@@ -754,62 +726,6 @@
         <string>https://github.com/AlchemyViewer/3p-glm</string>
         <key>description</key>
         <string>OpenGL Mathematics</string>
-      </map>
-      <key>gstreamer</key>
-      <map>
-        <key>platforms</key>
-        <map>
-          <key>linux64</key>
-          <map>
-            <key>archive</key>
-            <map>
-              <key>hash</key>
-              <string>7c9d7cc88add7831a6afeedc20cad2fe</string>
-              <key>url</key>
-              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/p64_3p-gstreamer/rev/314267/arch/Linux/installer/gstreamer-0.10.6.314267-linux64-314267.tar.bz2</string>
-            </map>
-            <key>name</key>
-            <string>linux64</string>
-          </map>
-        </map>
-        <key>license</key>
-        <string>LGPL</string>
-        <key>license_file</key>
-        <string>LICENSES/gstreamer.txt</string>
-        <key>copyright</key>
-        <string>Copyright (C) 2007 Free Software Foundation, Inc. &lt;http://fsf.org/&gt;</string>
-        <key>version</key>
-        <string>0.10.6.314267</string>
-        <key>name</key>
-        <string>gstreamer</string>
-      </map>
-      <key>gtk-atk-pango-glib</key>
-      <map>
-        <key>platforms</key>
-        <map>
-          <key>linux64</key>
-          <map>
-            <key>archive</key>
-            <map>
-              <key>hash</key>
-              <string>de7bba8fd2275a11b077b124413065d0</string>
-              <key>url</key>
-              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/p64_3p-gtk-atk-pango-glib/rev/314220/arch/Linux/installer/gtk_atk_pango_glib-0.1-linux64-314220.tar.bz2</string>
-            </map>
-            <key>name</key>
-            <string>linux64</string>
-          </map>
-        </map>
-        <key>license</key>
-        <string>lgpl</string>
-        <key>license_file</key>
-        <string>LICENSES/gtk-atk-pango-glib.txt</string>
-        <key>copyright</key>
-        <string>Copyright (various, see sources)</string>
-        <key>version</key>
-        <string>0.1</string>
-        <key>name</key>
-        <string>gtk-atk-pango-glib</string>
       </map>
       <key>havok-source</key>
       <map>
@@ -1197,36 +1113,6 @@
         <key>description</key>
         <string>PNG Reference library</string>
       </map>
-      <key>libuuid</key>
-      <map>
-        <key>platforms</key>
-        <map>
-          <key>linux64</key>
-          <map>
-            <key>archive</key>
-            <map>
-              <key>hash</key>
-              <string>fb89f1281dd54d8b99b339fc5b712b27</string>
-              <key>url</key>
-              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/p64_3p-libuuid/rev/314269/arch/Linux/installer/libuuid-1.6.2-linux64-314269.tar.bz2</string>
-            </map>
-            <key>name</key>
-            <string>linux64</string>
-          </map>
-        </map>
-        <key>license</key>
-        <string>UUID</string>
-        <key>license_file</key>
-        <string>LICENSES/uuid.txt</string>
-        <key>copyright</key>
-        <string>Copyright (c) 2004-2008 The OSSP Project &lt;http://www.ossp.org/&gt;</string>
-        <key>version</key>
-        <string>1.6.2</string>
-        <key>name</key>
-        <string>libuuid</string>
-        <key>description</key>
-        <string>OSSP uuid is a ISO-C:1999 application programming interface (API) and corresponding command line interface (CLI) for the generation of DCE 1.1, ISO/IEC 11578:1996 and RFC 4122 compliant Universally Unique Identifier (UUID). </string>
-      </map>
       <key>libxml2</key>
       <map>
         <key>platforms</key>
@@ -1515,32 +1401,6 @@
         <string>1.0.561752</string>
         <key>name</key>
         <string>llphysicsextensions_tpv</string>
-      </map>
-      <key>mesa</key>
-      <map>
-        <key>platforms</key>
-        <map>
-          <key>linux</key>
-          <map>
-            <key>archive</key>
-            <map>
-              <key>hash</key>
-              <string>22c50a5d362cad311b4f413cfcffbba2</string>
-              <key>url</key>
-              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/mesa_3p-update-mesa/rev/297294/arch/Linux/installer/mesa-7.11.1.297294-linux-297294.tar.bz2</string>
-            </map>
-            <key>name</key>
-            <string>linux</string>
-          </map>
-        </map>
-        <key>license</key>
-        <string>mesa</string>
-        <key>license_file</key>
-        <string>LICENSES/mesa.txt</string>
-        <key>version</key>
-        <string>7.11.1.297294</string>
-        <key>name</key>
-        <string>mesa</string>
       </map>
       <key>meshoptimizer</key>
       <map>
@@ -1891,6 +1751,23 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
       </map>
       <key>open-libndofdev</key>
       <map>
+        <key>platforms</key>
+        <map>
+          <key>linux64</key>
+          <map>
+            <key>archive</key>
+            <map>
+              <key>hash</key>
+              <string>fc322b32f6b06866471d3cdf7b9d82bcac5f60cbc2a977449f6dd912e06f31a74c2941b1985da8e5002e35dc2c53a6b693c459fbdab4f04cf688fe7ce1fe48c3</string>
+              <key>hash_algorithm</key>
+              <string>blake2b</string>
+              <key>url</key>
+              <string>https://github.com/AlchemyViewer/3p-open-libndofdev/releases/download/v0.14.0-r1/open_libndofdev-0.14.0-linux64-13722920211.tar.zst</string>
+            </map>
+            <key>name</key>
+            <string>linux64</string>
+          </map>
+        </map>
         <key>license</key>
         <string>BSD</string>
         <key>license_file</key>
@@ -1898,7 +1775,7 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
         <key>copyright</key>
         <string>Copyright (c) 2008, Jan Ciger (jan.ciger (at) gmail.com)</string>
         <key>version</key>
-        <string>0.14.11968684513</string>
+        <string>0.14.0</string>
         <key>name</key>
         <string>open-libndofdev</string>
         <key>description</key>
