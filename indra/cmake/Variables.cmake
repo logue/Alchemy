@@ -127,16 +127,12 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     set(CMAKE_SYSTEM_LIBRARY_PATH /usr/lib/${DPKG_ARCH} /usr/local/lib/${DPKG_ARCH} ${CMAKE_SYSTEM_LIBRARY_PATH})
   endif (DPKG_RESULT EQUAL 0)
 
-  include(ConfigurePkgConfig)
-
-  if (INSTALL_PROPRIETARY)
-    # Only turn on headless if we can find osmesa libraries.
-    include(FindPkgConfig)
-    #pkg_check_modules(OSMESA osmesa)
-    #if (OSMESA_FOUND)
-    #  set(BUILD_HEADLESS ON CACHE BOOL "Build headless libraries.")
-    #endif (OSMESA_FOUND)
-  endif (INSTALL_PROPRIETARY)
+  # Only turn on headless if we can find osmesa libraries.
+  find_package(PkgConfig)
+  pkg_check_modules(OSMESA osmesa IMPORTED_TARGET GLOBAL)
+  if (OSMESA_FOUND)
+   set(BUILD_HEADLESS ON CACHE BOOL "Build headless libraries.")
+  endif (OSMESA_FOUND)
 
 endif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
