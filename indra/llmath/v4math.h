@@ -144,6 +144,11 @@ class LLVector4
         friend const LLVector4& operator/=(LLVector4 &a, F32 k);                // Return a divided by scaler k
 
         friend LLVector4 operator-(const LLVector4 &a);                 // Return vector -a
+
+        friend std::size_t hash_value(const LLVector4& vec)
+        {
+            return boost::hash_value(vec.mV);
+        }
 };
 
 static_assert(std::is_trivially_copyable<LLVector4>::value, "LLVector4 must be trivial copy");

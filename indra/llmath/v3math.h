@@ -162,6 +162,11 @@ class LLVector3
         friend std::ostream&     operator<<(std::ostream& s, const LLVector3 &a);       // Stream a
 
         static bool parseVector3(const std::string& buf, LLVector3* value);
+
+        friend std::size_t hash_value(const LLVector3& vec)
+        {
+            return boost::hash_value(vec.mV);
+        }
 };
 
 static_assert(std::is_trivially_copyable<LLVector3>::value, "LLVector3 must be trivial copy");

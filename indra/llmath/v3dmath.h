@@ -128,6 +128,10 @@ class LLVector3d
 
         static bool parseVector3d(const std::string& buf, LLVector3d* value);
 
+        friend std::size_t hash_value(const LLVector3d& vec)
+        {
+            return boost::hash_value(vec.mdV);
+        }
 };
 
 static_assert(std::is_trivially_copyable<LLVector3d>::value, "LLVector3d must be trivial copy");
