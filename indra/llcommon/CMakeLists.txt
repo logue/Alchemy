@@ -269,6 +269,14 @@ endif (DARWIN)
 
 if (USE_TRACY)
   list(APPEND llcommon_SOURCE_FILES llprofiler.cpp)
+
+  # Skip precompiled headers on these files due to weird issues under GCC 13
+  set_source_files_properties(
+    llfasttimer.cpp
+    llprofiler.cpp
+    PROPERTIES
+    SKIP_PRECOMPILE_HEADERS TRUE
+  )
 endif ()
 
 list(APPEND llcommon_SOURCE_FILES ${llcommon_HEADER_FILES})
