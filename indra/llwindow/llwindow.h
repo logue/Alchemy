@@ -69,7 +69,7 @@ public:
     virtual bool maximize() = 0;
     virtual void minimize() = 0;
     virtual void restore() = 0;
-    bool getFullscreen()    { return mFullscreen; };
+    virtual bool getFullscreen() = 0;
     virtual bool getPosition(LLCoordScreen *position) = 0;
     virtual bool getSize(LLCoordScreen *size) = 0;
     virtual bool getSize(LLCoordWindow *size) = 0;

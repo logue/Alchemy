@@ -81,7 +81,8 @@ S32 OSMessageBox(const std::string& text, const std::string& caption, U32 type)
 #elif LL_SDL
     result = OSMessageBoxSDL(text, caption, type);
 #else
-#error("OSMessageBox not implemented for this platform!")
+    LL_WARNS() << "OSMessageBox not implemented for this platform!" << LL_ENDL;
+    return OSBTN_OK;
 #endif
 
     if (was_visible)
@@ -343,13 +344,14 @@ bool LLSplashScreen::isVisible()
 LLSplashScreen *LLSplashScreen::create()
 {
 #if LL_MESA_HEADLESS || LL_SDL  // !!! *FIX: (?)
-    return 0;
+    return nullptr;
 #elif LL_WINDOWS
     return new LLSplashScreenWin32;
 #elif LL_DARWIN
     return new LLSplashScreenMacOSX;
 #else
-#error("LLSplashScreen not implemented on this platform!")
+    LL_WARNS() << ("LLSplashScreen not implemented on this platform!") << LL_ENDL;
+    return nullptr;
 #endif
 }
 
