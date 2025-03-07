@@ -343,16 +343,15 @@ LL_FORCE_INLINE void ll_aligned_free(void* ptr)
 inline void ll_memcpy_nonaliased_aligned_16(char* __restrict dst, const char* __restrict src, size_t bytes)
 {
     LL_PROFILE_ZONE_SCOPED_CATEGORY_MEMORY;
-#if defined(LL_ARM64)
-    memcpy(dst, src, bytes);
-#else
     assert(src != NULL);
     assert(dst != NULL);
     assert(bytes > 0);
     assert((bytes % sizeof(F32))== 0);
     ll_assert_aligned(src,16);
     ll_assert_aligned(dst,16);
-
+#if defined(LL_ARM64)
+    memcpy(dst, src, bytes);
+#else
     assert((src < dst) ? ((src + bytes) <= dst) : ((dst + bytes) <= src));
     assert(bytes%16==0);
 
