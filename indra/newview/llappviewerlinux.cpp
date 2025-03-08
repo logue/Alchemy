@@ -34,7 +34,6 @@
 #include "llurldispatcher.h"        // SLURL from other app instance
 #include "llviewernetwork.h"
 #include "llviewercontrol.h"
-#include "llwindowsdl.h"
 #include "llmd5.h"
 #include "llfindlocale.h"
 
@@ -121,11 +120,13 @@ LLAppViewerLinux::~LLAppViewerLinux()
 
 bool LLAppViewerLinux::init()
 {
+#if LL_DBUS
     // g_thread_init() must be called before *any* use of glib, *and*
     // before any mutexes are held, *and* some of our third-party
     // libraries likes to use glib functions; in short, do this here
     // really early in app startup!
     if (!g_thread_supported ()) g_thread_init (NULL);
+#endif
 
     bool success = LLAppViewer::init();
 

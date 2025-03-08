@@ -240,7 +240,7 @@ bool LLDirPicker::getDir(std::string* filename, bool blocking)
         return false;
     }
 
-#if !LL_MESA_HEADLESS
+#if LL_GTK && !LL_MESA_HEADLESS
 
     if (mFilePicker)
     {
