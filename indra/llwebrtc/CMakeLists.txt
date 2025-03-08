@@ -32,7 +32,7 @@ if (WINDOWS)
         PROPERTIES
         LINK_FLAGS "/debug /LARGEADDRESSAWARE"
         )
-	target_link_libraries(llwebrtc PRIVATE ll::webrtc 
+    target_link_libraries(llwebrtc PRIVATE ll::webrtc
                                        secur32
                                        winmm
                                        dmoguids
@@ -55,7 +55,7 @@ elseif (DARWIN)
 elseif (LINUX)
     target_link_libraries(llwebrtc PRIVATE ll::webrtc)
 endif (WINDOWS)
-    
+
 target_include_directories( llwebrtc INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 
 if (WINDOWS)

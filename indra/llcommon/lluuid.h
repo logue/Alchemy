@@ -118,19 +118,19 @@ public:
     //      operator bool() const;
 
     bool operator==(const LLUUID& rhs) const
-	{
-	    __m128i mm_left = load_unaligned_si128(mData);
-	    __m128i mm_right = load_unaligned_si128(rhs.mData);
+    {
+        __m128i mm_left = load_unaligned_si128(mData);
+        __m128i mm_right = load_unaligned_si128(rhs.mData);
 
 #if defined(__SSE4_1__) || defined(LL_ARM64)
-	    __m128i mm = _mm_xor_si128(mm_left, mm_right);
-	    return _mm_test_all_zeros(mm, mm) != 0;
+        __m128i mm = _mm_xor_si128(mm_left, mm_right);
+        return _mm_test_all_zeros(mm, mm) != 0;
 #else
-	    __m128i mm_cmp = _mm_cmpeq_epi32(mm_left, mm_right);
-	    return _mm_movemask_epi8(mm_cmp) == 0xFFFF;
+        __m128i mm_cmp = _mm_cmpeq_epi32(mm_left, mm_right);
+        return _mm_movemask_epi8(mm_cmp) == 0xFFFF;
 #endif
-	}
-	
+    }
+
     bool operator!=(const LLUUID& rhs) const
     {
         return !((*this) == rhs);
