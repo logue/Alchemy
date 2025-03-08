@@ -47,7 +47,7 @@ if (LL_TESTS)
   ProcessorCount(NUM_CORES)
 
   # Set parallel level to decrease test runtime
-  set(CMAKE_CTEST_ARGUMENTS -j${NUM_CORES})
+  set(CMAKE_CTEST_ARGUMENTS -j${NUM_CORES} --output-on-failure)
 
   # Set up our test targets
   set(CTEST_TEST_TARGET_ALIAS BUILD_AND_RUN_TESTS)
