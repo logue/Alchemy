@@ -1649,6 +1649,7 @@ set(viewer_APPSETTINGS_FILES
     packages-info.txt
     featuretable.txt
     featuretable_mac.txt
+    featuretable_linux.txt
     )
 
 source_group("App Settings" FILES ${viewer_APPSETTINGS_FILES})
@@ -1671,6 +1672,15 @@ source_group("Character File" FILES ${viewer_CHARACTER_FILES})
 set_source_files_properties(${viewer_CHARACTER_FILES}
                             PROPERTIES HEADER_FILE_ONLY TRUE)
 list(APPEND viewer_SOURCE_FILES ${viewer_CHARACTER_FILES})
+
+set(viewer_MISC_FILES
+    viewer_manifest.py
+    )
+
+set_source_files_properties(${viewer_MISC_FILES}
+                            PROPERTIES HEADER_FILE_ONLY TRUE)
+
+list(APPEND viewer_SOURCE_FILES ${viewer_MISC_FILES})
 
 if (WINDOWS)
   file(GLOB viewer_INSTALLER_FILES installers/windows/*.nsi)
@@ -1861,20 +1871,6 @@ if (WINDOWS)
 
     if (PACKAGE)
       add_custom_command(
-        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/event_host.tar.xz
-        COMMAND ${PYTHON_EXECUTABLE}
-        ARGS
-          ${CMAKE_CURRENT_SOURCE_DIR}/event_host_manifest.py
-          ${CMAKE_CURRENT_SOURCE_DIR}/..
-          ${CMAKE_CURRENT_BINARY_DIR}
-          ${CMAKE_CFG_INTDIR}
-        DEPENDS
-          lleventhost
-          ${EVENT_HOST_SCRIPTS}
-          ${CMAKE_CURRENT_SOURCE_DIR}/event_host_manifest.py
-        )
-
-      add_custom_command(
         OUTPUT ${CMAKE_CFG_INTDIR}/touched.bat
         COMMAND ${PYTHON_EXECUTABLE}
         ARGS
@@ -1903,9 +1899,6 @@ if (WINDOWS)
       add_custom_target(llpackage ALL DEPENDS
               ${CMAKE_CFG_INTDIR}/touched.bat
         )
-        # temporarily disable packaging of event_host until hg subrepos get
-        # sorted out on the parabuild cluster...
-        #${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/event_host.tar.xz)
 
     endif (PACKAGE)
 elseif (DARWIN)
@@ -2017,8 +2010,11 @@ if (LINUX)
   set(COPY_INPUT_DEPENDENCIES
     ${VIEWER_BINARY_NAME}
     SLPlugin
-    #media_plugin_gstreamer010
-    llcommon
+    media_plugin_cef
+    media_plugin_gstreamer10
+    media_plugin_libvlc
+    media_plugin_example
+    llwebrtc
     )
 
   #if (NOT USE_BUGSPLAT)
