@@ -39,6 +39,7 @@
 
 #include "llerror.h"
 #include "llkeyboard.h"
+#include "llsdl.h"
 #include "llwindowcallbacks.h"
 
 
@@ -415,6 +416,11 @@ LLWindow* LLWindowManager::createWindow(
 {
     LLWindow* new_window;
 
+// SDL2 is temporarily disabled on Mac
+#if !defined(LL_DARWIN) && !defined(LL_MESA_HEADLESS)
+    init_sdl();
+#endif
+
     if (use_gl)
     {
 #if LL_MESA_HEADLESS
@@ -464,6 +470,9 @@ bool LLWindowManager::destroyWindow(LLWindow* window)
     window->close();
 
     sWindowList.erase(window);
+#ifndef LL_MESA_HEADLESS
+    quit_sdl();
+#endif
 
     delete window;
 

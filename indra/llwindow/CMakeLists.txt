@@ -25,6 +25,7 @@ set(llwindow_SOURCE_FILES
     llcursortypes.cpp
     llkeyboard.cpp
     llkeyboardheadless.cpp
+    llsdl.cpp
     llwindowheadless.cpp
     llwindowcallbacks.cpp
     llwindow.cpp
@@ -36,6 +37,7 @@ set(llwindow_HEADER_FILES
     llcursortypes.h
     llkeyboard.h
     llkeyboardheadless.h
+    llsdl.h
     llwindowheadless.h
     llwindowcallbacks.h
     )
