@@ -1246,7 +1246,7 @@ class LinuxManifest(ViewerManifest):
                 if self.channel_type() != 'release':
                     with self.prefix(src='example'):
                         self.path("libmedia_plugin_example.so")
-						
+
 
         with self.prefix(src=os.path.join(pkgdir, 'lib', 'release'), dst="lib"):
             self.path( "libcef.so" )
