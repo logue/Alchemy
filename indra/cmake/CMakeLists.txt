@@ -22,11 +22,13 @@ set(cmake_SOURCE_FILES
         DragDrop.cmake
         EXPAT.cmake
         FindAutobuild.cmake
+        FindPipeWire.cmake
         FreeType.cmake
         GLEXT.cmake
         GLH.cmake
         GLIB.cmake
         GLM.cmake
+        GStreamer10Plugin.cmake
         Havok.cmake
         Hunspell.cmake
         LLAddBuildTest.cmake
