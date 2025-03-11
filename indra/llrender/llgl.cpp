@@ -2457,11 +2457,10 @@ void LLGLState::resetTextureStates()
     gGL.flush();
     GLint maxTextureUnits;
 
-    glGetIntegerv(GL_MAX_TEXTURE_UNITS_ARB, &maxTextureUnits);
+    glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTextureUnits);
     for (S32 j = maxTextureUnits-1; j >=0; j--)
     {
         gGL.getTexUnit(j)->activate();
-        glClientActiveTexture(GL_TEXTURE0+j);
         j == 0 ? gGL.getTexUnit(j)->enable(LLTexUnit::TT_TEXTURE) : gGL.getTexUnit(j)->disable();
     }
 }
