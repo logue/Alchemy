@@ -92,6 +92,49 @@ public:
      *    (See accompanying file LICENSE_1_0.txt or copy at
      *          http://www.boost.org/LICENSE_1_0.txt)
      */
+private:
+    // Derived from Boost.UUID hash impl
+    inline std::uint64_t hash_mix_mx( std::uint64_t x ) const noexcept
+    {
+        x *= 0xD96AAA55;
+        x ^= x >> 16;
+        return x;
+    }
+
+    // prospector -p mul:0xD96AAA55,xorr:16,mul,xorr -t 1000
+    // score = 79.5223047689704
+    // (with mx prepended)
+    inline std::uint64_t hash_mix_fmx( std::uint64_t x ) const noexcept
+    {
+        x *= 0x7DF954AB;
+        x ^= x >> 16;
+        return x;
+    }
+
+    inline std::uint32_t load_little_u32( void const* p ) const noexcept
+    {
+        std::uint32_t tmp;
+        std::memcpy( &tmp, p, sizeof( tmp ) );
+        return tmp;
+    }
+public:
+    inline size_t getHash() const noexcept
+    {
+        std::uint64_t r = 0;
+
+        r = hash_mix_mx( r + load_little_u32( mData +  0 ) );
+        r = hash_mix_mx( r + load_little_u32( mData +  4 ) );
+        r = hash_mix_mx( r + load_little_u32( mData +  8 ) );
+        r = hash_mix_mx( r + load_little_u32( mData + 12 ) );
+
+        return static_cast<std::size_t>( hash_mix_fmx( r ) );
+    }
+
+    friend std::size_t hash_value( const LLUUID& id ) noexcept
+    {
+        return id.getHash();
+    }
+
 #if defined(LL_X86) || defined(LL_ARM64)
     LL_FORCE_INLINE __m128i load_unaligned_si128(const U8* p) const
     {
@@ -275,15 +318,9 @@ namespace std
     {
         inline size_t operator()(const LLUUID& id) const noexcept
         {
-            return (size_t)id.getDigest64();
+            return id.getHash();
         }
     };
-}
-
-// For use with boost containers.
-inline size_t hash_value(const LLUUID& id) noexcept
-{
-    return (size_t)id.getDigest64();
 }
 
 #endif // LL_LLUUID_H
