@@ -346,6 +346,8 @@ LLSplashScreen *LLSplashScreen::create()
 {
 #if LL_MESA_HEADLESS
     return nullptr;
+#elif LL_SDL_WINDOW
+    return new LLSplashScreenSDL;
 #elif LL_WINDOWS
     return new LLSplashScreenWin32;
 #elif LL_DARWIN
@@ -362,7 +364,7 @@ void LLSplashScreen::show()
 {
     if (!gSplashScreenp)
     {
-#if LL_SDL && !LL_MESA_HEADLESS
+#if LL_SDL_WINDOW && !LL_MESA_HEADLESS
         gSplashScreenp = new LLSplashScreenSDL;
 #elif LL_WINDOWS && !LL_MESA_HEADLESS
         gSplashScreenp = new LLSplashScreenWin32;
