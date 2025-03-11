@@ -34,7 +34,6 @@
 #define GL_GLEXT_PROTOTYPES 1
 #include "GL/gl.h"
 #include "GL/glext.h"
-#include "GL/glu.h"
 
 // The __APPLE__ kludge is to make glh_extensions.h not symbol-clash horribly
 # define __APPLE__
@@ -47,7 +46,6 @@
 
 #include "GL/gl.h"
 #include "GL/glext.h"
-#include "GL/glu.h"
 
 // The __APPLE__ kludge is to make glh_extensions.h not symbol-clash horribly
 # define __APPLE__
@@ -66,7 +64,6 @@
 
 //----------------------------------------------------------------------------
 #include <GL/gl.h>
-#include <GL/glu.h>
 
 // quotes so we get libraries/.../GL/ version
 #include "GL/glext.h"
@@ -835,7 +832,6 @@ extern PFNGLPOLYGONOFFSETCLAMPPROC              glPolygonOffsetClamp;
 
 #define GL_GLEXT_LEGACY
 #include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
 
 #define GL_EXT_separate_specular_color 1
 #define GL_GLEXT_PROTOTYPES
