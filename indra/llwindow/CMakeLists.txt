@@ -65,18 +65,16 @@ set(llwindow_LINK_LIBRARIES
         ll::SDL3
         )
 
-# Libraries on which this library depends, needed for Linux builds
-# Sort by high-level to low-level
-# if (LINUX)
-#   list(APPEND viewer_SOURCE_FILES
-#        llkeyboardsdl.cpp
-#        llwindowsdl.cpp
-#        )
-#   list(APPEND viewer_HEADER_FILES
-#        llkeyboardsdl.h
-#        llwindowsdl.h
-#        )
-# endif (LINUX)
+if (USE_SDL_WINDOW)
+  list(APPEND viewer_SOURCE_FILES
+       llkeyboardsdl.cpp
+       llwindowsdl.cpp
+       )
+  list(APPEND viewer_HEADER_FILES
+       llkeyboardsdl.h
+       llwindowsdl.h
+       )
+endif ()
 
 if (DARWIN)
   list(APPEND llwindow_SOURCE_FILES
@@ -191,14 +189,12 @@ endif (llwindow_HEADER_FILES)
     ${viewer_SOURCE_FILES}
     )
 
-# if (SDL3_FOUND)
-#   set_property(TARGET llwindow
-#     PROPERTY COMPILE_DEFINITIONS LL_SDL=1
-#     )
-# endif (SDL3_FOUND)
-
 target_link_libraries (llwindow ${llwindow_LINK_LIBRARIES})
 target_include_directories(llwindow INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
+
+if (USE_SDL_WINDOW)
+  target_compile_definitions( llwindow PUBLIC LL_SDL_WINDOW=1 )
+endif()
 
 if (USE_PRECOMPILED_HEADERS)
   target_precompile_headers(llwindow REUSE_FROM llprecompiled)

@@ -39,6 +39,10 @@ void sdl_logger(void *userdata, int category, SDL_LogPriority priority, const ch
 
 void init_sdl()
 {
+#ifndef LL_SDL_APP
+    SDL_SetLogOutputFunction(&sdl_logger, nullptr);
+#endif
+
     const int c_sdl_version = SDL_VERSION;
     LL_INFOS() << "Compiled against SDL "
                << SDL_VERSIONNUM_MAJOR(c_sdl_version) << "."
@@ -64,14 +68,15 @@ void init_sdl()
     }
 
     std::initializer_list<std::tuple<uint32_t, char const*, bool>> initList=
-            { {SDL_INIT_VIDEO,"SDL_INIT_VIDEO", true},
-              {SDL_INIT_AUDIO,"SDL_INIT_AUDIO", false},
+            {
+                {SDL_INIT_VIDEO,"SDL_INIT_VIDEO", true},
             };
 #else
     // For non-linux platforms we still SDL_INIT_VIDEO because it is a pre-requisite
     // for SDL_INIT_GAMECONTROLLER.
     std::initializer_list<std::tuple<uint32_t, char const*, bool>> initList=
-            { {SDL_INIT_VIDEO,"SDL_INIT_VIDEO", false},
+            {
+                {SDL_INIT_VIDEO,"SDL_INIT_VIDEO", false},
             };
 #endif // LL_LINUX
     // We SDL_INIT_GAMECONTROLLER later in the startup process to make it
@@ -90,8 +95,6 @@ void init_sdl()
             }
         }
     }
-
-    SDL_SetLogOutputFunction(&sdl_logger, nullptr);
 }
 
 void quit_sdl()
