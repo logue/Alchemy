@@ -166,7 +166,7 @@ inline S32 ll_round(const F32 val)
     return llfloor(val + 0.5f);
 }
 
-inline constexpr F64 ll_round(const F64 val)
+inline F64 ll_round(const F64 val)
 {
     return F64(floor(val + 0.5f));
 }
