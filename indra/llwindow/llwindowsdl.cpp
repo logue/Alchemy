@@ -39,7 +39,6 @@
 #include "llfindlocale.h"
 #include "llpreeditor.h"
 
-
 #ifdef LL_GLIB
 #include <glib.h>
 #endif
@@ -818,7 +817,7 @@ bool LLWindowSDL::pasteTextFromClipboard(LLWString &dst)
 bool LLWindowSDL::copyTextToClipboard(const LLWString& text)
 {
     const std::string utf8 = wstring_to_utf8str(text);
-    return SDL_SetClipboardText(utf8.c_str()) == 0; // success == 0
+    return SDL_SetClipboardText(utf8.c_str());
 }
 
 bool LLWindowSDL::isPrimaryTextAvailable()
@@ -844,7 +843,7 @@ bool LLWindowSDL::pasteTextFromPrimary(LLWString &dst)
 bool LLWindowSDL::copyTextToPrimary(const LLWString& text)
 {
     const std::string utf8 = wstring_to_utf8str(text);
-    return SDL_SetPrimarySelectionText(utf8.c_str()) == 0; // success == 0
+    return SDL_SetPrimarySelectionText(utf8.c_str());
 }
 
 LLWindow::LLWindowResolution* LLWindowSDL::getSupportedResolutions(S32 &num_resolutions)
@@ -1108,7 +1107,7 @@ finally:
 // virtual
 void LLWindowSDL::processMiscNativeEvents()
 {
-#if 0
+#if LL_GLIB
     // Pump until we've nothing left to do or passed 1/15th of a
     // second pumping for this frame.
     static LLTimer pump_timer;
@@ -1385,7 +1384,7 @@ static SDL_Cursor *makeSDLCursorFromBMP(const char *filename, int hotx, int hoty
 
         // Blit the cursor pixel data onto a 32-bit RGBA surface so we
         // only have to cope with processing one type of pixel format.
-        if (0 == SDL_BlitSurface(bmpsurface, nullptr,
+        if (SDL_BlitSurface(bmpsurface, nullptr,
                                  cursurface, nullptr))
         {
             // n.b. we already checked that width is a multiple of 8.
@@ -1661,7 +1660,7 @@ S32 OSMessageBoxSDL(const std::string& text, const std::string& caption, U32 typ
         gWindowImplementation->beforeDialog();
 
     int btn{0};
-    if( 0 == SDL_ShowMessageBox( &oData, &btn ) )
+    if(SDL_ShowMessageBox( &oData, &btn ))
     {
         if(gWindowImplementation != NULL)
             gWindowImplementation->afterDialog();
@@ -1732,7 +1731,7 @@ void LLWindowSDL::spawnWebBrowser(const std::string& escaped_url, bool async)
 
     LL_INFOS() << "spawn_web_browser: " << escaped_url << LL_ENDL;
 
-    if (SDL_OpenURL(escaped_url.c_str()) != 0)
+    if (!SDL_OpenURL(escaped_url.c_str()))
     {
         LL_WARNS() << "spawn_web_browser failed with error: " << SDL_GetError() << LL_ENDL;
     }
