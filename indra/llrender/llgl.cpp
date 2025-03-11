@@ -1409,21 +1409,28 @@ void LLGLManager::shutdownGL()
 
 void LLGLManager::initExtensions()
 {
-#if LL_DARWIN || LL_LINUX
-    GLint num_extensions = 0;
-    std::string all_extensions{""};
-    glGetIntegerv(GL_NUM_EXTENSIONS, &num_extensions);
-    for(GLint i = 0; i < num_extensions; ++i) {
-        char const * extension = (char const *)glGetStringi(GL_EXTENSIONS, i);
-        all_extensions += extension;
-        all_extensions += ' ';
-    }
-    if (num_extensions)
+    if (!glGetStringi)
     {
-        all_extensions += "GL_ARB_multitexture GL_ARB_texture_cube_map GL_ARB_texture_compression "; // These are in 3.2 core, but not listed by OSX
-        gGLHExts.mSysExts = strdup(all_extensions.data());
+        glGetStringi = (PFNGLGETSTRINGIPROC)GLH_EXT_GET_PROC_ADDRESS("glGetStringi");
     }
-#endif
+
+    //reload extensions string (may have changed after using wglCreateContextAttrib)
+    if(!gGLHExts.mSysExts && glGetStringi)
+    {
+        GLint num_extensions = 0;
+        std::string all_extensions{ "" };
+        glGetIntegerv(GL_NUM_EXTENSIONS, &num_extensions);
+        for (GLint i = 0; i < num_extensions; ++i) {
+            char const* extension = (char const*)glGetStringi(GL_EXTENSIONS, i);
+            all_extensions += extension;
+            all_extensions += ' ';
+        }
+        if (num_extensions)
+        {
+            all_extensions += "GL_ARB_multitexture GL_ARB_texture_cube_map GL_ARB_texture_compression "; // These are in 3.2 core, but not listed by OSX
+            gGLHExts.mSysExts = strdup(all_extensions.data());
+        }
+    }
 
     // NOTE: version checks against mGLVersion should bias down by 0.01 because of F32 errors
 
