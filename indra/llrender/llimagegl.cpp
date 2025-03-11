@@ -1055,6 +1055,8 @@ bool should_stagger_image_set(bool compressed)
 {
 #if LL_DARWIN
     return !compressed && on_main_thread() && gGLManager.mIsAMD;
+#elif LL_LINUX
+    return !compressed && on_main_thread() && !gGLManager.mIsAMD && !gGLManager.mIsIntel;
 #else
     // glTexSubImage2D doesn't work with compressed textures on select tested Nvidia GPUs on Windows 10 -Cosmic,2023-03-08
     // Setting media textures off-thread seems faster when not using sub_image_lines (Nvidia/Windows 10) -Cosmic,2023-03-31
