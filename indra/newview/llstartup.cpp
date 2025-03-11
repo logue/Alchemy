@@ -1292,10 +1292,6 @@ bool idle_startup()
         LLDrawable::initClass();
         display_startup();
 
-        // init the shader managers
-        LLPostProcess::initClass();
-        display_startup();
-
         LLAvatarAppearance::initClass("avatar_lad.xml","avatar_skeleton.xml");
         display_startup();
 
