@@ -1360,10 +1360,12 @@ class Linux_x86_64_Manifest(LinuxManifest):
         #debpkgdir = os.path.join(pkgdir, "lib", "debug")
 
         with self.prefix(src=relpkgdir, dst="lib"):
-            self.path_optional("libSDL*.so.*")
+            self.path("libSDL*.so.*")
 
             self.path("libalut.so*")
             self.path("libopenal.so*")
+
+            self.path("libopenjp2.so*")
 
         # Vivox runtimes
         with self.prefix(src=relpkgdir, dst="bin"):
