@@ -438,11 +438,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>41192f922035cc52fed35950b75115383c96d69a2be2e47e91dd1395e6b533f816a2a91e461a3b46a27ed7eb7deb18592b46d68614165f9d15ddede57e5b8832</string>
+              <string>209d031ae67bc66d8e8f8509c71d259014c65ceb</string>
               <key>hash_algorithm</key>
-              <string>blake2b</string>
+              <string>sha1</string>
               <key>url</key>
-              <string>https://github.com/AlchemyViewer/dullahan/releases/download/v1.14.0-cef118-r2/dullahan-1.14.0.202503020952_118.4.1_g3dd6078_chromium-118.0.5993.54-linux64-13614255946.tar.zst</string>
+              <string>https://github.com/secondlife/dullahan/releases/download/v1.14.0-r3/dullahan-1.14.0.202408091637_118.4.1_g3dd6078_chromium-118.0.5993.54-linux64-10322607516.tar.zst</string>
             </map>
             <key>name</key>
             <string>linux64</string>
@@ -2831,14 +2831,6 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
               </map>
               <key>name</key>
               <string>ReleaseOS</string>
-            </map>
-            <key>default</key>
-            <map>
-              <key>build</key>
-              <map>
-              </map>
-              <key>name</key>
-              <string>default</string>
             </map>
           </map>
           <key>build_directory</key>
