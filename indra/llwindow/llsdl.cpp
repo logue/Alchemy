@@ -29,6 +29,11 @@
 
 #include "SDL3/SDL.h"
 
+#ifndef LL_SDL_APP
+#define SDL_MAIN_HANDLED 1
+#include "SDL3/SDL_main.h"
+#endif
+
 #include "llerror.h"
 #include "llwindow.h"
 
@@ -40,6 +45,8 @@ void sdl_logger(void *userdata, int category, SDL_LogPriority priority, const ch
 void init_sdl()
 {
 #ifndef LL_SDL_APP
+    SDL_SetMainReady();
+
     SDL_SetLogOutputFunction(&sdl_logger, nullptr);
 #endif
 
