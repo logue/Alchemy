@@ -2875,7 +2875,7 @@ bool LLViewerWindow::handleKey(KEY key, MASK mask)
         LLUICtrl* cur_focus = dynamic_cast<LLUICtrl*>(keyboard_focus);
         if (cur_focus && cur_focus->acceptsTextInput())
         {
-#ifdef LL_WINDOWS
+#if defined(LL_WINDOWS) && !LL_SDL_WINDOW
             // On windows Alt Gr key generates additional Ctrl event, as result handling situations
             // like 'AltGr + D' will result in 'Alt+Ctrl+D'. If it results in WM_CHAR, don't let it
             // pass into menu or it will trigger 'develop' menu assigned to this combination on top
@@ -3842,7 +3842,7 @@ void LLViewerWindow::updateLayout()
 
 void LLViewerWindow::updateMouseDelta()
 {
-#if LL_WINDOWS
+#if LL_WINDOWS && !LL_SDL_WINDOW
     LLCoordCommon delta;
     mWindow->getCursorDelta(&delta);
     S32 dx = delta.mX;

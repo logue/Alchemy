@@ -84,7 +84,7 @@ LLWindowSDL::LLWindowSDL(LLWindowCallbacks* callbacks,
     gKeyboard->setCallbacks(callbacks);
 
     // Assume 4:3 aspect ratio until we know better
-    mOriginalAspectRatio = 1024.0 / 768.0;
+    mOriginalAspectRatio = 1024.f / 768.f;
 
     if (title.empty())
         mWindowTitle = "Second Life";
@@ -94,6 +94,7 @@ LLWindowSDL::LLWindowSDL(LLWindowCallbacks* callbacks,
     // Create the GL context and set it up for windowed or fullscreen, as appropriate.
     if(createContext(x, y, width, height, 32, fullscreen, enable_vsync))
     {
+        gGLManager.initWGL();
         gGLManager.initGL();
 
         //start with arrow cursor
@@ -212,8 +213,10 @@ bool LLWindowSDL::createContext(int x, int y, int width, int height, int bits, b
 
     if(LLRender::sGLCoreProfile)
     {
+#if LL_DARWIN
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+#endif
 
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     }
@@ -280,7 +283,7 @@ bool LLWindowSDL::createContext(int x, int y, int width, int height, int bits, b
         {
             mFullscreenWidth = displayMode->w;
             mFullscreenHeight = displayMode->h;
-            mFullscreenRefresh = displayMode->refresh_rate;
+            mFullscreenRefresh = ll_round(displayMode->refresh_rate);
 
             LL_INFOS() << "Running at " << mFullscreenWidth
             << "x"   << mFullscreenHeight
@@ -400,6 +403,7 @@ bool LLWindowSDL::switchContext(bool fullscreen, const LLCoordScreen &size, bool
         result = createContext(0, 0, size.mX, size.mY, 32, fullscreen, enable_vsync);
         if (result)
         {
+            gGLManager.initWGL();
             gGLManager.initGL();
 
             //start with arrow cursor
@@ -528,7 +532,7 @@ bool LLWindowSDL::getMinimized()
     bool result = false;
     if (mWindow)
     {
-        Uint32 flags = SDL_GetWindowFlags(mWindow);
+        SDL_WindowFlags flags = SDL_GetWindowFlags(mWindow);
         if (flags & SDL_WINDOW_MINIMIZED)
         {
             result = true;
@@ -542,7 +546,7 @@ bool LLWindowSDL::getMaximized()
     bool result = false;
     if (mWindow)
     {
-        Uint32 flags = SDL_GetWindowFlags(mWindow);
+        SDL_WindowFlags flags = SDL_GetWindowFlags(mWindow);
         if (flags & SDL_WINDOW_MAXIMIZED)
         {
             result = true;
@@ -705,7 +709,7 @@ bool LLWindowSDL::setCursorPosition(const LLCoordWindow position)
     }
 
     // do the actual forced cursor move.
-    SDL_WarpMouseInWindow(mWindow, screen_pos.mX, screen_pos.mY);
+    SDL_WarpMouseInWindow(mWindow, (F32)screen_pos.mX, (F32)screen_pos.mY);
 
     return result;
 }
@@ -718,8 +722,8 @@ bool LLWindowSDL::getCursorPosition(LLCoordWindow *position)
     float x, y;
     SDL_GetMouseState(&x, &y);
 
-    screen_pos.mX = x;
-    screen_pos.mY = y;
+    screen_pos.mX = (S32)x;
+    screen_pos.mY = (S32)y;
 
     return convertCoords(screen_pos, position);
 }
@@ -882,6 +886,27 @@ LLWindow::LLWindowResolution* LLWindowSDL::getSupportedResolutions(S32 &num_reso
     num_resolutions = mNumSupportedResolutions;
     return mSupportedResolutions;
 }
+
+//static
+std::vector<std::string> LLWindowSDL::getDisplaysResolutionList()
+{
+    std::vector<std::string> ret;
+    if (gWindowImplementation)
+    {
+        S32 resolutionCount = 0;
+        LLWindowResolution* resolutionList = gWindowImplementation->getSupportedResolutions(resolutionCount);
+        if (resolutionList != nullptr)
+        {
+            for (S32 i = 0; i < resolutionCount; i++)
+            {
+                const LLWindowResolution& resolution = resolutionList[i];
+                ret.push_back(std::to_string(resolution.mWidth) + "x" + std::to_string(resolution.mHeight));
+            }
+        }
+    }
+    return ret;
+}
+
 
 bool LLWindowSDL::convertCoords(LLCoordGL from, LLCoordWindow *to)
 {
@@ -1154,7 +1179,7 @@ SDL_AppResult LLWindowSDL::handleEvent(const SDL_Event& event)
     {
         case SDL_EVENT_MOUSE_MOTION:
         {
-            LLCoordWindow winCoord(event.motion.x, event.motion.y);
+            LLCoordWindow winCoord((S32)event.motion.x, (S32)event.motion.y);
             LLCoordGL openGlCoord;
             convertCoords(winCoord, &openGlCoord);
             mCallbacks->handleMouseMove(this, openGlCoord, gKeyboard->currentMask(true));
@@ -1165,18 +1190,18 @@ SDL_AppResult LLWindowSDL::handleEvent(const SDL_Event& event)
         {
             if( event.wheel.y != 0 )
             {
-                mCallbacks->handleScrollWheel(this, -event.wheel.y);
+                mCallbacks->handleScrollWheel(this, -llfloor(event.wheel.y));
             }
             if (event.wheel.x != 0)
             {
-                mCallbacks->handleScrollHWheel(this, -event.wheel.x);
+                mCallbacks->handleScrollHWheel(this, -llfloor(event.wheel.x));
             }
             break;
         }
 
         case SDL_EVENT_MOUSE_BUTTON_DOWN:
         {
-            LLCoordWindow winCoord(event.button.x, event.button.y);
+            LLCoordWindow winCoord(S32(event.button.x), S32(event.button.y));
             LLCoordGL openGlCoord;
             convertCoords(winCoord, &openGlCoord);
             MASK mask = gKeyboard->currentMask(true);
@@ -1206,7 +1231,7 @@ SDL_AppResult LLWindowSDL::handleEvent(const SDL_Event& event)
 
         case SDL_EVENT_MOUSE_BUTTON_UP:
         {
-            LLCoordWindow winCoord(event.button.x, event.button.y);
+            LLCoordWindow winCoord(S32(event.button.x), S32(event.button.y));
             LLCoordGL openGlCoord;
             convertCoords(winCoord, &openGlCoord);
             MASK mask = gKeyboard->currentMask(true);
@@ -1741,7 +1766,14 @@ void LLWindowSDL::spawnWebBrowser(const std::string& escaped_url, bool async)
 
 void* LLWindowSDL::getPlatformWindow()
 {
-    return (void*)mWindow;
+    void* ret = nullptr;
+    if (mWindow)
+    {
+#if LL_WINDOWS
+        ret = (HWND)SDL_GetPointerProperty(SDL_GetWindowProperties(mWindow), SDL_PROP_WINDOW_WIN32_HWND_POINTER, NULL);
+#endif
+    }
+    return ret;
 }
 
 void LLWindowSDL::bringToFront()

@@ -107,19 +107,12 @@ if (DARWIN)
   )
 endif (DARWIN)
 
-
 if (WINDOWS)
   list(APPEND llwindow_SOURCE_FILES
-       llwindowwin32.cpp
        lldxhardware.cpp
-       llkeyboardwin32.cpp
-       lldragdropwin32.cpp
        )
   list(APPEND llwindow_HEADER_FILES
-       llwindowwin32.h
        lldxhardware.h
-       llkeyboardwin32.h
-       lldragdropwin32.h
        )
   list(APPEND llwindow_LINK_LIBRARIES
        wbemuuid
@@ -128,7 +121,20 @@ if (WINDOWS)
        dxgi
        d3d9
        )
-endif (WINDOWS)
+endif ()
+
+if (WINDOWS AND NOT USE_SDL_WINDOW)
+  list(APPEND llwindow_SOURCE_FILES
+       llwindowwin32.cpp
+       llkeyboardwin32.cpp
+       lldragdropwin32.cpp
+       )
+  list(APPEND llwindow_HEADER_FILES
+       llwindowwin32.h
+       llkeyboardwin32.h
+       lldragdropwin32.h
+       )
+endif ()
 
 if (BUILD_HEADLESS)
   set(llwindowheadless_SOURCE_FILES

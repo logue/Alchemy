@@ -275,7 +275,9 @@ std::vector<std::string> LLWindow::getDynamicFallbackFontList()
 // static
 std::vector<std::string> LLWindow::getDisplaysResolutionList()
 {
-#if LL_WINDOWS
+#if LL_SDL_WINDOW
+    return LLWindowSDL::getDisplaysResolutionList();
+#elif LL_WINDOWS
     return LLWindowWin32::getDisplaysResolutionList();
 #elif LL_DARWIN
     return LLWindowMacOSX::getDisplaysResolutionList();

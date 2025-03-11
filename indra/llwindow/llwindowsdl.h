@@ -156,6 +156,8 @@ public:
 
     bool getFullscreen() override { return mFullscreen; };
 
+    static std::vector<std::string> getDisplaysResolutionList();
+
 #if LL_DARWIN
     static U64 getVramSize();
     static void setUseMultGL(bool use_mult_gl);
@@ -202,7 +204,7 @@ protected:
     SDL_Cursor *mSDLCursors[UI_CURSOR_COUNT];
 
     std::string mWindowTitle;
-    double mOriginalAspectRatio = 1.0f;
+    F32 mOriginalAspectRatio = 1.0f;
     F32 mOverrideAspectRatio = 0.0f;
     F32 mGamma = 0.0f;
     U32 mFSAASamples = 0;
