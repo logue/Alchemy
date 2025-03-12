@@ -77,7 +77,6 @@ if (WINDOWS)
        /LARGEADDRESSAWARE
        /NODEFAULTLIB:LIBCMT
        /IGNORE:4099
-       /MANIFEST:NO
   )
 
   add_compile_definitions(
