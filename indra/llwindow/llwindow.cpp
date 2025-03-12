@@ -185,12 +185,6 @@ bool LLWindow::dialogColorPicker(F32 *r, F32 *g, F32 *b)
     return false;
 }
 
-void *LLWindow::getMediaWindow()
-{
-    // Default to returning the platform window.
-    return getPlatformWindow();
-}
-
 bool LLWindow::setSize(LLCoordScreen size)
 {
     if (!getMaximized())
