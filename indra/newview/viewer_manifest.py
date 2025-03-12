@@ -65,6 +65,8 @@ class ViewerManifest(LLManifest):
         self.path(src="../../scripts/messages/message_template.msg", dst="app_settings/message_template.msg")
         self.path(src="../../etc/message.xml", dst="app_settings/message.xml")
 
+        os.environ["XZ_DEFAULTS"] = "-T0"
+
         if self.is_packaging_viewer():
             with self.prefix(src_dst="app_settings"):
                 self.exclude("logcontrol.xml")
@@ -585,6 +587,9 @@ class Windows_x86_64_Manifest(ViewerManifest):
             self.path("vivoxsdk_x64.dll")
             self.path("ortp_x64.dll")
 
+            # SDL3
+            self.path("SDL3.dll")
+
             # BugSplat
             if self.args.get('bugsplat'):
                 self.path("BsSndRpt64.exe")
@@ -862,6 +867,7 @@ class Darwin_x86_64_Manifest(ViewerManifest):
             # Remember where we parked this car.
             with self.prefix(src=relpkgdir, dst="Frameworks"):
                 self.path("libndofdev.dylib")
+                self.path("libSDL3.dylib")
 
                 CEF_framework = "Chromium Embedded Framework.framework"
                 self.path2basename(relpkgdir, CEF_framework)
