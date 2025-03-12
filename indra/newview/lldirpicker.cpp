@@ -156,11 +156,6 @@ bool LLDirPicker::getDirModeless(std::string* filename,
 
         SDL_PropertiesID props = SDL_CreateProperties();
         SDL_SetPointerProperty(props, SDL_PROP_FILE_DIALOG_WINDOW_POINTER, SDL_GL_GetCurrentWindow());
-        if (filename)
-        {
-            SDL_SetStringProperty(props, SDL_PROP_FILE_DIALOG_LOCATION_STRING, filename->c_str());
-        }
-
         SDL_ShowFileDialogWithProperties(SDL_FILEDIALOG_OPENFOLDER, sdl_callback, llfilecallback, props);
 
         SDL_DestroyProperties(props);
