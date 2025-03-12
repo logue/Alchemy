@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <strings>
-	<string name="CAPITALIZED_APP_NAME">SECOND LIFE</string>
+	<string name="CAPITALIZED_APP_NAME">ALCHEMY</string>
 	<string name="SUPPORT_SITE">Portal de Soporte de Second Life</string>
 	<string name="StartupDetectingHardware">Identificando el hardware...</string>
 	<string name="StartupLoading">Instalando [APP_NAME]...</string>

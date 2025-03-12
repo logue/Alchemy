@@ -2564,7 +2564,7 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
                 <array>
                   <string>-DCMAKE_BUILD_TYPE:STRING=RelWithDebInfo</string>
                   <string>-DADDRESS_SIZE:STRING=$AUTOBUILD_ADDRSIZE</string>
-                  <string>-DROOT_PROJECT_NAME:STRING=SecondLife</string>
+                  <string>-DROOT_PROJECT_NAME:STRING=Alchemy</string>
                   <string>-DINSTALL_PROPRIETARY=TRUE</string>
                 </array>
               </map>
@@ -2584,7 +2584,7 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
                 <array>
                   <string>-DCMAKE_BUILD_TYPE:STRING=RelWithDebInfo</string>
                   <string>-DADDRESS_SIZE:STRING=$AUTOBUILD_ADDRSIZE</string>
-                  <string>-DROOT_PROJECT_NAME:STRING=SecondLife</string>
+                  <string>-DROOT_PROJECT_NAME:STRING=Alchemy</string>
                   <string>-DINSTALL_PROPRIETARY=FALSE</string>
                 </array>
                 <key>arguments</key>
@@ -2605,7 +2605,7 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
                 <array>
                   <string>-DCMAKE_BUILD_TYPE:STRING=Release</string>
                   <string>-DADDRESS_SIZE:STRING=$AUTOBUILD_ADDRSIZE</string>
-                  <string>-DROOT_PROJECT_NAME:STRING=SecondLife</string>
+                  <string>-DROOT_PROJECT_NAME:STRING=Alchemy</string>
                   <string>-DINSTALL_PROPRIETARY=TRUE</string>
                 </array>
               </map>
@@ -2625,7 +2625,7 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
                 <array>
                   <string>-DCMAKE_BUILD_TYPE:STRING=Release</string>
                   <string>-DADDRESS_SIZE:STRING=$AUTOBUILD_ADDRSIZE</string>
-                  <string>-DROOT_PROJECT_NAME:STRING=SecondLife</string>
+                  <string>-DROOT_PROJECT_NAME:STRING=Alchemy</string>
                   <string>-DINSTALL_PROPRIETARY=FALSE</string>
                 </array>
                 <key>arguments</key>
@@ -2994,11 +2994,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
       <key>version_file</key>
       <string>newview/viewer_version.txt</string>
       <key>name</key>
-      <string>Second Life Viewer</string>
+      <string>Alchemy Viewer</string>
       <key>canonical_repo</key>
       <string>https://github.com/AlchemyViewer/Alchemy</string>
       <key>description</key>
-      <string>Second Life Viewer</string>
+      <string>Alchemy Viewer</string>
     </map>
   </map>
 </llsd>

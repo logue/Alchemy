@@ -12,8 +12,8 @@
 #    "if(${CMAKE_VERSION} VERSION_LESS "3.20.0")" that can also be removed
 cmake_minimum_required(VERSION 3.16.0...3.31.0 FATAL_ERROR)
 
-set(ROOT_PROJECT_NAME "SecondLife" CACHE STRING
-    "The root project/makefile/solution name. Defaults to SecondLife.")
+set(ROOT_PROJECT_NAME "Alchemy" CACHE STRING
+    "The root project/makefile/solution name. Defaults to Alchemy.")
 project(${ROOT_PROJECT_NAME})
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake"  "${CMAKE_CURRENT_BINARY_DIR}")

@@ -257,7 +257,7 @@ class ViewerManifest(LLManifest):
         return CHANNEL_VENDOR_BASE + ' ' + app_suffix
 
     def exec_name(self):
-        return "SecondLifeViewer"
+        return "AlchemyViewer"
 
     def app_name_oneword(self):
         return ''.join(self.app_name().split())
@@ -1197,7 +1197,7 @@ class LinuxManifest(ViewerManifest):
             self.path("client-readme.txt","README-linux.txt")
             self.path("client-readme-voice.txt","README-linux-voice.txt")
             self.path("client-readme-joystick.txt","README-linux-joystick.txt")
-            self.path("wrapper.sh","secondlife")
+            self.path("wrapper.sh","alchemy")
             with self.prefix(dst="etc"):
                 self.path("handle_secondlifeprotocol.sh")
                 self.path("register_secondlifeprotocol.sh")
@@ -1206,7 +1206,7 @@ class LinuxManifest(ViewerManifest):
             self.path("install.sh")
 
         with self.prefix(dst="bin"):
-            self.path("secondlife-bin","do-not-directly-run-secondlife-bin")
+            self.path("secondlife-bin", "do-not-directly-run-alchemy-bin")
             #self.path("../linux_crash_logger/linux-crash-logger","linux-crash-logger.bin")
             self.path2basename("../llplugin/slplugin", "SLPlugin")
             #this copies over the python wrapper script, associated utilities and required libraries, see SL-321, SL-322 and SL-323
