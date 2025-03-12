@@ -163,9 +163,7 @@ if (BUILD_HEADLESS)
     ${llwindowheadless_HEADER_FILES}
     )
 
-  set_property(TARGET llwindowheadless
-    PROPERTY COMPILE_DEFINITIONS LL_MESA=1 LL_MESA_HEADLESS=1
-    )
+  target_compile_definitions( llwindowheadless PUBLIC LL_MESA=1 LL_MESA_HEADLESS=1 )
 
   target_link_libraries (llwindowheadless 
   llcommon
