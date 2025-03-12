@@ -59,9 +59,9 @@
 #  include "SDL3/SDL.h"
 #  define LL_GET_PROC_ADDRESS(func) SDL_GL_GetProcAddress(func)
 #elif LL_WINDOWS
-#  define LL_GET_PROC_ADDRESS(p)   wglGetProcAddress(p) 
+#  define LL_GET_PROC_ADDRESS(p)   wglGetProcAddress(p)
 #elif LL_LINUX
-#  define LL_GET_PROC_ADDRESS(p)   glXGetProcAddressARB(p) 
+#  define LL_GET_PROC_ADDRESS(p)   glXGetProcAddressARB(p)
 #endif
 
 #if LL_WINDOWS

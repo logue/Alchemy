@@ -172,7 +172,7 @@ extern PFNWGLCHOOSEPIXELFORMATARBPROC wglChoosePixelFormatARB;
 #endif // LL_WINDOWS
 
 // We get all functions via getProcAddress when using SDL
-#if LL_SDL_WINDOW 
+#if LL_SDL_WINDOW
 // GL_VERSION_1_0
 extern PFNGLCULLFACEPROC                    glCullFace;
 extern PFNGLFRONTFACEPROC                   glFrontFace;
