@@ -249,6 +249,7 @@ bool LLWindowSDL::createContext(int x, int y, int width, int height, int bits, b
     SDL_SetBooleanProperty(props, SDL_PROP_WINDOW_CREATE_RESIZABLE_BOOLEAN, true);
     SDL_SetBooleanProperty(props, SDL_PROP_WINDOW_CREATE_OPENGL_BOOLEAN, true);
     SDL_SetBooleanProperty(props, SDL_PROP_WINDOW_CREATE_FULLSCREEN_BOOLEAN, mFullscreen);
+    SDL_SetBooleanProperty(props, SDL_PROP_WINDOW_CREATE_HIDDEN_BOOLEAN, true);
 #if LL_DARWIN
     //SDL_SetBooleanProperty(props, SDL_PROP_WINDOW_CREATE_HIGH_PIXEL_DENSITY_BOOLEAN, gHiDPISupport);
 #endif
@@ -475,6 +476,7 @@ void LLWindowSDL::show()
     if (mWindow)
     {
         SDL_ShowWindow(mWindow);
+        SDL_RaiseWindow(mWindow);
     }
 }
 
