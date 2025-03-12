@@ -1793,6 +1793,8 @@ void* LLWindowSDL::getPlatformWindow()
     {
 #if LL_WINDOWS
         ret = (HWND)SDL_GetPointerProperty(SDL_GetWindowProperties(mWindow), SDL_PROP_WINDOW_WIN32_HWND_POINTER, nullptr);
+#elif LL_DARWIN
+        ret = (HWND)SDL_GetPointerProperty(SDL_GetWindowProperties(mWindow), SDL_PROP_WINDOW_COCOA_WINDOW_POINTER, nullptr);
 #endif
     }
     return ret;

@@ -171,7 +171,7 @@ public:
     // Returns true if valid color selected
     virtual bool dialogColorPicker(F32 *r, F32 *g, F32 *b);
 
-// return a platform-specific window reference (HWND on Windows, WindowRef on the Mac, Gtk window on Linux)
+// return a platform-specific window reference (HWND on Windows, (__unsafe_unretained) NSWindow on the Mac, Gtk window on Linux)
     virtual void *getPlatformWindow() = 0;
 
     // control platform's Language Text Input mechanisms.
