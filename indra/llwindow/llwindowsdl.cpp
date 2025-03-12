@@ -1306,11 +1306,6 @@ SDL_AppResult LLWindowSDL::handleEvent(const SDL_Event& event)
             auto string = utf8str_to_wstring(event.text.text);
             for (auto key : string)
             {
-                if (mPreeditor)
-                {
-                    mPreeditor->handleUnicodeCharHere(key);
-                }
-                else
                 {
                     mCallbacks->handleUnicodeChar(key, gKeyboard->currentMask(false));
                 }
