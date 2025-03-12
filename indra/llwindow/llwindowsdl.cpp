@@ -1273,8 +1273,8 @@ SDL_AppResult LLWindowSDL::handleEvent(const SDL_Event& event)
 
             gKeyboard->handleKeyDown(mKeyVirtualKey, mKeyModifiers);
 
-            if (mKeyVirtualKey == SDLK_RETURN)
-                handleUnicodeUTF16(mKeyVirtualKey, gKeyboard->currentMask(false));
+            if (mKeyVirtualKey == SDLK_RETURN || !mLanguageTextInputAllowed)
+                mCallbacks->handleUnicodeChar(mKeyVirtualKey, gKeyboard->currentMask(false));
 
             // part of the fix for SL-13243
             if (SDLCheckGrabbyKeys(mKeyVirtualKey, true) != 0)
@@ -1304,7 +1304,14 @@ SDL_AppResult LLWindowSDL::handleEvent(const SDL_Event& event)
             auto string = utf8str_to_wstring(event.text.text);
             for (auto key : string)
             {
-                mCallbacks->handleUnicodeChar(key, gKeyboard->currentMask(false));
+                if (mPreeditor)
+                {
+                    mPreeditor->handleUnicodeCharHere(key);
+                }
+                else
+                {
+                    mCallbacks->handleUnicodeChar(key, gKeyboard->currentMask(false));
+                }
             }
             break;
         }
@@ -1696,18 +1703,18 @@ S32 OSMessageBoxSDL(const std::string& text, const std::string& caption, U32 typ
             break;
     }
 
-    if(gWindowImplementation != NULL)
+    if(gWindowImplementation != nullptr)
         gWindowImplementation->beforeDialog();
 
     int btn{0};
     if(SDL_ShowMessageBox( &oData, &btn ))
     {
-        if(gWindowImplementation != NULL)
+        if(gWindowImplementation != nullptr)
             gWindowImplementation->afterDialog();
         return btn;
     }
 
-    if(gWindowImplementation != NULL)
+    if(gWindowImplementation != nullptr)
         gWindowImplementation->afterDialog();
 
     return OSBTN_CANCEL;
@@ -1785,7 +1792,7 @@ void* LLWindowSDL::getPlatformWindow()
     if (mWindow)
     {
 #if LL_WINDOWS
-        ret = (HWND)SDL_GetPointerProperty(SDL_GetWindowProperties(mWindow), SDL_PROP_WINDOW_WIN32_HWND_POINTER, NULL);
+        ret = (HWND)SDL_GetPointerProperty(SDL_GetWindowProperties(mWindow), SDL_PROP_WINDOW_WIN32_HWND_POINTER, nullptr);
 #endif
     }
     return ret;
@@ -1952,7 +1959,7 @@ void LLWindowSDL::setLanguageTextInput(const LLCoordGL& position)
     {
         LLCoordGL caret_coord;
         LLRect preedit_bounds;
-        if (mPreeditor->getPreeditLocation(-1, &caret_coord, &preedit_bounds, NULL))
+        if (mPreeditor->getPreeditLocation(-1, &caret_coord, &preedit_bounds, nullptr))
         {
             LLCoordWindow window_pos;
             convertCoords(position, &window_pos);
