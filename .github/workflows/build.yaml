@@ -228,22 +228,22 @@ jobs:
           branch=$AUTOBUILD_VCS_BRANCH
           if [[ "$edu" == "true" ]]
           then
-              export viewer_channel="Second Life Release edu"
+              export viewer_channel="Alchemy Release edu"
           elif  [[ "$branch" == "develop" ]];
           then
-              export viewer_channel="Second Life Develop"
+              export viewer_channel="Alchemy Develop"
           else
               IFS='/' read -ra ba <<< "$branch"
               prefix=${ba[0]}
               if [ "$prefix" == "project" ]; then
                   IFS='_' read -ra prj <<< "${ba[1]}"
                   # uppercase first letter of each word
-                  export viewer_channel="Second Life Project ${prj[*]^}"
+                  export viewer_channel="Alchemy Project ${prj[*]^}"
               elif  [[ "$prefix" == "release" || "$prefix" == "main" ]];
               then
-                  export viewer_channel="Second Life Release"
+                  export viewer_channel="Alchemy Release"
               else
-                  export viewer_channel="Second Life Test"
+                  export viewer_channel="Alchemy Test"
               fi
           fi
           echo "::notice::$RUNNER_OS viewer_channel=$viewer_channel"
@@ -393,7 +393,7 @@ jobs:
           application: ${{ needs.build.outputs.viewer_channel }}
           version: ${{ needs.build.outputs.viewer_version }}
           directory: _artifacts
-          files: "**/{SecondLifeViewer.exe,llwebrtc.dll,*.pdb}"
+          files: "**/{AlchemyViewer.exe,llwebrtc.dll,*.pdb}"
 
   post-mac-symbols:
     env:
