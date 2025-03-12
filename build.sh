@@ -45,7 +45,7 @@ build_dir_Darwin()
 
 build_dir_Linux()
 {
-  echo build-linux-i686
+  echo build-linux-x86_64
 }
 
 build_dir_CYGWIN()
@@ -162,6 +162,13 @@ pre_build()
             SIGNING=("-DENABLE_SIGNING:BOOL=YES" \
                           "-DSIGNING_IDENTITY:STRING=Developer ID Application: Linden Research, Inc.")
         fi
+    fi
+
+    if [[ "$arch" == "Linux" ]]
+    then
+      # RELEASE_CRASH_REPORTING is tuned on unconditionaly, this is fine but not for Linux as of now (due to missing breakpad/crashpad support)
+      RELEASE_CRASH_REPORTING=OFF
+      HAVOK=OFF
     fi
 
     if $build_tests

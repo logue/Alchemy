@@ -44,7 +44,7 @@ jobs:
     needs: setup
     strategy:
       matrix:
-        runner: [windows-2022, macos-15]
+        runner: [windows-2022, macos-15, ubuntu-22.04]
         configuration: ${{ fromJSON(needs.setup.outputs.configurations) }}
         build_variant: [Viewer, Tests]
     runs-on: ${{ matrix.runner }}
@@ -123,6 +123,20 @@ jobs:
             ${{ runner.os }}-64-${{ matrix.configuration }}-${{ matrix.build_variant }}
             ${{ runner.os }}-64-${{ matrix.configuration }}-
             ${{ runner.os }}-64-
+
+      - name: Install Linux dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt update
+          sudo apt install -y \
+            libpulse-dev libunwind-dev \
+            libgl1-mesa-dev libglu1-mesa-dev libxinerama-dev \
+            libxcursor-dev libxfixes-dev libgstreamer1.0-dev \
+            libgstreamer-plugins-base1.0-dev ninja-build libxft-dev \
+            llvm mold libpipewire-0.3-dev libdbus-1-dev libvlc-dev
+          sudo locale-gen en_US.UTF-8
+          sudo locale-gen en_GB.UTF-8
+          sudo locale-gen fr_FR.UTF-8
 
       - name: Determine source branch
         id: which-branch
@@ -231,7 +245,7 @@ jobs:
                   export viewer_channel="Second Life Test"
               fi
           fi
-          echo "viewer_channel=$viewer_channel"
+          echo "::notice::$RUNNER_OS viewer_channel=$viewer_channel"
           echo "viewer_channel=$viewer_channel" >> "$GITHUB_OUTPUT"
           # On windows we need to point the build to the correct python
           # as neither CMake's FindPython nor our custom Python.cmake module
@@ -418,12 +432,18 @@ jobs:
         with:
           pattern: "*-metadata"
 
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: "Linux-app"
+
       - name: Rename metadata
         run: |
           cp Windows-metadata/autobuild-package.xml Windows-autobuild-package.xml
           cp Windows-metadata/newview/viewer_version.txt Windows-viewer_version.txt
           cp macOS-metadata/autobuild-package.xml macOS-autobuild-package.xml
           cp macOS-metadata/newview/viewer_version.txt macOS-viewer_version.txt
+          cp Linux-metadata/autobuild-package.xml Linux-autobuild-package.xml
+          cp Linux-metadata/newview/viewer_version.txt Linux-viewer_version.txt
 
       # forked from softprops/action-gh-release
       - name: Create GitHub release
@@ -448,6 +468,7 @@ jobs:
           files: |
             macOS-installer/*.dmg
             Windows-installer/*.exe
+            Linux-app/*.tar.xz
             *-autobuild-package.xml
             *-viewer_version.txt
 
