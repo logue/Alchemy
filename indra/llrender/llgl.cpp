@@ -225,6 +225,8 @@ LLMatrix4 gGLObliqueProjectionInverse;
 
 std::list<LLGLUpdate*> LLGLUpdate::sGLQ;
 
+#if LL_GL_FUNC_POINTER
+
 #if LL_WINDOWS
 // WGL_ARB_pixel_format
 PFNWGLGETPIXELFORMATATTRIBIVARBPROC wglGetPixelFormatAttribivARB = nullptr;
@@ -248,6 +250,7 @@ PFNWGLBLITCONTEXTFRAMEBUFFERAMDPROC             wglBlitContextFramebufferAMD = n
 // WGL_EXT_swap_control
 PFNWGLSWAPINTERVALEXTPROC    wglSwapIntervalEXT = nullptr;
 PFNWGLGETSWAPINTERVALEXTPROC wglGetSwapIntervalEXT = nullptr;
+#endif
 
 #if LL_SDL_WINDOW
 
