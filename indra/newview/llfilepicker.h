@@ -161,14 +161,14 @@ private:
     // is enabled and if not, tidy up and indicate we're not allowed to do this.
     bool check_local_file_access_enabled();
 
-#if LL_WINDOWS
+#if LL_WINDOWS && !LL_SDL_WINDOW
     OPENFILENAMEW mOFN;             // for open and save dialogs
     WCHAR mFilesW[FILENAME_BUFFER_SIZE];
 
     bool setupFilter(ELoadFilter filter);
 #endif
 
-#if LL_DARWIN
+#if LL_DARWIN && !LL_SDL_WINDOW
     S32 mPickOptions;
     std::vector<std::string> mFileVector;
 
