@@ -267,7 +267,9 @@ public:
     void updateForMaterialType();
 
     static void onClickDownloadRaw(void*);
+    static void onClickDownloadRawCallback(const std::vector<std::string>& filenames, void* data);
     static void onClickUploadRaw(void*);
+    static void onClickUploadRawCallback(void* data, const std::vector<std::string>& filenames);
     static void onClickBakeTerrain(void*);
     bool callbackBakeTerrain(const LLSD& notification, const LLSD& response);
     bool callbackTextureHeights(const LLSD& notification, const LLSD& response);
