@@ -44,12 +44,10 @@
  // windows gl headers depend on things like APIENTRY, so include windows.
 #include "llwin32headers.h"
 
-#include "GL/GLcorearb.h"
+#include "GL/glcorearb.h"
 
 #if LL_WINDOWS
 #include "GL/wglext.h"
-#elif LL_LINUX
-#include "GL/glxext.h"
 #endif
 
 #define GL_COLOR_INDEX				      0x1900
@@ -69,11 +67,9 @@ typedef GLboolean(APIENTRYP PFNGLARETEXTURESRESIDENTPROC) (GLsizei n,
 
 #elif LL_LINUX
 #define GL_GLEXT_PROTOTYPES
-#define GLX_GLEXT_PROTOTYPES
 
 #include "GL/gl.h"
 #include "GL/glext.h"
-#include "GL/glxext.h"
 
 #elif LL_WINDOWS
 //----------------------------------------------------------------------------
