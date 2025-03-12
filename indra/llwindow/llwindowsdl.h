@@ -154,6 +154,8 @@ public:
     void destroySharedContext(void *context) override;
     void toggleVSync(bool enable_vsync) override;
 
+    F32 getSystemUISize() override;
+
     bool getFullscreen() override { return mFullscreen; };
 
     static std::vector<std::string> getDisplaysResolutionList();

@@ -1343,8 +1343,18 @@ SDL_AppResult LLWindowSDL::handleEvent(const SDL_Event& event)
         case SDL_EVENT_WINDOW_MINIMIZED:
             mCallbacks->handleActivate(this, false);
             break;
-        case SDL_EVENT_WINDOW_DISPLAY_SCALE_CHANGED:
+        case SDL_EVENT_WINDOW_DISPLAY_CHANGED:
+        {
+            mCallbacks->handleDisplayChanged();
             break;
+        }
+        case SDL_EVENT_WINDOW_DISPLAY_SCALE_CHANGED:
+        {
+            S32 w, h = 0;
+            SDL_GetWindowSize(mWindow, &w, &h);
+            mCallbacks->handleDPIChanged(this, getSystemUISize(), w, h);
+            break;
+        }
         //case SDL_EVENT_WINDOW_SHOWN:
         //case SDL_EVENT_WINDOW_HIDDEN:
         //{
@@ -1952,6 +1962,19 @@ void LLWindowSDL::setLanguageTextInput(const LLCoordGL& position)
             SDL_SetTextInputArea(mWindow, &coords, 0);
         }
     }
+}
+
+F32 LLWindowSDL::getSystemUISize()
+{
+    if(mWindow)
+    {
+        F32 scale = SDL_GetWindowDisplayScale(mWindow);
+        if (scale > 0.0f)
+        {
+            return scale;
+        }
+    }
+    return 1.f;
 }
 
 #if LL_DARWIN
