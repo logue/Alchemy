@@ -134,13 +134,13 @@ bool LLDirPicker::getDirModeless(std::string* filename,
                 if (!filelist)
                 {
                     LL_WARNS() << "Error during SDL folder picking: " << SDL_GetError() << LL_ENDL;
-                    callback_struct->mCallback(false, rtn, callback_struct->mUserdata);
+                    callback_func(false, rtn, callback_data);
                     return;
                 }
                 else if (!*filelist)
                 {
                     LL_INFOS() << "User did not select any folders. Dialog likely cancelled." << LL_ENDL;
-                    callback_struct->mCallback(false, rtn, callback_struct->mUserdata);
+                    callback_func(false, rtn, callback_data);
                     return;
                 }
 
@@ -148,7 +148,7 @@ bool LLDirPicker::getDirModeless(std::string* filename,
                     rtn = std::string(*filelist);
                     break;
                 }
-                callback_struct->mCallback(true, rtn, callback_struct->mUserdata);
+                callback_func(true, rtn, callback_data);
 
             };
 

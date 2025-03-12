@@ -285,13 +285,13 @@ bool LLFilePicker::getOpenFileModeless(ELoadFilter filter,
                 if (!filelist)
                 {
                     LL_WARNS() << "Error during SDL file picking: " << SDL_GetError() << LL_ENDL;
-                    callback_struct->mCallback(false, rtn, callback_struct->mUserdata);
+                    callback_func(false, rtn, callback_data);
                     return;
                 }
                 else if (!*filelist)
                 {
                     LL_INFOS() << "User did not select any file. Dialog likely cancelled." << LL_ENDL;
-                    callback_struct->mCallback(false, rtn, callback_struct->mUserdata);
+                    callback_func(false, rtn, callback_data);
                     return;
                 }
 
@@ -301,7 +301,7 @@ bool LLFilePicker::getOpenFileModeless(ELoadFilter filter,
                     filelist++;
                 }
 
-                callback_struct->mCallback(true, rtn, callback_struct->mUserdata);
+                callback_func(true, rtn, callback_data);
 
             };
 
@@ -369,13 +369,13 @@ bool LLFilePicker::getMultipleOpenFilesModeless(ELoadFilter filter,
                 if (!filelist)
                 {
                     LL_WARNS() << "Error during SDL file picking: " << SDL_GetError() << LL_ENDL;
-                    callback_struct->mCallback(false, rtn, callback_struct->mUserdata);
+                    callback_func(false, rtn, callback_data);
                     return;
                 }
                 else if (!*filelist)
                 {
                     LL_INFOS() << "User did not select any file. Dialog likely cancelled." << LL_ENDL;
-                    callback_struct->mCallback(false, rtn, callback_struct->mUserdata);
+                    callback_func(false, rtn, callback_data);
                     return;
                 }
 
@@ -385,7 +385,7 @@ bool LLFilePicker::getMultipleOpenFilesModeless(ELoadFilter filter,
                     filelist++;
                 }
 
-                callback_struct->mCallback(true, rtn, callback_struct->mUserdata);
+                callback_func(true, rtn, callback_data);
 
             };
 
@@ -573,13 +573,13 @@ bool LLFilePicker::getSaveFileModeless(ESaveFilter filter,
                 if (!filelist)
                 {
                     LL_WARNS() << "Error during SDL file picking: " << SDL_GetError() << LL_ENDL;
-                    callback_struct->mCallback(false, rtn, callback_struct->mUserdata);
+                    callback_func(false, rtn, callback_data);
                     return;
                 }
                 else if (!*filelist)
                 {
                     LL_INFOS() << "User did not select any file. Dialog likely cancelled." << LL_ENDL;
-                    callback_struct->mCallback(false, rtn, callback_struct->mUserdata);
+                    callback_func(false, rtn, callback_data);
                     return;
                 }
 
@@ -587,7 +587,7 @@ bool LLFilePicker::getSaveFileModeless(ESaveFilter filter,
                     rtn = std::string(*filelist);
                     break;
                 }
-                callback_struct->mCallback(true, rtn, callback_struct->mUserdata);
+                callback_func(true, rtn, callback_data);
 
             };
 
