@@ -202,8 +202,10 @@ elseif(LINUX)
 
      if( USE_AUTOBUILD_3P )
          list( APPEND release_files
-	         libSDL3-3.0.so.0
-                 )
+                libSDL3.so
+                libSDL3.so.0
+                libSDL3.so.0.2.8
+                )
      endif()
 
 else(WINDOWS)
