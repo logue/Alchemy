@@ -17,12 +17,14 @@ if (USE_OPENAL)
       OpenAL32
       openal
       libopenal.dylib
+      libopenal.so
       PATHS "${ARCH_PREBUILT_DIRS_RELEASE}" REQUIRED NO_DEFAULT_PATH)
 
   find_library(ALUT_LIBRARY
       NAMES
       alut
       libalut.dylib
+      libalut.so
       PATHS "${ARCH_PREBUILT_DIRS_RELEASE}" REQUIRED NO_DEFAULT_PATH)
 
   target_link_libraries(ll::openal INTERFACE ${OPENAL_LIBRARY} ${ALUT_LIBRARY})
