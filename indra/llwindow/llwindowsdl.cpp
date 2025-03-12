@@ -358,6 +358,9 @@ void* LLWindowSDL::createSharedContext()
     SDL_GLContext pContext = SDL_GL_CreateContext(mWindow);
     if (pContext)
     {
+        // HACK to ensure windows GL context is set correctly when threaded - Rye
+        SDL_GL_MakeCurrent(mWindow, pContext);
+        SDL_GL_MakeCurrent(mWindow, mContext);
         LL_DEBUGS() << "Creating shared OpenGL context successful!" << LL_ENDL;
         return (void*)pContext;
     }
