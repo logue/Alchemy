@@ -9,6 +9,29 @@
 #   LINUX   - Linux
 #   WINDOWS - Windows
 
+include_guard()
+
+# Switches set here and in 00-Common.cmake must agree with
+# https://bitbucket.org/lindenlab/viewer-build-variables/src/tip/variables
+# Reading $LL_BUILD is an attempt to directly use those switches.
+if ("$ENV{AUTOBUILD_ADDRSIZE}" STREQUAL "" AND "${AUTOBUILD_ADDRSIZE_ENV}" STREQUAL "" )
+  message(FATAL_ERROR "Environment variable AUTOBUILD_ADDRSIZE must be set")
+elseif("$ENV{AUTOBUILD_ADDRSIZE}" STREQUAL "")
+  set( ENV{AUTOBUILD_ADDRSIZE} "${AUTOBUILD_ADDRSIZE_ENV}" )
+  message( "Setting ENV{AUTOBUILD_ADDRSIZE} to cached variable ${AUTOBUILD_ADDRSIZE_ENV}" )
+else()
+  set( AUTOBUILD_ADDRSIZE_ENV "$ENV{AUTOBUILD_ADDRSIZE}" CACHE STRING "Save environment AUTOBUILD_ADDRSIZE" FORCE )
+endif ()
+
+if ("$ENV{AUTOBUILD_PLATFORM}" STREQUAL "" AND "${AUTOBUILD_PLATFORM_ENV}" STREQUAL "" )
+  message(FATAL_ERROR "Environment variable AUTOBUILD_PLATFORM must be set")
+elseif("$ENV{AUTOBUILD_PLATFORM}" STREQUAL "")
+  set( ENV{AUTOBUILD_PLATFORM} "${AUTOBUILD_PLATFORM_ENV}" )
+  message( "Setting ENV{AUTOBUILD_PLATFORM} to cached variable ${AUTOBUILD_PLATFORM_ENV}" )
+else()
+  set( AUTOBUILD_PLATFORM_ENV "$ENV{AUTOBUILD_PLATFORM}" CACHE STRING "Save environment AUTOBUILD_PLATFORM" FORCE )
+endif ()
+
 # Switches set here and in 00-Common.cmake must agree with
 # https://bitbucket.org/lindenlab/viewer-build-variables/src/tip/variables
 # Reading $LL_BUILD is an attempt to directly use those switches.
@@ -30,10 +53,7 @@ else()
   set( LL_BUILD_RELWITHDEBINFO_ENV "$ENV{LL_BUILD_RELWITHDEBINFO}" CACHE STRING "Save environment RELWITHDEBINFO" FORCE )
 endif ()
 
-include_guard()
-
 # Relative and absolute paths to subtrees.
-
 if(NOT DEFINED COMMON_CMAKE_DIR)
     set(COMMON_CMAKE_DIR "${CMAKE_SOURCE_DIR}/cmake")
 endif(NOT DEFINED COMMON_CMAKE_DIR)
