@@ -14,6 +14,6 @@ find_library( SDL3_LIBRARY
     NAMES SDL3
     PATHS "${LIBS_PREBUILT_DIR}/lib/release" REQUIRED)
 
-target_link_libraries( ll::SDL3 INTERFACE "${SDL3_LIBRARY}" )
-target_include_directories( ll::SDL3 SYSTEM INTERFACE "${LIBS_PREBUILT_DIR}/include/SDL3" )
+target_link_libraries( ll::SDL3 INTERFACE ${SDL3_LIBRARY})
+target_include_directories( ll::SDL3 SYSTEM INTERFACE "${LIBS_PREBUILT_DIR}/include/" )
 

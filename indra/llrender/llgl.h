@@ -141,7 +141,11 @@ public:
     // In ALL CAPS
     std::string mGLRenderer;
 
+    // GL Extension String
+    std::set<std::string> mGLExtensions;
+
 private:
+    void reloadExtensionsString();
     void initExtensions();
     void initGLStates();
 };

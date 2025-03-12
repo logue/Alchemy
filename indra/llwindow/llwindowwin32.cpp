@@ -1659,6 +1659,8 @@ const   S32   max_format  = (S32)num_formats - 1;
         return false;
     }
 
+    gGLManager.initWGL(); // Reinit WGL functions once we have our full context
+
     if (!gGLManager.initGL())
     {
         LLError::LLUserWarningMsg::show(mCallbacks->translateString("MBVideoDrvErr"), 8/*LAST_EXEC_GRAPHICS_INIT*/);
