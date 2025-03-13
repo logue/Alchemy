@@ -26,5 +26,5 @@
 
 #pragma once
 
-void init_sdl();
+void init_sdl(const std::string& app_name);
 void quit_sdl();

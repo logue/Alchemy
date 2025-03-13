@@ -42,12 +42,20 @@ void sdl_logger(void *userdata, int category, SDL_LogPriority priority, const ch
     LL_DEBUGS("SDL2") << "log='" << message << "'" << LL_ENDL;
 }
 
-void init_sdl()
+void init_sdl(const std::string& app_name)
 {
 #ifndef LL_SDL_APP
     SDL_SetMainReady();
 
     SDL_SetLogOutputFunction(&sdl_logger, nullptr);
+#endif
+
+#if LL_WINDOWS
+    Uint32 style = 0;
+#if defined(CS_BYTEALIGNCLIENT) && defined(CS_OWNDC)
+    style = (CS_BYTEALIGNCLIENT | CS_OWNDC);
+#endif
+    SDL_RegisterApp(app_name.c_str(), style, nullptr);
 #endif
 
     const int c_sdl_version = SDL_VERSION;
@@ -105,5 +113,8 @@ void init_sdl()
 
 void quit_sdl()
 {
+#if LL_WINDOWS
+    SDL_UnregisterApp();
+#endif
     SDL_Quit();
 }
