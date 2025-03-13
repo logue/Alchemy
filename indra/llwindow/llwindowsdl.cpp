@@ -56,6 +56,16 @@ extern "C" {
 #include <stdio.h>
 #endif // LL_LINUX
 
+#if LL_DARWIN
+#include <OpenGL/OpenGL.h>
+#include <Carbon/Carbon.h>
+#include <CoreServices/CoreServices.h>
+#include <CoreGraphics/CGDisplayConfiguration.h>
+
+bool LLWindowSDL::sUseMultGL = false;
+bool gHiDPISupport = true;
+#endif
+
 extern bool gDebugWindowProc;
 
 const S32 MAX_NUM_RESOLUTIONS = 200;
@@ -1788,9 +1798,9 @@ void* LLWindowSDL::getPlatformWindow()
     if (mWindow)
     {
 #if LL_WINDOWS
-        ret = (HWND)SDL_GetPointerProperty(SDL_GetWindowProperties(mWindow), SDL_PROP_WINDOW_WIN32_HWND_POINTER, nullptr);
+        ret = SDL_GetPointerProperty(SDL_GetWindowProperties(mWindow), SDL_PROP_WINDOW_WIN32_HWND_POINTER, nullptr);
 #elif LL_DARWIN
-        ret = (HWND)SDL_GetPointerProperty(SDL_GetWindowProperties(mWindow), SDL_PROP_WINDOW_COCOA_WINDOW_POINTER, nullptr);
+        ret = SDL_GetPointerProperty(SDL_GetWindowProperties(mWindow), SDL_PROP_WINDOW_COCOA_WINDOW_POINTER, nullptr);
 #endif
     }
     return ret;

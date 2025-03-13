@@ -417,7 +417,7 @@ LLWindow* LLWindowManager::createWindow(
     LLWindow* new_window;
 
 // SDL2 is temporarily disabled on Mac
-#if !defined(LL_DARWIN) && !defined(LL_MESA_HEADLESS)
+#if (!defined(LL_DARWIN) || LL_SDL_WINDOW) && !defined(LL_MESA_HEADLESS)
     init_sdl();
 #endif
 

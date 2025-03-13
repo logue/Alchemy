@@ -134,8 +134,12 @@
 #include "cef/dullahan_version.h"
 #include "vlc/libvlc_version.h"
 
-#if LL_DARWIN
+#if LL_DARWIN && !LL_SDL_WINDOW
 #include "llwindowmacosx.h"
+#endif
+
+#if LL_SDL_WINDOW
+#include "llwindowsdl.h"
 #endif
 
 // Third party library includes
@@ -547,7 +551,11 @@ static void settings_to_globals()
     LLWorldMapView::setScaleSetting(gSavedSettings.getF32("MapScale"));
 
 #if LL_DARWIN
+#if LL_SDL_WINDOW
+    LLWindowSDL::sUseMultGL = gSavedSettings.getBOOL("RenderAppleUseMultGL");
+#else
     LLWindowMacOSX::sUseMultGL = gSavedSettings.getBOOL("RenderAppleUseMultGL");
+#endif
     gHiDPISupport = gSavedSettings.getBOOL("RenderHiDPI");
 #endif
 }

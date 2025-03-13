@@ -165,7 +165,7 @@ if (BUILD_HEADLESS)
 
   target_compile_definitions( llwindowheadless PUBLIC LL_MESA=1 LL_MESA_HEADLESS=1 )
 
-  target_link_libraries (llwindowheadless 
+  target_link_libraries (llwindowheadless
   llcommon
   llimage
   llmath
@@ -175,8 +175,8 @@ if (BUILD_HEADLESS)
   ll::glm
   ll::glext
   ll::zlib-ng
-  PkgConfig::OSMESA 
-  fontconfig 
+  PkgConfig::OSMESA
+  fontconfig
   dl
   )
   target_include_directories(llwindowheadless INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})

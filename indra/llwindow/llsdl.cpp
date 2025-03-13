@@ -60,13 +60,12 @@ void init_sdl()
                << SDL_VERSIONNUM_MAJOR(r_sdl_version) << "."
                << SDL_VERSIONNUM_MINOR(r_sdl_version) << "."
                << SDL_VERSIONNUM_MICRO(r_sdl_version) << LL_ENDL;
-#ifdef LL_LINUX
+#if LL_SDL_WINDOW
     // For linux we SDL_INIT_VIDEO and _AUDIO
     std::initializer_list<std::tuple< char const*, char const * > > hintList =
             {
                     {SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR,"0"},
                     {SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH,"1"},
-                   // {SDL_HINT_IME_NATIVE_UI,"1"}
             };
 
     for (auto hint: hintList)

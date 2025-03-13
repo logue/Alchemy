@@ -78,7 +78,11 @@
 #include "llperfstats.h"
 
 #if LL_DARWIN
-#include "llwindowmacosx.h"
+#if LL_WINDOW_SDL
+    #include "llwindowsdl.h "
+#else
+    #include "llwindowmacosx.h"
+#endif
 #endif
 
 // Third party library includes
@@ -464,7 +468,11 @@ static bool handleAppleUseMultGLChanged(const LLSD& newvalue)
 {
     if (gGLManager.mInited)
     {
+#if LL_WINDOW_SDL
+        LLWindowSDL::setUseMultGL(newvalue.asBoolean());
+#else
         LLWindowMacOSX::setUseMultGL(newvalue.asBoolean());
+#endif
     }
     return true;
 }

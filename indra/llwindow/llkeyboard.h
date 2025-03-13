@@ -82,7 +82,7 @@ public:
     virtual bool    handleKeyUp(const NATIVE_KEY_TYPE key, MASK mask) = 0;
     virtual bool    handleKeyDown(const NATIVE_KEY_TYPE key, MASK mask) = 0;
 
-#ifdef LL_DARWIN
+#if LL_DARWIN && !LL_SDL_WINDOW
     // We only actually use this for macOS.
     virtual void    handleModifier(MASK mask) = 0;
 #endif // LL_DARWIN
