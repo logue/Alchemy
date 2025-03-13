@@ -994,8 +994,7 @@ bool LLWindowSDL::SDLReallyCaptureInput(bool capture)
 {
     if (!mFullscreen && mWindow ) /* only bother if we're windowed anyway */
     {
-        SDL_SetWindowMouseGrab( mWindow, capture);
-        SDL_SetWindowKeyboardGrab(mWindow, capture);
+        SDL_SetWindowMouseGrab(mWindow, capture);
     }
 
     return capture;
