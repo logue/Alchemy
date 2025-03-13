@@ -3572,8 +3572,8 @@ TFReqSendMetrics::doWork(LLTextureFetch * fetcher)
     //if (! gViewerAssetStatsThread1)
     //  return true;
 
-    static std::atomic_bool reporting_started(false);
-    static std::atomic_int report_sequence(0);
+    static std::atomic<bool> reporting_started(false);
+    static std::atomic<S32> report_sequence(0);
 
     // In mStatsSD, we have a copy we own of the LLSD representation
     // of the asset stats. Add some additional fields and ship it off.
