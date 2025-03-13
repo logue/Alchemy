@@ -367,15 +367,15 @@ WorkQueue gMainloopWork("mainloop", 1024*1024);
 // Internal globals... that should be removed.
 static std::string gArgs;
 const int MAX_MARKER_LENGTH = 1024;
-const std::string MARKER_FILE_NAME("SecondLife.exec_marker");
-const std::string START_MARKER_FILE_NAME("SecondLife.start_marker");
-const std::string ERROR_MARKER_FILE_NAME("SecondLife.error_marker");
-const std::string LOGOUT_MARKER_FILE_NAME("SecondLife.logout_marker");
+const std::string MARKER_FILE_NAME("Alchemy.exec_marker");
+const std::string START_MARKER_FILE_NAME("Alchemy.start_marker");
+const std::string ERROR_MARKER_FILE_NAME("Alchemy.error_marker");
+const std::string LOGOUT_MARKER_FILE_NAME("Alchemy.logout_marker");
 static bool gDoDisconnect = false;
 static std::string gLaunchFileOnQuit;
 
 // Used on Win32 for other apps to identify our window (eg, win_setup)
-const char* const VIEWER_WINDOW_CLASSNAME = "Second Life";
+const char* const VIEWER_WINDOW_CLASSNAME = "Alchemy Viewer";
 
 //----------------------------------------------------------------------------
 
