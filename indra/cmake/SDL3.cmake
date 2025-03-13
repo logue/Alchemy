@@ -11,7 +11,7 @@ use_system_binary( SDL3 )
 use_prebuilt_binary( SDL3 )
 
 find_library( SDL3_LIBRARY
-    NAMES SDL3
+    NAMES SDL3 SDL3.lib libSDL3.so libSDL3.dylib
     PATHS "${LIBS_PREBUILT_DIR}/lib/release" REQUIRED)
 
 target_link_libraries( ll::SDL3 INTERFACE ${SDL3_LIBRARY})
