@@ -46,7 +46,7 @@ public:
     // mistake to shadow the base-class method with an LLWindowHeadless
     // override when called on the subclass, yet call the base-class method
     // when indirecting through a polymorphic pointer or reference?
-    bool getFullscreen() {return false;}
+    bool getFullscreen() override {return false;}
     /*virtual*/ bool getPosition(LLCoordScreen *position) override {return false;}
     /*virtual*/ bool getSize(LLCoordScreen *size) override {return false;}
     /*virtual*/ bool getSize(LLCoordWindow *size) override {return false;}

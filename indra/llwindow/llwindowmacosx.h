@@ -53,7 +53,7 @@ public:
     bool maximize() override;
     void minimize() override;
     void restore() override;
-    bool getFullscreen();
+    bool getFullscreen() override;
     bool getPosition(LLCoordScreen *position) override;
     bool getSize(LLCoordScreen *size) override;
     bool getSize(LLCoordWindow *size) override;
