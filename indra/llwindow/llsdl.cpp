@@ -39,7 +39,22 @@
 
 void sdl_logger(void *userdata, int category, SDL_LogPriority priority, const char *message)
 {
-    LL_DEBUGS("SDL2") << "log='" << message << "'" << LL_ENDL;
+    switch (priority)
+    {
+        case SDL_LOG_PRIORITY_TRACE:
+        case SDL_LOG_PRIORITY_VERBOSE:
+        case SDL_LOG_PRIORITY_DEBUG:
+            LL_DEBUGS("SDL") << "log='" << message << "'" << LL_ENDL;
+            break;
+        case SDL_LOG_PRIORITY_INFO:
+            LL_INFOS("SDL") << "log='" << message << "'" << LL_ENDL;
+            break;
+        case SDL_LOG_PRIORITY_WARN:
+        case SDL_LOG_PRIORITY_ERROR:
+        case SDL_LOG_PRIORITY_CRITICAL:
+            LL_WARNS("SDL") << "log='" << message << "'" << LL_ENDL;
+            break;
+    }
 }
 
 void init_sdl(const std::string& app_name)
@@ -50,7 +65,7 @@ void init_sdl(const std::string& app_name)
     SDL_SetLogOutputFunction(&sdl_logger, nullptr);
 #endif
 
-#if LL_WINDOWS
+#if LL_WINDOWS && defined(LL_SDL_WINDOW)
     Uint32 style = 0;
 #if defined(CS_BYTEALIGNCLIENT) && defined(CS_OWNDC)
     style = (CS_BYTEALIGNCLIENT | CS_OWNDC);
@@ -68,6 +83,7 @@ void init_sdl(const std::string& app_name)
                << SDL_VERSIONNUM_MAJOR(r_sdl_version) << "."
                << SDL_VERSIONNUM_MINOR(r_sdl_version) << "."
                << SDL_VERSIONNUM_MICRO(r_sdl_version) << LL_ENDL;
+
 #if LL_SDL_WINDOW
     // For linux we SDL_INIT_VIDEO and _AUDIO
     std::initializer_list<std::tuple< char const*, char const * > > hintList =
@@ -113,7 +129,7 @@ void init_sdl(const std::string& app_name)
 
 void quit_sdl()
 {
-#if LL_WINDOWS
+#if LL_WINDOWS && defined(LL_SDL_WINDOW)
     SDL_UnregisterApp();
 #endif
     SDL_Quit();
