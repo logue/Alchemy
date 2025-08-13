@@ -2021,7 +2021,6 @@ void LLPreviewLSL::onLoadComplete(const LLUUID& asset_uuid, LLAssetType::EType t
             }
             preview->mScriptEd->setScriptName(script_name);
             preview->mScriptEd->setEnableEditing(is_modifiable);
-            preview->mScriptEd->setAssetID(asset_uuid);
             preview->mAssetStatus = PREVIEW_ASSET_LOADED;
 
             // Temporary hack to determine if the script is LSL or SLua when loaded from the inventory.
@@ -2278,7 +2277,6 @@ void LLLiveLSLEditor::onLoadComplete(const LLUUID& asset_id,
             instance->loadScriptText(asset_id, type);
             instance->mScriptEd->setEnableEditing(true);
             instance->mAssetStatus = PREVIEW_ASSET_LOADED;
-            instance->mScriptEd->setAssetID(asset_id);
         }
         else
         {
@@ -2448,7 +2446,6 @@ void LLLiveLSLEditor::finishLSLUpload(LLUUID itemId, LLUUID taskId, LLUUID newAs
     if (preview)
     {
         preview->mItem->setAssetUUID(newAssetId);
-        preview->mScriptEd->setAssetID(newAssetId);
 
         // Bytecode save completed
         if (response["compiled"])

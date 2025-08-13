@@ -1381,7 +1381,7 @@ U32 LLTextureCache::openAndReadEntries(std::vector<Entry>& entries)
         // Should this actually crash viewer?
         entries.clear();
         LL_WARNS() << "Bad alloc trying to read texture entries from cache, mFreeList: " << (S32)mFreeList.size()
-            << ", added entries: " << idx << ", total entries: " << num_entries << LL_ENDL;
+            << ", total entries: " << num_entries << LL_ENDL;
         closeHeaderEntriesFile();
         purgeAllTextures(false);
         return 0;
