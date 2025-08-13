@@ -2408,6 +2408,16 @@ Unable to upload snapshot.
 File might be too big, try reducing resolution or try again later.
   <tag>fail</tag>
   </notification>
+    
+  <notification
+   icon="alertmodal.tga"
+   name="CannotOpenFileTooBig"
+   type="alertmodal">
+Unable to open file.
+
+Viewer run out of memory while opening file. File might be too big.
+  <tag>fail</tag>
+  </notification>
 
   <notification
    icon="notifytip.tga"
@@ -7126,6 +7136,20 @@ You don&apos;t have permission to view this notecard.
   </notification>
 
   <notification
+   icon="alertmodal.tga"
+   name="MaterialImagesWereScaled"
+   type="alertmodal">
+One or more textures in this material were scaled to be within the allowed limits.
+Textures must have power of two dimensions and must not exceed [MAX_SIZE]x[MAX_SIZE] pixels.
+    <unique/>
+    <tag>confirm</tag>
+    <usetemplate
+     ignoretext="Warn if textures will be scaled during upload."
+     name="okignore"
+     yestext="OK"/>
+  </notification>
+
+  <notification
    icon="notifytip.tga"
    name="RezItemNoPermissions"
    type="notifytip">
@@ -9443,8 +9467,11 @@ Unable to upload texture: &apos;[NAME]&apos;
    icon="alertmodal.tga"
    name="CannotUploadMaterial"
    type="alertmodal">
-There was a problem uploading the file
+Unable to upload material file. The file may be corrupted, in an unsupported format, or contain invalid data. Please check that you're using a valid GLTF/GLB file with proper material definitions.
     <tag>fail</tag>
+    <usetemplate
+     name="okbutton"
+     yestext="OK"/>
   </notification>
 
   <notification
@@ -10325,6 +10352,14 @@ You are now the owner of object [OBJECT_NAME]
   </notification>
 
   <notification
+   icon="alertmodal.tga"
+   name="NowOwnObjectInv"
+   type="notify">
+   <tag>fail</tag>
+You are now the owner of object [OBJECT_NAME] and it has been placed in your inventory.
+  </notification>
+
+    <notification
    icon="alertmodal.tga"
    name="CantRezOnLand"
    type="notify">
@@ -12579,5 +12614,26 @@ are wearing now.
      <usetemplate
        name="okbutton"
        yestext="OK"/>
+  </notification>
+
+  <notification
+   icon="alertmodal.tga"
+   name="WaterExclusionSurfacesWarning"
+   type="alertmodal">
+    Checking the hide water box will overwrite the texture, bumpiness, and shininess choices.
+    <tag>confirm</tag>
+    <usetemplate
+      name="okcancelbuttons"
+      notext="Cancel"
+      yestext="Continue"/>
+  </notification>
+
+  <notification
+   icon="notify.tga"
+   name="WaterExclusionNoMaterial"
+   persist="true"
+   type="notify">
+    Unable to apply material to the water exclusion surface.
+    <tag>fail</tag>
   </notification>
 </notifications>

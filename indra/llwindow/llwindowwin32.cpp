@@ -695,8 +695,7 @@ LLWindowWin32::LLWindowWin32(LLWindowCallbacks* callbacks,
             }
 
             if (dev_mode.dmPelsWidth == width &&
-                dev_mode.dmPelsHeight == height &&
-                dev_mode.dmBitsPerPel == BITS_PER_PIXEL)
+                dev_mode.dmPelsHeight == height)
             {
                 success = true;
                 if ((dev_mode.dmDisplayFrequency - current_refresh)
@@ -736,7 +735,7 @@ LLWindowWin32::LLWindowWin32(LLWindowCallbacks* callbacks,
         // If we found a good resolution, use it.
         if (success)
         {
-            success = setDisplayResolution(width, height, BITS_PER_PIXEL, closest_refresh);
+            success = setDisplayResolution(width, height, closest_refresh);
         }
 
         // Keep a copy of the actual current device mode in case we minimize
@@ -749,7 +748,6 @@ LLWindowWin32::LLWindowWin32(LLWindowCallbacks* callbacks,
             mFullscreen = true;
             mFullscreenWidth   = dev_mode.dmPelsWidth;
             mFullscreenHeight  = dev_mode.dmPelsHeight;
-            mFullscreenBits    = dev_mode.dmBitsPerPel;
             mFullscreenRefresh = dev_mode.dmDisplayFrequency;
 
             LL_INFOS("Window") << "Running at " << dev_mode.dmPelsWidth
@@ -763,7 +761,6 @@ LLWindowWin32::LLWindowWin32(LLWindowCallbacks* callbacks,
             mFullscreen = false;
             mFullscreenWidth   = -1;
             mFullscreenHeight  = -1;
-            mFullscreenBits    = -1;
             mFullscreenRefresh = -1;
 
             std::map<std::string,std::string> args;
@@ -1185,7 +1182,7 @@ bool LLWindowWin32::switchContext(bool fullscreen, const LLCoordScreen& size, bo
         // If we found a good resolution, use it.
         if (success)
         {
-            success = setDisplayResolution(width, height, BITS_PER_PIXEL, closest_refresh);
+            success = setDisplayResolution(width, height, closest_refresh);
         }
 
         // Keep a copy of the actual current device mode in case we minimize
@@ -1197,7 +1194,6 @@ bool LLWindowWin32::switchContext(bool fullscreen, const LLCoordScreen& size, bo
             mFullscreen = true;
             mFullscreenWidth = dev_mode.dmPelsWidth;
             mFullscreenHeight = dev_mode.dmPelsHeight;
-            mFullscreenBits = dev_mode.dmBitsPerPel;
             mFullscreenRefresh = dev_mode.dmDisplayFrequency;
 
             LL_INFOS("Window") << "Running at " << dev_mode.dmPelsWidth
@@ -1223,7 +1219,6 @@ bool LLWindowWin32::switchContext(bool fullscreen, const LLCoordScreen& size, bo
             mFullscreen = false;
             mFullscreenWidth = -1;
             mFullscreenHeight = -1;
-            mFullscreenBits = -1;
             mFullscreenRefresh = -1;
 
             LL_INFOS("Window") << "Unable to run fullscreen at " << width << "x" << height << LL_ENDL;
@@ -3522,7 +3517,7 @@ F32 LLWindowWin32::getPixelAspectRatio()
 
 // Change display resolution.  Returns true if successful.
 // protected
-bool LLWindowWin32::setDisplayResolution(S32 width, S32 height, S32 bits, S32 refresh)
+bool LLWindowWin32::setDisplayResolution(S32 width, S32 height, S32 refresh)
 {
     DEVMODE dev_mode;
     ::ZeroMemory(&dev_mode, sizeof(DEVMODE));
@@ -3534,7 +3529,6 @@ bool LLWindowWin32::setDisplayResolution(S32 width, S32 height, S32 bits, S32 re
     {
         if (dev_mode.dmPelsWidth        == width &&
             dev_mode.dmPelsHeight       == height &&
-            dev_mode.dmBitsPerPel       == bits &&
             dev_mode.dmDisplayFrequency == refresh )
         {
             // ...display mode identical, do nothing
@@ -3546,9 +3540,8 @@ bool LLWindowWin32::setDisplayResolution(S32 width, S32 height, S32 bits, S32 re
     dev_mode.dmSize = sizeof(dev_mode);
     dev_mode.dmPelsWidth        = width;
     dev_mode.dmPelsHeight       = height;
-    dev_mode.dmBitsPerPel       = bits;
     dev_mode.dmDisplayFrequency = refresh;
-    dev_mode.dmFields = DM_BITSPERPEL | DM_PELSWIDTH | DM_PELSHEIGHT | DM_DISPLAYFREQUENCY;
+    dev_mode.dmFields = DM_PELSWIDTH | DM_PELSHEIGHT | DM_DISPLAYFREQUENCY;
 
     // CDS_FULLSCREEN indicates that this is a temporary change to the device mode.
     LONG cds_result = ChangeDisplaySettings(&dev_mode, CDS_FULLSCREEN);
@@ -3558,7 +3551,7 @@ bool LLWindowWin32::setDisplayResolution(S32 width, S32 height, S32 bits, S32 re
     if (!success)
     {
         LL_WARNS("Window") << "setDisplayResolution failed, "
-            << width << "x" << height << "x" << bits << " @ " << refresh << LL_ENDL;
+            << width << "x" << height << " @ " << refresh << LL_ENDL;
     }
 
     return success;
@@ -3569,7 +3562,7 @@ bool LLWindowWin32::setFullscreenResolution()
 {
     if (mFullscreen)
     {
-        return setDisplayResolution( mFullscreenWidth, mFullscreenHeight, mFullscreenBits, mFullscreenRefresh);
+        return setDisplayResolution( mFullscreenWidth, mFullscreenHeight, mFullscreenRefresh);
     }
     else
     {
@@ -4044,7 +4037,15 @@ void LLWindowWin32::fillCompositionLogfont(LOGFONT *logfont)
         break;
     }
 
-    logfont->lfHeight = mPreeditor->getPreeditFontSize();
+    if (mPreeditor)
+    {
+        logfont->lfHeight = mPreeditor->getPreeditFontSize();
+    }
+    else
+    {
+        // todo: extract from some font * LLUI::getScaleFactor() intead
+        logfont->lfHeight = 10;
+    }
     logfont->lfWeight = FW_NORMAL;
 }
 
@@ -4688,9 +4689,18 @@ void LLWindowWin32::LLWindowWin32Thread::checkDXMem()
 
                         if (phys_mb > 0)
                         {
-                            // Intel uses 'shared' vram, cap it to 25% of total memory
-                            // Todo: consider caping all adapters at least to 50% ram
-                            budget_mb = llmin(budget_mb, (UINT64)(phys_mb * 0.25));
+                            if (gGLManager.mIsIntel)
+                            {
+                                // Intel uses 'shared' vram, cap it to 25% of total memory
+                                // Todo: consider a way of detecting integrated Intel and AMD
+                                budget_mb = llmin(budget_mb, (UINT64)(phys_mb * 0.25));
+                            }
+                            else
+                            {
+                                // More budget is generally better, but the way viewer
+                                // utilizes even dedicated VRAM leaves a footprint in RAM
+                                budget_mb = llmin(budget_mb, (UINT64)(phys_mb * 0.75));
+                            }
                         }
                         else
                         {

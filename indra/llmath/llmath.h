@@ -39,8 +39,8 @@
 // llcommon depend on llmath.
 #include "is_approx_equal_fraction.h"
 
-#define llisnan(val)    std::isnan(val)
-#define llfinite(val)   std::isfinite(val)
+#define llisnan(val)  std::isnan(val)
+#define llfinite(val) std::isfinite(val)
 
 // Single Precision Floating Point Routines
 // (There used to be more defined here, but they appeared to be redundant and
@@ -140,12 +140,12 @@ inline F64 llabs(const F64 a)
 
 constexpr S32 lltrunc(F32 f)
 {
-    return (S32)f;
+    return narrow(f);
 }
 
 constexpr S32 lltrunc(F64 f)
 {
-    return (S32)f;
+    return narrow(f);
 }
 
 inline S32 llfloor(F32 f)

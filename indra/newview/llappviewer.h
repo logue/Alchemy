@@ -157,9 +157,6 @@ public:
     void loadNameCache();
     void saveNameCache();
 
-    void loadExperienceCache();
-    void saveExperienceCache();
-
     void removeMarkerFiles();
     void recordSessionToMarker();
 
@@ -175,7 +172,10 @@ public:
     virtual void forceErrorOSSpecificException();
     virtual void forceErrorDriverCrash();
     virtual void forceErrorCoroutineCrash();
+    virtual void forceErrorCoroprocedureCrash();
+    virtual void forceErrorWorkQueueCrash();
     virtual void forceErrorThreadCrash();
+    virtual void forceExceptionThreadCrash();
 
     // The list is found in app_settings/settings_files.xml
     // but since they are used explicitly in code,
@@ -198,11 +198,11 @@ public:
     // For thread debugging.
     // llstartup needs to control init.
     // llworld, send_agent_pause() also controls pause/resume.
-    void initMainloopTimeout(const std::string& state, F32 secs = -1.0f);
+    void initMainloopTimeout(std::string_view state, F32 secs = -1.0f);
     void destroyMainloopTimeout();
     void pauseMainloopTimeout();
-    void resumeMainloopTimeout(const std::string& state = "", F32 secs = -1.0f);
-    void pingMainloopTimeout(const std::string& state, F32 secs = -1.0f);
+    void resumeMainloopTimeout(std::string_view state = "", F32 secs = -1.0f);
+    void pingMainloopTimeout(std::string_view state, F32 secs = -1.0f);
 
     // Handle the 'login completed' event.
     // *NOTE:Mani Fix this for login abstraction!!
@@ -411,11 +411,10 @@ extern std::string gLastVersionChannel;
 
 extern LLVector3 gWindVec;
 extern LLVector3 gRelativeWindVec;
-extern U32  gPacketsIn;
-extern bool gPrintMessagesThisFrame;
 
 extern bool gRandomizeFramerate;
 extern bool gPeriodicSlowFrame;
+extern bool gDoDisconnect;
 
 extern bool gSimulateMemLeak;
 

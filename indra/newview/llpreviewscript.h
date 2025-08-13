@@ -148,7 +148,7 @@ public:
     void            setItemRemoved(bool script_removed) { mScriptRemoved = script_removed; }
 
     void            setAssetID(const LLUUID& asset_id) { mAssetID = asset_id; }
-    LLUUID          getAssetID() { return mAssetID; }
+    LLUUID          getAssetID() const { return mAssetID; }
 
     bool isFontSizeChecked(const LLSD &userdata);
     void onChangeFontSize(const LLSD &size_name);
@@ -215,7 +215,6 @@ class LLScriptEdContainer : public LLPreview
 
 public:
     LLScriptEdContainer(const LLSD& key);
-    LLScriptEdContainer(const LLSD& key, const bool live);
 
     bool handleKeyHere(KEY key, MASK mask);
 

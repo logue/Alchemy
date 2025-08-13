@@ -45,7 +45,7 @@ jobs:
     strategy:
       matrix:
         runner: [windows-2022, macos-15, ubuntu-22.04]
-        configuration: ${{ fromJSON(needs.setup.outputs.configurations) }}
+        configuration: ${{ fromJson(needs.setup.outputs.configurations) }}
         build_variant: [Viewer, Tests]
     runs-on: ${{ matrix.runner }}
     outputs:
@@ -237,8 +237,10 @@ jobs:
               prefix=${ba[0]}
               if [ "$prefix" == "project" ]; then
                   IFS='_' read -ra prj <<< "${ba[1]}"
+                  prj_str="${prj[*]}"
                   # uppercase first letter of each word
-                  export viewer_channel="Alchemy Project ${prj[*]^}"
+                  capitalized=$(echo "$prj_str" | awk '{for (i=1; i<=NF; i++) $i = toupper(substr($i,1,1)) substr($i,2); print}')
+                  export viewer_channel="Alchemy Project $capitalized"
               elif  [[ "$prefix" == "release" || "$prefix" == "main" ]];
               then
                   export viewer_channel="Alchemy Release"
@@ -308,7 +310,7 @@ jobs:
       AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
       AZURE_TENANT_ID:     ${{ secrets.AZURE_TENANT_ID }}
     needs: build
-    runs-on: windows-2022
+    runs-on: windows-latest
     steps:
       - name: Sign and package Windows viewer
         uses: AlchemyViewer/viewer-build-util/sign-pkg-windows@v2
@@ -463,7 +465,6 @@ jobs:
           prerelease: true
           generate_release_notes: true
           target_commitish: ${{ github.sha }}
-          previous_tag: release
           append_body: true
           fail_on_unmatched_files: true
           files: |

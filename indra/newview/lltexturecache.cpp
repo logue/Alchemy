@@ -1346,31 +1346,45 @@ U32 LLTextureCache::openAndReadEntries(std::vector<Entry>& entries)
         aprfile->seek(APR_SET, (S32)sizeof(EntriesInfo));
     }
 
-    entries.resize(num_entries);
-    S32 total_entries_size = sizeof(Entry) * num_entries;
-    S32 bytes_read = aprfile->read((void*)entries.data(), total_entries_size);
-    if (bytes_read != total_entries_size)
+    try
     {
-        LL_WARNS() << "Corrupted header entries, expected " << total_entries_size << " bytes but got " << bytes_read << " bytes" << LL_ENDL;
+        entries.resize(num_entries);
+        S32 total_entries_size = sizeof(Entry) * num_entries;
+        S32 bytes_read = aprfile->read((void*)entries.data(), total_entries_size);
+        if (bytes_read != total_entries_size)
+        {
+            LL_WARNS() << "Corrupted header entries, expected " << total_entries_size << " bytes but got " << bytes_read << " bytes" << LL_ENDL;
+            closeHeaderEntriesFile();
+            purgeAllTextures(false);
+            return 0;
+        }
+
+        for (U32 idx = 0; idx < num_entries; idx++)
+        {
+            const Entry& entry = entries[idx];
+//          LL_INFOS() << "ENTRY: " << entry.mTime << " TEX: " << entry.mID << " IDX: " << idx << " Size: " << entry.mImageSize << LL_ENDL;
+            if(entry.mImageSize > entry.mBodySize)
+            {
+                mHeaderIDMap[entry.mID] = idx;
+                mTexturesSizeMap[entry.mID] = entry.mBodySize;
+                mTexturesSizeTotal += entry.mBodySize;
+            }
+            else
+            {
+                mFreeList.insert(idx);
+            }
+        }
+    }
+    catch (const std::bad_alloc&)
+    {
+        // Too little ram yet very large cache?
+        // Should this actually crash viewer?
+        entries.clear();
+        LL_WARNS() << "Bad alloc trying to read texture entries from cache, mFreeList: " << (S32)mFreeList.size()
+            << ", added entries: " << idx << ", total entries: " << num_entries << LL_ENDL;
         closeHeaderEntriesFile();
         purgeAllTextures(false);
         return 0;
-    }
-
-    for (U32 idx = 0; idx < num_entries; idx++)
-    {
-        const Entry& entry = entries[idx];
-//      LL_INFOS() << "ENTRY: " << entry.mTime << " TEX: " << entry.mID << " IDX: " << idx << " Size: " << entry.mImageSize << LL_ENDL;
-        if(entry.mImageSize > entry.mBodySize)
-        {
-            mHeaderIDMap[entry.mID] = idx;
-            mTexturesSizeMap[entry.mID] = entry.mBodySize;
-            mTexturesSizeTotal += entry.mBodySize;
-        }
-        else
-        {
-            mFreeList.insert(idx);
-        }
     }
     closeHeaderEntriesFile();
     return num_entries;

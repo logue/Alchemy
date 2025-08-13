@@ -1290,7 +1290,7 @@ U32 LLViewerObject::processUpdateMessage(LLMessageSystem *mesgsys,
 #endif
                 //clear cost and linkset cost
                 setObjectCostStale();
-                if (isSelected())
+                if (isSelected() && gFloaterTools)
                 {
                     gFloaterTools->dirty();
                 }
@@ -1729,7 +1729,7 @@ U32 LLViewerObject::processUpdateMessage(LLMessageSystem *mesgsys,
 #endif
                 setObjectCostStale();
 
-                if (isSelected())
+                if (isSelected() && gFloaterTools)
                 {
                     gFloaterTools->dirty();
                 }
@@ -2325,6 +2325,12 @@ U32 LLViewerObject::processUpdateMessage(LLMessageSystem *mesgsys,
 
         // Set the rotation of the object followed by adjusting for the accumulated angular velocity (llSetTargetOmega)
         setRotation(new_rot * mAngularVelocityRot);
+        if ((mFlags & FLAGS_SERVER_AUTOPILOT) && asAvatar() && asAvatar()->isSelf())
+        {
+            gAgent.resetAxes();
+            gAgent.rotate(new_rot);
+            gAgentCamera.resetView();
+        }
         setChanged(ROTATED | SILHOUETTE);
     }
 
@@ -3885,7 +3891,7 @@ void LLViewerObject::setObjectCost(F32 cost)
     mObjectCost = cost;
     mCostStale = false;
 
-    if (isSelected())
+    if (isSelected() && gFloaterTools)
     {
         gFloaterTools->dirty();
     }
@@ -3905,7 +3911,7 @@ void LLViewerObject::setLinksetCost(F32 cost)
         iter++;
     }
 
-    if (needs_refresh)
+    if (needs_refresh && gFloaterTools)
     {
         gFloaterTools->dirty();
     }
@@ -3916,7 +3922,7 @@ void LLViewerObject::setPhysicsCost(F32 cost)
     mPhysicsCost = cost;
     mCostStale = false;
 
-    if (isSelected())
+    if (isSelected() && gFloaterTools)
     {
         gFloaterTools->dirty();
     }
@@ -3927,7 +3933,7 @@ void LLViewerObject::setLinksetPhysicsCost(F32 cost)
     mLinksetPhysicsCost = cost;
     mCostStale = false;
 
-    if (isSelected())
+    if (isSelected() && gFloaterTools)
     {
         gFloaterTools->dirty();
     }
@@ -4820,6 +4826,18 @@ void LLViewerObject::setPositionParent(const LLVector3 &pos_parent, bool damped)
     else
     {
         setPositionRegion(pos_parent, damped);
+
+        // #1964 mark reflection probe in the linkset to update position after moving via script
+        for (LLViewerObject* child : mChildList)
+        {
+            if (child && child->isReflectionProbe())
+            {
+                if (LLDrawable* drawablep = child->mDrawable)
+                {
+                    gPipeline.markMoved(drawablep);
+                }
+            }
+        }
     }
 }
 
@@ -7670,6 +7688,31 @@ void LLViewerObject::setGLTFAsset(const LLUUID& id)
     updateVolume(volume_params);
 }
 
+void LLViewerObject::clearTEWaterExclusion(const U8 te)
+{
+    if (permModify())
+    {
+        LLViewerTexture* image = getTEImage(te);
+        if (image && (IMG_ALPHA_GRAD == image->getID()))
+        {
+            // reset texture to default plywood
+            setTEImage(te, LLViewerTextureManager::getFetchedTexture(DEFAULT_OBJECT_TEXTURE, FTT_DEFAULT, true, LLGLTexture::BOOST_NONE, LLViewerTexture::LOD_TEXTURE));
+
+            // reset texture repeats, that might be altered by invisiprim script from wiki
+            U32 s_axis, t_axis;
+            if (!LLPrimitive::getTESTAxes(te, &s_axis, &t_axis))
+            {
+                return;
+            }
+            F32 DEFAULT_REPEATS = 2.f;
+            F32 new_s = getScale().mV[s_axis] * DEFAULT_REPEATS;
+            F32 new_t = getScale().mV[t_axis] * DEFAULT_REPEATS;
+
+            setTEScale(te, new_s, new_t);
+            sendTEUpdate();
+        }
+    }
+}
 
 class ObjectPhysicsProperties : public LLHTTPNode
 {

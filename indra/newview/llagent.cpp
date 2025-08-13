@@ -2502,7 +2502,10 @@ void LLAgent::endAnimationUpdateUI()
         gAgentAvatarp->updateAttachmentVisibility(gAgentCamera.getCameraMode());
     }
 
-    gFloaterTools->dirty();
+    if (gFloaterTools)
+    {
+        gFloaterTools->dirty();
+    }
 
     // Don't let this be called more than once if the camera
     // mode hasn't changed.  --JC
@@ -3466,11 +3469,14 @@ void LLAgent::initOriginGlobal(const LLVector3d &origin_global)
 
 bool LLAgent::leftButtonGrabbed() const
 {
-    const bool camera_mouse_look = gAgentCamera.cameraMouselook();
-    return (!camera_mouse_look && mControlsTakenCount[CONTROL_LBUTTON_DOWN_INDEX] > 0)
-        || (camera_mouse_look && mControlsTakenCount[CONTROL_ML_LBUTTON_DOWN_INDEX] > 0)
-        || (!camera_mouse_look && mControlsTakenPassedOnCount[CONTROL_LBUTTON_DOWN_INDEX] > 0)
-        || (camera_mouse_look && mControlsTakenPassedOnCount[CONTROL_ML_LBUTTON_DOWN_INDEX] > 0);
+    if (gAgentCamera.cameraMouselook())
+    {
+        return mControlsTakenCount[CONTROL_ML_LBUTTON_DOWN_INDEX] > 0;
+    }
+    else
+    {
+        return mControlsTakenCount[CONTROL_LBUTTON_DOWN_INDEX] > 0;
+    }
 }
 
 bool LLAgent::rotateGrabbed() const
@@ -4318,9 +4324,14 @@ void LLAgent::teleportViaLandmark(const LLUUID& landmark_asset_id)
 
 void LLAgent::doTeleportViaLandmark(const LLUUID& landmark_asset_id)
 {
-    bool is_local(false);
-    LLViewerRegion* regionp  = getRegion();
+    LLViewerRegion* regionp = getRegion();
+    if (!regionp)
+    {
+        LL_WARNS("Teleport") << "called when agent region is null" << LL_ENDL;
+        return;
+    }
 
+    bool is_local(false);
     if (LLLandmark* landmark = gLandmarkList.getAsset(landmark_asset_id, NULL))
     {
         LLVector3d pos_global;
