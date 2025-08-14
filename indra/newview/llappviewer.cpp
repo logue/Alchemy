@@ -453,10 +453,10 @@ void idle_afk_check()
 // [RLVa:KB] - Checked: 2010-05-03 (RLVa-1.2.0g) | Modified: RLVa-1.2.0g
     // Enforce an idle time of 30 minutes if @allowidle=n restricted
     static LLCachedControl<S32> afk_timeout_cc(gSavedSettings, "AFKTimeout", 300);
-    F32 afk_timeout = (!gRlvHandler.hasBehaviour(RLV_BHVR_ALLOWIDLE)) ? afk_timeout_cc() : 60 * 30;
+    F32 afk_timeout = (!gRlvHandler.hasBehaviour(RLV_BHVR_ALLOWIDLE)) ? afk_timeout_cc() : 60.f * 30.f;
 // [/RLVa:KB]
 //  static LLCachedControl<S32> afk_timeout(gSavedSettings, "AFKTimeout", 300);
-    if (afk_timeout() && (current_idle > (F32)afk_timeout()) && !gAgent.getAFK())
+    if (afk_timeout && (current_idle > (F32)afk_timeout) && !gAgent.getAFK())
     {
         LL_INFOS("IdleAway") << "Idle more than " << afk_timeout << " seconds: automatically changing to Away status" << LL_ENDL;
         gAgent.setAFK();

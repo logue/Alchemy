@@ -22,14 +22,7 @@
 
 #include "rlvdefines.h"
 
-#ifdef LL_WINDOWS
-    #pragma warning (push)
-    #pragma warning (disable : 4702) // warning C4702: unreachable code
-#endif
 #include <boost/variant.hpp>
-#ifdef LL_WINDOWS
-    #pragma warning (pop)
-#endif
 
 // ============================================================================
 // Forward declarations
@@ -96,7 +89,7 @@ public:
 
     static bool getDebugHideUnsetDup()          { return rlvGetSetting<bool>(RlvSettingNames::DebugHideUnsetDup, false); }
     #ifdef RLV_EXPERIMENTAL_COMPOSITEFOLDERS
-    static BOOL getEnableComposites()           { return s_fCompositeFolders; }
+    static bool getEnableComposites()           { return s_fCompositeFolders; }
     #endif // RLV_EXPERIMENTAL_COMPOSITEFOLDERS
     static bool getEnableIMQuery()              { return rlvGetSetting<bool>(RlvSettingNames::EnableIMQuery, true); }
     static bool getEnableLegacyNaming()         { return s_fLegacyNaming; }
@@ -123,7 +116,7 @@ protected:
     static bool onChangedSettingBOOL(const LLSD& sdValue, bool* pfSetting);
 
     #ifdef RLV_EXPERIMENTAL_COMPOSITEFOLDERS
-    static BOOL s_fCompositeFolders;
+    static bool s_fCompositeFolders;
     #endif // RLV_EXPERIMENTAL_COMPOSITEFOLDERS
 
     /*

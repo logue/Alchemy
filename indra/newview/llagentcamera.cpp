@@ -2094,8 +2094,8 @@ bool LLAgentCamera::allowFocusOffsetChange(const LLVector3d& offsetFocus)
         {
             const LLVector3d posFocusGlobal = calcFocusPositionTargetGlobal();
             // Don't allow moving the focus offset if at minimum and moving closer (or if at maximum and moving further) to prevent camera warping
-            F32 nCurDist = llabs((posFocusGlobal + mCameraFocusOffsetTarget - m_posRlvRefGlobal).magVec());
-            F32 nNewDist = llabs((posFocusGlobal + offsetFocus - m_posRlvRefGlobal).magVec());
+            F32 nCurDist = F32(llabs((posFocusGlobal + mCameraFocusOffsetTarget - m_posRlvRefGlobal).magVec()));
+            F32 nNewDist = F32(llabs((posFocusGlobal + offsetFocus - m_posRlvRefGlobal).magVec()));
             if ( ((m_fRlvMaxDist) && (nNewDist > nCurDist)) || ((m_fRlvMinDist) && (nNewDist < nCurDist)) )
                 return false;
         }
@@ -2107,7 +2107,7 @@ bool LLAgentCamera::clampCameraPosition(LLVector3d& posCamGlobal, const LLVector
 {
     const LLVector3d offsetCamera = posCamGlobal - posCamRefGlobal;
 
-    F32 nCamAvDist = llabs(offsetCamera.magVec()), nDistMult = NAN;
+    F32 nCamAvDist = F32(llabs(offsetCamera.magVec())), nDistMult = NAN;
     if (nCamAvDist > nDistMax)
     {
         nDistMult = nDistMax / nCamAvDist;

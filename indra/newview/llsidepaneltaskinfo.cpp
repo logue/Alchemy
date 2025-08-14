@@ -405,7 +405,7 @@ void LLSidepanelTaskInfo::refresh()
     // Update creator text field
     getChildView("Creator:")->setEnabled(true);
 // [RLVa:KB] - Checked: 2010-11-01 (RLVa-1.2.2a) | Modified: RLVa-1.2.2a
-    BOOL creators_identical = FALSE;
+    bool creators_identical = false;
 // [/RLVa:KB]
 
     std::string creator_name;

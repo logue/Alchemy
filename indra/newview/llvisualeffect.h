@@ -17,6 +17,8 @@
 #pragma once
 
 #include "llsingleton.h"
+#include <boost/optional.hpp>
+#include <boost/none.hpp>
 
 // ============================================================================
 //
@@ -46,6 +48,7 @@ enum class EVisualEffectType
 
 struct LLVisualEffectParams
 {
+    virtual ~LLVisualEffectParams() = default;
     virtual void step(bool isLast) = 0;
 };
 
@@ -129,7 +132,6 @@ class LLTweenableValueLerp : public LLTweenableValue<T>
 {
 public:
     LLTweenableValueLerp(const T& defaultValue) : LLTweenableValue<T>(defaultValue) {}
-
     T    get() override;
     void start(const T& endValue, double duration) override
     {

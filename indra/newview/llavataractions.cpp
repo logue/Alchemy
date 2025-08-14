@@ -970,7 +970,7 @@ namespace action_give_inventory
      * @param avatar_names - avatar names request to be sent.
      * @param avatar_uuids - avatar names request to be sent.
      */
-// RYETODO FIXRLV
+
 //  static void give_inventory_ids(const uuid_vec_t& avatar_uuids, const std::vector<LLAvatarName> avatar_names, const uuid_set_t inventory_selected_uuids)
 // [RLVa:KB] - @share
     static void give_inventory_ids(uuid_vec_t avatar_uuids, std::vector<LLAvatarName> avatar_names, const uuid_set_t inventory_selected_uuids)
@@ -981,7 +981,7 @@ namespace action_give_inventory
 // [RLVa:KB] - @share
         if ( (RlvActions::isRlvEnabled()) && (RlvActions::hasBehaviour(RLV_BHVR_SHARE)) )
         {
-            for (int idxAvatar = avatar_uuids.size() - 1; idxAvatar >= 0; idxAvatar--)
+            for (ptrdiff_t idxAvatar = avatar_uuids.size() - 1; idxAvatar >= 0; idxAvatar--)
             {
                 if (!RlvActions::canGiveInventory(avatar_uuids[idxAvatar]))
                 {

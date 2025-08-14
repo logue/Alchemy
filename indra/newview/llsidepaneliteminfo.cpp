@@ -372,15 +372,28 @@ void LLSidepanelItemInfo::refreshFromItem(LLViewerInventoryItem* item)
     if (item->getCreatorUUID().notNull())
     {
         LLUUID creator_id = item->getCreatorUUID();
-        std::string slurl =
-            LLSLURL("agent", creator_id, "inspect").getSLURLString();
+//      std::string slurl =
+//          LLSLURL("agent", creator_id, "inspect").getSLURLString();
+// [RLVa:KB] - Checked: RLVa-2.0.1
+        // If the object creator matches the object owner we need to anonymize the creator field as well
+        bool fRlvCanShowCreator = true;
+        if ( (RlvActions::isRlvEnabled()) && (!RlvActions::canShowName(RlvActions::SNC_DEFAULT, creator_id)) &&
+             ( ((perm.isOwned()) && (!perm.isGroupOwned()) && (perm.getOwner() == creator_id) ) || (RlvUtil::isNearbyAgent(item->getCreatorUUID())) ) )
+        {
+            fRlvCanShowCreator = false;
+        }
+        std::string slurl = LLSLURL("agent", creator_id, (fRlvCanShowCreator) ? "inspect" : "rlvanonym").getSLURLString();
+// [/RLVa:KB]
 
         style_params.link_href = slurl;
 
         LLAvatarName av_name;
         if (LLAvatarNameCache::get(creator_id, &av_name))
         {
-            updateCreatorName(creator_id, av_name, style_params);
+//            updateCreatorName(creator_id, av_name, style_params);
+// [RLVa:KB] - Checked: RLVa-2.0.1
+            updateCreatorName(creator_id, av_name, style_params, !fRlvCanShowCreator);
+// [/RLVa:KB]
         }
         else
         {
@@ -389,11 +402,17 @@ void LLSidepanelItemInfo::refreshFromItem(LLViewerInventoryItem* item)
                 mCreatorCacheConnection.disconnect();
             }
             mLabelCreatorName->setText(LLTrans::getString("None"));
-            mCreatorCacheConnection = LLAvatarNameCache::get(creator_id, boost::bind(&LLSidepanelItemInfo::updateCreatorName, this, _1, _2, style_params));
+//            mCreatorCacheConnection = LLAvatarNameCache::get(creator_id, boost::bind(&LLSidepanelItemInfo::updateCreatorName, this, _1, _2, style_params));
+// [RLVa:KB] - Checked: RLVa-2.0.1
+            mCreatorCacheConnection = LLAvatarNameCache::get(creator_id, boost::bind(&LLSidepanelItemInfo::updateCreatorName, this, _1, _2, style_params, !fRlvCanShowCreator));
+// [/RLVa:KB]
         }
 
         getChildView("LabelCreatorTitle")->setEnabled(true);
-        mLabelCreatorName->setEnabled(true);
+//        mLabelCreatorName->setEnabled(true);
+// [RLVa:KB] - Checked: RLVa-2.0.1
+        mLabelCreatorName->setEnabled(fRlvCanShowCreator);
+// [/RLVa:KB]
     }
     else
     {
@@ -435,13 +454,20 @@ void LLSidepanelItemInfo::refreshFromItem(LLViewerInventoryItem* item)
         else
         {
             LLUUID owner_id = perm.getOwner();
-            slurl = LLSLURL("agent", owner_id, "inspect").getSLURLString();
+//            slurl = LLSLURL("agent", owner_id, "inspect").getSLURLString();
+// [RLVa:KB] - Checked: RLVa-2.0.1
+            fRlvCanShowOwner = RlvActions::canShowName(RlvActions::SNC_DEFAULT, owner_id);
+            slurl = LLSLURL("agent", owner_id, (fRlvCanShowOwner) ? "inspect" : "rlvanonym").getSLURLString();
+// [/RLVa:KB]
 
             style_params.link_href = slurl;
             LLAvatarName av_name;
             if (LLAvatarNameCache::get(owner_id, &av_name))
             {
-                updateOwnerName(owner_id, av_name, style_params);
+//                updateOwnerName(owner_id, av_name, style_params);
+// [RLVa:KB] - Checked: RLVa-2.0.1
+                updateOwnerName(owner_id, av_name, style_params, !fRlvCanShowOwner);
+// [/RLVa:KB]
             }
             else
             {
@@ -450,11 +476,17 @@ void LLSidepanelItemInfo::refreshFromItem(LLViewerInventoryItem* item)
                     mOwnerCacheConnection.disconnect();
                 }
                 mLabelOwnerName->setText(LLTrans::getString("None"));
-                mOwnerCacheConnection = LLAvatarNameCache::get(owner_id, boost::bind(&LLSidepanelItemInfo::updateOwnerName, this, _1, _2, style_params));
+//                mOwnerCacheConnection = LLAvatarNameCache::get(owner_id, boost::bind(&LLSidepanelItemInfo::updateOwnerName, this, _1, _2, style_params));
+// [RLVa:KB] - Checked: RLVa-2.0.1
+                mOwnerCacheConnection = LLAvatarNameCache::get(owner_id, boost::bind(&LLSidepanelItemInfo::updateOwnerName, this, _1, _2, style_params, !fRlvCanShowOwner));
+// [/RLVa:KB]
             }
         }
         getChildView("LabelOwnerTitle")->setEnabled(true);
-        mLabelOwnerName->setEnabled(true);
+//        mLabelOwnerName->setEnabled(true);
+// [RLVa:KB] - Checked: RLVa-2.0.1
+        mLabelOwnerName->setEnabled(fRlvCanShowOwner);
+// [/RLVa:KB]
     }
     else
     {
@@ -746,23 +778,35 @@ void LLSidepanelItemInfo::refreshFromItem(LLViewerInventoryItem* item)
     }
 }
 
-void LLSidepanelItemInfo::updateCreatorName(const LLUUID& creator_id, const LLAvatarName& creator_name, const LLStyle::Params& style_params)
+//void LLSidepanelItemInfo::updateCreatorName(const LLUUID& creator_id, const LLAvatarName& creator_name, const LLStyle::Params& style_params)
+// [RLVa:KB] - Checked: RLVa-2.0.1
+void LLSidepanelItemInfo::updateCreatorName(const LLUUID& creator_id, const LLAvatarName& creator_name, const LLStyle::Params& style_params, bool rlv_restricted)
+// [/RLVa:KB]
 {
     if (mCreatorCacheConnection.connected())
     {
         mCreatorCacheConnection.disconnect();
     }
-    std::string name = creator_name.getCompleteName();
+//    std::string name = creator_name.getCompleteName();
+// [RLVa:KB] - Checked: RLVa-2.0.1
+    std::string name = rlv_restricted ? RlvStrings::getAnonym(creator_name) : creator_name.getCompleteName();
+// [/RLVa:KB]
     mLabelCreatorName->setText(name, style_params);
 }
 
-void LLSidepanelItemInfo::updateOwnerName(const LLUUID& owner_id, const LLAvatarName& owner_name, const LLStyle::Params& style_params)
+//void LLSidepanelItemInfo::updateOwnerName(const LLUUID& owner_id, const LLAvatarName& owner_name, const LLStyle::Params& style_params)
+// [RLVa:KB] - Checked: RLVa-2.0.1
+void LLSidepanelItemInfo::updateOwnerName(const LLUUID& owner_id, const LLAvatarName& owner_name, const LLStyle::Params& style_params, bool rlv_restricted)
+// [/RLVa:KB]
 {
     if (mOwnerCacheConnection.connected())
     {
         mOwnerCacheConnection.disconnect();
     }
-    std::string name = owner_name.getCompleteName();
+//    std::string name = owner_name.getCompleteName();
+// [RLVa:KB] - Checked: RLVa-2.0.1
+    std::string name = rlv_restricted ? RlvStrings::getAnonym(owner_name) : owner_name.getCompleteName();
+// [/RLVa:KB]
     mLabelOwnerName->setText(name, style_params);
 }
 

@@ -180,7 +180,7 @@ void RlvAttachmentLocks::addAttachmentLock(const LLUUID& idAttachObj, const LLUU
 /*
     // Sanity check - make sure it's an object we know about
     if ( (m_Objects.find(idRlvObj) == m_Objects.end()) || (!idxAttachPt) )
-        return; // If (idxAttachPt) == 0 then: (pObj == NULL) || (pObj->isAttachment() == FALSE)
+        return; // If (idxAttachPt) == 0 then: (pObj == NULL) || (pObj->isAttachment() == false)
 */
 
 #ifndef RLV_RELEASE
@@ -199,7 +199,7 @@ void RlvAttachmentLocks::addAttachmentPointLock(S32 idxAttachPt, const LLUUID& i
 /*
     // Sanity check - make sure it's an object we know about
     if ( (m_Objects.find(idRlvObj) == m_Objects.end()) || (!idxAttachPt) )
-        return; // If (idxAttachPt) == 0 then: (pObj == NULL) || (pObj->isAttachment() == FALSE)
+        return; // If (idxAttachPt) == 0 then: (pObj == NULL) || (pObj->isAttachment() == false)
 */
 
     // NOTE: m_AttachPtXXX can contain duplicate <idxAttachPt, idRlvObj> pairs (ie @detach:spine=n,detach=n from an attachment on spine)
@@ -320,7 +320,7 @@ void RlvAttachmentLocks::removeAttachmentLock(const LLUUID& idAttachObj, const L
 /*
     // Sanity check - make sure it's an object we know about
     if ( (m_Objects.find(idRlvObj) == m_Objects.end()) || (!idxAttachPt) )
-        return; // If (idxAttachPt) == 0 then: (pObj == NULL) || (pObj->isAttachment() == FALSE)
+        return; // If (idxAttachPt) == 0 then: (pObj == NULL) || (pObj->isAttachment() == false)
 */
 
 #ifndef RLV_RELEASE
@@ -350,7 +350,7 @@ void RlvAttachmentLocks::removeAttachmentPointLock(S32 idxAttachPt, const LLUUID
 /*
     // Sanity check - make sure it's an object we know about
     if ( (m_Objects.find(idRlvObj) == m_Objects.end()) || (!idxAttachPt) )
-        return; // If (idxAttachPt) == 0 then: (pObj == NULL) || (pObj->isAttachment() == FALSE)
+        return; // If (idxAttachPt) == 0 then: (pObj == NULL) || (pObj->isAttachment() == false)
 */
 
     if (eLock & RLV_LOCK_REMOVE)
@@ -712,7 +712,7 @@ void RlvAttachmentLockWatchdog::onSavedAssetIntoInventory(const LLUUID& idItem)
 }
 
 // Checked: 2010-03-05 (RLVa-1.2.0a) | Modified: RLVa-1.0.5b
-BOOL RlvAttachmentLockWatchdog::onTimer()
+bool RlvAttachmentLockWatchdog::onTimer()
 {
     // RELEASE-RLVa: [SL-2.0.0] This will need rewriting for "ENABLE_MULTIATTACHMENTS"
     F64 tsCurrent = LLFrameTimer::getElapsedSeconds();
@@ -818,7 +818,7 @@ void RlvWearableLocks::addWearableTypeLock(LLWearableType::EType eType, const LL
 /*
     // Sanity check - make sure it's an object we know about
     if ( (m_Objects.find(idRlvObj) == m_Objects.end()) || (!idxAttachPt) )
-        return; // If (idxAttachPt) == 0 then: (pObj == NULL) || (pObj->isAttachment() == FALSE)
+        return; // If (idxAttachPt) == 0 then: (pObj == NULL) || (pObj->isAttachment() == false)
 */
 
     // NOTE: m_WearableTypeXXX can contain duplicate <eType, idRlvObj> pairs (ie @remoutfit:shirt=n,remoutfit=n from the same object)
@@ -892,7 +892,7 @@ void RlvWearableLocks::removeWearableTypeLock(LLWearableType::EType eType, const
 /*
     // Sanity check - make sure it's an object we know about
     if ( (m_Objects.find(idRlvObj) == m_Objects.end()) || (!idxAttachPt) )
-        return; // If (idxAttachPt) == 0 then: (pObj == NULL) || (pObj->isAttachment() == FALSE)
+        return; // If (idxAttachPt) == 0 then: (pObj == NULL) || (pObj->isAttachment() == false)
 */
 
     if (eLock & RLV_LOCK_REMOVE)
@@ -977,7 +977,7 @@ void RlvFolderLocks::addFolderLock(const folderlock_source_t& lockSource, ELockP
 // Checked: 2011-03-28 (RLVa-1.3.0g) | Modified: RLVa-1.3.0g
 bool RlvFolderLocks::getLockedFolders(const folderlock_source_t& lockSource, LLInventoryModel::cat_array_t& lockFolders) const
 {
-    S32 cntFolders = lockFolders.size();
+    size_t cntFolders = lockFolders.size();
     switch (lockSource.first)
     {
         case ST_ATTACHMENT:
@@ -1045,17 +1045,17 @@ bool RlvFolderLocks::getLockedFolders(const folderlock_source_t& lockSource, LLI
 // Checked: 2011-11-26 (RLVa-1.5.4a) | Modified: RLVa-1.5.4a
 bool RlvFolderLocks::getLockedItems(const LLUUID& idFolder, LLInventoryModel::item_array_t& lockItems) const
 {
-    S32 cntItems = lockItems.size();
+    size_t cntItems = lockItems.size();
 
     LLInventoryModel::cat_array_t folders; LLInventoryModel::item_array_t items;
     LLFindWearablesEx f(true, true);    // Collect all worn items
-    gInventory.collectDescendentsIf(idFolder, folders, items, FALSE, f);
+    gInventory.collectDescendentsIf(idFolder, folders, items, false, f);
 
     // Generally several of the worn items will belong to the same folder so we'll cache the results of each lookup
     std::map<LLUUID, bool> folderLookups; std::map<LLUUID, bool>::const_iterator itLookup;
 
     bool fItemLocked = false;
-    for (S32 idxItem = 0, cntItem = items.size(); idxItem < cntItem; idxItem++)
+    for (size_t idxItem = 0, cntItem = items.size(); idxItem < cntItem; idxItem++)
     {
         LLViewerInventoryItem* pItem = items.at(idxItem);
         if (LLAssetType::AT_LINK == pItem->getActualType())
@@ -1121,7 +1121,7 @@ bool RlvFolderLocks::hasLockedFolderDescendent(const LLUUID& idFolder, int eSour
 
     LLInventoryModel::cat_array_t folders; LLInventoryModel::item_array_t items;
     RlvLockedDescendentsCollector f(eSourceTypeMask, ePermMask, eLockTypeMask);
-    gInventory.collectDescendentsIf(idFolder, folders, items, FALSE, f, false);
+    gInventory.collectDescendentsIf(idFolder, folders, items, false, f, false);
     return !folders.empty();
 }
 
@@ -1231,7 +1231,7 @@ void RlvFolderLocks::refreshLockedLookups() const
         LLInventoryModel::cat_array_t lockedFolders; const LLUUID& idFolderRoot = gInventory.getRootFolderID();
         if (getLockedFolders(pLockDescr->lockSource, lockedFolders))
         {
-            for (S32 idxFolder = 0, cntFolder = lockedFolders.size(); idxFolder < cntFolder; idxFolder++)
+            for (size_t idxFolder = 0, cntFolder = lockedFolders.size(); idxFolder < cntFolder; idxFolder++)
             {
                 const LLViewerInventoryCategory* pFolder = lockedFolders.at(idxFolder);
                 if (idFolderRoot != pFolder->getUUID())
@@ -1252,7 +1252,7 @@ void RlvFolderLocks::refreshLockedLookups() const
     LLInventoryModel::item_array_t lockedItems;
     if (getLockedItems(LLAppearanceMgr::instance().getCOF(), lockedItems))
     {
-        for (S32 idxItem = 0, cntItem = lockedItems.size(); idxItem < cntItem; idxItem++)
+        for (size_t idxItem = 0, cntItem = lockedItems.size(); idxItem < cntItem; idxItem++)
         {
             const LLViewerInventoryItem* pItem = lockedItems.at(idxItem);
             switch (pItem->getType())

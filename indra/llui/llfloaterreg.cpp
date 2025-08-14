@@ -283,7 +283,7 @@ LLFloater* LLFloaterReg::showInstance(std::string_view name, const LLSD& key, bo
 //          // see EXT-7090
 //          && sAlwaysShowableList.find(name) == sAlwaysShowableList.end())
 // [RLVa:KB] - Checked: 2010-02-28 (RLVa-1.4.0a) | Modified: RLVa-1.2.0a
-    if ( (sBlockShowFloaters && sAlwaysShowableList.find(name) == sAlwaysShowableList.end()) || (!mValidateSignal(name, key)) )
+    if ( (sBlockShowFloaters && sAlwaysShowableList.find(name) == sAlwaysShowableList.end()) || (!mValidateSignal(std::string(name), key)) )
 // [/RLVa:KB]
         return 0;//
     LLFloater* instance = getInstance(name, key);

@@ -182,7 +182,7 @@ public:
     static void cleanupClass();
     static void onIdleStartup(void* pParam);
 protected:
-    void getAttachmentResourcesCoro(const std::string& strUrl);
+    void getAttachmentResourcesCoro(const std::string strUrl);
     void onTeleportCallback(U64 hRegion, const LLVector3& posRegion, const LLVector3& vecLookAt, const LLUUID& idRlvObj);
 
     /*

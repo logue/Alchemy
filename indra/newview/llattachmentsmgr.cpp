@@ -84,7 +84,7 @@ LLAttachmentsMgr::~LLAttachmentsMgr()
 // [RLVa:KB] - Checked: 2010-09-13 (RLVa-1.2.1)
 void LLAttachmentsMgr::addAttachmentRequest(const LLUUID& item_id,
                                             const U8 attachment_pt,
-                                            const bool add, const BOOL fRlvForce /*=FALSE*/)
+                                            const bool add, const bool fRlvForce /*=FALSE*/)
 // [/RLVa:KB]
 {
     LLViewerInventoryItem *item = gInventory.getItem(item_id);

@@ -1411,7 +1411,7 @@ bool LLWorld::getAvatar(const LLUUID& idAvatar, LLVector3d& posAvatar) const
 
     for (const LLViewerRegion* pRegion : LLWorld::getInstance()->getRegionList())
     {
-        for (S32 idxAgent = 0, cntAgent = pRegion->mMapAvatarIDs.size(); idxAgent < cntAgent; ++idxAgent)
+        for (size_t idxAgent = 0, cntAgent = pRegion->mMapAvatarIDs.size(); idxAgent < cntAgent; ++idxAgent)
         {
             if (idAvatar == pRegion->mMapAvatarIDs[idxAgent])
             {

@@ -75,7 +75,7 @@
 #include <boost/algorithm/string.hpp>
 
 // llappviewer.cpp
-extern BOOL gDoDisconnect;
+extern bool gDoDisconnect;
 
 // ============================================================================
 // Static variable initialization
@@ -270,7 +270,7 @@ void RlvHandler::addException(const LLUUID& idObj, ERlvBehaviour eBhvr, const Rl
 
 bool RlvHandler::isException(ERlvBehaviour eBhvr, const RlvExceptionOption& varOption, ERlvExceptionCheck eCheckType) const
 {
-    // We need to "strict check" exceptions only if: the restriction is actually in place *and* (isPermissive(eBhvr) == FALSE)
+    // We need to "strict check" exceptions only if: the restriction is actually in place *and* (isPermissive(eBhvr) == false)
     if (ERlvExceptionCheck::Default == eCheckType)
         eCheckType = ( (hasBehaviour(eBhvr)) && (!isPermissive(eBhvr)) ) ? ERlvExceptionCheck::Strict : ERlvExceptionCheck::Permissive;
 
@@ -350,7 +350,7 @@ void RlvHandler::removeBlockedObject(const LLUUID& idObj)
         }), m_BlockedObjects.end());
 }
 
-void RlvHandler::getAttachmentResourcesCoro(const std::string& strUrl)
+void RlvHandler::getAttachmentResourcesCoro(const std::string strUrl)
 {
     LLCore::HttpRequest::policy_t httpPolicy(LLCore::HttpRequest::DEFAULT_POLICY_ID);
     LLCoreHttpUtil::HttpCoroutineAdapter::ptr_t httpAdapter(new LLCoreHttpUtil::HttpCoroutineAdapter("RlvHandler::getAttachmentResourcesCoro", httpPolicy));
@@ -500,7 +500,7 @@ ERlvCmdRet RlvHandler::processCommand(std::reference_wrapper<const RlvCommand> r
 
                 RLV_DEBUGS << "\t- " << ( (fAdded) ? "adding behaviour" : "skipping duplicate" ) << RLV_ENDL;
 
-                if (fAdded) {   // If FALSE then this was a duplicate, there's no need to handle those
+                if (fAdded) {   // If false then this was a duplicate, there's no need to handle those
                     if (!m_pGCTimer)
                         m_pGCTimer = new RlvGCTimer();
                     eRet = processAddRemCommand(rlvCmd);
@@ -837,7 +837,8 @@ void RlvHandler::setActiveGroupRole(const LLUUID& idGroup, const std::string& st
     // We have everything - activate the requested role (if we can find it)
     if (pGroupData)
     {
-        enum class EMatch { None, Partial, Exact } eMatch = EMatch::None; LLUUID idRole;
+        enum class EMatch { ENone, EPartial, EExact };
+        EMatch eMatch = EMatch::ENone; LLUUID idRole;
         for (const auto& roleData : pGroupData->mRoles)
         {
             // NOTE: exact matches take precedence over partial matches; in case of partial matches the last match wins
@@ -845,13 +846,13 @@ void RlvHandler::setActiveGroupRole(const LLUUID& idGroup, const std::string& st
             if (boost::istarts_with(strRoleName, strRole))
             {
                 idRole = roleData.first;
-                eMatch = (strRoleName.length() == strRole.length()) ? EMatch::Exact : EMatch::Partial;
-                if (eMatch == EMatch::Exact)
+                eMatch = (strRoleName.length() == strRole.length()) ? EMatch::EExact : EMatch::EPartial;
+                if (eMatch == EMatch::EExact)
                     break;
             }
         }
 
-        if (eMatch != EMatch::None)
+        if (eMatch != EMatch::ENone)
         {
             RLV_INFOS << "Activating role '" << strRole << "' for group '" << pGroupData->mName << "'" << RLV_ENDL;
             LLGroupMgr::getInstance()->sendGroupTitleUpdate(idGroup, idRole);
@@ -896,7 +897,7 @@ void RlvHandler::onSitOrStand(bool fSitting)
         // NOTE: we need to do this due to the way @standtp triggers a forced teleport:
         //   - when standing we're called from LLVOAvatar::sitDown() which is called from LLVOAvatar::getOffObject()
         //   -> at the time sitDown() is called the avatar's parent is still the linkset it was sitting on so "isRoot()" on the avatar will
-        //      return FALSE and we will crash in LLVOAvatar::getRenderPosition() when trying to teleport
+        //      return false and we will crash in LLVOAvatar::getRenderPosition() when trying to teleport
         //   -> postponing the teleport until the next idle tick will ensure that everything has all been properly cleaned up
         doOnIdleOneTime(boost::bind(RlvUtil::forceTp, m_posSitSource));
         m_posSitSource.setZero();
@@ -1205,7 +1206,7 @@ void RlvHandler::onTeleportFinished(const LLVector3d& posArrival)
 size_t utf8str_strlen(const std::string& utf8)
 {
     const char* pUTF8 = utf8.c_str(); size_t length = 0;
-    for (int idx = 0, cnt = utf8.length(); idx < cnt ;idx++)
+    for (size_t idx = 0, cnt = utf8.length(); idx < cnt ;idx++)
     {
         // We're looking for characters that don't start with 10 as their high bits
         if ((pUTF8[idx] & 0xC0) != 0x80)
@@ -1252,7 +1253,7 @@ bool RlvHandler::filterChat(std::string& strUTF8Text, bool fFilterEmote) const
             }
             else if (!hasBehaviour(RLV_BHVR_EMOTE))
             {
-                int idx = strUTF8Text.find('.');    // Truncate at 20 characters or at the dot (whichever is shorter)
+                size_t idx = strUTF8Text.find('.');    // Truncate at 20 characters or at the dot (whichever is shorter)
                 strUTF8Text = utf8str_chtruncate(strUTF8Text, ( (idx > 0) && (idx < 20) ) ? idx + 1 : 20);
             }
         }
@@ -1413,7 +1414,7 @@ bool RlvHandler::redirectChatOrEmote(const std::string& strUTF8Text) const
         LLInventoryModel::cat_array_t folders;
         LLInventoryModel::item_array_t items;
         RlvWearableItemCollector functor(pFolder->getUUID(), true, false);
-        gInventory.collectDescendentsIf(pFolder->getUUID(), folders, items, FALSE, functor);
+        gInventory.collectDescendentsIf(pFolder->getUUID(), folders, items, false, functor);
 
         for (S32 idxItem = 0, cntItem = items.count(); idxItem < cntItem; idxItem++)
         {
@@ -1458,7 +1459,7 @@ bool RlvHandler::redirectChatOrEmote(const std::string& strUTF8Text) const
         LLInventoryModel::cat_array_t folders;
         LLInventoryModel::item_array_t items;
         RlvWearableItemCollector functor(pFolder->getUUID(), true, false);
-        gInventory.collectDescendentsIf(pFolder->getUUID(), folders, items, FALSE, functor);
+        gInventory.collectDescendentsIf(pFolder->getUUID(), folders, items, false, functor);
 
         for (S32 idxItem = 0, cntItem = items.count(); idxItem < cntItem; idxItem++)
         {
@@ -2047,7 +2048,7 @@ void RlvBehaviourToggleHandler<RLV_BHVR_EDIT>::onCommandToggle(ERlvBehaviour eBh
     if (fHasBhvr)
     {
         // Turn off "View / Highlight Transparent"
-        LLDrawPoolAlpha::sShowDebugAlpha = FALSE;
+        LLDrawPoolAlpha::sShowDebugAlpha = false;
 
         // Hide the beacons floater if it's currently visible
         if (LLFloaterReg::instanceVisible("beacons"))
@@ -2151,25 +2152,12 @@ ERlvCmdRet RlvBehaviourHandler<RLV_BHVR_SETSPHERE>::onCommand(const RlvCommand& 
         {
             LLVfxManager::instance().addEffect(new RlvSphereEffect(rlvCmd.getObjectID()));
 
-            Rlv::forceAtmosphericShadersIfAvailable();
-
-            // If we're not using deferred but are using Windlight shaders we need to force use of FBO and depthmap texture
-            if ( (!LLPipeline::sRenderDeferred) && (LLPipeline::WindLightUseAtmosShaders) && (!LLPipeline::sUseDepthTexture) )
-            {
-                LLRenderTarget::sUseFBO = true;
-                LLPipeline::sUseDepthTexture = true;
-
-                gPipeline.releaseGLBuffers();
-                gPipeline.createGLBuffers();
-                gPipeline.resetVertexBuffers();
-                LLViewerShaderMgr::instance()->setShaders();
-            }
-            else if (!gPipeline.mDeferredLight.isComplete())
+            if (!gPipeline.mRT->deferredLight.isComplete())
             {
                 // In case of deferred with no shadows, no ambient occlusion, no depth of field, and no antialiasing
                 gPipeline.releaseGLBuffers();
                 gPipeline.createGLBuffers();
-                RLV_ASSERT(gPipeline.mDeferredLight.isComplete());
+                RLV_ASSERT(gPipeline.mRT->deferredLight.isComplete());
             }
         }
         else
@@ -2439,7 +2427,7 @@ void RlvBehaviourToggleHandler<RLV_BHVR_SETCAM>::onCommandToggle(ERlvBehaviour e
         std::list<const RlvObject*> lObjects;
         // Restore the @setcam_unlock reference count
         gRlvHandler.findBehaviour(RLV_BHVR_SETCAM_UNLOCK, lObjects);
-        gRlvHandler.m_Behaviours[RLV_BHVR_SETCAM_UNLOCK] = lObjects.size();
+        gRlvHandler.m_Behaviours[RLV_BHVR_SETCAM_UNLOCK] = S32(lObjects.size());
     }
 
     // Manually invoke the @setcam_unlock toggle handler if we toggled it on/off
@@ -3088,7 +3076,7 @@ ERlvCmdRet RlvForceHandler<RLV_BHVR_SETCAM_FOCUS>::onCommand(const RlvCommand& r
     camDirection.normVec();
 
     // Move the camera in place
-    gAgentCamera.setFocusOnAvatar(FALSE, ANIMATE);
+    gAgentCamera.setFocusOnAvatar(false, ANIMATE);
     gAgentCamera.setCameraPosAndFocusGlobal(posGlobal + LLVector3d(camDirection * llmax(F_APPROXIMATELY_ZERO, camDistance)), posGlobal, idObject);
 
     return RLV_RET_SUCCESS;
@@ -3193,7 +3181,7 @@ void RlvHandler::onForceWearCallback(const uuid_vec_t& idItems, U32 nFlags) cons
     LLInventoryModel::cat_array_t folders;
     if (RlvInventory::instance().getPath(idItems, folders))
     {
-        for (S32 idxFolder = 0, cntFolder = folders.size(); idxFolder < cntFolder; idxFolder++)
+        for (size_t idxFolder = 0, cntFolder = folders.size(); idxFolder < cntFolder; idxFolder++)
             onForceWear(folders.at(idxFolder), nFlags);
 
         // If we're not executing a command then we're a delayed callback and need to manually call done()
@@ -3542,22 +3530,22 @@ ERlvCmdRet RlvHandler::onFindFolder(const RlvCommand& rlvCmd, std::string& strRe
         {
             // We need to return an "in depth" result so whoever has the most '/' is our lucky winner
             // (maxSlashes needs to be initialized to -1 since children of the #RLV folder won't have '/' in their shared path)
-            int maxSlashes = -1, curSlashes; std::string strFolderName;
-            for (S32 idxFolder = 0, cntFolder = folders.size(); idxFolder < cntFolder; idxFolder++)
+            int maxSlashes = -1; size_t curSlashes; std::string strFolderName;
+            for (size_t idxFolder = 0, cntFolder = folders.size(); idxFolder < cntFolder; idxFolder++)
             {
                 strFolderName = RlvInventory::instance().getSharedPath(folders.at(idxFolder));
 
                 curSlashes = std::count(strFolderName.begin(), strFolderName.end(), '/');
                 if (curSlashes > maxSlashes)
                 {
-                    maxSlashes = curSlashes;
+                    maxSlashes = int(curSlashes);
                     strReply = strFolderName;
                 }
             }
         }
         else if (RLV_BHVR_FINDFOLDERS == rlvCmd.getBehaviourType())
         {
-            for (S32 idxFolder = 0, cntFolder = folders.size(); idxFolder < cntFolder; idxFolder++)
+            for (size_t idxFolder = 0, cntFolder = folders.size(); idxFolder < cntFolder; idxFolder++)
             {
                 if (!strReply.empty())
                     strReply.push_back(',');
@@ -3772,7 +3760,7 @@ ERlvCmdRet RlvHandler::onGetInv(const RlvCommand& rlvCmd, std::string& strReply)
     if (!pFolders)
         return RLV_RET_FAILED;
 
-    for (S32 idxFolder = 0, cntFolder = pFolders->size(); idxFolder < cntFolder; idxFolder++)
+    for (size_t idxFolder = 0, cntFolder = pFolders->size(); idxFolder < cntFolder; idxFolder++)
     {
         // Return all folders that:
         //   - aren't hidden
@@ -3808,19 +3796,19 @@ ERlvCmdRet RlvHandler::onGetInvWorn(const RlvCommand& rlvCmd, std::string& strRe
     // Collect everything @attachall would be attaching
     LLInventoryModel::cat_array_t folders; LLInventoryModel::item_array_t items;
     RlvWearableItemCollector f(pFolder, RlvForceWear::ACTION_WEAR_REPLACE, RlvForceWear::FLAG_MATCHALL);
-    gInventory.collectDescendentsIf(pFolder->getUUID(), folders, items, FALSE, f, true);
+    gInventory.collectDescendentsIf(pFolder->getUUID(), folders, items, false, f, true);
 
     rlv_wear_info wi = {0};
 
     // Add all the folders to a lookup map
     std::map<LLUUID, rlv_wear_info> mapFolders;
     mapFolders.insert(std::pair<LLUUID, rlv_wear_info>(pFolder->getUUID(), wi));
-    for (S32 idxFolder = 0, cntFolder = folders.size(); idxFolder < cntFolder; idxFolder++)
+    for (size_t idxFolder = 0, cntFolder = folders.size(); idxFolder < cntFolder; idxFolder++)
         mapFolders.insert(std::pair<LLUUID, rlv_wear_info>(folders.at(idxFolder)->getUUID(), wi));
 
     // Iterate over all the found items
     LLViewerInventoryItem* pItem; std::map<LLUUID, rlv_wear_info>::iterator itFolder;
-    for (S32 idxItem = 0, cntItem = items.size(); idxItem < cntItem; idxItem++)
+    for (size_t idxItem = 0, cntItem = items.size(); idxItem < cntItem; idxItem++)
     {
         pItem = items.at(idxItem);
         if (!RlvForceWear::isWearableItem(pItem))
@@ -3963,7 +3951,7 @@ ERlvCmdRet RlvHandler::onGetPath(const RlvCommand& rlvCmd, std::string& strReply
         }
         else if (RLV_BHVR_GETPATHNEW == rlvCmd.getBehaviourType())
         {
-            for (S32 idxFolder = 0, cntFolder = folders.size(); idxFolder < cntFolder; idxFolder++)
+            for (size_t idxFolder = 0, cntFolder = folders.size(); idxFolder < cntFolder; idxFolder++)
             {
                 if (!strReply.empty())
                     strReply.push_back(',');

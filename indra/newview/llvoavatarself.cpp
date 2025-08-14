@@ -68,7 +68,7 @@
 // [/RLVa:KB]
 // [SL:KB] - Patch: Appearance-TeleportAttachKill | Checked: Catznip-4.0
 #include "llviewerparcelmgr.h"
-extern BOOL gTeleportDisplay;
+extern bool gTeleportDisplay;
 // [/SL:KB]
 
 #include <boost/lexical_cast.hpp>

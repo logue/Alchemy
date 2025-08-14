@@ -28,9 +28,11 @@
 
 class RlvUIEnabler : public LLSingleton<RlvUIEnabler>
 {
-    friend class RlvHandler;
     LLSINGLETON(RlvUIEnabler);
+
 protected:
+    friend class RlvHandler;
+
     /*
      * Signal callbacks
      */
@@ -91,7 +93,7 @@ protected:
     typedef std::multimap<ERlvBehaviour, behaviour_handler_t> behaviour_handler_map_t;
     behaviour_handler_map_t m_Handlers;
 
-    std::map<std::string, std::function<void()>> m_FilteredFloaterMap;
+    std::map<std::string, std::function<void()>, std::less<>> m_FilteredFloaterMap;
 };
 
 // ============================================================================

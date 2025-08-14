@@ -618,7 +618,7 @@ void utf8str_split(std::list<std::string>& split_list, const std::string& utf8st
             if (pstrTemp > pstrIt)
                 strTemp = utf8str.substr(lenIt, pstrTemp - pstrIt);
             else
-                strTemp = utf8str_substr(utf8str, lenIt, maxlen);
+                strTemp = utf8str_substr(utf8str, narrow(lenIt), narrow(maxlen));
         }
         else
         {

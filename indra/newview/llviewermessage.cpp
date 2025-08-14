@@ -2549,8 +2549,8 @@ void process_chat_from_simulator(LLMessageSystem *msg, void **user_data)
         if ( (rlv_handler_t::isEnabled()) && (CHAT_TYPE_START != chat.mChatType) && (CHAT_TYPE_STOP != chat.mChatType) )
         {
             // NOTE: chatter can be NULL (may not have rezzed yet, or could be another avie's HUD attachment)
-            BOOL is_attachment = (chatter) ? chatter->isAttachment() : FALSE;
-            BOOL is_owned_by_me = (chatter) ? chatter->permYouOwner() : FALSE;
+            bool is_attachment = (chatter) ? chatter->isAttachment() : false;
+            bool is_owned_by_me = (chatter) ? chatter->permYouOwner() : false;
 
             // Filtering "rules":
             //   avatar  => filter all avie text (unless it's this avie or they're an exemption)

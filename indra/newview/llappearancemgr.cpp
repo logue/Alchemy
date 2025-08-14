@@ -2554,7 +2554,7 @@ void LLAppearanceMgr::updateAgentWearables(LLWearableHoldingPattern* holder)
             if (pWearable)
                 RlvBehaviourNotifyHandler::onTakeOff(pWearable->getType(), true);
         }
-        for (S32 idxItem = 0, cntItem = itemsNew.size(); idxItem < cntItem; idxItem++)
+        for (size_t idxItem = 0, cntItem = itemsNew.size(); idxItem < cntItem; idxItem++)
         {
             RlvBehaviourNotifyHandler::onWear(itemsNew.at(idxItem)->getWearableType(), true);
         }

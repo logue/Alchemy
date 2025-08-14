@@ -764,16 +764,16 @@ void LLPipeline::resizeScreenTexture()
             scaledResX /= RenderResolutionDivisor;
             scaledResY /= RenderResolutionDivisor;
         }
-        else if (RenderResolutionMultiplier != 1.f)
+        else if (RenderResolutionMultiplier > 0.f && RenderResolutionMultiplier != 1.f)
         {
-            scaledResX *= RenderResolutionMultiplier;
-            scaledResY *= RenderResolutionMultiplier;
+            scaledResX = (GLuint)(scaledResX * RenderResolutionMultiplier);
+            scaledResY = (GLuint)(scaledResY * RenderResolutionMultiplier);
         }
 // [/SL:KB]
 
 //      if (gResizeScreenTexture || (resX != mRT->screen.getWidth()) || (resY != mRT->screen.getHeight()))
 // [SL:KB] - Patch: Settings-RenderResolutionMultiplier | Checked: Catznip-5.4
-        if (gResizeScreenTexture || (scaledResX !=  mRT->screen.getWidth()) || (scaledResY !=  mRT->screen.getHeight()))
+        if (gResizeScreenTexture || (scaledResX != mRT->screen.getWidth()) || (scaledResY != mRT->screen.getHeight()))
 // [/SL:KB]
         {
             releaseScreenBuffers();
@@ -882,10 +882,10 @@ bool LLPipeline::allocateScreenBufferInternal(U32 resX, U32 resY)
         resY /= res_mod;
     }
 // [SL:KB] - Patch: Settings-RenderResolutionMultiplier | Checked: Catznip-5.4
-    else if (RenderResolutionMultiplier != 1.f)
+    else if (RenderResolutionMultiplier > 0.f && RenderResolutionMultiplier != 1.f)
     {
-        resX *= RenderResolutionMultiplier;
-        resY *= RenderResolutionMultiplier;
+        resX = (GLuint)(resX * RenderResolutionMultiplier);
+        resY = (GLuint)(resY * RenderResolutionMultiplier);
     }
 // [/SL:KB]
 
@@ -7598,9 +7598,6 @@ void LLPipeline::applyFXAA(LLRenderTarget* src, LLRenderTarget* dst)
     }
 }
 
-// [RLVa:KB] - @setsphere
-    LLRenderTarget* pRenderBuffer = (RlvActions::hasBehaviour(RLV_BHVR_SETSPHERE)) ? &mDeferredLight : nullptr;
-// [/RLVa:KB]
 void LLPipeline::generateSMAABuffers(LLRenderTarget* src)
 {
     llassert(!gCubeSnapshot);
@@ -7832,12 +7829,6 @@ void LLPipeline::renderDoF(LLRenderTarget* src, LLRenderTarget* dst)
             (RenderDepthOfFieldInEditMode || !LLToolMgr::getInstance()->inBuildMode()) &&
             RenderDepthOfField &&
             !gCubeSnapshot;
-// [RLVa:KB] - @setsphere
-        if (multisample && !pRenderBuffer)
-        {
-            pRenderBuffer = &mDeferredLight;
-        }
-// [/RLVa:KB]
 
         gViewerWindow->setup3DViewport();
 
@@ -8087,6 +8078,19 @@ void LLPipeline::renderFinalize()
         applyFXAA(&mRT->screen, &mPostMap);
         finalBuffer = &mPostMap;
     }
+
+    LLRenderTarget* activeBuffer = finalBuffer;
+    LLRenderTarget* targetBuffer = RenderFSAAType ? &mRT->screen : &mPostMap;
+// [RLVa:KB] - @setsphere
+    if (RlvActions::hasBehaviour(RLV_BHVR_SETSPHERE))
+    {
+        LLShaderEffectParams params(activeBuffer, targetBuffer, false);
+        LLVfxManager::instance().runEffect(EVisualEffect::RlvSphere, &params);
+        // flip the buffers round
+        activeBuffer = params.m_pDstBuffer;
+        targetBuffer = params.m_pSrcBuffer;
+    }
+// [/RLVa:KB]
 
     if (RenderBufferVisualization > -1)
     {

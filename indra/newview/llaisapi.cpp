@@ -979,6 +979,7 @@ void AISAPI::InvokeAISCommandCoro(LLCoreHttpUtil::HttpCoroutineAdapter::ptr_t ht
                 id = result["linked_id"];
             }
             break;
+        case COPYINVENTORY:
         case CREATEINVENTORY:
             // CREATEINVENTORY can have multiple callbacks
             if (result.has("_created_categories"))
@@ -1004,27 +1005,21 @@ void AISAPI::InvokeAISCommandCoro(LLCoreHttpUtil::HttpCoroutineAdapter::ptr_t ht
                 }
             }
             break;
-        case COPYINVENTORY:
+        case UPDATECATEGORY:
+            if (result.has("_updated_categories"))
             {
-                uuid_list_t ids;
-                AISUpdate::parseUUIDArray(result, "_created_items", ids);
-                AISUpdate::parseUUIDArray(result, "_created_categories", ids);
-                for (const auto& item_id : ids)
+                LLSD& items = result["_updated_categories"];
+                LLSD::array_const_iterator item_iter;
+                for (item_iter = items.beginArray(); item_iter != items.endArray(); ++item_iter)
                 {
+                    LLUUID item_id = *item_iter;
                     callback(item_id);
                     needs_callback = false;
                 }
             }
-            break;
-        case UPDATECATEGORY:
+            else if (result.has("category_id"))
             {
-                uuid_list_t ids;
-                AISUpdate::parseUUIDArray(result, "_updated_categories", ids);
-                for (const auto& item_id : ids)
-                {
-                    callback(item_id);
-                    needs_callback = false;
-                }
+                id = result["category_id"];
             }
             break;
         default:

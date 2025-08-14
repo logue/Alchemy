@@ -162,7 +162,7 @@ public:
     void onAttach(const LLViewerObject* pAttachObj, const LLViewerJointAttachment* pAttachPt);
     void onDetach(const LLViewerObject* pAttachObj, const LLViewerJointAttachment* pAttachPt);
     void onSavedAssetIntoInventory(const LLUUID& idItem);
-    BOOL onTimer();
+    bool onTimer();
     void onWearAttachment(const LLInventoryItem* pItem, ERlvWearMask eWearAction);
     void onWearAttachment(const LLUUID& idItem, ERlvWearMask eWearAction);
 
@@ -211,7 +211,7 @@ protected:
     public:
         RlvAttachmentLockWatchdogTimer(RlvAttachmentLockWatchdog* pWatchdog) : LLEventTimer(10), m_pWatchdog(pWatchdog) {}
         virtual ~RlvAttachmentLockWatchdogTimer() { m_pWatchdog->m_pTimer = NULL; }
-        virtual BOOL tick() { return m_pWatchdog->onTimer(); }
+        virtual bool tick() { return m_pWatchdog->onTimer(); }
         RlvAttachmentLockWatchdog* m_pWatchdog;
     } *m_pTimer = nullptr;
 };

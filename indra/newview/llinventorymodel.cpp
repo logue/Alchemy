@@ -1306,6 +1306,7 @@ void LLInventoryModel::collectDescendentsIf(const LLUUID& id,
         }
     }
 
+    LLViewerInventoryItem* item = NULL;
     item_array_t* item_array = get_ptr_in_map(mParentChildItemTree, id);
 
     // Move onto items
@@ -1332,8 +1333,8 @@ void LLInventoryModel::collectDescendentsIf(const LLUUID& id,
     // Note: if making it fully recursive, need more checking against infinite loops.
     if (follow_folder_links && item_array)
     {
-        S32 count = item_array->size();
-        for(S32 i = 0; i < count; ++i)
+        size_t count = item_array->size();
+        for(size_t i = 0; i < count; ++i)
         {
             item = item_array->at(i);
             if (item && item->getActualType() == LLAssetType::AT_LINK_FOLDER)
@@ -1358,7 +1359,7 @@ void LLInventoryModel::collectDescendentsIf(const LLUUID& id,
     }
 // [/RLVa:KB]
 }
-// RYETODO FIXRLVA
+
 bool LLInventoryModel::hasMatchingDescendents(const LLUUID& id,
     bool include_trash,
     LLInventoryCollectFunctor& matches)

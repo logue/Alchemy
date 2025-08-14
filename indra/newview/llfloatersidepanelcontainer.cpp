@@ -213,7 +213,7 @@ void LLFloaterSidePanelContainer::showPanel(std::string_view floater_name, const
     LLFloaterSidePanelContainer* floaterp = LLFloaterReg::getTypedInstance<LLFloaterSidePanelContainer>(floater_name);
 //  if (floaterp)
 // [RLVa:KB] - Checked: 2013-04-16 (RLVa-1.4.8)
-    if ( (floaterp) && ((floaterp->getVisible()) || (LLFloaterReg::canShowInstance(floater_name, key))) && (canShowPanel(floater_name, key)) )
+    if ( (floaterp) && ((floaterp->getVisible()) || (LLFloaterReg::canShowInstance(std::string(floater_name), key))) && (canShowPanel(std::string(floater_name), key)) )
 // [/RLVa:KB]
     {
         floaterp->openChildPanel(sMainPanelName, key);
@@ -225,7 +225,7 @@ void LLFloaterSidePanelContainer::showPanel(std::string_view floater_name, std::
     LLFloaterSidePanelContainer* floaterp = LLFloaterReg::getTypedInstance<LLFloaterSidePanelContainer>(floater_name);
 //  if (floaterp)
 // [RLVa:KB] - Checked: 2013-04-16 (RLVa-1.4.8)
-    if ( (floaterp) && ((floaterp->getVisible()) || (LLFloaterReg::canShowInstance(floater_name, key))) && (canShowPanel(floater_name, panel_name, key)) )
+    if ( (floaterp) && ((floaterp->getVisible()) || (LLFloaterReg::canShowInstance(std::string(floater_name), key))) && (canShowPanel(std::string(floater_name), std::string(panel_name), key)) )
 // [/RLVa:KB]
     {
         floaterp->openChildPanel(panel_name, key);

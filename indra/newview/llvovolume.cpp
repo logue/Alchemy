@@ -4428,7 +4428,7 @@ void LLVOVolume::forceLOD(S32 lod)
 // [/SL:KB]
 
     mLOD = lod;
-    gPipeline.markRebuild(mDrawable, LLDrawable::REBUILD_VOLUME, FALSE);
+    gPipeline.markRebuild(mDrawable, LLDrawable::REBUILD_VOLUME);
     mLODChanged = true;
 }
 // [/FS]
