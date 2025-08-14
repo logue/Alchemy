@@ -82,6 +82,7 @@ extern bool gDoDisconnect;
 //
 
 bool RlvHandler::m_fEnabled = false;
+bool RlvHandler::m_fInitialized = false;
 
 rlv_handler_t gRlvHandler;
 
@@ -145,8 +146,6 @@ static bool rlvParseGetStatusOption(const std::string& strOption, std::string& s
 // Checked: 2010-04-07 (RLVa-1.2.0d) | Modified: RLVa-1.0.1d
 RlvHandler::RlvHandler() : m_fCanCancelTp(true), m_posSitSource(), m_pGCTimer(NULL)
 {
-    gAgent.addListener(this, "new group");
-
     // Array auto-initialization to 0 is still not supported in VS2013
     memset(m_Behaviours, 0, sizeof(S16) * RLV_BHVR_COUNT);
 }
@@ -159,7 +158,7 @@ RlvHandler::~RlvHandler()
 void RlvHandler::cleanup()
 {
     // Nothing to clean if we're not enabled (or already cleaned up)
-    if (!m_fEnabled)
+    if (!m_fInitialized)
         return;
 
     //
@@ -197,12 +196,9 @@ void RlvHandler::cleanup()
         m_PendingGroupChange = std::make_pair(LLUUID::null, LLStringUtil::null);
     }
 
-    for (RlvExtCommandHandler* pCmdHandler : m_CommandHandlers)
-    {
-        delete pCmdHandler;
-    }
     m_CommandHandlers.clear();
 
+    m_fInitialized = false;
     m_fEnabled = false;
 }
 
@@ -400,39 +396,45 @@ void RlvHandler::getAttachmentResourcesCoro(const std::string strUrl)
 //
 
 // Checked: 2010-04-07 (RLVa-1.2.0d) | Modified: RLVa-1.1.0f
-void RlvHandler::addCommandHandler(RlvExtCommandHandler* pCmdHandler)
+void RlvHandler::addCommandHandler(std::unique_ptr<RlvExtCommandHandler> pCmdHandler)
 {
     if ( (pCmdHandler) && (std::find(m_CommandHandlers.begin(), m_CommandHandlers.end(), pCmdHandler) == m_CommandHandlers.end()) )
-        m_CommandHandlers.push_back(pCmdHandler);
+        m_CommandHandlers.push_back(std::move(pCmdHandler));
 }
 
 // Checked: 2010-04-07 (RLVa-1.2.0d) | Modified: RLVa-1.1.0f
 void RlvHandler::removeCommandHandler(RlvExtCommandHandler* pCmdHandler)
 {
     if (pCmdHandler)
-        m_CommandHandlers.remove(pCmdHandler);
+    {
+        for (auto it = m_CommandHandlers.begin(); it != m_CommandHandlers.end(); )
+        {
+            if (pCmdHandler == it->get())
+            {
+
+                m_CommandHandlers.erase(it);
+                break;
+            }
+            else
+                ++it;
+        }
+    }
 }
 
 // Checked: 2010-04-07 (RLVa-1.2.0d) | Modified: RLVa-1.1.0a
 void RlvHandler::clearCommandHandlers()
 {
-    std::list<RlvExtCommandHandler*>::const_iterator itHandler = m_CommandHandlers.begin();
-    while (itHandler != m_CommandHandlers.end())
-    {
-        delete *itHandler;
-        ++itHandler;
-    }
     m_CommandHandlers.clear();
 }
 
 // Checked: 2010-04-07 (RLVa-1.2.0d) | Modified: RLVa-1.1.0f
 bool RlvHandler::notifyCommandHandlers(rlvExtCommandHandler f, const RlvCommand& rlvCmd, ERlvCmdRet& eRet, bool fNotifyAll) const
 {
-    std::list<RlvExtCommandHandler*>::const_iterator itHandler = m_CommandHandlers.begin(); bool fContinue = true; eRet = RLV_RET_UNKNOWN;
+    auto itHandler = m_CommandHandlers.begin(); bool fContinue = true; eRet = RLV_RET_UNKNOWN;
     while ( (itHandler != m_CommandHandlers.end()) && ((fContinue) || (fNotifyAll)) )
     {
         ERlvCmdRet eCmdRet = RLV_RET_UNKNOWN;
-        if ((fContinue = !((*itHandler)->*f)(rlvCmd, eCmdRet)) == false)
+        if ((fContinue = !(itHandler->get()->*f)(rlvCmd, eCmdRet)) == false)
             eRet = eCmdRet;
         ++itHandler;
     }
@@ -477,6 +479,13 @@ ERlvCmdRet RlvHandler::processCommand(std::reference_wrapper<const RlvCommand> r
         case RLV_TYPE_ADD:      // Checked: 2009-11-26 (RLVa-1.1.0f) | Modified: RLVa-1.1.0f
             {
                 ERlvBehaviour eBhvr = rlvCmd.get().getBehaviourType();
+                if(eBhvr == RLV_BHVR_UNKNOWN)
+                {
+                    eRet = RLV_RET_FAILED_PARAM;
+                    RLV_DEBUGS << "\t- " << rlvCmd.get().getBehaviour() << " is UNKNOWN => Call Kitty!" << RLV_ENDL;
+                    break;
+                }
+
                 if ( (m_Behaviours[eBhvr]) && ( (RLV_BHVR_SETCAM == eBhvr) || (RLV_BHVR_SETDEBUG == eBhvr) || (RLV_BHVR_SETENV == eBhvr) ) )
                 {
                     // Some restrictions can only be held by one single object to avoid deadlocks
@@ -1526,17 +1535,21 @@ bool RlvHandler::setEnabled(bool fEnable)
     if (m_fEnabled == fEnable)
         return fEnable;
 
-    if ( (fEnable) && (canEnable()) )
+    m_fEnabled = fEnable;
+
+    if (m_fEnabled && !m_fInitialized)
     {
+        m_fInitialized = true;
         RLV_INFOS << "Enabling Restrained Love API support - " << RlvStrings::getVersionAbout() << RLV_ENDL;
-        m_fEnabled = true;
+
+        gAgent.addListener(RlvHandler::getInstance(), "new group");
 
         // Initialize static classes
         RlvSettings::initClass();
         RlvStrings::initClass();
 
-        RlvHandler::instance().addCommandHandler(new RlvEnvironment());
-        RlvHandler::instance().addCommandHandler(new RlvExtGetSet());
+        RlvHandler::instance().addCommandHandler(std::make_unique<RlvEnvironment>());
+        RlvHandler::instance().addCommandHandler(std::make_unique<RlvExtGetSet>());
 
         // Make sure we get notified when login is successful
         if (LLStartUp::getStartupState() < STATE_STARTED)
@@ -1552,7 +1565,10 @@ bool RlvHandler::setEnabled(bool fEnable)
             gSavedSettings.set<bool>(RlvSettingNames::ShowAssertionFail, TRUE);
 
         // Set up camera debug controls
+        static bool controls_init = false;
+        if(!controls_init)
         {
+            controls_init = true;
             LLControlVariable* pCameraOffsetRLVaView = gSavedSettings.declareVec3("CameraOffsetRLVaView", LLVector3::zero, "Declared in code", LLControlVariable::PERSIST_NO);
             pCameraOffsetRLVaView->setHiddenFromSettingsEditor(true);
             LLControlVariable* pCameraOffsetScaleRLVa = gSavedSettings.declareF32("CameraOffsetScaleRLVa", 0.0f, "Declared in code", LLControlVariable::PERSIST_NO);
@@ -1561,6 +1577,12 @@ bool RlvHandler::setEnabled(bool fEnable)
             pFocusOffsetRLVaView->setHiddenFromSettingsEditor(true);
         }
     }
+    else if (!m_fEnabled)
+    {
+        RlvHandler::instance().cleanup();
+    }
+
+    rlvMenuToggleVisible();
 
     return m_fEnabled;
 }
@@ -2704,16 +2726,16 @@ void RlvBehaviourToggleHandler<RLV_BHVR_SHOWNEARBY>::onCommandToggle(ERlvBehavio
             pPeoplePanel->updateNearbyList();
     }
 
+#ifdef CATZNIP
     // Refresh the nearby participant list
     if (LLFloaterIMNearbyChat* pNearbyChatFloater = LLFloaterReg::findTypedInstance<LLFloaterIMNearbyChat>("nearby_chat"))
     {
-#ifdef CATZNIP
+
         pNearbyChatFloater->updateShowParticipantList();
         pNearbyChatFloater->updateExpandCollapseBtn();
-#else
         // *TODO - Solution for CHUI
-#endif // CATZNIP
     }
+#endif // CATZNIP
 
     // Refresh that avatar's name tag and all HUD text
     LLHUDText::refreshAllObjectText();
