@@ -758,6 +758,8 @@
          name="Place Profile">
             <menu_item_call.on_click
              function="World.PlaceProfile" />
+            <menu_item_call.on_enable
+             function="World.EnablePlaceProfile" />
         </menu_item_call>
         <menu_item_call
          label="About land"
@@ -765,12 +767,18 @@
             <menu_item_call.on_click
              function="Floater.Show"
              parameter="about_land" />
+            <menu_item_call.on_enable
+             function="Floater.CanShow"
+             parameter="about_land" />
         </menu_item_call>
         <menu_item_call
          label="Region / Estate"
          name="RegionEstate">
             <menu_item_call.on_click
              function="Floater.Show"
+             parameter="region_info" />
+            <menu_item_call.on_enable
+             function="Floater.CanShow"
              parameter="region_info" />
         </menu_item_call>
         <menu_item_call
@@ -941,6 +949,9 @@
                 <menu_item_check.on_check
                  function="World.EnableEnvSettings" 
                  parameter="sunrise" />
+                <menu_item_check.on_enable
+                 function="RLV.EnableIfNot"
+                 parameter="setenv" />
             </menu_item_check>
           <menu_item_check
            label="Midday"
@@ -952,6 +963,9 @@
             <menu_item_check.on_check
              function="World.EnableEnvSettings"
              parameter="noon" />
+            <menu_item_check.on_enable
+             function="RLV.EnableIfNot"
+             parameter="setenv" />
           </menu_item_check>
           <menu_item_check
              label="Midday (Legacy)"
@@ -962,6 +976,9 @@
             <menu_item_check.on_check
              function="World.EnableEnvSettings"
              parameter="legacy noon" />
+            <menu_item_check.on_enable
+             function="RLV.EnableIfNot"
+             parameter="setenv" />	     
           </menu_item_check>
             <menu_item_check
              label="Sunset"
@@ -973,6 +990,9 @@
                 <menu_item_check.on_check
                  function="World.EnableEnvSettings" 
                  parameter="sunset" />
+                <menu_item_check.on_enable
+                 function="RLV.EnableIfNot"
+                 parameter="setenv" />
             </menu_item_check>
             <menu_item_check
              label="Midnight"
@@ -984,6 +1004,9 @@
                 <menu_item_check.on_check
                  function="World.EnableEnvSettings" 
                  parameter="midnight" />
+                <menu_item_check.on_enable
+                 function="RLV.EnableIfNot"
+                 parameter="setenv" />
             </menu_item_check>
             <menu_item_check
              label="Use Shared Environment"
@@ -994,6 +1017,9 @@
                 <menu_item_check.on_check
                  function="World.EnableEnvSettings" 
                  parameter="region" />
+                <menu_item_check.on_enable
+                 function="RLV.EnableIfNot"
+                 parameter="setenv" />
             </menu_item_check>
         <menu_item_separator/>
 	     	<menu_item_call
@@ -1002,6 +1028,9 @@
 	     	 	<menu_item_call.on_click
 	     	 	 function="World.EnvSettings"
                  parameter="my_environs" />
+				<menu_item_call.on_enable
+				 function="RLV.EnableIfNot"
+				 parameter="setenv" />
 	     	</menu_item_call>
 	     	
 <menu_item_call
@@ -1010,6 +1039,9 @@
 	     	 	 	<menu_item_call.on_click
 	     	 	 	function="World.EnvSettings"
 	     	 	 	parameter="adjust_tool" />
+					<menu_item_call.on_enable
+					 function="RLV.EnableIfNot"
+					 parameter="setenv" />
 	     	 	</menu_item_call>
 	     	 	<menu_item_separator/>
 	     	 	 <menu_item_check
@@ -1021,6 +1053,9 @@
 	     	 	 	<menu_item_check.on_check
 	     	 	 	function="World.EnableEnvSettings" 
 	     	 	 	parameter="pause_clouds" />
+					<menu_item_call.on_enable
+					 function="RLV.EnableIfNot"
+					 parameter="setenv" />
 	     	 	</menu_item_check>
 	     	</menu>
 	     	
@@ -1036,6 +1071,9 @@
 <menu_item_call.on_click
 	     	 	 function="World.EnvSettings"
                  parameter="editor"/>
+          <menu_item_call.on_enable
+           function="RLV.EnableIfNot"
+           parameter="setenv" />
 	     	</menu_item_call>
 	     		     	<menu_item_separator/>
 <menu
@@ -1047,6 +1085,9 @@ label="New preset..."
 <menu_item_call.on_click
 function="World.EnvPreset"
 	     	 	 	parameter="new_water"/>
+            <menu_item_call.on_enable
+            function="RLV.EnableIfNot"
+            parameter="setenv" />
 </menu_item_call>
 <menu_item_call
 label="Edit preset..."
@@ -1054,7 +1095,10 @@ label="Edit preset..."
 <menu_item_call.on_click
 function="World.EnvPreset"
 	     	 	 	parameter="edit_water"/>
-</menu_item_call>
+            <menu_item_call.on_enable
+            function="RLV.EnableIfNot"
+            parameter="setenv" />
+          </menu_item_call>
 </menu>
 	     	 	 <menu
 name="Sky Presets"
@@ -1065,6 +1109,9 @@ label="New preset..."
 <menu_item_call.on_click
 function="World.EnvPreset"
 	     	 	 	parameter="new_sky"/>
+            <menu_item_call.on_enable
+            function="RLV.EnableIfNot"
+            parameter="setenv" />
 </menu_item_call>
 <menu_item_call
 label="Edit preset..."
@@ -1072,6 +1119,9 @@ label="Edit preset..."
 <menu_item_call.on_click
 function="World.EnvPreset"
 	     	 	 	parameter="edit_sky"/>
+            <menu_item_call.on_enable
+            function="RLV.EnableIfNot"
+            parameter="setenv" />
 </menu_item_call>
 </menu>
 <menu
@@ -1083,6 +1133,9 @@ label="New preset..."
 <menu_item_call.on_click
 function="World.EnvPreset"
 	     	 	 	parameter="new_day_cycle"/>
+            <menu_item_call.on_enable
+            function="RLV.EnableIfNot"
+            parameter="setenv" />
 </menu_item_call>
 <menu_item_call
 label="Edit preset..."
@@ -1090,6 +1143,9 @@ label="Edit preset..."
 <menu_item_call.on_click
 function="World.EnvPreset"
 	     	 	 	parameter="edit_day_cycle"/>
+            <menu_item_call.on_enable
+            function="RLV.EnableIfNot"
+            parameter="setenv" />
 </menu_item_call>
 </menu>
 </menu>
@@ -1813,6 +1869,225 @@ function="World.EnvPreset"
     </menu>
     <menu
      create_jump_keys="true"
+     label="RLVa"
+     name="RLVa Main"
+     tear_off="true"
+     visible="true">
+      <menu
+       label="Develop"
+       name="Debug"
+       tear_off="true">
+        <menu_item_check
+         label="Show Top-level RLVa Menu"
+         name="Show Top-level RLVa Menu">
+          <menu_item_check.on_check
+           function="CheckControl"
+           parameter="RLVaTopLevelMenu" />
+          <menu_item_check.on_click
+           function="ToggleControl"
+           parameter="RLVaTopLevelMenu" />
+        </menu_item_check>
+      	<menu_item_separator/>
+      	<menu_item_check
+      	 label="Show Debug Messages"
+      	 name="Show Debug Messages">
+          <menu_item_check.on_check
+           function="CheckControl"
+           parameter="RestrainedLoveDebug" />
+          <menu_item_check.on_click
+           function="ToggleControl"
+           parameter="RestrainedLoveDebug" />
+      	</menu_item_check>
+      	<menu_item_check
+      	 label="Hide Unset or Duplicate Messages"
+      	 name="Hide Unset or Duplicate Messages">
+          <menu_item_check.on_check
+           function="CheckControl"
+           parameter="RLVaDebugHideUnsetDuplicate" />
+          <menu_item_check.on_click
+           function="ToggleControl"
+           parameter="RLVaDebugHideUnsetDuplicate" />
+      	</menu_item_check>
+      	<menu_item_check
+      	 label="Show Assertion Failures"
+      	 name="Show Assertion Failures">
+          <menu_item_check.on_check
+           function="CheckControl"
+           parameter="RLVaShowAssertionFailures" />
+          <menu_item_check.on_click
+           function="ToggleControl"
+           parameter="RLVaShowAssertionFailures" />
+      	</menu_item_check>
+      	<menu_item_separator/>
+        <menu_item_check
+         label="Hide Locked Layers"
+         name="Hide Locked Layers">
+          <menu_item_check.on_check
+           function="CheckControl"
+           parameter="RLVaHideLockedLayers" />
+          <menu_item_check.on_click
+           function="ToggleControl"
+           parameter="RLVaHideLockedLayers" />
+        </menu_item_check>
+        <menu_item_check
+         label="Hide Locked Attachments"
+         name="Hide Locked Attachments">
+          <menu_item_check.on_check
+           function="CheckControl"
+           parameter="RLVaHideLockedAttachments" />
+          <menu_item_check.on_click
+           function="ToggleControl"
+           parameter="RLVaHideLockedAttachments" />
+        </menu_item_check>
+        <menu_item_separator/>
+      	<menu_item_check
+      	 label="Enable Legacy Naming"
+      	 name="Enable Legacy Naming">
+          <menu_item_check.on_check
+           function="CheckControl"
+           parameter="RLVaEnableLegacyNaming" />
+          <menu_item_check.on_click
+           function="ToggleControl"
+           parameter="RLVaEnableLegacyNaming" />
+      	</menu_item_check>
+        <menu_item_check
+      	 label="Enable Shared Wear"
+      	 name="Enable Shared Wear">
+          <menu_item_check.on_check
+           function="CheckControl"
+           parameter="RLVaEnableSharedWear" />
+          <menu_item_check.on_click
+           function="ToggleControl"
+           parameter="RLVaEnableSharedWear" />
+        </menu_item_check>
+        <menu_item_check
+      	 label="Rename Shared Items on Wear"
+      	 name="Rename Shared Items on Wear">
+          <menu_item_check.on_check
+           function="CheckControl"
+           parameter="RLVaSharedInvAutoRename" />
+          <menu_item_check.on_click
+           function="ToggleControl"
+           parameter="RLVaSharedInvAutoRename" />
+      	</menu_item_check>
+      	<menu_item_separator/>
+      	<menu_item_check
+      	 label="Locks..."
+      	 name="Locks">
+          <menu_item_check.on_check
+           function="Floater.Visible"
+           parameter="rlv_locks" />
+          <menu_item_check.on_click
+           function="Floater.Toggle"
+           parameter="rlv_locks" />
+      	</menu_item_check>
+      </menu>
+      <menu_item_separator/>
+      <menu_item_check
+       label="Allow OOC Chat"
+       name="Allow OOC Chat">
+      	<menu_item_check.on_check
+      	 function="CheckControl"
+      	 parameter="RestrainedLoveCanOOC" />
+      	<menu_item_check.on_click
+      	 function="ToggleControl"
+      	 parameter="RestrainedLoveCanOOC" />
+      </menu_item_check>
+      <menu_item_check
+       label="Show Filtered Chat"
+       name="Show Filtered Chat">
+      	<menu_item_check.on_check
+      	 function="CheckControl"
+      	 parameter="RestrainedLoveShowEllipsis" />
+      	<menu_item_check.on_click
+      	 function="ToggleControl"
+      	 parameter="RestrainedLoveShowEllipsis" />
+      </menu_item_check>
+      <menu_item_check
+       label="Show Redirected Chat Typing"
+       name="Show Redirected Chat Typing">
+        <menu_item_check.on_check
+      	 function="CheckControl"
+      	 parameter="RLVaShowRedirectChatTyping" />
+        <menu_item_check.on_click
+      	 function="ToggleControl"
+      	 parameter="RLVaShowRedirectChatTyping" />
+      </menu_item_check>
+      <menu_item_check
+       label="Split Long Redirected Chat"
+       name="Split Long Redirected Chat">
+        <menu_item_check.on_check
+      	 function="CheckControl"
+      	 parameter="RLVaSplitRedirectChat" />
+        <menu_item_check.on_click
+      	 function="ToggleControl"
+      	 parameter="RLVaSplitRedirectChat" />
+      </menu_item_check>
+      <menu_item_separator />
+      <menu_item_check
+       label="Allow Temporary Attachments"
+       name="Allow Temporary Attachments">
+      	<menu_item_check.on_check
+      	 function="CheckControl"
+      	 parameter="RLVaEnableTemporaryAttachments" />
+      	<menu_item_check.on_click
+      	 function="ToggleControl"
+      	 parameter="RLVaEnableTemporaryAttachments" />
+      </menu_item_check>
+      <menu_item_check
+       label="Forbid Give to #RLV"
+       name="Forbid Give to #RLV">
+      	<menu_item_check.on_check
+      	 function="CheckControl"
+      	 parameter="RestrainedLoveForbidGiveToRLV" />
+      	<menu_item_check.on_click
+      	 function="ToggleControl"
+      	 parameter="RestrainedLoveForbidGiveToRLV" />
+      </menu_item_check>
+      <menu_item_check
+       label="Wear Replaces Unlocked"
+       name="Wear Replaces Unlocked">
+      	<menu_item_check.on_check
+      	 function="CheckControl"
+      	 parameter="RLVaWearReplaceUnlocked" />
+      	<menu_item_check.on_click
+      	 function="ToggleControl"
+      	 parameter="RLVaWearReplaceUnlocked" />
+      </menu_item_check>
+      <menu_item_separator />
+      <menu_item_check
+       label="Console..."
+       name="Console">
+        <menu_item_check.on_check
+      	 function="Floater.Visible"
+      	 parameter="rlv_console" />
+        <menu_item_check.on_click
+      	 function="Floater.Toggle"
+      	 parameter="rlv_console" />
+      </menu_item_check>
+      <menu_item_check
+       label="Restrictions..."
+       name="Restrictions">
+      	<menu_item_check.on_check
+      	 function="Floater.Visible"
+      	 parameter="rlv_behaviours" />
+      	<menu_item_check.on_click
+      	 function="Floater.Toggle"
+      	 parameter="rlv_behaviours" />
+      </menu_item_check>
+      <menu_item_check
+       label="Strings..."
+       name="Strings">
+        <menu_item_check.on_check
+         function="Floater.Visible"
+         parameter="rlv_strings" />
+        <menu_item_check.on_click
+         function="Floater.Toggle"
+         parameter="rlv_strings" />
+      </menu_item_check>
+    </menu>
+    <menu
+     create_jump_keys="true"
      label="Advanced"
      name="Advanced"
      tear_off="true"
@@ -1823,6 +2098,12 @@ function="World.EnvPreset"
          shortcut="control|alt|R">
             <menu_item_call.on_click
              function="Advanced.RebakeTextures" />
+        </menu_item_call>
+        <menu_item_call
+         label="Refresh Attachments"
+         name="Refresh Attachments">
+            <menu_item_call.on_click
+             function="Advanced.RefreshAttachments" />
         </menu_item_call>
         <menu_item_call
            label="Set UI Size to Default"
@@ -2319,6 +2600,11 @@ function="World.EnvPreset"
                  parameter="flexible" />
             </menu_item_check>
         </menu>        
+        <menu
+         label="RLVa"
+         name="RLVa Embedded"
+         tear_off="true"
+         visible="true" />
         <menu_item_check
          label="Use Plugin Read Thread"
          name="Use Plugin Read Thread">
@@ -2438,7 +2724,18 @@ function="World.EnvPreset"
         </menu> <!--Shortcuts-->
 
         <menu_item_separator/>
-
+        <menu_item_check
+           label="RestrainedLove API"
+           name="RLV API">
+              <menu_item_check.on_check
+               function="CheckControl"
+               parameter="RestrainedLove" />
+              <menu_item_check.on_click
+               function="ToggleControl"
+               parameter="RestrainedLove" />
+              <menu_item_check.on_visible
+               function="RLV.MainToggleVisible" />
+        </menu_item_check>
         <menu_item_call
          label="Show Debug Settings"
          name="Debug Settings">

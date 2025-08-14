@@ -54,7 +54,10 @@
 #include "llexperiencecache.h"
 #include "lltrans.h"
 #include "llviewerregion.h"
-
+// [RLVa:KB] - Checked: RLVa-2.0.1
+#include "rlvactions.h"
+#include "rlvcommon.h"
+// [/RLVa:KB]
 
 class PropertiesChangedCallback : public LLInventoryCallback
 {
@@ -404,6 +407,10 @@ void LLSidepanelItemInfo::refreshFromItem(LLViewerInventoryItem* item)
     ////////////////
     if(perm.isOwned())
     {
+// RYETODO FIXRLVA
+// [RLVa:KB] - Checked: RVLa-2.0.1
+        bool fRlvCanShowOwner = true;
+// [/RLVa:KB]
         std::string slurl;
         if (perm.isGroupOwned())
         {
@@ -877,6 +884,17 @@ void LLSidepanelItemInfo::onClickCreator()
     if(!item) return;
     if(!item->getCreatorUUID().isNull())
     {
+// [RLVa:KB] - Checked: RLVa-1.2.1
+        const LLUUID& idCreator = item->getCreatorUUID();
+        if ( (RlvActions::isRlvEnabled()) && (!RlvActions::canShowName(RlvActions::SNC_DEFAULT, idCreator)) )
+        {
+            const LLPermissions& perm = item->getPermissions();
+            if ( ((perm.isOwned()) && (!perm.isGroupOwned()) && (perm.getOwner() == idCreator) ) || (RlvUtil::isNearbyAgent(idCreator)) )
+            {
+                return;
+            }
+        }
+// [/RLVa:KB]
         LLAvatarActions::showProfile(item->getCreatorUUID());
     }
 }
@@ -892,6 +910,10 @@ void LLSidepanelItemInfo::onClickOwner()
     }
     else
     {
+// [RLVa:KB] - Checked: RLVa-1.0.0
+        if ( (RlvActions::isRlvEnabled()) && (!RlvActions::canShowName(RlvActions::SNC_DEFAULT, item->getPermissions().getOwner())) )
+            return;
+// [/RLVa:KB]
         LLAvatarActions::showProfile(item->getPermissions().getOwner());
     }
 }

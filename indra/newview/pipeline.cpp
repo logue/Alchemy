@@ -115,6 +115,11 @@
 #include "llprogressview.h"
 #include "llcleanup.h"
 #include "gltfscenemanager.h"
+// [RLVa:KB] - Checked: RLVa-2.0.0
+#include "llvisualeffect.h"
+#include "rlvactions.h"
+#include "rlvlocks.h"
+// [/RLVa:KB]
 
 #include "llenvironment.h"
 #include "llsettingsvo.h"
@@ -142,6 +147,9 @@ bool LLPipeline::RenderDeferred;
 F32 LLPipeline::RenderDeferredSunWash;
 U32 LLPipeline::RenderFSAAType;
 U32 LLPipeline::RenderResolutionDivisor;
+// [SL:KB] - Patch: Settings-RenderResolutionMultiplier | Checked: Catznip-5.4
+F32 LLPipeline::RenderResolutionMultiplier;
+// [/SL:KB]
 bool LLPipeline::RenderUIBuffer;
 S32 LLPipeline::RenderShadowDetail;
 S32 LLPipeline::RenderShadowSplits;
@@ -333,6 +341,12 @@ bool    LLPipeline::sReflectionProbesEnabled = false;
 S32     LLPipeline::sVisibleLightCount = 0;
 bool    LLPipeline::sRenderingHUDs;
 F32     LLPipeline::sDistortionWaterClipPlaneMargin = 1.0125f;
+// [SL:KB] - Patch: Render-TextureToggle (Catznip-4.0)
+bool    LLPipeline::sRenderTextures = true;
+// [/SL:KB]
+// [RLVa:KB] - @setsphere
+bool    LLPipeline::sUseDepthTexture = false;
+// [/RLVa:KB]
 
 // EventHost API LLPipeline listener.
 static LLPipelineListener sPipelineListener;
@@ -524,6 +538,9 @@ void LLPipeline::init()
     connectRefreshCachedSettingsSafe("RenderDeferredSunWash");
     connectRefreshCachedSettingsSafe("RenderFSAAType");
     connectRefreshCachedSettingsSafe("RenderResolutionDivisor");
+// [SL:KB] - Patch: Settings-RenderResolutionMultiplier | Checked: Catznip-5.4
+    connectRefreshCachedSettingsSafe("RenderResolutionMultiplier");
+// [/SL:KB]
     connectRefreshCachedSettingsSafe("RenderUIBuffer");
     connectRefreshCachedSettingsSafe("RenderShadowDetail");
     connectRefreshCachedSettingsSafe("RenderShadowSplits");
@@ -739,7 +756,25 @@ void LLPipeline::resizeScreenTexture()
         GLuint resX = gViewerWindow->getWorldViewWidthRaw();
         GLuint resY = gViewerWindow->getWorldViewHeightRaw();
 
-        if (gResizeScreenTexture || (resX != mRT->screen.getWidth()) || (resY != mRT->screen.getHeight()))
+// [SL:KB] - Patch: Settings-RenderResolutionMultiplier | Checked: Catznip-5.4
+        GLuint scaledResX = resX;
+        GLuint scaledResY = resY;
+        if ( (RenderResolutionDivisor > 1) && (RenderResolutionDivisor < resX) && (RenderResolutionDivisor < resY) )
+        {
+            scaledResX /= RenderResolutionDivisor;
+            scaledResY /= RenderResolutionDivisor;
+        }
+        else if (RenderResolutionMultiplier != 1.f)
+        {
+            scaledResX *= RenderResolutionMultiplier;
+            scaledResY *= RenderResolutionMultiplier;
+        }
+// [/SL:KB]
+
+//      if (gResizeScreenTexture || (resX != mRT->screen.getWidth()) || (resY != mRT->screen.getHeight()))
+// [SL:KB] - Patch: Settings-RenderResolutionMultiplier | Checked: Catznip-5.4
+        if (gResizeScreenTexture || (scaledResX !=  mRT->screen.getWidth()) || (scaledResY !=  mRT->screen.getHeight()))
+// [/SL:KB]
         {
             releaseScreenBuffers();
             releaseSunShadowTargets();
@@ -846,6 +881,13 @@ bool LLPipeline::allocateScreenBufferInternal(U32 resX, U32 resY)
         resX /= res_mod;
         resY /= res_mod;
     }
+// [SL:KB] - Patch: Settings-RenderResolutionMultiplier | Checked: Catznip-5.4
+    else if (RenderResolutionMultiplier != 1.f)
+    {
+        resX *= RenderResolutionMultiplier;
+        resY *= RenderResolutionMultiplier;
+    }
+// [/SL:KB]
 
     S32 shadow_detail = RenderShadowDetail;
     bool ssao = RenderDeferredSSAO;
@@ -860,7 +902,7 @@ bool LLPipeline::allocateScreenBufferInternal(U32 resX, U32 resY)
 
     mRT->deferredScreen.shareDepthBuffer(mRT->screen);
 
-    if (shadow_detail > 0 || ssao || RenderDepthOfField)
+    if (shadow_detail > 0 || ssao || RenderDepthOfField || RlvActions::hasPostProcess())
     { //only need mRT->deferredLight for shadows OR ssao OR dof
         if (!mRT->deferredLight.allocate(resX, resY, screenFormat)) return false;
     }
@@ -1055,6 +1097,9 @@ void LLPipeline::refreshCachedSettings()
     RenderDeferredSunWash = gSavedSettings.getF32("RenderDeferredSunWash");
     RenderFSAAType = gSavedSettings.getU32("RenderFSAAType");
     RenderResolutionDivisor = gSavedSettings.getU32("RenderResolutionDivisor");
+// [SL:KB] - Patch: Settings-RenderResolutionMultiplier | Checked: Catznip-5.4
+    RenderResolutionMultiplier = gSavedSettings.getF32("RenderResolutionMultiplier");
+// [/SL:KB]
     RenderUIBuffer = gSavedSettings.getBOOL("RenderUIBuffer");
     RenderShadowDetail = gSavedSettings.getS32("RenderShadowDetail");
     RenderShadowSplits = gSavedSettings.getS32("RenderShadowSplits");
@@ -3264,8 +3309,15 @@ void LLPipeline::stateSort(LLDrawable* drawablep, LLCamera& camera)
 
     if (LLSelectMgr::getInstance()->mHideSelectedObjects)
     {
-        if (drawablep->getVObj().notNull() &&
-            drawablep->getVObj()->isSelected())
+//      if (drawablep->getVObj().notNull() &&
+//          drawablep->getVObj()->isSelected())
+// [RLVa:KB] - Checked: 2010-09-28 (RLVa-1.2.1f) | Modified: RLVa-1.2.1f
+        const LLViewerObject* pObj = drawablep->getVObj();
+        if ( (pObj) && (pObj->isSelected()) &&
+             ( (!RlvActions::isRlvEnabled()) ||
+               ( ((!pObj->isHUDAttachment()) || (!gRlvAttachmentLocks.isLockedAttachment(pObj->getRootEdit()))) &&
+                 (RlvActions::canEdit(pObj)) ) ) )
+// [/RVLa:KB]
         {
             return;
         }
@@ -7546,6 +7598,9 @@ void LLPipeline::applyFXAA(LLRenderTarget* src, LLRenderTarget* dst)
     }
 }
 
+// [RLVa:KB] - @setsphere
+    LLRenderTarget* pRenderBuffer = (RlvActions::hasBehaviour(RLV_BHVR_SETSPHERE)) ? &mDeferredLight : nullptr;
+// [/RLVa:KB]
 void LLPipeline::generateSMAABuffers(LLRenderTarget* src)
 {
     llassert(!gCubeSnapshot);
@@ -7777,6 +7832,12 @@ void LLPipeline::renderDoF(LLRenderTarget* src, LLRenderTarget* dst)
             (RenderDepthOfFieldInEditMode || !LLToolMgr::getInstance()->inBuildMode()) &&
             RenderDepthOfField &&
             !gCubeSnapshot;
+// [RLVa:KB] - @setsphere
+        if (multisample && !pRenderBuffer)
+        {
+            pRenderBuffer = &mDeferredLight;
+        }
+// [/RLVa:KB]
 
         gViewerWindow->setup3DViewport();
 

@@ -63,6 +63,11 @@
 #include "llworld.h"
 #include "llpanelface.h"
 #include "lluiusage.h"
+// [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1)
+#include "rlvactions.h"
+#include "rlvhandler.h"
+#include "rlvlocks.h"
+// [/RLVa:KB]
 
 // syntactic sugar
 #define callMemberFunction(object,ptrToMember)  ((object).*(ptrToMember))
@@ -1639,6 +1644,15 @@ void LLToolDragAndDrop::dropObject(LLViewerObject* raycast_target,
         return;
     }
 
+
+// [RLVa:KB] - Checked: 2010-03-23 (RLVa-1.2.0e) | Modified: RLVa-1.2.0a
+    // Fallback in case there's a new code path that leads here (see behaviour notes)
+    if ( (rlv_handler_t::isEnabled()) && ((gRlvHandler.hasBehaviour(RLV_BHVR_REZ)) || (gRlvHandler.hasBehaviour(RLV_BHVR_INTERACT))) )
+    {
+        return;
+    }
+// [/RLVa:KB]
+
     //LL_INFOS() << "Rezzing object" << LL_ENDL;
     make_ui_sound("UISndObjectRezIn");
     LLViewerInventoryItem* item;
@@ -1925,6 +1939,22 @@ EAcceptance LLToolDragAndDrop::willObjectAcceptInventory(LLViewerObject* obj, LL
     bool attached = obj->isAttachment();
     bool unrestricted = (perm.getMaskBase() & PERM_ITEM_UNRESTRICTED) == PERM_ITEM_UNRESTRICTED;
 
+// [RLVa:KB] - Checked: 2010-03-31 (RLVa-1.2.0c) | Modified: RLVa-1.0.0c
+    if (rlv_handler_t::isEnabled())
+    {
+        const LLViewerObject* pObjRoot = obj->getRootEdit();
+        if (gRlvAttachmentLocks.isLockedAttachment(pObjRoot))
+        {
+            return ACCEPT_NO_LOCKED;        // Disallow inventory drops on a locked attachment
+        }
+        else if ( (gRlvHandler.hasBehaviour(RLV_BHVR_UNSIT)) || (gRlvHandler.hasBehaviour(RLV_BHVR_SITTP)) )
+        {
+            if ( (isAgentAvatarValid()) && (gAgentAvatarp->isSitting()) && (gAgentAvatarp->getRoot() == pObjRoot) )
+                return ACCEPT_NO_LOCKED;    // ... or on a linkset the avie is sitting on under @unsit=n/@sittp=n
+        }
+    }
+// [/RLVa:KB]
+
     if (attached && !unrestricted)
     {
         // Attachments are in world and in inventory simultaneously,
@@ -2027,6 +2057,14 @@ bool LLToolDragAndDrop::handleGiveDragAndDrop(LLUUID dest_agent, LLUUID session_
                                               EAcceptance* accept,
                                               const LLSD& dest)
 {
+// [RLVa:KB] - @share
+    if ( (RlvActions::isRlvEnabled()) && (!RlvActions::canGiveInventory(dest_agent)) )
+    {
+        *accept = ACCEPT_NO_LOCKED;
+        return true;
+    }
+// [/RLVa:KB]
+
     // check the type
     switch(cargo_type)
     {
@@ -2151,12 +2189,23 @@ EAcceptance LLToolDragAndDrop::dad3dRezAttachmentFromInv(
         return ACCEPT_NO;
     }
 
+// [RLVa:KB] - Checked: 2013-02-13 (RLVa-1.4.8)
+    bool fReplace = !(mask & MASK_CONTROL);
+    if ( (rlv_handler_t::isEnabled()) && (!rlvPredCanWearItem(item, (fReplace) ? RLV_WEAR_REPLACE : RLV_WEAR_ADD)) )
+    {
+        return ACCEPT_NO_LOCKED;
+    }
+// [/RLVa:KB]
 
     if( drop )
     {
         if(mSource == SOURCE_LIBRARY)
         {
-            LLPointer<LLInventoryCallback> cb = new LLBoostFuncInventoryCallback(boost::bind(rez_attachment_cb, _1, (LLViewerJointAttachment*)0));
+//          LLPointer<LLInventoryCallback> cb = new LLBoostFuncInventoryCallback(boost::bind(rez_attachment_cb, _1, (LLViewerJointAttachment*)0));
+// [SL:KB] - Patch: Appearance-DnDWear | Checked: 2010-09-28 (Catznip-2.2)
+            // Make this behave consistent with dad3dWearItem
+            LLPointer<LLInventoryCallback> cb = new LLBoostFuncInventoryCallback(boost::bind(rez_attachment_cb, _1, (LLViewerJointAttachment*)0, fReplace));
+// [/SL:KB]
             copy_inventory_item(
                 gAgent.getID(),
                 item->getPermissions().getOwner(),
@@ -2167,7 +2216,11 @@ EAcceptance LLToolDragAndDrop::dad3dRezAttachmentFromInv(
         }
         else
         {
-            rez_attachment(item, 0);
+// [SL:KB] - Patch: Appearance-DnDWear | Checked: 2010-09-28 (Catznip-2.2)
+            // Make this behave consistent with dad3dWearItem
+            rez_attachment(item, 0, !(mask & MASK_CONTROL));
+// [/SL:KB]
+//          rez_attachment(item, 0);
         }
     }
     return ACCEPT_YES_SINGLE;
@@ -2177,6 +2230,14 @@ EAcceptance LLToolDragAndDrop::dad3dRezAttachmentFromInv(
 EAcceptance LLToolDragAndDrop::dad3dRezObjectOnLand(
     LLViewerObject* obj, S32 face, MASK mask, bool drop)
 {
+// [RLVa:KB] - Checked: 2010-03-23 (RLVa-1.2.0e) | Modified: RLVa-1.1.0l
+    // RELEASE-RLVa: [SL-2.2.0] Make sure the code below is the only code path to LLToolDragAndDrop::dad3dRezFromObjectOnLand()
+    if ( (rlv_handler_t::isEnabled()) && ((gRlvHandler.hasBehaviour(RLV_BHVR_REZ)) || (gRlvHandler.hasBehaviour(RLV_BHVR_INTERACT))) )
+    {
+        return ACCEPT_NO_LOCKED;
+    }
+// [/RLVa:KB]
+
     if (mSource == SOURCE_WORLD)
     {
         return dad3dRezFromObjectOnLand(obj, face, mask, drop);
@@ -2238,6 +2299,18 @@ EAcceptance LLToolDragAndDrop::dad3dRezObjectOnLand(
 EAcceptance LLToolDragAndDrop::dad3dRezObjectOnObject(
     LLViewerObject* obj, S32 face, MASK mask, bool drop)
 {
+// [RLVa:KB] - Checked: 2010-03-23 (RLVa-1.2.0e) | Modified: RLVa-1.1.0l
+    // NOTE: if (mask & MASK_CONTROL) then it's a drop rather than a rez, so we let that pass through when @rez=n restricted
+    // (but not when @interact=n restricted unless the drop target is a HUD attachment)
+    // RELEASE-RLVa: [SL-2.2.0] Make sure the code below is the only code path to LLToolDragAndDrop::dad3dRezFromObjectOnObject()
+    if ( (rlv_handler_t::isEnabled()) &&
+         ( ( (gRlvHandler.hasBehaviour(RLV_BHVR_REZ)) && ((mask & MASK_CONTROL) == 0) ) ||
+           ( (gRlvHandler.hasBehaviour(RLV_BHVR_INTERACT)) && (((mask & MASK_CONTROL) == 0) || (!obj->isHUDAttachment())) ) ) )
+    {
+        return ACCEPT_NO_LOCKED;
+    }
+// [/RLVa:KB]
+
     // handle objects coming from object inventory
     if (mSource == SOURCE_WORLD)
     {
@@ -2583,11 +2656,22 @@ EAcceptance LLToolDragAndDrop::dad3dWearItem(
             return ACCEPT_NO;
         }
 
+// [RLVa:KB] - Checked: 2013-02-13 (RLVa-1.4.8)
+        bool fReplace = (!(mask & MASK_CONTROL)) || (LLAssetType::AT_BODYPART == item->getType());  // Body parts should always replace
+        if ( (rlv_handler_t::isEnabled()) && (!rlvPredCanWearItem(item, (fReplace) ? RLV_WEAR_REPLACE : RLV_WEAR_ADD)) )
+        {
+            return ACCEPT_NO_LOCKED;
+        }
+// [/RLVa:KB]
+
         if( drop )
         {
             // TODO: investigate wearables may not be loaded at this point EXT-8231
 
-            LLAppearanceMgr::instance().wearItemOnAvatar(item->getUUID(),true, !(mask & MASK_CONTROL));
+// [RLVa:KB] - Checked: 2013-02-13 (RLVa-1.4.8)
+            LLAppearanceMgr::instance().wearItemOnAvatar(item->getUUID(), true, fReplace);
+// [/RLVa:KB]
+//          LLAppearanceMgr::instance().wearItemOnAvatar(item->getUUID(),true, !(mask & MASK_CONTROL));
         }
         return ACCEPT_YES_MULTI;
     }
@@ -2922,6 +3006,12 @@ EAcceptance LLToolDragAndDrop::dad3dGiveInventoryObject(
     }
     if( obj && avatar )
     {
+// [RLVa:KB] - @share
+        if ( (obj) && (RlvActions::isRlvEnabled()) && (!RlvActions::canGiveInventory(obj->getID())) )
+        {
+            return ACCEPT_NO_LOCKED;
+        }
+// [/RLVa:KB]
         if(drop)
         {
             LLGiveInventory::doGiveInventoryItem(obj->getID(), item );
@@ -2948,6 +3038,12 @@ EAcceptance LLToolDragAndDrop::dad3dGiveInventory(
     {
         return ACCEPT_NO;
     }
+// [RLVa:KB] - @share
+    if ( (obj) && (RlvActions::isRlvEnabled()) && (!RlvActions::canGiveInventory(obj->getID())) )
+    {
+        return ACCEPT_NO_LOCKED;
+    }
+// [/RLVa:KB]
     if (drop && obj)
     {
         LLGiveInventory::doGiveInventoryItem(obj->getID(), item);
@@ -2961,6 +3057,12 @@ EAcceptance LLToolDragAndDrop::dad3dGiveInventoryCategory(
     LLViewerObject* obj, S32 face, MASK mask, bool drop)
 {
     LL_DEBUGS() << "LLToolDragAndDrop::dad3dGiveInventoryCategory()" << LL_ENDL;
+// [RLVa:KB] - @share
+    if ( (obj) && (RlvActions::isRlvEnabled()) && (!RlvActions::canGiveInventory(obj->getID())) )
+    {
+        return ACCEPT_NO_LOCKED;
+    }
+// [/RLVa:KB]
     if(drop && obj)
     {
         LLViewerInventoryItem* item;

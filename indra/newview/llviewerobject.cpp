@@ -107,6 +107,11 @@
 #include "llgltfmateriallist.h"
 #include "llgl.h"
 #include "gltf/asset.h"
+// [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1a)
+#include "rlvactions.h"
+#include "rlvcommon.h"
+#include "rlvlocks.h"
+// [/RLVa:KB]
 
 //#define DEBUG_UPDATE_TYPE
 
@@ -782,6 +787,12 @@ bool LLViewerObject::isReturnable()
         return false;
     }
 
+// [RLVa:KB] - Checked: 2011-05-28 (RLVa-1.4.0a) | Added: RLVa-1.4.0a
+    if ( (RlvActions::isRlvEnabled()) && (!rlvCanDeleteOrReturn(this)) )
+    {
+        return false;
+    }
+// [/RLVa:KB]
     std::vector<LLBBox> boxes;
     boxes.push_back(LLBBox(getPositionRegion(), getRotationRegion(), getScale() * -0.5f, getScale() * 0.5f).getAxisAligned());
     for (child_list_t::iterator iter = mChildList.begin();
@@ -1018,7 +1029,10 @@ void LLViewerObject::addThisAndNonJointChildren(std::vector<LLViewerObject*>& ob
     }
 }
 
-bool LLViewerObject::isChild(LLViewerObject *childp) const
+//bool LLViewerObject::isChild(LLViewerObject *childp) const
+// [RLVa:KB] - Checked: 2011-05-28 (RLVa-1.4.0a) | Added: RLVa-1.4.0a
+bool LLViewerObject::isChild(const LLViewerObject *childp) const
+// [/RLVa:KB]
 {
     for (child_list_t::const_iterator iter = mChildList.begin();
          iter != mChildList.end(); iter++)
@@ -1482,6 +1496,12 @@ U32 LLViewerObject::processUpdateMessage(LLMessageSystem *mesgsys,
 
                     mText->setColor(LLColor4(coloru));
                     mText->setString(temp_string);
+// [RLVa:KB] - Checked: 2010-03-27 (RLVa-1.4.0a) | Added: RLVa-1.0.0f
+                    if (RlvActions::isRlvEnabled())
+                    {
+                        mText->setObjectText(temp_string);
+                    }
+// [/RLVa:KB]
 
                     mHudText = temp_string;
                     mHudTextColor = LLColor4(coloru);
@@ -1814,6 +1834,12 @@ U32 LLViewerObject::processUpdateMessage(LLMessageSystem *mesgsys,
                     coloru.mV[3] = 255 - coloru.mV[3];
                     mText->setColor(LLColor4(coloru));
                     mText->setString(temp_string);
+// [RLVa:KB] - Checked: 2010-03-27 (RLVa-1.4.0a) | Added: RLVa-1.0.0f
+                    if (RlvActions::isRlvEnabled())
+                    {
+                        mText->setObjectText(temp_string);
+                    }
+// [/RLVa:KB]
 
                     mHudText = temp_string;
                     mHudTextColor = LLColor4(coloru);
@@ -2009,6 +2035,25 @@ U32 LLViewerObject::processUpdateMessage(LLMessageSystem *mesgsys,
                                 gObjectList.killObject(this);
                                 return retval;
                             }
+// [RLVa:KB] - Checked: 2010-03-16 (RLVa-1.1.0k) | Added: RLVa-1.1.0k
+                            if ( (RlvActions::isRlvEnabled()) && (sent_parentp->isAvatar()) && (sent_parentp->getID() == gAgent.getID()) )
+                            {
+                                // Rezzed object that's being worn as an attachment (we're assuming this will be due to llAttachToAvatar())
+                                S32 idxAttachPt = ATTACHMENT_ID_FROM_STATE(getAttachmentState());
+                                if (gRlvAttachmentLocks.isLockedAttachmentPoint(idxAttachPt, RLV_LOCK_ADD))
+                                {
+                                    // If this will end up on an "add locked" attachment point then treat the attach as a user action
+                                    LLNameValue* nvItem = getNVPair("AttachItemID");
+                                    if (nvItem)
+                                    {
+                                        LLUUID idItem(nvItem->getString());
+                                        // URGENT-RLVa: [RLVa-1.2.0] At the moment llAttachToAvatar always seems to *add*
+                                        if (idItem.notNull())
+                                            RlvAttachmentLockWatchdog::instance().onWearAttachment(idItem, RLV_WEAR_ADD);
+                                    }
+                                }
+                            }
+// [/RLVa:KB]
                             sent_parentp->addChild(this);
                             // make sure this object gets a non-damped update
                             if (sent_parentp->mDrawable.notNull())
@@ -6905,7 +6950,10 @@ bool LLViewerObject::permTransfer() const
 // given you modify rights to.  JC
 bool LLViewerObject::allowOpen() const
 {
-    return !flagInventoryEmpty() && (permYouOwner() || permModify());
+// [RLVa:KB] - Checked: 2010-11-29 (RLVa-1.3.0c) | Modified: RLVa-1.3.0c
+    return !flagInventoryEmpty() && (permYouOwner() || permModify()) && ((!RlvActions::isRlvEnabled()) || (RlvActions::canEdit(this)));
+// [/RLVa:KB]
+//  return !flagInventoryEmpty() && (permYouOwner() || permModify());
 }
 
 LLViewerObject::LLInventoryCallbackInfo::~LLInventoryCallbackInfo()

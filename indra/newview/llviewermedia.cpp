@@ -3019,7 +3019,10 @@ LLViewerMediaTexture* LLViewerMediaImpl::updateMediaImage()
 {
     LL_PROFILE_ZONE_SCOPED_CATEGORY_MEDIA;
     llassert(!gCubeSnapshot);
-    if (!mMediaSource)
+//    if (!mMediaSource)
+// [SL:KB] - Patch: Render-TextureToggle (Catznip-4.0)
+    if ( (!mMediaSource) || ((LLViewerFetchedTexture::sDefaultDiffuseImagep.notNull()) && (LLViewerFetchedTexture::sDefaultDiffuseImagep->getID() == mTextureId)) )
+// [/SL:KB]
     {
         return nullptr; // not ready for updating
     }

@@ -1004,6 +1004,29 @@ void AISAPI::InvokeAISCommandCoro(LLCoreHttpUtil::HttpCoroutineAdapter::ptr_t ht
                 }
             }
             break;
+        case COPYINVENTORY:
+            {
+                uuid_list_t ids;
+                AISUpdate::parseUUIDArray(result, "_created_items", ids);
+                AISUpdate::parseUUIDArray(result, "_created_categories", ids);
+                for (const auto& item_id : ids)
+                {
+                    callback(item_id);
+                    needs_callback = false;
+                }
+            }
+            break;
+        case UPDATECATEGORY:
+            {
+                uuid_list_t ids;
+                AISUpdate::parseUUIDArray(result, "_updated_categories", ids);
+                for (const auto& item_id : ids)
+                {
+                    callback(item_id);
+                    needs_callback = false;
+                }
+            }
+            break;
         default:
             break;
         }

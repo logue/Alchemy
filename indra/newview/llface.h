@@ -219,6 +219,11 @@ public:
 
     bool        switchTexture() ;
 
+// [SL:KB] - Patch: Render-TextureToggle (Catznip-4.0)
+    bool        isDefaultTexture(U32 nChannel) const;
+    void        setDefaultTexture(U32 nChannel, bool fShowDefault) const;
+// [/SL:KB]
+
     //vertex buffer tracking
     void setVertexBuffer(LLVertexBuffer* buffer);
     void clearVertexBuffer(); //sets mVertexBuffer to NULL
@@ -326,6 +331,11 @@ private:
     bool        mIsMediaAllowed;
 
     U32 mDrawOrderIndex = 0; // see setDrawOrderIndex
+
+// [SL:KB] - Patch: Render-TextureToggle (Catznip-4.0)
+    mutable bool                       mShowDiffTexture;
+    mutable LLPointer<LLViewerTexture> mOrigDiffTexture;
+// [/SL:KB]
 
 protected:
     static bool sSafeRenderSelect;

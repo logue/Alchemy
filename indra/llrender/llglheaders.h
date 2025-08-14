@@ -50,9 +50,9 @@
 #include "GL/wglext.h"
 #endif
 
-#define GL_COLOR_INDEX				      0x1900
-#define GL_ALPHA				          0x1906
-#define GL_ALPHA8				          0x803C
+#define GL_COLOR_INDEX                    0x1900
+#define GL_ALPHA                          0x1906
+#define GL_ALPHA8                         0x803C
 #define GL_LUMINANCE                      0x1909
 #define GL_LUMINANCE_ALPHA                0x190A
 #define GL_LUMINANCE8                     0x8040
