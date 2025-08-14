@@ -8052,13 +8052,9 @@ void LLPipeline::renderFinalize()
         applyCAS(&mPostMap, &mRT->screen);
     }
 
-    generateSMAABuffers(&mRT->screen);
-
     gammaCorrect(&mRT->screen, &mPostMap);
 
     LLVertexBuffer::unbind();
-
-    applySMAA(&mPostMap, &mRT->screen);
 
     generateGlow(&mRT->screen);
 
@@ -8076,6 +8072,12 @@ void LLPipeline::renderFinalize()
     if (RenderFSAAType == 1)
     {
         applyFXAA(&mRT->screen, &mPostMap);
+        finalBuffer = &mPostMap;
+    }
+    else if (RenderFSAAType == 2)
+    {
+        generateSMAABuffers(&mRT->screen);
+        applySMAA(&mRT->screen, &mPostMap);
         finalBuffer = &mPostMap;
     }
 
