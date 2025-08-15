@@ -54,6 +54,9 @@ void sdl_logger(void *userdata, int category, SDL_LogPriority priority, const ch
         case SDL_LOG_PRIORITY_CRITICAL:
             LL_WARNS("SDL") << "log='" << message << "'" << LL_ENDL;
             break;
+        case SDL_LOG_PRIORITY_INVALID:
+        default:
+            break;
     }
 }
 
