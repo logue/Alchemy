@@ -36,6 +36,7 @@
 
 class LLFetchedGLTFMaterial;
 class LLGLTFOverrideCacheEntry;
+class LLViewerObject;
 
 class LLGLTFMaterialList
 {

@@ -35,6 +35,7 @@
 // viewer
 #include "llagent.h"
 #include "llfloaterregioninfo.h" // for invoice id
+#include "llviewerobject.h"
 #include "llviewerregion.h"
 
 #include "llcorehttputil.h"

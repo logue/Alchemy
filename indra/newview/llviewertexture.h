@@ -45,7 +45,6 @@
 class LLFace;
 class LLImageGL ;
 class LLImageRaw;
-class LLViewerObject;
 class LLViewerTexture;
 class LLViewerFetchedTexture ;
 class LLViewerMediaTexture ;

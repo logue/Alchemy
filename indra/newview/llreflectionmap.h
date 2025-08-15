@@ -29,6 +29,8 @@
 #include "llcubemaparray.h"
 #include "llmemory.h"
 
+#include "llviewerobject.h"
+
 class LLSpatialGroup;
 class LLViewerObject;
 

@@ -69,6 +69,7 @@ class LLMessageSystem;
 class LLNameValue;
 class LLPartSysData;
 class LLPipeline;
+class LLReflectionMap;
 class LLTextureEntry;
 class LLVOAvatar;
 class LLVOInventoryListener;

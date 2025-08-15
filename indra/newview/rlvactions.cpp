@@ -236,6 +236,7 @@ bool RlvActions::canShowName(EShowNamesContext eContext, const LLUUID& idAgent)
         switch (eContext)
         {
             // Show/hide avatar name
+            case SNC_COUNT:
             case SNC_DEFAULT:
             case SNC_TELEPORTOFFER:
             case SNC_TELEPORTREQUEST:
