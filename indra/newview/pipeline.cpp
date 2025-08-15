@@ -8040,7 +8040,7 @@ void LLPipeline::renderFinalize()
 
     static LLCachedControl<bool> has_hdr(gSavedSettings, "RenderHDREnabled", true);
     bool hdr = gGLManager.mGLVersion > 4.05f && has_hdr();
-    LLRenderTarget* postHDRBuffer = &mRT->deferredLight;
+    LLRenderTarget* postHDRBuffer = &mRT->screen;
     if (hdr)
     {
         copyScreenSpaceReflections(&mRT->screen, &mSceneMap);
@@ -8056,6 +8056,10 @@ void LLPipeline::renderFinalize()
         {
             applyCAS(&mRT->deferredLight, &mRT->screen);
             postHDRBuffer = &mRT->screen;
+        }
+        else
+        {
+            postHDRBuffer = &mRT->deferredLight;
         }
     }
 
