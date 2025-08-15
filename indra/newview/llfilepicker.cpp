@@ -65,6 +65,7 @@ LLFilePicker LLFilePicker::sInstance;
 #define MATERIAL_TEXTURES_FILTER L"GLTF Import (*.gltf; *.glb; *.tga; *.bmp; *.jpg; *.jpeg; *.png)\0*.gltf;*.glb;*.tga;*.bmp;*.jpg;*.jpeg;*.png\0"
 #define SCRIPT_FILTER L"Script files (*.lsl)\0*.lsl\0"
 #define DICTIONARY_FILTER L"Dictionary files (*.dic; *.xcu)\0*.dic;*.xcu\0"
+#define ZIP_FILTER L"ZIP files (*.zip)\0*.zip\0"
 #endif
 
 #ifdef LL_DARWIN
@@ -229,6 +230,9 @@ namespace
         case LLFilePicker::FFLOAD_DICTIONARY:
             filter_vec.push_back({ "Dictionary files (*.dic; *.xcu)", "dic;xcu" });
             break;
+        case LLFilePicker::FFLOAD_ZIP:
+            filter_vec.push_back({ "Zip files (*.zip)", "zip" });
+             break;
         default:
             break;
         }
@@ -686,6 +690,10 @@ bool LLFilePicker::setupFilter(ELoadFilter filter)
         mOFN.lpstrFilter = DICTIONARY_FILTER \
             L"\0";
         break;
+    case FFLOAD_ZIP:
+        mOFN.lpstrFilter = ZIP_FILTER \
+            L"\0";
+        break;
     default:
         res = false;
         break;
@@ -1133,6 +1141,9 @@ std::unique_ptr<std::vector<std::string>> LLFilePicker::navOpenFilterProc(ELoadF
         case FFLOAD_DICTIONARY:
             allowedv->push_back("dic");
             allowedv->push_back("xcu");
+            break;
+        case FFLOAD_ZIP:
+            allowedv->emplace_back("zip");
             break;
         case FFLOAD_DIRECTORY:
             break;

@@ -68,6 +68,7 @@ if (NOT HAVOK_TPV)
 endif (NOT HAVOK_TPV)
 
 set(viewer_SOURCE_FILES
+    alunzip.cpp
     gltfscenemanager.cpp
     gltf/asset.cpp
     gltf/accessor.cpp
@@ -748,6 +749,7 @@ set(VIEWER_BINARY_NAME "secondlife-bin" CACHE STRING
 set(viewer_HEADER_FILES
     CMakeLists.txt
     ViewerInstall.cmake
+    alunzip.h
     gltfscenemanager.h
     groupchatlistener.h
     gltf/asset.h

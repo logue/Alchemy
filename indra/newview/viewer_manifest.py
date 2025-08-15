@@ -161,6 +161,7 @@ class ViewerManifest(LLManifest):
                     self.path("*/xui/*/*.xml")
                     self.path("*/xui/*/widgets/*.xml")
                     self.path("*/*.xml")
+                    self.path("*/*.json")
 
                     # Update: 2017-11-01 CP Now we store app code in the html folder
                     #         Initially the HTML/JS code to render equirectangular
