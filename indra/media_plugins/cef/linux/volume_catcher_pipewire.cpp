@@ -207,7 +207,7 @@ void VolumeCatcherPipeWire::ChildNode::updateVolume()
 
     {
         std::lock_guard pwLock(*mImpl);
-        pw_node_set_param(mProxy, SPA_PARAM_Props, 0, pod);
+        pw_node_set_param((pw_node*)mProxy, SPA_PARAM_Props, 0, pod);
     }
 }
 
