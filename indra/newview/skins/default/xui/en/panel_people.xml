@@ -64,6 +64,8 @@ Learn about [https://community.secondlife.com/knowledgebase/joining-and-particip
 	<string
 	 name="GroupCountWithInfo"
 	 value="You belong to [COUNT] groups, and can join [REMAINING] more.  [secondlife:/// Raise your limit]"/>
+   <string name="online_friends_count">Online ([COUNT])</string>
+   <string name="all_friends_count">All ([COUNT])</string>
     <tab_container
      bottom="-10"
      follows="all"
@@ -176,6 +178,20 @@ Learn about [https://community.secondlife.com/knowledgebase/joining-and-particip
                      function="People.DelFriend" />
                  </dnd_button>
             </panel>
+            <text
+               type="string"
+               length="1"
+               follows="left|top|right"
+               height="14"
+               layout="topleft"
+               right="-10"
+               top_pad="4"
+               left="3"
+               use_ellipses="true"
+               skip_link_underline="true"
+               name="nearbycount">
+            There are [TOTAL] avatars total and [COUNT] in [REGION].
+         </text>
          <layout_stack
            clip="false"
            follows="all"
