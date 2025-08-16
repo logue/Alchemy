@@ -74,6 +74,7 @@
 #include "rlvcommon.h"
 #include "rlvhandler.h"
 // [/RLVa:KB]
+#include "alchatcommand.h"
 
 S32 LLFloaterIMNearbyChat::sLastSpecialChatChannel = 0;
 
@@ -625,7 +626,7 @@ void LLFloaterIMNearbyChat::sendChat( EChatType type )
 
             type = processChatTypeTriggers(type, utf8_revised_text);
 
-            if (!utf8_revised_text.empty())
+            if (!utf8_revised_text.empty() && !ALChatCommand::parseCommand(utf8_revised_text))
             {
                 // Chat with animation
                 sendChatFromViewer(utf8_revised_text, type, gSavedSettings.getBOOL("PlayChatAnim"));

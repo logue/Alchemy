@@ -27,7 +27,7 @@
 #ifndef LL_LLVIEWERMENU_H
 #define LL_LLVIEWERMENU_H
 
-#include "../llui/llmenugl.h"
+#include "llmenugl.h"
 #include "llsafehandle.h"
 
 class LLMessageSystem;
@@ -37,6 +37,8 @@ class LLView;
 class LLParcelSelection;
 class LLObjectSelection;
 class LLSelectNode;
+class LLViewerObject;
+class LLVOAvatar;
 
 // [RLVa:KB] - Checked: RLVa-2.0.0
 void set_use_wireframe(bool useWireframe);
@@ -113,6 +115,10 @@ void handle_give_money_dialog();
 bool enable_pay_object();
 bool enable_buy_object();
 bool handle_go_to();
+
+// find avatar from object methods
+LLVOAvatar* find_avatar_from_object(LLViewerObject* object);
+LLVOAvatar* find_avatar_from_object(const LLUUID& object_id);
 
 // Convert strings to internal types
 U32 render_type_from_string(std::string_view render_type);

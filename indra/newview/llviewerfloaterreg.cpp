@@ -30,6 +30,7 @@
 #include "llfloaterreg.h"
 #include "llviewerfloaterreg.h"
 
+#include "alfloatergenerictext.h"
 #include "llcommandhandler.h"
 #include "llcompilequeue.h"
 #include "llfasttimerview.h"
@@ -530,5 +531,7 @@ void LLViewerFloaterReg::registerFloaters()
 
     // *NOTE: Please keep these alphabetized for easier merges
 
+    LLFloaterReg::add("delete_queue", "floater_script_queue.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterDeleteQueue>);
+    LLFloaterReg::add("generic_text", "floater_generic_text.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterGenericText>);
     LLFloaterReg::registerControlVariables(); // Make sure visibility and rect controls get preserved when saving
 }

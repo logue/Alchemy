@@ -759,24 +759,31 @@ static void on_avatar_name_cache_notify(const LLUUID& agent_id,
 {
     // Popup a notify box with online status of this agent
     // Use display name only because this user is your friend
+    static const std::string online_status = LLTrans::getString("OnlineStatus");
+    static const std::string offline_status = LLTrans::getString("OfflineStatus");
+
     LLSD args;
     args["NAME"] = av_name.getDisplayName();
-    args["STATUS"] = online ? LLTrans::getString("OnlineStatus") : LLTrans::getString("OfflineStatus");
+    args["STATUS"] = online ? online_status : offline_status;
 
-    LLNotificationPtr notification;
+    LLNotification::Params notify_params;
+    notify_params.name = "FriendOnlineOffline";
+    notify_params.substitutions = args;
     if (online)
     {
-        notification =
-            LLNotifications::instance().add("FriendOnlineOffline",
-                                     args,
-                                     payload.with("respond_on_mousedown", true),
-                                     boost::bind(&LLAvatarActions::startIM, agent_id));
+        notify_params.payload = payload.with("respond_on_mousedown", TRUE);
+
+        LLNotification::Params::Functor functor_p;
+        functor_p.function = boost::bind(&LLAvatarActions::startIM, agent_id);
+        notify_params.functor = functor_p;
     }
     else
     {
-        notification =
-            LLNotifications::instance().add("FriendOnlineOffline", args, payload);
+        notify_params.payload = payload;
     }
+
+    notify_params.force_to_chat = gSavedSettings.getBOOL("AlchemyOnlineOfflineToChat");
+    LLNotificationPtr notification = LLNotifications::instance().add(notify_params);
 
     // If there's an open IM session with this agent, send a notification there too.
     LLUUID session_id = LLIMMgr::computeSessionID(IM_NOTHING_SPECIAL, agent_id);

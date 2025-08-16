@@ -49,6 +49,7 @@
 #include "llresmgr.h"
 
 #include "llbutton.h"
+#include "llscrolllistctrl.h"
 #include "lldir.h"
 #include "llnotificationsutil.h"
 #include "llviewerstats.h"
@@ -713,6 +714,52 @@ bool LLFloaterNotRunQueue::startQueue()
 }
 
 ///----------------------------------------------------------------------------
+/// Class LLFloaterDeleteQueue
+///----------------------------------------------------------------------------
+
+LLFloaterDeleteQueue::LLFloaterDeleteQueue(const LLSD& key)
+    : LLFloaterScriptQueue(key)
+{
+    setTitle(LLTrans::getString("DeleteQueueTitle"));
+    setStartString(LLTrans::getString("DeleteQueueStart"));
+}
+
+LLFloaterDeleteQueue::~LLFloaterDeleteQueue()
+{
+}
+
+bool LLFloaterDeleteQueue::deleteObjectScripts(LLHandle<LLFloaterScriptQueue> hfloater,
+    const LLPointer<LLViewerObject> &object, LLInventoryObject* inventory, LLEventPump &pump)
+{
+    LLCheckedHandle<LLFloaterScriptQueue> floater(hfloater);
+    // Dereferencing floater may fail. If they do they throw LLExeceptionStaleHandle.
+    // which is caught in objectScriptProcessingQueueCoro
+
+    std::string buffer;
+    buffer = floater->getString("Deleting") + (": ") + inventory->getName();
+    floater->addStringMessage(buffer);
+
+    const_cast<LLViewerObject*>(object.get())->removeInventory(inventory->getUUID());
+
+    return true;
+}
+
+bool LLFloaterDeleteQueue::startQueue()
+{
+    LLHandle<LLFloaterScriptQueue> hFloater(getDerivedHandle<LLFloaterScriptQueue>());
+
+    fnQueueAction_t fn = boost::bind(&LLFloaterDeleteQueue::deleteObjectScripts, hFloater, _1, _2, _3);
+    LLCoros::instance().launch("ScriptDeleteQueue", boost::bind(LLFloaterScriptQueue::objectScriptProcessingQueueCoro,
+        mStartString,
+        hFloater,
+        mObjectList,
+        fn));
+
+    return true;
+}
+
+
+///----------------------------------------------------------------------------
 /// Local function definitions
 ///----------------------------------------------------------------------------
 void ObjectInventoryFetcher::inventoryChanged(LLViewerObject* object,
@@ -812,7 +859,7 @@ void LLFloaterScriptQueue::objectScriptProcessingQueueCoro(std::string action, L
             floater.check();
         }
 
-        floater->addStringMessage("Done");
+        floater->addStringMessage(floater->getString("Done"));
         floater->getChildView("close")->setEnabled(true);
     }
     catch (LLCheckedHandleBase::Stale &)

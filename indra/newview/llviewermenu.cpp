@@ -45,6 +45,8 @@
 #include "v4coloru.h"
 
 // newview includes
+#include "alavataractions.h"
+#include "alviewermenu.h"
 #include "llagent.h"
 #include "llagentaccess.h"
 #include "llagentbenefits.h"
@@ -8217,6 +8219,12 @@ class LLToolsSelectedScriptAction : public view_listener_t
             msg = "SetRunningNot";
             title = LLTrans::getString("NotRunQueueTitle");
         }
+        else if (action == "delete")
+        {
+            name = "delete_queue";
+            msg = "Delete";
+            title = LLTrans::getString("DeleteQueueTitle");
+        }
         LLUUID id; id.generate();
 
         LLFloaterScriptQueue* queue =LLFloaterReg::getTypedInstance<LLFloaterScriptQueue>(name, LLSD(id));
@@ -10614,4 +10622,6 @@ void initialize_menus()
     enable.add("RLV.CanShowName", boost::bind(&rlvMenuCanShowName));
     enable.add("RLV.EnableIfNot", boost::bind(&rlvMenuEnableIfNot, _2));
 // [/RLVa:KB]
+
+    ALViewerMenu::initialize_menus();
 }

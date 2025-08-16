@@ -628,6 +628,7 @@ void LLAvatarActions::teleportRequest(const LLUUID& id)
     LLNotificationsUtil::add("TeleportRequestPrompt", notification, payload, teleport_request_callback);
 }
 
+#if 0
 // static
 void LLAvatarActions::kick(const LLUUID& id)
 {
@@ -700,6 +701,7 @@ void LLAvatarActions::unfreeze(const LLUUID& id)
     payload["avatar_id"] = id;
     LLNotifications::instance().add("UnFreezeUser", LLSD(), payload, handleUnfreeze);
 }
+#endif
 
 //static
 void LLAvatarActions::csr(const LLUUID& id, std::string name)
@@ -1438,6 +1440,7 @@ bool LLAvatarActions::callbackAddFriendWithMessage(const LLSD& notification, con
     return false;
 }
 
+#if 0 // ALAvatarActions
 // static
 bool LLAvatarActions::handleKick(const LLSD& notification, const LLSD& response)
 {
@@ -1567,6 +1570,7 @@ bool LLAvatarActions::handleUnfreeze(const LLSD& notification, const LLSD& respo
     }
     return false;
 }
+#endif
 
 // static
 void LLAvatarActions::requestFriendship(const LLUUID& target_id, const std::string& target_name, const std::string& message)
@@ -1619,4 +1623,19 @@ bool LLAvatarActions::canBlock(const LLUUID& id)
     bool is_linden = (full_name.find("Linden") != std::string::npos);
     bool is_self = id == gAgentID;
     return !is_self && !is_linden;
+}
+
+//static
+bool LLAvatarActions::isAgentMappable(const LLUUID& agent_id)
+{
+    const LLRelationship* buddy_info = nullptr;
+    bool is_friend = LLAvatarActions::isFriend(agent_id);
+
+    if (is_friend)
+        buddy_info = LLAvatarTracker::instance().getBuddyInfo(agent_id);
+
+    return (buddy_info &&
+            buddy_info->isOnline() &&
+            buddy_info->isRightGrantedFrom(LLRelationship::GRANT_MAP_LOCATION)
+            );
 }

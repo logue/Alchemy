@@ -68,7 +68,12 @@ if (NOT HAVOK_TPV)
 endif (NOT HAVOK_TPV)
 
 set(viewer_SOURCE_FILES
+    alavataractions.cpp
+    alchatcommand.cpp
+    alfloatergenerictext.cpp
+    alpanelradaralert.cpp
     alunzip.cpp
+    alviewermenu.cpp
     gltfscenemanager.cpp
     gltf/asset.cpp
     gltf/accessor.cpp
@@ -749,7 +754,12 @@ set(VIEWER_BINARY_NAME "secondlife-bin" CACHE STRING
 set(viewer_HEADER_FILES
     CMakeLists.txt
     ViewerInstall.cmake
+    alavataractions.h
+    alchatcommand.h
+    alfloatergenerictext.h
+    alpanelradaralert.h
     alunzip.h
+    alviewermenu.h
     gltfscenemanager.h
     groupchatlistener.h
     gltf/asset.h

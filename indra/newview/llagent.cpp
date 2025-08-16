@@ -516,6 +516,9 @@ void LLAgent::init()
     mLastKnownRequestMaturity = mLastKnownResponseMaturity;
     mIsDoSendMaturityPreferenceToServer = true;
 
+    mIgnorePrejump = gSavedSettings.getBOOL("AlchemyNimble");
+    gSavedSettings.getControl("AlchemyNimble")->getSignal()->connect([this](LLControlVariable* control, const LLSD& new_val, const LLSD&) { mIgnorePrejump = new_val.asBoolean(); });
+
     if (!mTeleportFinishedSlot.connected())
     {
         mTeleportFinishedSlot = LLViewerParcelMgr::getInstance()->setTeleportFinishedCallback(boost::bind(&LLAgent::handleTeleportFinished, this));
@@ -1582,7 +1585,14 @@ LLQuaternion LLAgent::getQuat() const
 //-----------------------------------------------------------------------------
 U32 LLAgent::getControlFlags()
 {
-    return mControlFlags;
+    if (LLAgent::mIgnorePrejump)
+    {
+        return mControlFlags | AGENT_CONTROL_FINISH_ANIM;
+    }
+    else
+    {
+        return mControlFlags;
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -5393,6 +5403,24 @@ void LLTeleportRequestViaLocationLookAt::restartTeleport()
     gAgent.doTeleportViaLocationLookAt(getPosGlobal(), getLookAt());
 // [/RLVa:KB]
 //    gAgent.doTeleportViaLocationLookAt(getPosGlobal());
+}
+
+LLUUID LLAgent::getGroupForRezzing()
+{
+    if (gSavedSettings.getBOOL("AlchemyRezUnderLandGroup"))
+    {
+        LLParcel* land_parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
+        if (land_parcel)
+        {
+            // Is the agent in the land group
+            if (isInGroup(land_parcel->getGroupID()))
+                return land_parcel->getGroupID();
+            // Is the agent in the land group (the group owns the land)
+            else if (isInGroup(land_parcel->getOwnerID()))
+                return land_parcel->getOwnerID();
+        }
+    }
+    return getGroupID();
 }
 
 // EOF

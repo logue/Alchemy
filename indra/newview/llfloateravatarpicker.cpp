@@ -130,15 +130,18 @@ bool LLFloaterAvatarPicker::postBuild()
     LLScrollListCtrl* searchresults = getChild<LLScrollListCtrl>("SearchResults");
     searchresults->setDoubleClickCallback( boost::bind(&LLFloaterAvatarPicker::onBtnSelect, this));
     searchresults->setCommitCallback(boost::bind(&LLFloaterAvatarPicker::onList, this));
+    searchresults->setContextMenu(LLScrollListCtrl::MENU_AVATAR);
     getChildView("SearchResults")->setEnabled(false);
 
     LLScrollListCtrl* nearme = getChild<LLScrollListCtrl>("NearMe");
     nearme->setDoubleClickCallback(boost::bind(&LLFloaterAvatarPicker::onBtnSelect, this));
     nearme->setCommitCallback(boost::bind(&LLFloaterAvatarPicker::onList, this));
+    nearme->setContextMenu(LLScrollListCtrl::MENU_AVATAR);
 
     LLScrollListCtrl* friends = getChild<LLScrollListCtrl>("Friends");
     friends->setDoubleClickCallback(boost::bind(&LLFloaterAvatarPicker::onBtnSelect, this));
-    getChild<LLUICtrl>("Friends")->setCommitCallback(boost::bind(&LLFloaterAvatarPicker::onList, this));
+    friends->setCommitCallback(boost::bind(&LLFloaterAvatarPicker::onList, this));
+    friends->setContextMenu(LLScrollListCtrl::MENU_AVATAR);
 
     childSetAction("ok_btn", boost::bind(&LLFloaterAvatarPicker::onBtnSelect, this));
     getChildView("ok_btn")->setEnabled(false);
@@ -181,6 +184,10 @@ void LLFloaterAvatarPicker::onTabChanged()
 LLFloaterAvatarPicker::~LLFloaterAvatarPicker()
 {
     gFocusMgr.releaseFocusIfNeeded( this );
+    if (mAvatarNameCacheConnection.connected())
+    {
+        mAvatarNameCacheConnection.disconnect();
+    }
 }
 
 void LLFloaterAvatarPicker::onBtnFind()
@@ -308,8 +315,9 @@ void LLFloaterAvatarPicker::populateNearMe()
     LLScrollListCtrl* near_me_scroller = getChild<LLScrollListCtrl>("NearMe");
     near_me_scroller->deleteAllItems();
 
+    static LLCachedControl<F32> av_near_me_range(gSavedSettings, "AVPickerNearMeRange", 512.f);
     uuid_vec_t avatar_ids;
-    LLWorld::getInstance()->getAvatars(&avatar_ids, NULL, gAgent.getPositionGlobal(), gSavedSettings.getF32("NearMeRange"));
+    LLWorld::getInstance()->getAvatars(&avatar_ids, NULL, gAgent.getPositionGlobal(), av_near_me_range);
     for(U32 i=0; i<avatar_ids.size(); i++)
     {
         LLUUID& av = avatar_ids[i];
@@ -460,13 +468,54 @@ void LLFloaterAvatarPicker::findCoro(std::string url, LLUUID queryID, std::strin
     }
 }
 
+void LLFloaterAvatarPicker::onAvatarNameCache(const LLUUID& agent_id, const LLAvatarName& av_name)
+{
+    mAvatarNameCacheConnection.disconnect();
+    sAvatarNameMap[agent_id] = av_name;
+
+    LLScrollListCtrl* search_results = getChild<LLScrollListCtrl>("SearchResults");
+
+    // clear "Searching" label on first results
+    search_results->deleteAllItems();
+
+    LLSD item;
+    item["id"] = agent_id;
+    LLSD& columns = item["columns"];
+    columns[0]["column"] = "name";
+    columns[0]["value"] = av_name.getDisplayName();
+    columns[1]["column"] = "username";
+    columns[1]["value"] = av_name.getAccountName();
+    search_results->addElement(item);
+
+    getChildView("ok_btn")->setEnabled(true);
+    search_results->setEnabled(true);
+    search_results->sortByColumnIndex(1, TRUE);
+    search_results->selectFirstItem();
+
+    onList();
+    search_results->setFocus(TRUE);
+}
 
 void LLFloaterAvatarPicker::find()
 {
     //clear our stored LLAvatarNames
     sAvatarNameMap.clear();
 
+    getChild<LLScrollListCtrl>("SearchResults")->deleteAllItems();
+    getChild<LLScrollListCtrl>("SearchResults")->setCommentText(getString("searching"));
+
+    getChildView("ok_btn")->setEnabled(FALSE);
+    mNumResultsReturned = 0;
+
     std::string text = getChild<LLUICtrl>("Edit")->getValue().asString();
+
+    bool is_uuid = LLUUID::validate(text) != FALSE;
+    if(is_uuid)
+    {
+        LLUUID search_id(text);
+        mAvatarNameCacheConnection = LLAvatarNameCache::get(search_id, boost::bind(&LLFloaterAvatarPicker::onAvatarNameCache, this, _1, _2));
+        return;
+    }
 
     size_t separator_index = text.find_first_of(" ._");
     if (separator_index != text.npos)
@@ -519,11 +568,6 @@ void LLFloaterAvatarPicker::find()
             gAgent.sendReliableMessage();
         }
     }
-    getChild<LLScrollListCtrl>("SearchResults")->deleteAllItems();
-    getChild<LLScrollListCtrl>("SearchResults")->setCommentText(getString("searching"));
-
-    getChildView("ok_btn")->setEnabled(false);
-    mNumResultsReturned = 0;
 }
 
 void LLFloaterAvatarPicker::setAllowMultiple(bool allow_multiple)

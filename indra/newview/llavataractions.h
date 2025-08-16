@@ -235,6 +235,11 @@ public:
     static bool canShareSelectedItems(LLInventoryPanel* inv_panel = NULL);
 
     /**
+     * Checks whether agent is mappable
+     */
+    static bool isAgentMappable(const LLUUID& agent_id);
+
+    /**
      * Builds a string of residents' display names separated by "words_separator" string.
      *
      * @param avatar_names - a vector of given avatar names from which resulting string is built
@@ -261,11 +266,13 @@ private:
     static bool callbackAddFriendWithMessage(const LLSD& notification, const LLSD& response);
     static bool handleRemove(const LLSD& notification, const LLSD& response);
     static bool handlePay(const LLSD& notification, const LLSD& response, LLUUID avatar_id);
+#if 0
     static bool handleFreezeAvatar(const LLSD& notification, const LLSD& response);
     static bool handleEjectAvatar(const LLSD& notification, const LLSD& response);
     static bool handleKick(const LLSD& notification, const LLSD& response);
     static bool handleFreeze(const LLSD& notification, const LLSD& response);
     static bool handleUnfreeze(const LLSD& notification, const LLSD& response);
+#endif
     static void callback_invite_to_group(LLUUID group_id, LLUUID id);
 
     // Just request friendship, no dialog.

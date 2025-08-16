@@ -499,6 +499,7 @@ private:
     S32             mControlsTakenPassedOnCount[TOTAL_CONTROLS];
     U32             mControlFlags;                  // Replacement for the mFooKey's
 
+    bool            mIgnorePrejump;
     //--------------------------------------------------------------------
     // Animations
     //--------------------------------------------------------------------
@@ -912,6 +913,7 @@ public:
 public:
     void            setHideGroupTitle(bool hide)    { mHideGroupTitle = hide; }
     bool            isGroupTitleHidden() const      { return mHideGroupTitle; }
+    LLUUID          getGroupForRezzing();
 private:
     std::string     mGroupTitle;                    // Honorific, like "Sir"
     bool            mHideGroupTitle;

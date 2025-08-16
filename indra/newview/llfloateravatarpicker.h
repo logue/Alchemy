@@ -95,6 +95,8 @@ private:
     virtual void draw();
     virtual bool handleKeyHere(KEY key, MASK mask);
 
+    void onAvatarNameCache(const LLUUID& agent_id, const LLAvatarName& av_name);
+
     LLUUID              mQueryID;
     int                 mNumResultsReturned;
     bool                mNearMeListComplete;
@@ -108,6 +110,8 @@ private:
 
     validate_signal_t mOkButtonValidateSignal;
     select_callback_t mSelectionCallback;
+
+    boost::signals2::connection mAvatarNameCacheConnection;
 };
 
 #endif
