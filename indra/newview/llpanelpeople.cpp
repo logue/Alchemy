@@ -650,6 +650,7 @@ bool LLPanelPeople::postBuild()
 
     LLPanel* nearby_tab = getChild<LLPanel>(NEARBY_TAB_NAME);
     nearby_tab->setVisibleCallback(boost::bind(&Updater::setActive, mNearbyListUpdater, _2));
+    mNearbyCountText = nearby_tab->getChild<LLTextBox>("nearbycount");
 
     mNearbyList = nearby_tab->getChild<LLAvatarList>("avatar_list");
     mNearbyList->setNoItemsCommentText(getString("no_one_near"));
@@ -764,6 +765,29 @@ void LLPanelPeople::onChange(EStatusType status, const LLSD& channelInfo, bool p
     updateButtons();
 }
 
+void LLPanelPeople::updateFriendAccordionTitles()
+{
+    // NOTE: changed name from `updateAccordionTabTitles` to `updateFriendAccordionTitles`
+    // Friends list is only one that uses the accordions -- Fallen
+    if (mOnlineFriendList)
+    {
+        LLStringUtil::format_map_t args_online;
+        args_online["[COUNT]"] = std::to_string(mOnlineFriendList->size());
+        std::string online_title = getString("online_friends_count", args_online);
+
+        mFriendsOnlineTab->setTitle(online_title);
+    }
+
+    if (mAllFriendList)
+    {
+        LLStringUtil::format_map_t args_all;
+        args_all["[COUNT]"] = std::to_string(mAllFriendList->size());
+        std::string all_title = getString("all_friends_count", args_all);
+
+        mFriendsAllTab->setTitle(all_title);
+    }
+}
+
 void LLPanelPeople::updateFriendListHelpText()
 {
     // show special help text for just created account to help finding friends. EXT-4836
@@ -838,6 +862,7 @@ void LLPanelPeople::updateFriendList()
     mAllFriendList->setDirty(true, !mAllFriendList->filterHasMatches());
     //update trash and other buttons according to a selected item
     updateButtons();
+    updateFriendAccordionTitles();
     showFriendsAccordionsIfNeeded();
 }
 
@@ -853,6 +878,30 @@ void LLPanelPeople::updateNearbyList()
     {
 // [/RLVa:KB]
         LLWorld::getInstance()->getAvatars(&mNearbyList->getIDs(), &positions, gAgent.getPositionGlobal(), gSavedSettings.getF32("NearMeRange"));
+        int count_in_region = 0;
+        LLViewerRegion* cur_region = gAgent.getRegion();
+
+         if (!cur_region)
+         {
+            LL_WARNS() << "Current region is null" << LL_ENDL;
+            return;
+        }
+
+        // Iterate through avatars in the region.
+        // The nearby list reports the avatars in 4096m range (`ALControlCache::NearMeRange`)
+        // Reported UUIDs may not be in same region.
+        // Also the TOTAL changes based on your filter results -- Fallen
+        for (size_t i = 0; i < positions.size(); ++i)
+        {
+            if (cur_region->pointInRegionGlobal(positions[i]))
+            {
+                count_in_region++;
+            }
+        }
+
+        mNearbyCountText->setTextArg("[TOTAL]", std::to_string(mNearbyList->size()));
+        mNearbyCountText->setTextArg("[COUNT]", std::to_string(count_in_region));
+        mNearbyCountText->setTextArg("[REGION]", RlvActions::canShowLocation() ? cur_region->getName() : "[REDACTED]");
 // [RLVa:KB] - Checked: RLVa-2.0.3
     }
     else
@@ -1564,6 +1613,8 @@ void LLPanelPeople::onFriendListRefreshComplete(LLUICtrl*ctrl, const LLSD& param
     {
         showAccordion(mFriendsAllTab, param.asInteger());
     }
+    
+    updateFriendAccordionTitles();
 }
 
 void LLPanelPeople::setAccordionCollapsedByUser(LLUICtrl* acc_tab, bool collapsed)

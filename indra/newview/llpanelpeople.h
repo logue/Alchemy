@@ -85,6 +85,7 @@ private:
     // methods indirectly called by the updaters
     void                    updateFriendListHelpText();
     void                    updateFriendList();
+    void                    updateFriendAccordionTitles();
 //  void                    updateNearbyList();
     void                    updateRecentList();
 
@@ -146,7 +147,7 @@ private:
     LLGroupList*            mGroupList;
     LLNetMap*               mMiniMap;
 
-    LLAccordionCtrl* mFriendsAccordion = nullptr;
+    LLAccordionCtrl*        mFriendsAccordion = nullptr;
     LLAccordionCtrlTab*     mFriendsAllTab = nullptr;
     LLAccordionCtrlTab*     mFriendsOnlineTab = nullptr;
 
@@ -160,6 +161,7 @@ private:
     LLUICtrl*               mFriendsDelFriendBtn = nullptr;
 
     LLTextBox*              mGroupCountText = nullptr;
+    LLTextBox*              mNearbyCountText = nullptr;
 
     std::vector<std::string> mSavedOriginalFilters;
     std::vector<std::string> mSavedFilters;
