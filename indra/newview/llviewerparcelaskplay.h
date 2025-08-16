@@ -27,8 +27,11 @@
 #ifndef LLVIEWERPARCELASKPLAY_H
 #define LLVIEWERPARCELASKPLAY_H
 
+#include "llsingleton.h"
 #include "llnotificationptr.h"
 #include "lluuid.h"
+
+#include <map>
 
 class LLViewerParcelAskPlay : public LLSingleton<LLViewerParcelAskPlay>
 {

@@ -207,7 +207,7 @@ protected:
 
     uuid_set_t   mDeadObjects;
 
-    std::map<LLUUID, LLPointer<LLViewerObject> > mUUIDObjectMap;
+    boost::unordered_map<LLUUID, LLPointer<LLViewerObject> > mUUIDObjectMap;
 
     //set of objects that need to update their cost
     uuid_set_t   mStaleObjectCost;
@@ -222,9 +222,9 @@ protected:
     S32 mCurLazyUpdateIndex;
 
     static U32 sSimulatorMachineIndex;
-    std::map<U64, U32> mIPAndPortToIndex;
+    boost::unordered_map<U64, U32> mIPAndPortToIndex;
 
-    std::map<U64, LLUUID> mIndexAndLocalIDToUUID;
+    boost::unordered_map<U64, LLUUID> mIndexAndLocalIDToUUID;
 
     friend class LLViewerObject;
 
