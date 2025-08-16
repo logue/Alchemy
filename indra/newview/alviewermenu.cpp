@@ -30,7 +30,7 @@
 // newview
 #include "alavataractions.h"
 //#include "alcinematicmode.h"
-//#include "alfloaterparticleeditor.h"
+#include "alfloaterparticleeditor.h"
 #include "llagent.h"
 #include "llappviewer.h"
 #include "llavatarpropertiesprocessor.h"
@@ -64,16 +64,16 @@ namespace
         return false;
     }
 
-    //void edit_particle_source()
-    //{
-    //    LLViewerObject* objectp = LLSelectMgr::getInstance()->getSelection()->getPrimaryObject();
-    //    if (objectp)
-    //    {
-    //        ALFloaterParticleEditor* particleEditor = LLFloaterReg::showTypedInstance<ALFloaterParticleEditor>("particle_editor", LLSD(objectp->getID()), TAKE_FOCUS_YES);
-    //        if (particleEditor)
-    //            particleEditor->setObject(objectp);
-    //    }
-    //}
+    void edit_particle_source()
+    {
+        LLViewerObject* objectp = LLSelectMgr::getInstance()->getSelection()->getPrimaryObject();
+        if (objectp)
+        {
+            ALFloaterParticleEditor* particleEditor = LLFloaterReg::showTypedInstance<ALFloaterParticleEditor>("particle_editor", LLSD(objectp->getID()), TAKE_FOCUS_YES);
+            if (particleEditor)
+                particleEditor->setObject(objectp);
+        }
+    }
 
     void world_clear_effects()
     {
@@ -456,7 +456,7 @@ void ALViewerMenu::initialize_menus()
     commit.add("Advanced.DebugSimFeatures", [](LLUICtrl* ctrl, const LLSD& param) { spawn_debug_simfeatures(); });
 
     commit.add("Object.CopyID", [](LLUICtrl* ctrl, const LLSD& param) { object_copy_key(); });
-    //commit.add("Object.EditParticles",  [](LLUICtrl* ctrl, const LLSD& param) { edit_particle_source(); });
+    commit.add("Object.EditParticles",  [](LLUICtrl* ctrl, const LLSD& param) { edit_particle_source(); });
     commit.add("Object.AlchemyExplode", [](LLUICtrl* ctrl, const LLSD& param) { object_explode(); });
     commit.add("Object.AlchemyDestroy", [](LLUICtrl* ctrl, const LLSD& param) { object_destroy(); });
     commit.add("Object.AlchemyForceDelete", [](LLUICtrl* ctrl, const LLSD& param) { object_force_delete(); });

@@ -2313,12 +2313,12 @@ void LLAppViewer::initLoggingAndGetLastDuration()
     {
         // Remove the last ".old" log file.
         std::string old_log_file = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,
-            "SecondLife.old");
+            "Alchemy.old");
         LLFile::remove(old_log_file);
 
         // Get name of the log file
         std::string log_file = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,
-            "SecondLife.log");
+            "Alchemy.log");
         /*
         * Before touching any log files, compute the duration of the last run
         * by comparing the ctime of the previous start marker file with the ctime
@@ -2925,7 +2925,7 @@ bool LLAppViewer::initConfiguration()
     // crash as this dialog is always frontmost.
     std::string splash_msg;
     LLStringUtil::format_map_t args;
-    args["[APP_NAME]"] = LLTrans::getString("SECOND_LIFE");
+    args["[APP_NAME]"] = getSecondLifeTitle();
     splash_msg = LLTrans::getString("StartupLoading", args);
     LLSplashScreen::show();
     LLSplashScreen::update(splash_msg);
@@ -2942,9 +2942,18 @@ bool LLAppViewer::initConfiguration()
     //
     // Set the name of the window
     //
-    gWindowTitle = LLTrans::getString("APP_NAME");
+    if (LLVersionInfo::instance().getViewerMaturity() != LLVersionInfo::RELEASE_VIEWER)
+    {
+        gWindowTitle = LLVersionInfo::instance().getChannelAndVersion();
+    }
+    else
+    {
+        gWindowTitle = LLTrans::getString("APP_NAME");
+    }
 #if LL_DEBUG
     gWindowTitle += std::string(" [DEBUG]");
+#elif defined(LL_RELEASE_WITH_DEBUG_INFO) || defined(SHOW_ASSERT)
+    gWindowTitle += std::string(" [ASSERT]");
 #endif
     if (!gArgs.empty())
     {
@@ -2965,7 +2974,7 @@ bool LLAppViewer::initConfiguration()
             OSMB_OK);
         return false;
     }
-
+#if 0
     if (mSecondInstance)
     {
         // This is the second instance of SL. Mute voice,
@@ -2978,6 +2987,7 @@ bool LLAppViewer::initConfiguration()
             enable_voice->setValue(LLSD(false), DO_NOT_PERSIST);
         }
     }
+#endif
 
     gLastRunVersion = gSavedSettings.getString("LastRunVersion");
 
@@ -3631,10 +3641,10 @@ void LLAppViewer::writeSystemInfo()
         gDebugInfo["Dynamic"] = LLSD::emptyMap();
 
 #if LL_WINDOWS && !LL_BUGSPLAT
-    gDebugInfo["SLLog"] = gDirUtilp->getExpandedFilename(LL_PATH_DUMP,"SecondLife.log");
+    gDebugInfo["SLLog"] = gDirUtilp->getExpandedFilename(LL_PATH_DUMP,"Alchemy.log");
 #else
     //Not ideal but sufficient for good reporting.
-    gDebugInfo["SLLog"] = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,"SecondLife.old");  //LLError::logFileName();
+    gDebugInfo["SLLog"] = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,"Alchemy.old");  //LLError::logFileName();
 #endif
 
     gDebugInfo["ClientInfo"]["Name"] = LLVersionInfo::instance().getChannel();
@@ -5861,7 +5871,14 @@ void LLAppViewer::handleLoginComplete()
         gDebugInfo["MainloopTimeoutState"] = LLAppViewer::instance()->mMainloopTimeout->getState();
     }
 
+    if (gAgentAvatarp)
+    {
+        gWindowTitle.append(" - ").append(gAgentAvatarp->getFullname());
+        gViewerWindow->getWindow()->setTitle(gWindowTitle);
+    }
+
     mOnLoginCompleted();
+    mOnLoginCompleted.disconnect_all_slots(); // No longer needed
 
     writeDebugInfo();
 

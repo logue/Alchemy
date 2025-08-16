@@ -453,11 +453,14 @@ bool LLGiveInventory::commitGiveInventoryItem(const LLUUID& to_agent,
     gAgent.sendReliableMessage();
 
     // VEFFECT: giveInventory
-    LLHUDEffectSpiral *effectp = (LLHUDEffectSpiral *)LLHUDManager::getInstance()->createViewerEffect(LLHUDObject::LL_HUD_EFFECT_BEAM, true);
-    effectp->setSourceObject(gAgentAvatarp);
-    effectp->setTargetObject(gObjectList.findObject(to_agent));
-    effectp->setDuration(LL_HUD_DUR_SHORT);
-    effectp->setColor(LLColor4U(gAgent.getEffectColor()));
+    if (!gSavedSettings.getBOOL("AlchemyPointAtPrivate"))
+    {
+        LLHUDEffectSpiral *effectp = (LLHUDEffectSpiral *)LLHUDManager::getInstance()->createViewerEffect(LLHUDObject::LL_HUD_EFFECT_BEAM, true);
+        effectp->setSourceObject(gAgentAvatarp);
+        effectp->setTargetObject(gObjectList.findObject(to_agent));
+        effectp->setDuration(LL_HUD_DUR_SHORT);
+        effectp->setColor(LLColor4U(gAgent.getEffectColor()));
+    }
 
     if (gFloaterTools)
     {
@@ -647,11 +650,14 @@ bool LLGiveInventory::commitGiveInventoryCategory(const LLUUID& to_agent,
         delete[] bucket;
 
         // VEFFECT: giveInventoryCategory
-        LLHUDEffectSpiral *effectp = (LLHUDEffectSpiral *)LLHUDManager::getInstance()->createViewerEffect(LLHUDObject::LL_HUD_EFFECT_BEAM, true);
-        effectp->setSourceObject(gAgentAvatarp);
-        effectp->setTargetObject(gObjectList.findObject(to_agent));
-        effectp->setDuration(LL_HUD_DUR_SHORT);
-        effectp->setColor(LLColor4U(gAgent.getEffectColor()));
+        if (!gSavedSettings.getBOOL("AlchemyPointAtPrivate"))
+        {
+            LLHUDEffectSpiral *effectp = (LLHUDEffectSpiral *)LLHUDManager::getInstance()->createViewerEffect(LLHUDObject::LL_HUD_EFFECT_BEAM, true);
+            effectp->setSourceObject(gAgentAvatarp);
+            effectp->setTargetObject(gObjectList.findObject(to_agent));
+            effectp->setDuration(LL_HUD_DUR_SHORT);
+            effectp->setColor(LLColor4U(gAgent.getEffectColor()));
+        }
 
         if (gFloaterTools)
         {

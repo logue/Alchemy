@@ -1624,11 +1624,14 @@ void LLToolDragAndDrop::dropScript(LLViewerObject* hit_obj,
         }
 
         // VEFFECT: SetScript
-        LLHUDEffectSpiral *effectp = (LLHUDEffectSpiral *)LLHUDManager::getInstance()->createViewerEffect(LLHUDObject::LL_HUD_EFFECT_BEAM, true);
-        effectp->setSourceObject(gAgentAvatarp);
-        effectp->setTargetObject(hit_obj);
-        effectp->setDuration(LL_HUD_DUR_SHORT);
-        effectp->setColor(LLColor4U(gAgent.getEffectColor()));
+        if (!gSavedSettings.getBOOL("AlchemyPointAtPrivate"))
+        {
+            LLHUDEffectSpiral *effectp = (LLHUDEffectSpiral *)LLHUDManager::getInstance()->createViewerEffect(LLHUDObject::LL_HUD_EFFECT_BEAM, true);
+            effectp->setSourceObject(gAgentAvatarp);
+            effectp->setTargetObject(hit_obj);
+            effectp->setDuration(LL_HUD_DUR_SHORT);
+            effectp->setColor(LLColor4U(gAgent.getEffectColor()));
+        }
     }
 }
 
@@ -1795,11 +1798,14 @@ void LLToolDragAndDrop::dropObject(LLViewerObject* raycast_target,
     }
 
     // VEFFECT: DropObject
-    LLHUDEffectSpiral *effectp = (LLHUDEffectSpiral *)LLHUDManager::getInstance()->createViewerEffect(LLHUDObject::LL_HUD_EFFECT_BEAM, true);
-    effectp->setSourceObject(gAgentAvatarp);
-    effectp->setPositionGlobal(mLastHitPos);
-    effectp->setDuration(LL_HUD_DUR_SHORT);
-    effectp->setColor(LLColor4U(gAgent.getEffectColor()));
+    if (!gSavedSettings.getBOOL("AlchemyPointAtPrivate"))
+    {
+        LLHUDEffectSpiral* effectp = (LLHUDEffectSpiral*)LLHUDManager::getInstance()->createViewerEffect(LLHUDObject::LL_HUD_EFFECT_BEAM, true);
+        effectp->setSourceObject(gAgentAvatarp);
+        effectp->setPositionGlobal(mLastHitPos);
+        effectp->setDuration(LL_HUD_DUR_SHORT);
+        effectp->setColor(LLColor4U(gAgent.getEffectColor()));
+    }
 
     add(LLStatViewer::OBJECT_REZ, 1);
 }
@@ -1858,11 +1864,15 @@ void LLToolDragAndDrop::dropInventory(LLViewerObject* hit_obj,
     }
 
     // VEFFECT: AddToInventory
-    LLHUDEffectSpiral *effectp = (LLHUDEffectSpiral *)LLHUDManager::getInstance()->createViewerEffect(LLHUDObject::LL_HUD_EFFECT_BEAM, true);
-    effectp->setSourceObject(gAgentAvatarp);
-    effectp->setTargetObject(hit_obj);
-    effectp->setDuration(LL_HUD_DUR_SHORT);
-    effectp->setColor(LLColor4U(gAgent.getEffectColor()));
+    if (!gSavedSettings.getBOOL("AlchemyPointAtPrivate"))
+    {
+        LLHUDEffectSpiral *effectp = (LLHUDEffectSpiral *)LLHUDManager::getInstance()->createViewerEffect(LLHUDObject::LL_HUD_EFFECT_BEAM, true);
+        effectp->setSourceObject(gAgentAvatarp);
+        effectp->setTargetObject(hit_obj);
+        effectp->setDuration(LL_HUD_DUR_SHORT);
+        effectp->setColor(LLColor4U(gAgent.getEffectColor()));
+    }
+
     if (gFloaterTools)
     {
         gFloaterTools->dirty();
@@ -2591,11 +2601,14 @@ EAcceptance LLToolDragAndDrop::dad3dApplyToObject(
         }
 
         // VEFFECT: SetTexture
-        LLHUDEffectSpiral *effectp = (LLHUDEffectSpiral *)LLHUDManager::getInstance()->createViewerEffect(LLHUDObject::LL_HUD_EFFECT_BEAM, true);
-        effectp->setSourceObject(gAgentAvatarp);
-        effectp->setTargetObject(obj);
-        effectp->setDuration(LL_HUD_DUR_SHORT);
-        effectp->setColor(LLColor4U(gAgent.getEffectColor()));
+        if (!gSavedSettings.getBOOL("AlchemyPointAtPrivate"))
+        {
+            LLHUDEffectSpiral* effectp = (LLHUDEffectSpiral*)LLHUDManager::getInstance()->createViewerEffect(LLHUDObject::LL_HUD_EFFECT_BEAM, true);
+            effectp->setSourceObject(gAgentAvatarp);
+            effectp->setTargetObject(obj);
+            effectp->setDuration(LL_HUD_DUR_SHORT);
+            effectp->setColor(LLColor4U(gAgent.getEffectColor()));
+        }
     }
 
     // enable multi-drop, although last texture will win

@@ -31,6 +31,7 @@
 #include "llviewerfloaterreg.h"
 
 #include "alfloatergenerictext.h"
+#include "alfloaterparticleeditor.h"
 #include "llcommandhandler.h"
 #include "llcompilequeue.h"
 #include "llfasttimerview.h"
@@ -533,5 +534,6 @@ void LLViewerFloaterReg::registerFloaters()
 
     LLFloaterReg::add("delete_queue", "floater_script_queue.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterDeleteQueue>);
     LLFloaterReg::add("generic_text", "floater_generic_text.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterGenericText>);
+    LLFloaterReg::add("particle_editor", "floater_particle_editor.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<ALFloaterParticleEditor>);
     LLFloaterReg::registerControlVariables(); // Make sure visibility and rect controls get preserved when saving
 }

@@ -98,6 +98,7 @@ LLUIImagePtr LLWorldMapView::sEventAdultImage = NULL;
 
 LLUIImagePtr LLWorldMapView::sTrackCircleImage = NULL;
 LLUIImagePtr LLWorldMapView::sTrackArrowImage = NULL;
+LLUIImagePtr LLWorldMapView::sIFFArrowImage = NULL;
 
 LLUIImagePtr LLWorldMapView::sClassifiedsImage = NULL;
 LLUIImagePtr LLWorldMapView::sForSaleImage = NULL;
@@ -521,15 +522,31 @@ void LLWorldMapView::draw()
         // Draw the region name in the lower left corner
         if (mMapScale >= DRAW_TEXT_THRESHOLD)
         {
+            static LLCachedControl<bool> mapShowAgentCount(gSavedSettings, "AlchemyMapShowAgentCount", true);
+            static LLFontGL* font = LLFontGL::getFont(LLFontDescriptor("SansSerif", "Small", LLFontGL::BOLD));
             std::string mesg;
             if (info->isDown())
             {
-                mesg = llformat( "%s (%s)", info->getName().c_str(), sStringsMap["offline"].c_str());
+                mesg = llformat( "%s (%s) (%s)", info->getName().c_str(), sStringsMap["offline"].c_str(), info->getShortAccessString().c_str());
             }
-            else
+            else if (mapShowAgentCount)
             {
-                mesg = info->getName();
+                S32 agent_count = info->getAgentCount();
+                LLViewerRegion *region = gAgent.getRegion();
+                if (region && (region->getHandle() == handle))
+                {
+                    ++agent_count; // Bump by 1 if we're here
+                }
+                if (agent_count > 0)
+                {
+                    mesg = llformat( "%s (%d) (%s)", info->getName().c_str(), agent_count, info->getShortAccessString().c_str());
+                }
             }
+            if (mesg.empty())
+            {
+                mesg = llformat( "%s (%s)", info->getName().c_str(), info->getShortAccessString().c_str());
+            }
+
 //          if (!mesg.empty())
 // [RLVa:KB] - Checked: 2012-02-08 (RLVa-1.4.5) | Added: RLVa-1.4.5
             if ( (!mesg.empty()) && (RlvActions::canShowLocation()) )

@@ -16818,6 +16818,182 @@
       <key>Value</key>
       <string>, </string>
   </map>
+  <key>AlchemyLookAtClampEnabled</key>
+  <map>
+    <key>Comment</key>
+    <string>If true, own look at distance will be clamped to a determined distance</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
+  <key>AlchemyLookAtClampDistance</key>
+  <map>
+    <key>Comment</key>
+    <string>Distance at which to clamp own avatar look at</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>1.0</real>
+  </map>
+  <key>AlchemyLookAtShow</key>
+  <map>
+    <key>Comment</key>
+    <string>If true, avatar look at beacons will be displayed</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
+  <key>AlchemyLookAtLines</key>
+  <map>
+    <key>Comment</key>
+    <string>Render a line from Look At beacon to the originating avatar</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
+  <key>AlchemyLookAtNames</key>
+  <map>
+    <key>Comment</key>
+    <string>Render name of originating avatar under Look At beacon</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>U32</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
+  <key>AlchemyLookAtHideSelf</key>
+  <map>
+    <key>Comment</key>
+    <string>Hide own Look At beacon when Look At render is enabled</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
+  <key>AlchemyLookAtPrivate</key>
+  <map>
+    <key>Comment</key>
+    <string>Disable broadcast of own look at to other users.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
+  <key>AlchemyMapShowAgentCount</key>
+  <map>
+      <key>Comment</key>
+      <string>Show count of users in region on world map</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>1</integer>
+  </map>
+  <key>AlchemyMouselookIFF</key>
+  <map>
+      <key>Comment</key>
+      <string>Display user that is currently focused upon by crosshair in mouselook</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>1</integer>
+  </map>
+  <key>AlchemyMouselookIFFMarkers</key>
+  <map>
+      <key>Comment</key>
+      <string>Display target markers for offscreen avatars in mouselook</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>1</integer>
+  </map>
+  <key>AlchemyMouselookIFFRange</key>
+  <map>
+      <key>Comment</key>
+      <string>Range of IFF display</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>F32</string>
+      <key>Value</key>
+      <real>380.0</real>
+  </map>
+  <key>AlchemyMouselookInstructions</key>
+  <map>
+      <key>Comment</key>
+      <string>Draw instructional overlay for mouselook - Press esc to leave</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>1</integer>
+  </map>
+  <key>AlchemyMouselookPosition</key>
+  <map>
+      <key>Comment</key>
+      <string>Draw position and health in mouselook</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>1</integer>
+  </map>
+  <key>AlchemyMouseLookZoomTime</key>
+  <map>
+    <key>Comment</key>
+    <string>Scalar for smooth mouselook zoom time</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>6.66</real>
+  </map>
+  <key>AlchemyMouseLookZoomTimeout</key>
+  <map>
+    <key>Comment</key>
+    <string>Cuttoff to force zoom to target fov</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>0.15</real>
+  </map>
+  <key>AlchemyNearbyColorize</key>
+  <map>
+      <key>Comment</key>
+      <string>Sync nearby list name colors to minimap</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>1</integer>
+  </map>
   <key>AlchemyNimble</key>
   <map>
       <key>Comment</key>
@@ -16833,6 +17009,17 @@
   <map>
       <key>Comment</key>
       <string>Log online and offline notifications to local chat</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>0</integer>
+  </map>
+  <key>AlchemyPointAtPrivate</key>
+  <map>
+      <key>Comment</key>
+      <string>Disable setting current point at target</string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>
@@ -16873,6 +17060,17 @@
       <key>Value</key>
       <integer>0</integer>
   </map>
+  <key>AlchemyRainbowEffects</key>
+  <map>
+      <key>Comment</key>
+      <string>Makes agent effects rainbows!</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>1</integer>
+  </map>
   <key>AlchemyRezUnderLandGroup</key>
   <map>
       <key>Comment</key>
@@ -16895,6 +17093,28 @@
       <string>F32</string>
       <key>Value</key>
       <real>512.0</real>
+  </map>
+  <key>DiskCacheSize</key>
+  <map>
+    <key>Comment</key>
+    <string>Controls amount of hard drive space reserved for asset file caching in MB</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>U32</string>
+    <key>Value</key>
+    <integer>2048</integer>
+  </map>
+  <key>TextureCacheSize</key>
+  <map>
+    <key>Comment</key>
+    <string>Controls amount of hard drive space reserved for texture file caching in MB</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>U32</string>
+    <key>Value</key>
+    <integer>2048</integer>
   </map>
   <key>RenderReflectionProbeShowTransparent</key>
   <map>

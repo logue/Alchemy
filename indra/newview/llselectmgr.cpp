@@ -1944,12 +1944,15 @@ bool LLSelectMgr::selectionSetImage(const LLUUID& imageid)
             if (!mItem)
             {
                 object->sendTEUpdate();
-                // 1 particle effect per object
-                LLHUDEffectSpiral *effectp = (LLHUDEffectSpiral *)LLHUDManager::getInstance()->createViewerEffect(LLHUDObject::LL_HUD_EFFECT_BEAM, true);
-                effectp->setSourceObject(gAgentAvatarp);
-                effectp->setTargetObject(object);
-                effectp->setDuration(LL_HUD_DUR_SHORT);
-                effectp->setColor(LLColor4U(gAgent.getEffectColor()));
+                if (!gSavedSettings.getBOOL("AlchemyPointAtPrivate"))
+                {
+                    // 1 particle effect per object
+                    LLHUDEffectSpiral *effectp = (LLHUDEffectSpiral *)LLHUDManager::getInstance()->createViewerEffect(LLHUDObject::LL_HUD_EFFECT_BEAM, true);
+                    effectp->setSourceObject(gAgentAvatarp);
+                    effectp->setTargetObject(object);
+                    effectp->setDuration(LL_HUD_DUR_SHORT);
+                    effectp->setColor(LLColor4U(gAgent.getEffectColor()));
+                }
             }
             return true;
         }

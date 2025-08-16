@@ -69,8 +69,10 @@ endif (NOT HAVOK_TPV)
 
 set(viewer_SOURCE_FILES
     alavataractions.cpp
+    alavatargroups.cpp
     alchatcommand.cpp
     alfloatergenerictext.cpp
+    alfloaterparticleeditor.cpp
     alpanelradaralert.cpp
     alunzip.cpp
     alviewermenu.cpp
@@ -755,8 +757,10 @@ set(viewer_HEADER_FILES
     CMakeLists.txt
     ViewerInstall.cmake
     alavataractions.h
+    alavatargroups.h
     alchatcommand.h
     alfloatergenerictext.h
+    alfloaterparticleeditor.h
     alpanelradaralert.h
     alunzip.h
     alviewermenu.h

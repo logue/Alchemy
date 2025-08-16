@@ -192,6 +192,15 @@ void LLMuteList::cleanupSingleton()
     LLAvatarNameCache::getInstance()->setAccountNameChangedCallback(NULL);
 }
 
+// static
+bool LLMuteList::isLinden(const LLUUID& id)
+{
+    std::string name;
+    gCacheName->getFullName(id, name);
+    return isLinden(name);
+}
+
+// static
 bool LLMuteList::isLinden(const std::string& name)
 {
     std::string username = boost::replace_all_copy(name, ".", " ");
@@ -205,8 +214,7 @@ bool LLMuteList::isLinden(const std::string& name)
     if (token_iter == tokens.end()) return false;
 
     std::string last_name = *token_iter;
-    LLStringUtil::toLower(last_name);
-    return last_name == "linden";
+    return last_name == "Linden" || last_name == "ProductEngine" || last_name == "Mole" || last_name == "Tester";
 }
 
 static LLVOAvatar* find_avatar(const LLUUID& id)
