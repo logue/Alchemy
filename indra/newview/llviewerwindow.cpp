@@ -2755,7 +2755,7 @@ void LLViewerWindow::draw()
         // Draw tool specific overlay on world
         LLToolMgr::getInstance()->getCurrentTool()->draw();
 
-        if( gAgentCamera.cameraMouselook() || LLFloaterCamera::inFreeCameraMode() )
+        if( gAgentCamera.cameraMouselook())
         {
             drawMouselookInstructions();
             stop_glerror();

@@ -64,6 +64,7 @@
 #include "lluiconstants.h"
 #include "llstring.h"
 #include "llurlaction.h"
+#include "llfloaterblocked.h"
 #include "llviewercontrol.h"
 #include "llviewermenu.h"
 #include "llviewerobjectlist.h"
@@ -184,8 +185,9 @@ public:
         {
             LLMuteList::getInstance()->add(LLMute(getAvatarId(), mFrom, LLMute::OBJECT));
 
-            LLFloaterSidePanelContainer::showPanel("people", "panel_people",
-                LLSD().with("people_panel_tab_name", "blocked_panel").with("blocked_to_select", getAvatarId()));
+            LLFloaterBlocked::showMuteAndSelect(getAvatarId());
+            //LLFloaterSidePanelContainer::showPanel("people", "panel_people",
+            //  LLSD().with("people_panel_tab_name", "blocked_panel").with("blocked_to_select", getAvatarId()));
         }
         else if (level == "unblock")
         {

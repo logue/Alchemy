@@ -403,7 +403,7 @@ LLVOCacheEntry* LLVOCacheEntry::getChild()
     return child;
 }
 
-LLDataPackerBinaryBuffer *LLVOCacheEntry::getDP()
+LLDataPackerBinaryBuffer *LLVOCacheEntry::getDP() const
 {
     if (mDP.getBufferSize() == 0)
     {

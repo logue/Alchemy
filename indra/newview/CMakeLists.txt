@@ -68,6 +68,7 @@ if (NOT HAVOK_TPV)
 endif (NOT HAVOK_TPV)
 
 set(viewer_SOURCE_FILES
+    alassetblocklist.cpp
     alavataractions.cpp
     alavatargroups.cpp
     alchatcommand.cpp
@@ -147,6 +148,7 @@ set(viewer_SOURCE_FILES
     lldebugview.cpp
     lldeferredsounds.cpp
     lldelayedgestureerror.cpp
+    llderenderlist.cpp
     lldirpicker.cpp
     lldonotdisturbnotificationstorage.cpp
     lldndbutton.cpp
@@ -195,6 +197,7 @@ set(viewer_SOURCE_FILES
     llfloaterbanduration.cpp
     llfloaterbeacons.cpp
     llfloaterbigpreview.cpp
+    llfloaterblocked.cpp
     llfloaterbuildoptions.cpp
     llfloaterbulkpermission.cpp
     llfloaterbulkupload.cpp
@@ -756,6 +759,7 @@ set(VIEWER_BINARY_NAME "secondlife-bin" CACHE STRING
 set(viewer_HEADER_FILES
     CMakeLists.txt
     ViewerInstall.cmake
+    alassetblocklist.h
     alavataractions.h
     alavatargroups.h
     alchatcommand.h
@@ -838,6 +842,7 @@ set(viewer_HEADER_FILES
     lldebugview.h
     lldeferredsounds.h
     lldelayedgestureerror.h
+    llderenderlist.h
     lldirpicker.h
     lldonotdisturbnotificationstorage.h
     lldndbutton.h
@@ -886,6 +891,7 @@ set(viewer_HEADER_FILES
     llfloaterbanduration.h
     llfloaterbeacons.h
     llfloaterbigpreview.h
+    llfloaterblocked.h
     llfloaterbuildoptions.h
     llfloaterbulkpermission.h
     llfloaterbulkupload.h
