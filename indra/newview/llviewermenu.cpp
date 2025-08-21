@@ -6660,6 +6660,33 @@ class LLWorldSetDoNotDisturb : public view_listener_t
         return true;
     }
 };
+class LLCommunicateSetRejectTeleportOffers : public view_listener_t
+{
+    bool handleEvent(const LLSD& userdata)
+    {
+        bool is_rejecting_offers = gSavedPerAccountSettings.getBOOL("AlchemyRejectTeleportOffersMode");
+        if (is_rejecting_offers)
+        {
+            gSavedPerAccountSettings.setBOOL("AlchemyRejectTeleportOffersMode", false);
+        }
+        else
+        {
+            gSavedPerAccountSettings.setBOOL("AlchemyRejectTeleportOffersMode", true);
+            LLNotificationsUtil::add("RejectTeleportOffersModeSet");
+        }
+        return true;
+    }
+};
+
+class LLCommunicateGetRejectTeleportOffers : public view_listener_t
+{
+    bool handleEvent(const LLSD& userdata)
+    {
+        bool is_rejecting_offers = gSavedPerAccountSettings.getBOOL("AlchemyRejectTeleportOffersMode");
+
+        return is_rejecting_offers;
+    }
+};
 
 class LLWorldCreateLandmark : public view_listener_t
 {
@@ -10215,6 +10242,8 @@ void initialize_menus()
 
     //Communicate Nearby chat
     view_listener_t::addMenu(new LLCommunicateNearbyChat(), "Communicate.NearbyChat");
+    view_listener_t::addMenu(new LLCommunicateSetRejectTeleportOffers(), "Communicate.SetRejectTeleportOffers");
+    view_listener_t::addMenu(new LLCommunicateGetRejectTeleportOffers(), "Communicate.GetRejectTeleportOffers");
 
     // World menu
     view_listener_t::addMenu(new LLWorldAlwaysRun(), "World.AlwaysRun");

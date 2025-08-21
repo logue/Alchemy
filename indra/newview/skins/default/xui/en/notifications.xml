@@ -12978,4 +12978,24 @@ Your privilege to find [NAME]&apos;s map location has been revoked.
   type="notifytip">
 	 Irrevocably destroying object. Hope you didn't need that.
  </notification>
+ <notification
+      icon="alert.tga"
+      name="RejectTeleportOffersModeSet"
+      type="alert">
+   Reject all incoming teleport offers and requests mode is on.
+   Incoming teleport offers and requests from anyone will now be rejected with your configured autoresponse. You will not be notified because of that fact.
+      <usetemplate
+      ignoretext="I change my status to reject all teleport offers and requests mode"
+      name="okignore"
+      yestext="OK"/>
+  </notification>
+   <notification
+      icon="alert.tga"
+      name="RejectTeleportOffersModeWarning"
+      type="alert">
+      You cannot send a teleport request at the moment, because &apos;reject all incoming teleport offers and requests&apos; mode is on.
+      <usetemplate
+      name="okbutton"
+      yestext="OK"/>
+  </notification>
 </notifications>

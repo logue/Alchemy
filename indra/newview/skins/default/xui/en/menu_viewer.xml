@@ -94,7 +94,6 @@
         <menu_item_check.on_click
          function="World.SetDoNotDisturb"/>
       </menu_item_check>
-
       <menu_item_separator/>
 
       <menu_item_call
@@ -646,6 +645,14 @@
          function="View.Status.CheckDoNotDisturb" />
         <menu_item_check.on_click
          function="World.SetDoNotDisturb"/>
+      </menu_item_check>
+      <menu_item_check
+         label="Reject teleport offers and requests"
+         name="Automatically reject teleport offers">
+         <menu_item_check.on_check
+            function="Communicate.GetRejectTeleportOffers"/>
+         <menu_item_check.on_click
+            function="Communicate.SetRejectTeleportOffers"/>
       </menu_item_check>
 
     </menu>
