@@ -525,6 +525,7 @@ bool LLFloaterPreference::postBuild()
     if (LLStartUp::getStartupState() < STATE_STARTED)
     {
         gSavedPerAccountSettings.setString("DoNotDisturbModeResponse", LLTrans::getString("DoNotDisturbModeResponseDefault"));
+        gSavedPerAccountSettings.setString("AlchemyRejectTeleportOffersResponse", LLTrans::getString("RejectTeleportOffersResponseDefault"));
     }
 
     // set 'enable' property for 'Clear log...' button
@@ -584,6 +585,15 @@ void LLFloaterPreference::onDoNotDisturbResponseChanged()
                     != getChild<LLUICtrl>("do_not_disturb_response")->getValue().asString();
 
     gSavedPerAccountSettings.setBOOL("DoNotDisturbResponseChanged", response_changed_flag );
+}
+
+void LLFloaterPreference::onRejectTeleportOffersResponseChanged()
+{
+    bool reject_teleport_offers_response_changed_flag =
+        LLTrans::getString("RejectTeleportOffersResponseDefault")
+            != getChild<LLUICtrl>("autorespond_rto_response")->getValue().asString();
+
+    gSavedPerAccountSettings.setBOOL("AlchemyRejectTeleportOffersResponseChanged", reject_teleport_offers_response_changed_flag);
 }
 
 ////////////////////////////////////////////////////
@@ -855,6 +865,7 @@ LLFloaterPreference::~LLFloaterPreference()
     }
     mComplexityChangedSignal.disconnect();
     mImpostorsChangedSignal.disconnect();
+    mRejectTeleportConnection.disconnect();
 }
 
 void LLFloaterPreference::draw()
@@ -1017,6 +1028,7 @@ void LLFloaterPreference::onOpen(const LLSD& key)
         // this connection is needed to properly set "DoNotDisturbResponseChanged" setting when user makes changes in
         // do not disturb response message.
         gSavedPerAccountSettings.getControl("DoNotDisturbModeResponse")->getSignal()->connect(boost::bind(&LLFloaterPreference::onDoNotDisturbResponseChanged, this));
+        mRejectTeleportConnection = gSavedPerAccountSettings.getControl("AlchemyRejectTeleportOffersResponse")->getSignal()->connect(boost::bind(&LLFloaterPreference::onRejectTeleportOffersResponseChanged, this));
     }
     gAgent.sendAgentUserInfoRequest();
 
@@ -1126,14 +1138,38 @@ void LLFloaterPreference::onAvatarImpostorsEnable()
 }
 
 //static
-void LLFloaterPreference::initDoNotDisturbResponse()
+// NOTE: This was moved to the section below as we may add more autoresponses.
+// - [x] Do Not Disturb
+// - [x] Reject Teleport
+// - [ ] Autoresponses.
+// - [ ] ....
+//
+// -- Fallen
+// void LLFloaterPreference::initDoNotDisturbResponse()
+//     {
+//         if (!gSavedPerAccountSettings.getBOOL("DoNotDisturbResponseChanged"))
+//         {
+//             //LLTrans::getString("DoNotDisturbModeResponseDefault") is used here for localization (EXT-5885)
+//             gSavedPerAccountSettings.setString("DoNotDisturbModeResponse", LLTrans::getString("DoNotDisturbModeResponseDefault"));
+//         }
+//     }
+
+// static
+void LLFloaterPreference::initAutoResponses()
+{
+    // NOTE: Combined the initDoNotDisturbReponse
+    // -- Fallen
+    if (!gSavedPerAccountSettings.getBOOL("DoNotDisturbResponseChanged"))
     {
-        if (!gSavedPerAccountSettings.getBOOL("DoNotDisturbResponseChanged"))
-        {
-            //LLTrans::getString("DoNotDisturbModeResponseDefault") is used here for localization (EXT-5885)
-            gSavedPerAccountSettings.setString("DoNotDisturbModeResponse", LLTrans::getString("DoNotDisturbModeResponseDefault"));
-        }
+        //LLTrans::getString("DoNotDisturbModeResponseDefault") is used here for localization (EXT-5885)
+        gSavedPerAccountSettings.setString("DoNotDisturbModeResponse", LLTrans::getString("DoNotDisturbModeResponseDefault"));
     }
+
+    if (!gSavedPerAccountSettings.getBOOL("AlchemyRejectTeleportOffersResponseChanged"))
+    {
+        gSavedPerAccountSettings.setString("AlchemyRejectTeleportOffersResponse", LLTrans::getString("RejectTeleportOffersResponseDefault"));
+    }
+}
 
 //static
 void LLFloaterPreference::updateShowFavoritesCheckbox(bool val)

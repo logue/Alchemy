@@ -95,7 +95,10 @@ public:
     static void refreshEnabledGraphics();
 
     // translate user's do not disturb response message according to current locale if message is default, otherwise do nothing
-    static void initDoNotDisturbResponse();
+    // static void initDoNotDisturbResponse();
+    // NOTE Commenting the above in favour of a more streamlined function that's more of a "catchall"
+    // -- Fallen
+    static void initAutoResponses();
 
     // update Show Favorites checkbox
     static void updateShowFavoritesCheckbox(bool val);
@@ -124,6 +127,8 @@ protected:
     // set value of "DoNotDisturbResponseChanged" in account settings depending on whether do not disturb response
     // string differs from default after user changes.
     void onDoNotDisturbResponseChanged();
+    void onRejectTeleportOffersResponseChanged();
+
     // if the custom settings box is clicked
     void onChangeCustom();
     void updateMeterText(LLUICtrl* ctrl);
@@ -253,6 +258,7 @@ private:
 
     boost::signals2::connection mImpostorsChangedSignal;
     boost::signals2::connection mComplexityChangedSignal;
+    boost::signals2::connection mRejectTeleportConnection;
 
     void onUpdateFilterTerm( bool force = false );
     void collectSearchableItems();
