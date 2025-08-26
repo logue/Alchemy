@@ -6688,6 +6688,34 @@ class LLCommunicateGetRejectTeleportOffers : public view_listener_t
     }
 };
 
+class LLCommunicateSetRejectFriendshipRequests : public view_listener_t
+{
+    bool handleEvent(const LLSD& userdata)
+    {
+        bool is_rejecting_offers = gSavedPerAccountSettings.getBOOL("AlchemyRejectFriendshipRequestsMode");
+        if (is_rejecting_offers)
+        {
+            gSavedPerAccountSettings.setBOOL("AlchemyRejectFriendshipRequestsMode", false);
+        }
+        else
+        {
+            gSavedPerAccountSettings.setBOOL("AlchemyRejectFriendshipRequestsMode", true);
+            LLNotificationsUtil::add("RejectFriendshipRequestsModeSet");
+        }
+        return true;
+    }
+};
+
+class LLCommunicateGetRejectFriendshipRequests  : public view_listener_t
+{
+    bool handleEvent(const LLSD& userdata)
+    {
+        bool is_rejecting_offers = gSavedPerAccountSettings.getBOOL("AlchemyRejectFriendshipRequestsMode");
+
+        return is_rejecting_offers;
+    }
+};
+
 class LLWorldCreateLandmark : public view_listener_t
 {
     bool handleEvent(const LLSD& userdata)
@@ -10244,6 +10272,8 @@ void initialize_menus()
     view_listener_t::addMenu(new LLCommunicateNearbyChat(), "Communicate.NearbyChat");
     view_listener_t::addMenu(new LLCommunicateSetRejectTeleportOffers(), "Communicate.SetRejectTeleportOffers");
     view_listener_t::addMenu(new LLCommunicateGetRejectTeleportOffers(), "Communicate.GetRejectTeleportOffers");
+    view_listener_t::addMenu(new LLCommunicateSetRejectFriendshipRequests(), "Communicate.SetRejectFriendshipRequests");
+    view_listener_t::addMenu(new LLCommunicateGetRejectFriendshipRequests(), "Communicate.GetRejectFriendshipRequests");
 
     // World menu
     view_listener_t::addMenu(new LLWorldAlwaysRun(), "World.AlwaysRun");

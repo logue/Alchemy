@@ -479,6 +479,7 @@ void LLIMProcessing::processNewMessage(LLUUID from_id,
     // -- Fallen
     static LLCachedControl<bool> AlchemyRejectTeleportOffers(gSavedPerAccountSettings, "AlchemyRejectTeleportOffersMode");
     static LLCachedControl<bool> AlchemyDontRejectTeleportOffersFromFriends(gSavedPerAccountSettings, "AlchemyDontRejectTeleportOffersFromFriends");
+    static LLCachedControl<bool> AlchemyRejectFriendshipRequests(gSavedPerAccountSettings, "AlchemyRejectFriendshipRequestsMode");
 
     bool is_muted = LLMuteList::getInstance()->isMuted(from_id, name, LLMute::flagTextChat)
         // object IMs contain sender object id in session_id (STORM-1209)
@@ -1592,6 +1593,13 @@ void LLIMProcessing::processNewMessage(LLUUID from_id,
             payload["session_id"] = session_id;;
             payload["online"] = (offline == IM_ONLINE);
             payload["sender"] = sender.getIPandPort();
+
+            if (AlchemyRejectFriendshipRequests)
+            {
+                send_rejecting_friendship_requests_message(gMessageSystem, from_id);
+                return;
+            }
+
 
             bool add_notification = true;
             for (auto& panel : LLToastNotifyPanel::instance_snapshot())
