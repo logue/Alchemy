@@ -129,6 +129,7 @@ protected:
     void onDoNotDisturbResponseChanged();
     void onRejectTeleportOffersResponseChanged();
     void onRejectFriendshipRequestResponseChanged();
+    void onAdHocSelectionChanged(const LLSD& newValue);
 
     // if the custom settings box is clicked
     void onChangeCustom();

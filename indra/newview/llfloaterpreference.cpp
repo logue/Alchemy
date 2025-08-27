@@ -606,6 +606,12 @@ void LLFloaterPreference::onRejectFriendshipRequestResponseChanged()
     gSavedPerAccountSettings.setBOOL("AlchemyRejectFriendshipRequestsChanged", reject_friendship_request_response_changed_flag);
 }
 
+void LLFloaterPreference::onAdHocSelectionChanged(const LLSD& newvalue)
+{
+    S32 value = gSavedPerAccountSettings.getS32("AlchemyIgnoreAdHocSessions");
+    getChild<LLCheckBoxCtrl>("AlchemyReportIgnoredAdHocSession")->setEnabled(value != 0);
+}
+
 ////////////////////////////////////////////////////
 // Skins panel
 
