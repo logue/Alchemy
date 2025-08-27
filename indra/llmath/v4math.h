@@ -48,6 +48,9 @@ class LLVector4
 {
 public:
     F32 mV[LENGTHOFVECTOR4];
+
+    static const LLVector4 zero;
+
     LLVector4();                        // Initializes LLVector4 to (0, 0, 0, 1)
     explicit LLVector4(const F32 *vec);         // Initializes LLVector4 to (vec[0]. vec[1], vec[2], vec[3])
     explicit LLVector4(const F64 *vec);         // Initialized LLVector4 to ((F32) vec[0], (F32) vec[1], (F32) vec[3], (F32) vec[4]);
@@ -144,6 +147,8 @@ public:
     friend const LLVector4& operator/=(LLVector4 &a, F32 k);                // Return a divided by scaler k
 
     friend LLVector4 operator-(const LLVector4 &a);                 // Return vector -a
+
+    static bool parseVector4(const std::string& buf, LLVector4* value);
 
     friend std::size_t hash_value(const LLVector4& vec)
     {

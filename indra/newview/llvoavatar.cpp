@@ -638,8 +638,8 @@ static F32 calc_bouncy_animation(F32 x);
 // LLVOAvatar()
 //-----------------------------------------------------------------------------
 LLVOAvatar::LLVOAvatar(const LLUUID& id,
-                       const LLPCode pcode,
-                       LLViewerRegion* regionp) :
+    const LLPCode pcode,
+    LLViewerRegion* regionp) :
     LLAvatarAppearance(&gAgentWearables),
     LLViewerObject(id, pcode, regionp),
     mSpecialRenderMode(0),
@@ -648,7 +648,7 @@ LLVOAvatar::LLVOAvatar(const LLUUID& id,
     mAttachmentEstTriangleCount(0.f),
     mReportedVisualComplexity(VISUAL_COMPLEXITY_UNKNOWN),
     mTurning(false),
-    mLastSkeletonSerialNum( 0 ),
+    mLastSkeletonSerialNum(0),
     mIsSitting(false),
     mTimeVisible(),
     mTyping(false),
@@ -657,7 +657,7 @@ LLVOAvatar::LLVOAvatar(const LLUUID& id,
     mLastImpostorUpdateFrameTime(0.f),
     mLastImpostorUpdateReason(0),
     mWindFreq(0.f),
-    mRipplePhase( 0.f ),
+    mRipplePhase(0.f),
     mBelowWater(false),
     mLastAppearanceBlendTime(0.f),
     mAppearanceAnimating(false),
@@ -671,9 +671,9 @@ LLVOAvatar::LLVOAvatar(const LLUUID& id,
     mNameAlpha(0.f),
     mRenderGroupTitles(sRenderGroupTitles),
     mNameCloud(false),
-    mFirstTEMessageReceived( false ),
-    mFirstAppearanceMessageReceived( false ),
-    mCulled( false ),
+    mFirstTEMessageReceived(false),
+    mFirstAppearanceMessageReceived(false),
+    mCulled(false),
     mVisibilityRank(0),
     mNeedsSkin(false),
     mLastSkinTime(0.f),
@@ -691,7 +691,6 @@ LLVOAvatar::LLVOAvatar(const LLUUID& id,
     mVisualComplexity(VISUAL_COMPLEXITY_UNKNOWN),
     mLoadedCallbacksPaused(false),
     mLoadedCallbackTextures(0),
-    mRenderUnloadedAvatar(LLCachedControl<bool>(gSavedSettings, "RenderUnloadedAvatar", false)),
     mLastRezzedStatus(-1),
     mIsEditingAppearance(false),
     mUseLocalAppearance(false),
@@ -8662,9 +8661,10 @@ bool LLVOAvatar::isFullyLoaded() const
 {
 // [SL:KB] - Patch: Appearance-SyncAttach | Checked: Catznip-2.2
     // Changes to LLAppearanceMgr::updateAppearanceFromCOF() expect this function to actually return mFullyLoaded for gAgentAvatarp
-    return (mRenderUnloadedAvatar && !isSelf()) ||(mFullyLoaded);
+    static LLCachedControl<bool> RenderUnloadedAvatar(gSavedSettings, "RenderUnloadedAvatar", false);
+    return (RenderUnloadedAvatar && !isSelf()) ||(mFullyLoaded);
 // [/SL:KB]
-//  return (mRenderUnloadedAvatar || mFullyLoaded);
+//  return (RenderUnloadedAvatar || mFullyLoaded);
 }
 
 bool LLVOAvatar::hasFirstFullAttachmentData() const

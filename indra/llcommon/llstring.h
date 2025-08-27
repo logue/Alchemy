@@ -27,7 +27,15 @@
 #ifndef LL_LLSTRING_H
 #define LL_LLSTRING_H
 
+#if LL_GNUC && GCC_VERSION >= 90000
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-copy-dtor"
+#endif
 #include <boost/call_traits.hpp>
+#include <boost/unordered/unordered_flat_map.hpp>
+#if LL_GNUC && GCC_VERSION >= 90000
+#pragma GCC diagnostic pop
+#endif
 #include <optional>
 #include <string>
 #include <string_view>
@@ -145,6 +153,22 @@ struct char_traits<U16>
   };
 };
 #endif
+
+namespace al
+{
+    struct string_hash
+    {
+        using hash_type = boost::hash<std::string_view>;
+        using is_transparent = void;
+        [[nodiscard]] size_t operator()(const char* txt) const { return hash_type{}(txt); }
+        [[nodiscard]] size_t operator()(std::string_view txt) const { return hash_type{}(txt); }
+        [[nodiscard]] size_t operator()(const std::string& txt) const { return hash_type{}(txt); }
+    };
+
+    inline std::string_view safe_string_view(const char* p) {
+        return p ? std::string_view(p) : std::string_view();
+    }
+}
 
 class LL_COMMON_API LLStringOps
 {

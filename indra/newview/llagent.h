@@ -348,6 +348,15 @@ private:
     S32             mCurrentFidget;
 
     //--------------------------------------------------------------------
+    // Crouch
+    //--------------------------------------------------------------------
+public:
+    bool isCrouching() const;
+    void toggleCrouch() { mCrouch = !mCrouch; }
+private:
+    bool mCrouch;
+
+    //--------------------------------------------------------------------
     // Fly
     //--------------------------------------------------------------------
 public:
@@ -609,6 +618,7 @@ private:
     void*           mAutoPilotCallbackData;
     LLUUID          mLeaderID;
     bool            mMovementKeysLocked;
+    bool            mMovementResetCamera;
 
 /**                    Movement
  **                                                                            **

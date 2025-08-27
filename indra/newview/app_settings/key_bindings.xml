@@ -7,6 +7,7 @@
     <binding key="S" mask="NONE" command="push_backward"/>
     <binding key="E" mask="NONE" command="jump"/>
     <binding key="C" mask="NONE" command="push_down"/>
+    <binding key="C" mask="SHIFT" command="toggle_down"/>
     <binding key="F" mask="NONE" command="toggle_fly"/>
 
     <binding key="LEFT" mask="NONE" command="slide_left"/>
@@ -21,7 +22,7 @@
     <binding key="ENTER" mask="NONE" command="start_chat"/>
     <binding key="DIVIDE" mask="NONE" command="start_gesture"/>
 
-    <binding key="" mask="NONE" mouse="MMB" command="toggle_voice"/>
+    <binding key="" mask="NONE" mouse="MMB" command="voice_follow_key"/>
 
     <binding key="" mask="NONE" mouse="LMB" command="script_trigger_lbutton"/>
   </first_person>
@@ -34,6 +35,7 @@
     <binding key="S" mask="NONE" command="push_backward"/>
     <binding key="E" mask="NONE" command="jump"/>
     <binding key="C" mask="NONE" command="push_down"/>
+    <binding key="C" mask="SHIFT" command="toggle_down"/>
 
     <binding key="F" mask="NONE" command="toggle_fly"/>
 
@@ -84,7 +86,7 @@
     <binding key="UP" mask="CTL_ALT_SHIFT" command="pan_up"/>
     <binding key="DOWN" mask="CTL_ALT_SHIFT" command="pan_down"/>
 
-    <binding key="" mask="NONE" mouse="MMB" command="toggle_voice"/>
+    <binding key="" mask="NONE" mouse="MMB" command="voice_follow_key"/>
 
     <binding key="" mask="NONE" mouse="LMB" command="script_trigger_lbutton"/>
   </third_person>
@@ -157,7 +159,7 @@
     <binding key="ENTER" mask="NONE" command="start_chat"/>
     <binding key="DIVIDE" mask="NONE" command="start_gesture"/>
 
-    <binding key="" mask="NONE" mouse="MMB" command="toggle_voice"/>
+    <binding key="" mask="NONE" mouse="MMB" command="voice_follow_key"/>
 
     <binding key="" mask="NONE" mouse="LMB" command="script_trigger_lbutton"/>
   </sitting>
@@ -178,7 +180,7 @@
     <binding key="ENTER" mask="NONE" command="start_chat"/>
     <binding key="DIVIDE" mask="NONE" command="start_gesture"/>
 
-    <binding key="" mask="NONE" mouse="MMB" command="toggle_voice"/>
+    <binding key="" mask="NONE" mouse="MMB" command="voice_follow_key"/>
 
     <binding key="" mask="NONE" mouse="LMB" command="script_trigger_lbutton"/>
   </edit_avatar>
