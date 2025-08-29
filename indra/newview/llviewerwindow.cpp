@@ -3042,7 +3042,7 @@ bool LLViewerWindow::handleKey(KEY key, MASK mask)
     {
         if ((focusedFloaterName == "nearby_chat") || (focusedFloaterName == "im_container") || (focusedFloaterName == "impanel"))
         {
-            LLCachedControl<bool> key_move(gSavedSettings, "ArrowKeysAlwaysMove");
+            static LLCachedControl<bool> key_move(gSavedSettings, "ArrowKeysAlwaysMove");
             if (key_move())
             {
                 // let Control-Up and Control-Down through for chat line history,
