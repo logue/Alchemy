@@ -167,6 +167,7 @@
 #include "llinspectobject.h"
 #include "llinspectremoteobject.h"
 #include "llinspecttoast.h"
+#include "lllegacynotificationwellwindow.h"
 #include "llmaterialeditor.h"
 #include "llmoveview.h"
 #include "llfloaterimnearbychat.h"
@@ -438,7 +439,14 @@ void LLViewerFloaterReg::registerFloaters()
 
     LLFloaterReg::add("notifications_console", "floater_notifications_console.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterNotificationConsole>);
 
-    LLFloaterReg::add("notification_well_window", "floater_notifications_tabbed.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterNotificationsTabbed>);
+    if(!gSkinSettings.getBool("LegacyNotificationWell"))
+    {
+        LLFloaterReg::add("notification_well_window", "floater_notifications_tabbed.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterNotificationsTabbed>);
+    }
+    else
+    {
+        LLFloaterReg::add("legacy_notification_well_window", "floater_legacy_sys_well.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLLegacyNotificationWellWindow>);
+    }
 
     LLFloaterReg::add("object_weights", "floater_object_weights.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterObjectWeights>);
     LLFloaterReg::add("openobject", "floater_openobject.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterOpenObject>);

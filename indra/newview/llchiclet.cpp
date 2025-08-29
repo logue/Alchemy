@@ -37,6 +37,7 @@
 #include "llsyswellwindow.h"
 #include "llfloaternotificationstabbed.h"
 #include "llviewermenu.h"
+#include "lllegacynotificationwellwindow.h"
 // [SL:KB] - Patch: UI-Notifications | Checked: 2013-05-09 (Catznip-3.5)
 #include "llchannelmanager.h"
 // [/SL:KB]
@@ -177,7 +178,14 @@ LLNotificationChiclet::LLNotificationChiclet(const Params& p)
     mNotificationChannel.reset(new ChicletNotificationChannel(this));
     // ensure that notification well window exists, to synchronously
     // handle toast add/delete events.
-    LLFloaterNotificationsTabbed::getInstance()->setSysWellChiclet(this);
+    if (gSkinSettings.getBool("LegacyNotificationWell"))
+    {
+        LLLegacyNotificationWellWindow::getInstance()->setSysWellChiclet(this);
+    }
+    else
+    {
+        LLFloaterNotificationsTabbed::getInstance()->setSysWellChiclet(this);
+    }
 }
 
 LLNotificationChiclet::~LLNotificationChiclet()
@@ -190,7 +198,14 @@ void LLNotificationChiclet::onMenuItemClicked(const LLSD& user_data)
     std::string action = user_data.asString();
     if("close all" == action)
     {
-        LLFloaterNotificationsTabbed::getInstance()->closeAll();
+        if (gSkinSettings.getBool("LegacyNotificationWell"))
+        {
+            LLLegacyNotificationWellWindow::getInstance()->closeAll();
+        }
+        else
+        {
+            LLFloaterNotificationsTabbed::getInstance()->closeAll();
+        }
         LLIMWellWindow::getInstance()->closeAll();
     }
 }
@@ -243,11 +258,12 @@ void LLNotificationChiclet::setCounter(S32 counter)
 bool LLNotificationChiclet::ChicletNotificationChannel::filterNotification( LLNotificationPtr notification )
 {
     bool displayNotification;
-    LLFloaterNotificationsTabbed* floater = LLFloaterNotificationsTabbed::getInstance();
     if (   (notification->getName() == "ScriptDialog") // special case for scripts
         // if there is no toast window for the notification, filter it
-        //|| (!LLNotificationWellWindow::getInstance()->findItemByID(notification->getID()))
-        || (floater && !floater->findItemByID(notification->getID(), notification->getName()))
+        || (gSkinSettings.getBool("LegacyNotificationWell")
+            && !LLLegacyNotificationWellWindow::getInstance()->findItemByID(notification->getID()))
+        || (!gSkinSettings.getBool("LegacyNotificationWell")
+            && !LLFloaterNotificationsTabbed::getInstance()->findItemByID(notification->getID(), notification->getName()))
         )
     {
         displayNotification = false;

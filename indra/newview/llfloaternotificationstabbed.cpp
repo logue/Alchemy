@@ -45,7 +45,6 @@ LLFloaterNotificationsTabbed::LLFloaterNotificationsTabbed(const LLSD& key) : LL
     mGroupNoticeMessageList(NULL),
     mTransactionMessageList(NULL),
     mSystemMessageList(NULL),
-    mNotificationsSeparator(NULL),
     mNotificationsTabContainer(NULL),
     NOTIFICATION_TABBED_ANCHOR_NAME("notification_well_panel"),
     IM_WELL_ANCHOR_NAME("im_well_panel"),
@@ -53,8 +52,7 @@ LLFloaterNotificationsTabbed::LLFloaterNotificationsTabbed(const LLSD& key) : LL
 
 {
     setOverlapsScreenChannel(true);
-    mNotificationUpdates.reset(new NotificationTabbedChannel(this));
-    mNotificationsSeparator = new LLNotificationSeparator();
+    mNotificationsSeparator = std::make_unique<LLNotificationSeparator>();
 }
 
 //---------------------------------------------------------------------------------
@@ -77,6 +75,7 @@ bool LLFloaterNotificationsTabbed::postBuild()
     mCollapseAllBtn->setClickedCallback(boost::bind(&LLFloaterNotificationsTabbed::onClickCollapseAllBtn,this));
 
     // get a corresponding channel
+    mNotificationUpdates.reset(new NotificationTabbedChannel(this));
     initChannel();
     bool rv = LLTransientDockableFloater::postBuild();
 
@@ -117,6 +116,7 @@ void LLFloaterNotificationsTabbed::setSysWellChiclet(LLSysWellChiclet* chiclet)
 //---------------------------------------------------------------------------------
 LLFloaterNotificationsTabbed::~LLFloaterNotificationsTabbed()
 {
+    mNotificationsSeparator.reset();
 }
 
 //---------------------------------------------------------------------------------

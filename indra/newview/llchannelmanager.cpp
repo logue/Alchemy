@@ -36,6 +36,7 @@
 #include "llrootview.h"
 #include "llsyswellwindow.h"
 #include "llfloaternotificationstabbed.h"
+#include "lllegacynotificationwellwindow.h"
 #include "llfloaterreg.h"
 
 #include <algorithm>
@@ -145,8 +146,16 @@ void LLChannelManager::onLoginCompleted()
             // init channel's position and size
             S32 channel_right_bound = gViewerWindow->getWorldViewRectScaled().mRight - gSavedSettings.getS32("NotificationChannelRightMargin");
             mStartUpChannel->init(channel_right_bound - NOTIFY_BOX_WIDTH, channel_right_bound);
-            mStartUpChannel->setMouseDownCallback(boost::bind(&LLFloaterNotificationsTabbed::onStartUpToastClick, LLFloaterNotificationsTabbed::getInstance(), _2, _3, _4));
-
+            if (gSkinSettings.getBool("LegacyNotificationWell"))
+            {
+                mStartUpChannel->setMouseDownCallback(boost::bind(&LLLegacyNotificationWellWindow::onStartUpToastClick,
+                    LLLegacyNotificationWellWindow::getInstance(), _2, _3, _4));
+            }
+            else
+            {
+                mStartUpChannel->setMouseDownCallback(boost::bind(&LLFloaterNotificationsTabbed::onStartUpToastClick,
+                    LLFloaterNotificationsTabbed::getInstance(), _2, _3, _4));
+            }
             mStartUpChannel->setCommitCallback(boost::bind(&LLChannelManager::onStartUpToastClose, this));
             mStartUpChannel->createStartUpToast(away_notifications, (F32)gSavedSettings.getS32("StartUpToastLifeTime"));
         }
