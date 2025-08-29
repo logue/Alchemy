@@ -2719,7 +2719,8 @@ void LLViewerWindow::draw()
     }
 
     // HACK for timecode debugging
-    if (gSavedSettings.getBOOL("DisplayTimecode"))
+    static LLCachedControl<bool> displayTimecode(gSavedSettings, "DisplayTimecode", false);
+    if (displayTimecode)
     {
         // draw timecode block
         std::string text;
@@ -3820,13 +3821,14 @@ void LLViewerWindow::updateUI()
 
 void LLViewerWindow::updateLayout()
 {
+    static LLCachedControl<bool> freeze_time(gSavedSettings, "FreezeTime", false);
     LLTool* tool = LLToolMgr::getInstance()->getCurrentTool();
     if (gFloaterTools != NULL
         && tool != NULL
         && tool != gToolNull
         && tool != LLToolCompInspect::getInstance()
         && tool != LLToolDragAndDrop::getInstance()
-        && !gSavedSettings.getBOOL("FreezeTime"))
+        && !freeze_time)
     {
         // Suppress the toolbox view if our source tool was the pie tool,
         // and we've overridden to something else.
@@ -3900,7 +3902,8 @@ void LLViewerWindow::updateMouseDelta()
 
     LLVector2 mouse_vel;
 
-    if (gSavedSettings.getBOOL("MouseSmooth"))
+    static LLCachedControl<bool> mouseSmooth(gSavedSettings, "MouseSmooth");
+    if (mouseSmooth)
     {
         static F32 fdx = 0.f;
         static F32 fdy = 0.f;

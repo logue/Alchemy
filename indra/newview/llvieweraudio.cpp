@@ -398,8 +398,9 @@ void init_audio()
 
 void audio_update_volume(bool force_update)
 {
-    F32 master_volume = gSavedSettings.getF32("AudioLevelMaster");
-    bool mute_audio = gSavedSettings.getBOOL("MuteAudio");
+    static LLCachedControl<F32> master_volume(gSavedSettings, "AudioLevelMaster");
+    static LLCachedControl<bool> mute_audio_control(gSavedSettings, "MuteAudio");
+    bool mute_audio = mute_audio_control;
 
     LLProgressView* progress = gViewerWindow->getProgressView();
     bool progress_view_visible = false;

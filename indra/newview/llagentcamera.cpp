@@ -313,7 +313,8 @@ void LLAgentCamera::resetView(bool reset_camera, bool change_camera)
         gMenuHolder->hideMenus();
     }
 
-    if (change_camera && !gSavedSettings.getBOOL("FreezeTime"))
+    static LLCachedControl<bool> freeze_time(gSavedSettings, "FreezeTime", false);
+    if (change_camera && !freeze_time)
     {
         changeCameraToDefault();
 
@@ -341,7 +342,7 @@ void LLAgentCamera::resetView(bool reset_camera, bool change_camera)
     }
 
 
-    if (reset_camera && !gSavedSettings.getBOOL("FreezeTime"))
+    if (reset_camera && !freeze_time)
     {
         if (!gViewerWindow->getLeftMouseDown() && cameraThirdPerson())
         {
@@ -1008,7 +1009,8 @@ void LLAgentCamera::cameraOrbitIn(const F32 meters)
 
         mCameraZoomFraction = (mTargetCameraDistance - meters) / camera_offset_dist;
 
-        if (!gSavedSettings.getBOOL("FreezeTime") && mCameraZoomFraction < MIN_ZOOM_FRACTION && meters > 0.f)
+        static LLCachedControl<bool> freeze_time(gSavedSettings, "FreezeTime", false);
+        if (!freeze_time && mCameraZoomFraction < MIN_ZOOM_FRACTION && meters > 0.f)
         {
             // No need to animate, camera is already there.
             changeCameraToMouselook(false);
