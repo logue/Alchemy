@@ -144,31 +144,31 @@ class ViewerManifest(LLManifest):
                 self.path("*.tga")
 
             # Include our fonts
-            with self.prefix(src="../packages/fonts",src_dst="fonts"):
+            with self.prefix(src=os.path.join(pkgdir, 'fonts'), dst="fonts"):
                 self.path("*.ttf")
                 self.path("*.txt")
 
             # skins
             with self.prefix(src_dst="skins"):
-                    # include the entire textures directory recursively
-                    with self.prefix(src_dst="*/textures"):
-                            self.path("*/*.jpg")
-                            self.path("*/*.png")
-                            self.path("*.tga")
-                            self.path("*.j2c")
-                            self.path("*.png")
-                            self.path("textures.xml")
-                    self.path("*/xui/*/*.xml")
-                    self.path("*/xui/*/widgets/*.xml")
-                    self.path("*/*.xml")
-                    self.path("*/*.json")
+                # include the entire textures directory recursively
+                with self.prefix(src_dst="*/textures"):
+                        self.path("*/*.jpg")
+                        self.path("*/*.png")
+                        self.path("*.tga")
+                        self.path("*.j2c")
+                        self.path("*.png")
+                        self.path("textures.xml")
+                self.path("*/xui/*/*.xml")
+                self.path("*/xui/*/widgets/*.xml")
+                self.path("*/*.xml")
+                self.path("*/*.json")
 
-                    # Update: 2017-11-01 CP Now we store app code in the html folder
-                    #         Initially the HTML/JS code to render equirectangular
-                    #         images for the 360 capture feature but more to follow.
-                    with self.prefix(src="*/html", dst="*/html"):
-                        self.path("*/*/*/*.js")
-                        self.path("*/*/*.html")
+                # Update: 2017-11-01 CP Now we store app code in the html folder
+                #         Initially the HTML/JS code to render equirectangular
+                #         images for the 360 capture feature but more to follow.
+                with self.prefix(src="*/html", dst="*/html"):
+                    self.path("*/*/*/*.js")
+                    self.path("*/*/*.html")
 
             #build_data.json.  Standard with exception handling is fine.  If we can't open a new file for writing, we have worse problems
             #platform is computed above with other arg parsing
@@ -266,7 +266,7 @@ class ViewerManifest(LLManifest):
         return ''.join(self.app_name().split())
 
     def icon_path(self):
-        return "icons/" + self.channel_type()
+        return os.path.join(self.args['build'], os.pardir, 'packages', 'branding', 'viewer', 'icons', self.channel_type())
 
     def extract_names(self,src):
         """Extract contributor names from source file, returns string"""
@@ -541,7 +541,7 @@ class Windows_x86_64_Manifest(ViewerManifest):
 
             with self.prefix(dst="vmp_icons"):
                 with self.prefix(src=self.icon_path()):
-                    self.path("secondlife.ico")
+                    self.path("alchemy.ico")
                 #VMP  Tkinter icons
                 with self.prefix(src="vmp_icons"):
                     self.path("*.png")
@@ -944,7 +944,7 @@ class Darwin_x86_64_Manifest(ViewerManifest):
 
                 # need .icns file referenced by Info.plist
                 with self.prefix(src=self.icon_path(), dst="") :
-                    self.path("secondlife.icns")
+                    self.path("alchemy.icns")
 
                 # Copy in the updater script and helper modules
                 self.path(src=os.path.join(pkgdir, 'VMP'), dst="updater")
@@ -1239,9 +1239,9 @@ class LinuxManifest(ViewerManifest):
         # Get the icons based on the channel type
         icon_path = self.icon_path()
         with self.prefix(src=icon_path) :
-            self.path("secondlife_256.png","secondlife_icon.png")
+            self.path("alchemy_256.png","alchemy_icon.png")
             with self.prefix(dst="res-sdl") :
-                self.path("secondlife_256.BMP","ll_icon.BMP")
+                self.path("alchemy_256.BMP","ll_icon.BMP")
 
         with self.prefix(src=os.path.join(self.args['build'], os.pardir, "llwebrtc" ), dst="lib"):
             self.path("libllwebrtc.so")

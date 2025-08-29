@@ -31,6 +31,23 @@ elseif (LINUX)
   set(EXE_STAGING_DIR ${CMAKE_BINARY_DIR}/sharedlibs/bin)
 endif ()
 
+if (WINDOWS OR LINUX)
+  set(SIMD_ARCH "SSE" CACHE STRING "Architecture for SIMD instructions(SSE, AVX2, ARM64)")
+  string(TOLOWER ${SIMD_ARCH} simd_lower)
+  if("${CMAKE_GENERATOR_PLATFORM}" STREQUAL "ARM64")
+    set(simd_lower arm64)
+  endif()
+  set(SIMD_ARCH_LOWERED "${simd_lower}" CACHE STRING "Architecture for SIMD instructions(SSE, AVX2, ARM64)" FORCE)
+
+  if ("${SIMD_ARCH_LOWERED}" STREQUAL "sse" OR "${SIMD_ARCH_LOWERED}" STREQUAL "avx2" OR "${SIMD_ARCH_LOWERED}" STREQUAL "arm64" )
+    set(ARCH_PREBUILT_DIRS_ARCH ${ARCH_PREBUILT_DIRS}/${SIMD_ARCH_LOWERED})
+    set(ARCH_PREBUILT_DIRS_ARCH_RELEASE ${ARCH_PREBUILT_DIRS_ARCH}/release)
+    set(ARCH_PREBUILT_DIRS_ARCH_DEBUG ${ARCH_PREBUILT_DIRS_ARCH}/debug)
+  else()
+    message(FATAL_ERROR "Invalid SIMD_ARCH value")
+  endif()
+endif()
+
 # Autobuild packages must provide 'release' versions of libraries, but may provide versions for
 # specific build types.  AUTOBUILD_LIBS_INSTALL_DIRS lists first the build type directory and then
 # the 'release' directory (as a default fallback).

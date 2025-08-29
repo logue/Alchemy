@@ -14,9 +14,7 @@ include(BuildVersion)
 include(CMakeCopyIfDifferent)
 include(CubemapToEquirectangularJS)
 include(DragDrop)
-if (USE_DISCORD)
-  include(Discord)
-endif ()
+include(Discord)
 include(EXPAT)
 include(Hunspell)
 include(JPEGEncoderBasic)
@@ -46,6 +44,9 @@ include(ViewerManager)
 include(VisualLeakDetector)
 include(ZLIBNG)
 include(LLPrimitive)
+
+# Viewer Branding Assets
+use_prebuilt_binary(branding)
 
 if (NOT HAVOK_TPV)
    # When using HAVOK_TPV, the library is precompiled, so no need for this
@@ -1553,31 +1554,41 @@ if (WINDOWS)
     set(ICON_PATH "test")
     set(VIEWER_MACOSX_PHASE "d")
     string(TOLOWER ${VIEWER_CHANNEL} channel_lower)
-    if(channel_lower MATCHES "^second life release")
+    if(channel_lower MATCHES "^alchemy release")
         set(ICON_PATH "release")
         set(VIEWER_MACOSX_PHASE "f")
-    elseif(channel_lower MATCHES "^second life beta")
+    elseif(channel_lower MATCHES "^alchemy beta")
         set(ICON_PATH "beta")
         set(VIEWER_MACOSX_PHASE "b")
-    elseif(channel_lower MATCHES "^second life project")
+    elseif(channel_lower MATCHES "^alchemy project")
         set(ICON_PATH "project")
         set(VIEWER_MACOSX_PHASE "a")
     endif()
     message(STATUS "Copying icons for ${ICON_PATH}")
     execute_process(
       COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${CMAKE_CURRENT_SOURCE_DIR}/icons/${ICON_PATH}/secondlife.ico"
+        "${LIBS_PREBUILT_DIR}/branding/viewer/icons/${ICON_PATH}/alchemy.ico"
         "${CMAKE_CURRENT_SOURCE_DIR}/res/ll_icon.ico"
       )
     execute_process(
       COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${CMAKE_CURRENT_SOURCE_DIR}/icons/${ICON_PATH}/secondlife_256.BMP"
+        "${LIBS_PREBUILT_DIR}/branding/viewer/icons/${ICON_PATH}/alchemy_256.BMP"
         "${CMAKE_CURRENT_SOURCE_DIR}/res/ll_icon.BMP"
       )
     execute_process(
       COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${CMAKE_CURRENT_SOURCE_DIR}/icons/${ICON_PATH}/secondlife_256.BMP"
+        "${LIBS_PREBUILT_DIR}/branding/viewer/icons/${ICON_PATH}/alchemy_256.BMP"
         "${CMAKE_CURRENT_SOURCE_DIR}/res-sdl/ll_icon.BMP"
+      )
+    execute_process(
+      COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${LIBS_PREBUILT_DIR}/branding/installer/icons/install_icon.ico"
+        "${CMAKE_CURRENT_SOURCE_DIR}/installers/windows/install_icon.ico"
+      )
+    execute_process(
+      COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${LIBS_PREBUILT_DIR}/branding/installer/icons/uninstall_icon.ico"
+        "${CMAKE_CURRENT_SOURCE_DIR}/installers/windows/uninstall_icon.ico"
       )
 
     # Add resource files to the project.
@@ -2045,7 +2056,7 @@ target_link_libraries(${VIEWER_BINARY_NAME}
         ll::tracy
         )
 
-if (USE_DISCORD)
+if ( TARGET ll::discord_sdk )
    target_link_libraries(${VIEWER_BINARY_NAME} ll::discord_sdk )
 endif ()
 

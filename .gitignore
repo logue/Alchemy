@@ -57,6 +57,7 @@ indra/newview/filters.xml
 indra/newview/fmod.dll
 indra/newview/fmod.log
 indra/newview/fonts
+indra/newview/installers/windows/*.ico
 indra/newview/mozilla-theme
 indra/newview/mozilla-universal-darwin.tgz
 indra/newview/pilot.txt
@@ -88,6 +89,6 @@ trivial_change_force_build
 web/config.*
 web/locale.*
 web/secondlife.com.*
-
+/Pipfile.lock
 .env
 .vscode

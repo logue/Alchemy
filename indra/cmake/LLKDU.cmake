@@ -12,12 +12,13 @@ add_library( ll::kdu INTERFACE IMPORTED )
 
 if (USE_KDU)
   include(Prebuilt)
+  include(Linking)
   use_prebuilt_binary(kdu)
 
   find_library(KDU_LIBRARY
     NAMES
     kdu
-    PATHS "${ARCH_PREBUILT_DIRS_RELEASE}" REQUIRED NO_DEFAULT_PATH)
+    PATHS "${ARCH_PREBUILT_DIRS_ARCH_RELEASE}" "${ARCH_PREBUILT_DIRS_RELEASE}" REQUIRED NO_DEFAULT_PATH)
 
   target_link_libraries(ll::kdu INTERFACE ${KDU_LIBRARY})
 

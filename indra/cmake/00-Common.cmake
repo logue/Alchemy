@@ -19,6 +19,7 @@
 include_guard()
 
 include(Variables)
+include(Linking)
 
 # We go to some trouble to set LL_BUILD to the set of relevant compiler flags.
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} $ENV{LL_BUILD_RELEASE}")
@@ -92,11 +93,6 @@ if (WINDOWS)
       _CRT_NONSTDC_NO_DEPRECATE       # Allow use of sprintf etc
       _CRT_OBSOLETE_NO_WARNINGS
       _WINSOCK_DEPRECATED_NO_WARNINGS # Disable deprecated WinSock API warnings
-      __SSE3__=1
-      __SSSE3__=1
-      __SSE4__=1
-      __SSE4_1__=1
-      __SSE4_2__=1
       )
   add_compile_options(
           /Zo
@@ -111,6 +107,36 @@ if (WINDOWS)
           /MP
           /permissive-
       )
+
+  if("${simd_lower}" STREQUAL "avx2")
+    string(REPLACE "/arch:SSE4.2" "/arch:AVX2" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+    string(REPLACE "/arch:SSE4.2" "/arch:AVX2" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
+    string(REPLACE "/arch:SSE4.2" "/arch:AVX2" CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE}")
+    string(REPLACE "/arch:SSE4.2" "/arch:AVX2" CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")
+    string(REPLACE "/arch:SSE4.2" "/arch:AVX2" CMAKE_C_FLAGS_RELWITHDEBINFO "${CMAKE_C_FLAGS_RELWITHDEBINFO}")
+    # Also add previous SSE definitions
+    add_compile_definitions(
+        __SSE3__=1
+        __SSSE3__=1
+        __SSE4__=1
+        __SSE4_1__=1
+        __SSE4_2__=1
+        )
+  elseif("${simd_lower}" STREQUAL "arm64")
+    string(REPLACE "/arch:SSE4.2" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+    string(REPLACE "/arch:SSE4.2" "" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
+    string(REPLACE "/arch:SSE4.2" "" CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE}")
+    string(REPLACE "/arch:SSE4.2" "" CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")
+    string(REPLACE "/arch:SSE4.2" "" CMAKE_C_FLAGS_RELWITHDEBINFO "${CMAKE_C_FLAGS_RELWITHDEBINFO}")
+  else()
+    add_compile_definitions(
+        __SSE3__=1
+        __SSSE3__=1
+        __SSE4__=1
+        __SSE4_1__=1
+        __SSE4_2__=1
+        )
+  endif()
 
   # We want aggressive inlining on MSVC to better match clang/gcc at O3
   string(REPLACE "/Ob2" "/Ob3" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")

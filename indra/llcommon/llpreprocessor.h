@@ -204,7 +204,11 @@
 #if LL_ARM64
 #define GLM_FORCE_NEON 1
 #else
-#define GLM_FORCE_SSE2 1
+#if defined(__AVX2__)
+#define GLM_FORCE_AVX2 1
+#else
+#define GLM_FORCE_SSE42 1
+#endif
 #endif
 
 #if LL_ARM64

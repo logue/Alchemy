@@ -10,6 +10,7 @@ set(cmake_SOURCE_FILES
         APR.cmake
         Audio.cmake
         Boost.cmake
+        Brotli.cmake
         bugsplat.cmake
         BuildPackagesInfo.cmake
         BuildVersion.cmake
