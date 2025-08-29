@@ -117,6 +117,7 @@ protected:
                       boost::bind(&LLAppearanceMgr::removeItemsFromAvatar, LLAppearanceMgr::getInstance(), mUUIDs, no_op));
         registrar.add("Wearing.Detach",
                       boost::bind(&LLAppearanceMgr::removeItemsFromAvatar, LLAppearanceMgr::getInstance(), mUUIDs, no_op));
+        registrar.add("Wearing.Favorite", boost::bind(toggle_favorites, mUUIDs));
         LLContextMenu* menu = createFromFile("menu_wearing_tab.xml");
 
         updateMenuItemsVisibility(menu);
@@ -129,6 +130,8 @@ protected:
         bool bp_selected            = false;    // true if body parts selected
         bool clothes_selected       = false;
         bool attachments_selected   = false;
+        bool can_favorite = false;
+        bool can_unfavorite = false;
 // [RLVa:KB] - Checked: 2012-07-28 (RLVa-1.4.7)
         S32 rlv_locked_count = 0;
 // [/RLVa:KB]
@@ -144,6 +147,9 @@ protected:
                 continue;
             }
 
+            LLUUID linked_id = item->getLinkedUUID();
+            LLViewerInventoryItem* linked_item = gInventory.getItem(linked_id);
+
             LLAssetType::EType type = item->getType();
             if (type == LLAssetType::AT_CLOTHING)
             {
@@ -157,6 +163,8 @@ protected:
             {
                 attachments_selected = true;
             }
+            can_favorite |= !linked_item->getIsFavorite();
+            can_unfavorite |= linked_item->getIsFavorite();
 // [RLVa:KB] - Checked: 2012-07-28 (RLVa-1.4.7)
             if ( (rlv_handler_t::isEnabled()) && (!rlvPredCanRemoveItem(*it)) )
             {
@@ -186,6 +194,8 @@ protected:
         menu->setItemEnabled("detach",      !rlv_blocked);
 // [/RLVa:KB]
         menu->setItemVisible("show_original", mUUIDs.size() == 1);
+        menu->setItemVisible("favorites_add", can_favorite);
+        menu->setItemVisible("favorites_remove", can_unfavorite);
     }
 };
 
@@ -252,6 +262,10 @@ LLPanelWearing::~LLPanelWearing()
     {
         mAttachmentsChangedConnection.disconnect();
     }
+    if (mGearMenuConnection.connected())
+    {
+        mGearMenuConnection.disconnect();
+    }
 }
 
 bool LLPanelWearing::postBuild()
@@ -268,10 +282,6 @@ bool LLPanelWearing::postBuild()
     mTempItemsList = getChild<LLScrollListCtrl>("temp_attachments_list");
     mTempItemsList->setFgUnselectedColor(LLColor4::white);
     mTempItemsList->setRightMouseDownCallback(boost::bind(&LLPanelWearing::onTempAttachmentsListRightClick, this, _1, _2, _3));
-
-    LLMenuButton* menu_gear_btn = getChild<LLMenuButton>("options_gear_btn");
-
-    menu_gear_btn->setMenu(mGearMenu->getMenu());
 
     return true;
 }
@@ -578,6 +588,16 @@ void LLPanelWearing::onRemoveAttachment()
         LLSelectMgr::getInstance()->selectObjectAndFamily(mAttachmentsMap[item->getUUID()]);
         LLSelectMgr::getInstance()->sendDetach();
     }
+}
+
+LLToggleableMenu* LLPanelWearing::getGearMenu()
+{
+    return mGearMenu->getMenu();
+}
+
+LLToggleableMenu* LLPanelWearing::getSortMenu()
+{
+    return NULL;
 }
 
 void LLPanelWearing::onRemoveItem()

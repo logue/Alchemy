@@ -867,7 +867,7 @@ void LLWearableHoldingPattern::checkMissingWearables()
             // was requested but none was found, create a default asset as a replacement.
             // In all other cases, don't do anything.
             // For critical types (shape/hair/skin/eyes), this will keep the avatar as a cloud
-            // due to logic in LLVOAvatarSelf::getIsCloud().
+            // due to logic in LLVOAvatarSelf::getHasMissingParts().
             // For non-critical types (tatoo, socks, etc.) the wearable will just be missing.
             (requested_by_type[type] > 0) &&
             ((type == LLWearableType::WT_PANTS) || (type == LLWearableType::WT_SHIRT) || (type == LLWearableType::WT_SKIRT)))
@@ -2137,7 +2137,7 @@ bool LLAppearanceMgr::getCanReplaceCOF(const LLUUID& outfit_cat_id)
 }
 
 // Moved from LLWearableList::ContextMenu for wider utility.
-bool LLAppearanceMgr::canAddWearables(const uuid_vec_t& item_ids) const
+bool LLAppearanceMgr::canAddWearables(const uuid_vec_t& item_ids, bool warn_on_type_mismatch) const
 {
     // TODO: investigate wearables may not be loaded at this point EXT-8231
 
@@ -2167,7 +2167,10 @@ bool LLAppearanceMgr::canAddWearables(const uuid_vec_t& item_ids) const
         }
         else
         {
+            if (warn_on_type_mismatch)
+            {
             LL_WARNS() << "Unexpected wearable type" << LL_ENDL;
+            }
             return false;
         }
     }
@@ -2445,7 +2448,7 @@ void LLAppearanceMgr::updateCOF(LLInventoryModel::item_array_t& body_items_new,
     }
     if (gSavedSettings.getBOOL("DebugAvatarAppearanceMessage"))
     {
-        dump_sequential_xml(gAgentAvatarp->getFullname() + "_slam_request", contents);
+        dump_sequential_xml(gAgentAvatarp->getDebugName() + "_slam_request", contents);
     }
     slam_inventory_folder(getCOF(), contents, link_waiter);
 
@@ -4318,7 +4321,7 @@ void LLAppearanceMgr::serverAppearanceUpdateCoro(LLCoreHttpUtil::HttpCoroutineAd
         LL_DEBUGS("Avatar") << "succeeded" << LL_ENDL;
         if (gSavedSettings.getBOOL("DebugAvatarAppearanceMessage"))
         {
-            dump_sequential_xml(gAgentAvatarp->getFullname() + "_appearance_request_ok", result);
+            dump_sequential_xml(gAgentAvatarp->getDebugName() + "_appearance_request_ok", result);
         }
 
     } while (bRetry);
@@ -4327,7 +4330,7 @@ void LLAppearanceMgr::serverAppearanceUpdateCoro(LLCoreHttpUtil::HttpCoroutineAd
 /*static*/
 void LLAppearanceMgr::debugAppearanceUpdateCOF(const LLSD& content)
 {
-    dump_sequential_xml(gAgentAvatarp->getFullname() + "_appearance_request_error", content);
+    dump_sequential_xml(gAgentAvatarp->getDebugName() + "_appearance_request_error", content);
 
     LL_INFOS("Avatar") << "AIS COF, version received: " << content["expected"].asInteger()
         << " ================================= " << LL_ENDL;

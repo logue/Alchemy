@@ -457,6 +457,7 @@ int APIENTRY WINMAIN(HINSTANCE hInstance,
 #if !LL_SDL_WINDOW
     // *FIX: global
     gIconResource = MAKEINTRESOURCE(IDI_LL_ICON);
+    gIconSmallResource = MAKEINTRESOURCE(IDI_LL_ICON_SMALL);
 #endif
 
     LLAppViewerWin32* viewer_app_ptr = new LLAppViewerWin32(ll_convert_wide_to_string(pCmdLine).c_str());

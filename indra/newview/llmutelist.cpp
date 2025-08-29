@@ -154,7 +154,8 @@ std::string LLMute::getDisplayType() const
 // LLMuteList()
 //-----------------------------------------------------------------------------
 LLMuteList::LLMuteList() :
-    mIsLoaded(false)
+    mLoadState(ML_INITIAL),
+    mRequestStartTime(0.f)
 {
     gGenericDispatcher.addHandler("emptymutelist", &sDispatchEmptyMuteList);
 
@@ -215,6 +216,23 @@ bool LLMuteList::isLinden(const std::string& name)
 
     std::string last_name = *token_iter;
     return last_name == "Linden" || last_name == "ProductEngine" || last_name == "Mole" || last_name == "Tester";
+}
+
+bool LLMuteList::getLoadFailed() const
+{
+    if (mLoadState == ML_FAILED)
+    {
+        return true;
+    }
+    if (mLoadState == ML_REQUESTED)
+    {
+        constexpr F64 WAIT_SECONDS = 30;
+        if (mRequestStartTime + WAIT_SECONDS < LLTimer::getTotalSeconds())
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 static LLVOAvatar* find_avatar(const LLUUID& id)
@@ -379,11 +397,14 @@ void LLMuteList::updateAdd(const LLMute& mute)
     msg->addU32("MuteFlags", mute.mFlags);
     gAgent.sendReliableMessage();
 
-    if (!mIsLoaded)
+    if (!isLoaded())
     {
         LL_WARNS() << "Added elements to non-initialized block list" << LL_ENDL;
     }
-    mIsLoaded = true; // why is this here? -MG
+    // Based of logs and testing, if file doesn't exist server side,
+    // viewer will not receive any callback and won't know to set
+    // ML_LOADED. As a workaround, set it regardless of current state.
+    mLoadState = ML_LOADED;
 }
 
 
@@ -572,6 +593,7 @@ bool LLMuteList::loadFromFile(const std::string& filename)
     if(!filename.size())
     {
         LL_WARNS() << "Mute List Filename is Empty!" << LL_ENDL;
+        mLoadState = ML_FAILED;
         return false;
     }
 
@@ -579,6 +601,7 @@ bool LLMuteList::loadFromFile(const std::string& filename)
     if (!fp)
     {
         LL_WARNS() << "Couldn't open mute list " << filename << LL_ENDL;
+        mLoadState = ML_FAILED;
         return false;
     }
 
@@ -738,13 +761,17 @@ void LLMuteList::requestFromServer(const LLUUID& agent_id)
     if (gDisconnected)
     {
         LL_WARNS() << "Trying to request mute list when disconnected!" << LL_ENDL;
+        mLoadState = ML_FAILED;
         return;
     }
     if (!gAgent.getRegion())
     {
         LL_WARNS() << "No region for agent yet, skipping mute list request!" << LL_ENDL;
+        mLoadState = ML_FAILED;
         return;
     }
+    mLoadState = ML_REQUESTED;
+    mRequestStartTime = LLTimer::getElapsedSeconds();
     // Double amount of retries due to this request happening during busy stage
     // Ideally this should be turned into a capability
     gMessageSystem->sendReliable(gAgent.getRegionHost(), LL_DEFAULT_RELIABLE_RETRIES * 2, true, LL_PING_BASED_TIMEOUT_DUMMY, NULL, NULL);
@@ -757,7 +784,7 @@ void LLMuteList::requestFromServer(const LLUUID& agent_id)
 void LLMuteList::cache(const LLUUID& agent_id)
 {
     // Write to disk even if empty.
-    if(mIsLoaded)
+    if(isLoaded())
     {
         std::string agent_id_string;
         std::string filename;
@@ -785,6 +812,13 @@ void LLMuteList::processMuteListUpdate(LLMessageSystem* msg, void**)
     msg->getStringFast(_PREHASH_MuteData, _PREHASH_Filename, unclean_filename);
     std::string filename = LLDir::getScrubbedFileName(unclean_filename);
 
+    LLMuteList* mute_list = getInstance();
+    mute_list->mLoadState = ML_REQUESTED;
+    mute_list->mRequestStartTime = LLTimer::getElapsedSeconds();
+
+    // Todo: Based of logs and testing, there is no callback
+    // from server if file doesn't exist server side.
+    // Once server side gets fixed make sure it gets handled right.
     std::string *local_filename_and_path = new std::string(gDirUtilp->getExpandedFilename( LL_PATH_CACHE, filename ));
     gXferManager->requestFile(*local_filename_and_path,
                               filename,
@@ -817,12 +851,16 @@ void LLMuteList::onFileMuteList(void** user_data, S32 error_code, LLExtStat ext_
         LLMuteList::getInstance()->loadFromFile(*local_filename_and_path);
         LLFile::remove(*local_filename_and_path);
     }
+    else
+    {
+        LLMuteList::getInstance()->mLoadState = ML_FAILED;
+    }
     delete local_filename_and_path;
 }
 
 void LLMuteList::onAccountNameChanged(const LLUUID& id, const std::string& username)
 {
-    if (mIsLoaded)
+    if (isLoaded())
     {
         LLMute mute(id, username, LLMute::AGENT);
         mute_set_t::iterator mute_it = mMutes.find(mute);
@@ -874,7 +912,7 @@ void LLMuteList::removeObserver(LLMuteListObserver* observer)
 
 void LLMuteList::setLoaded()
 {
-    mIsLoaded = true;
+    mLoadState = ML_LOADED;
     notifyObservers();
 }
 

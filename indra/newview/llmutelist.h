@@ -74,6 +74,14 @@ class LLMuteList : public LLSingleton<LLMuteList>
     LLSINGLETON(LLMuteList);
     ~LLMuteList();
     /*virtual*/ void cleanupSingleton() override;
+
+    enum EMuteListState
+    {
+        ML_INITIAL,
+        ML_REQUESTED,
+        ML_LOADED,
+        ML_FAILED,
+    };
 public:
     // reasons for auto-unmuting a resident
     enum EAutoReason
@@ -108,7 +116,8 @@ public:
     static bool isLinden(const LLUUID& id);
     static bool isLinden(const std::string& name);
 
-    bool isLoaded() const { return mIsLoaded; }
+    bool isLoaded() const { return mLoadState == ML_LOADED; }
+    bool getLoadFailed() const;
 
     std::vector<LLMute> getMutes() const;
 
@@ -168,7 +177,8 @@ private:
     typedef std::set<LLMuteListObserver*> observer_set_t;
     observer_set_t mObservers;
 
-    bool mIsLoaded;
+    EMuteListState mLoadState;
+    F64 mRequestStartTime;
 
     friend class LLDispatchEmptyMuteList;
 };

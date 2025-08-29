@@ -59,6 +59,8 @@
 #include "rlvcommon.h"
 // [/RLVa:KB]
 
+const char* const DEFAULT_DESC = "(No Description)";
+
 class PropertiesChangedCallback : public LLInventoryCallback
 {
 public:
@@ -131,6 +133,7 @@ LLSidepanelItemInfo::LLSidepanelItemInfo(const LLPanel::Params& p)
     , mUpdatePendingId(-1)
     , mIsDirty(false) /*Not ready*/
     , mParentFloater(NULL)
+    , mLabelItemDesc(NULL)
 {
     gInventory.addObserver(this);
     gIdleCallbacks.addFunction(&LLSidepanelItemInfo::onIdle, (void*)this);
@@ -161,10 +164,11 @@ bool LLSidepanelItemInfo::postBuild()
     mItemTypeIcon = getChild<LLIconCtrl>("item_type_icon");
     mLabelOwnerName = getChild<LLTextBox>("LabelOwnerName");
     mLabelCreatorName = getChild<LLTextBox>("LabelCreatorName");
+    mLabelItemDesc = getChild<LLTextEditor>("LabelItemDesc");
 
     getChild<LLLineEditor>("LabelItemName")->setPrevalidate(&LLTextValidate::validateASCIIPrintableNoPipe);
     getChild<LLUICtrl>("LabelItemName")->setCommitCallback(boost::bind(&LLSidepanelItemInfo::onCommitName,this));
-    getChild<LLUICtrl>("LabelItemDesc")->setCommitCallback(boost::bind(&LLSidepanelItemInfo:: onCommitDescription, this));
+    mLabelItemDesc->setCommitCallback(boost::bind(&LLSidepanelItemInfo:: onCommitDescription, this));
     // Thumnail edition
     mChangeThumbnailBtn->setCommitCallback(boost::bind(&LLSidepanelItemInfo::onEditThumbnail, this));
     // acquired date
@@ -989,17 +993,22 @@ void LLSidepanelItemInfo::onCommitDescription()
     LLViewerInventoryItem* item = findItem();
     if(!item) return;
 
-    LLTextEditor* labelItemDesc = getChild<LLTextEditor>("LabelItemDesc");
-    if(!labelItemDesc)
+    if(!mLabelItemDesc)
     {
         return;
     }
-    if((item->getDescription() != labelItemDesc->getText()) &&
-       (gAgent.allowOperation(PERM_MODIFY, item->getPermissions(), GP_OBJECT_MANIPULATE)))
+    if (!gAgent.allowOperation(PERM_MODIFY, item->getPermissions(), GP_OBJECT_MANIPULATE))
     {
+        return;
+    }
+    std::string old_desc = item->getDescription();
+    std::string new_desc = mLabelItemDesc->getText();
+    if(old_desc != new_desc)
+    {
+        mLabelItemDesc->setSelectAllOnFocusReceived(false);
         LLPointer<LLViewerInventoryItem> new_item = new LLViewerInventoryItem(item);
 
-        new_item->setDescription(labelItemDesc->getText());
+        new_item->setDescription(new_desc);
         onCommitChanges(new_item);
     }
 }

@@ -71,10 +71,13 @@
 #include "llclipboard.h"
 #include "llhttpretrypolicy.h"
 #include "llsettingsvo.h"
+#include "llinventorylistener.h"
 #include "llviewerassetupload.h"
 // [RLVa:KB] - Checked: 2014-11-02 (RLVa-1.4.11)
 #include "rlvcommon.h"
 // [/RLVa:KB]
+
+LLInventoryListener sInventoryListener;
 
 // do-nothing ops for use in callbacks.
 void no_op_inventory_func(const LLUUID&) {}
@@ -755,27 +758,30 @@ S32 LLViewerInventoryCategory::getViewerDescendentCount() const
     return descendents_actual;
 }
 
-LLSD LLViewerInventoryCategory::exportLLSD() const
+void LLViewerInventoryCategory::exportLLSD(LLSD & cat_data) const
 {
-    LLSD cat_data = LLInventoryCategory::exportLLSD();
+    LLInventoryCategory::exportLLSD(cat_data);
     cat_data[INV_OWNER_ID] = mOwnerID;
     cat_data[INV_VERSION] = mVersion;
-
-    return cat_data;
 }
 
-bool LLViewerInventoryCategory::importLLSD(const LLSD& cat_data)
+bool LLViewerInventoryCategory::importLLSD(const std::string& label, const LLSD& value)
 {
-    LLInventoryCategory::importLLSD(cat_data);
-    if (cat_data.has(INV_OWNER_ID))
+    if (LLInventoryCategory::importLLSD(label, value))
     {
-        mOwnerID = cat_data[INV_OWNER_ID].asUUID();
+        return true;
     }
-    if (cat_data.has(INV_VERSION))
+    else if (label == INV_OWNER_ID)
     {
-        setVersion(cat_data[INV_VERSION].asInteger());
+        mOwnerID = value.asUUID();
+        return true;
     }
-    return true;
+    else if (label == INV_VERSION)
+    {
+        setVersion(value.asInteger());
+        return true;
+    }
+    return false;
 }
 
 bool LLViewerInventoryCategory::acceptItem(LLInventoryItem* inv_item)
@@ -970,10 +976,7 @@ void LLInventoryCallbackManager::fire(U32 callback_id, const LLUUID& item_id)
     }
 }
 
-//void rez_attachment_cb(const LLUUID& inv_item, LLViewerJointAttachment *attachmentp)
-// [SL:KB] - Patch: Appearance-DnDWear | Checked: 2010-09-28 (Catznip-3.4)
 void rez_attachment_cb(const LLUUID& inv_item, LLViewerJointAttachment *attachmentp, bool replace)
-// [/SL:KB]
 {
     if (inv_item.isNull())
         return;
@@ -981,10 +984,7 @@ void rez_attachment_cb(const LLUUID& inv_item, LLViewerJointAttachment *attachme
     LLViewerInventoryItem *item = gInventory.getItem(inv_item);
     if (item)
     {
-// [SL:KB] - Patch: Appearance-DnDWear | Checked: 2010-09-28 (Catznip-3.4)
         rez_attachment(item, attachmentp, replace);
-// [/SL:KB]
-//      rez_attachment(item, attachmentp);
     }
 }
 
@@ -1493,7 +1493,8 @@ void update_inventory_category(
     if(obj)
     {
         if (LLFolderType::lookupIsProtectedType(obj->getPreferredType())
-            && (updates.size() != 1 || !updates.has("thumbnail")))
+            && (updates.size() != 1
+                || !(updates.has("thumbnail") || updates.has("favorite"))))
         {
             LLNotificationsUtil::add("CannotModifyProtectedCategories");
             return;
