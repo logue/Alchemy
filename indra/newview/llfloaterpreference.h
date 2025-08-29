@@ -128,6 +128,7 @@ protected:
     // string differs from default after user changes.
     void onDoNotDisturbResponseChanged();
     void onRejectTeleportOffersResponseChanged();
+    void onRejectFriendshipRequestResponseChanged();
 
     // if the custom settings box is clicked
     void onChangeCustom();
@@ -259,6 +260,7 @@ private:
     boost::signals2::connection mImpostorsChangedSignal;
     boost::signals2::connection mComplexityChangedSignal;
     boost::signals2::connection mRejectTeleportConnection;
+    boost::signals2::connection mRejectFriendshipRequestsConnection;
 
     void onUpdateFilterTerm( bool force = false );
     void collectSearchableItems();

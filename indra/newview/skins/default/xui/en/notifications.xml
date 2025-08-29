@@ -13042,4 +13042,15 @@ Your privilege to find [NAME]&apos;s map location has been revoked.
       name="okbutton"
       yestext="OK"/>
   </notification>
+  <notification
+   icon="alert.tga"
+   name="RejectFriendshipRequestsModeSet"
+   type="alert">
+Reject all incoming friendship requests mode is on.
+Incoming friendship requests will now be rejected with your configured autoresponse. You will not be notified.
+    <usetemplate
+     ignoretext="I change my status to reject all friendship requests mode"
+     name="okignore"
+     yestext="OK"/>
+  </notification>
 </notifications>

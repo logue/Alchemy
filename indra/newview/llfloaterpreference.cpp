@@ -530,6 +530,7 @@ bool LLFloaterPreference::postBuild()
     {
         gSavedPerAccountSettings.setString("DoNotDisturbModeResponse", LLTrans::getString("DoNotDisturbModeResponseDefault"));
         gSavedPerAccountSettings.setString("AlchemyRejectTeleportOffersResponse", LLTrans::getString("RejectTeleportOffersResponseDefault"));
+        gSavedPerAccountSettings.setString("AlchemyRejectFriendshipRequestsResponse", LLTrans::getString("RejectFriendshipRequestsResponseDefault"));
     }
 
     // set 'enable' property for 'Clear log...' button
@@ -603,6 +604,15 @@ void LLFloaterPreference::onRejectTeleportOffersResponseChanged()
             != getChild<LLUICtrl>("autorespond_rto_response")->getValue().asString();
 
     gSavedPerAccountSettings.setBOOL("AlchemyRejectTeleportOffersResponseChanged", reject_teleport_offers_response_changed_flag);
+}
+
+void LLFloaterPreference::onRejectFriendshipRequestResponseChanged()
+{
+    bool reject_friendship_request_response_changed_flag =
+        LLTrans::getString("RejectFriendshipRequestsResponseDefault")
+            != getChild<LLUICtrl>("autorespond_reject_friends_response")->getValue().asString();
+
+    gSavedPerAccountSettings.setBOOL("AlchemyRejectFriendshipRequestsChanged", reject_friendship_request_response_changed_flag);
 }
 
 ////////////////////////////////////////////////////
@@ -875,6 +885,7 @@ LLFloaterPreference::~LLFloaterPreference()
     mComplexityChangedSignal.disconnect();
     mImpostorsChangedSignal.disconnect();
     mRejectTeleportConnection.disconnect();
+    mRejectFriendshipRequestsConnection.disconnect();
 }
 
 void LLFloaterPreference::draw()
@@ -1038,6 +1049,7 @@ void LLFloaterPreference::onOpen(const LLSD& key)
         // do not disturb response message.
         gSavedPerAccountSettings.getControl("DoNotDisturbModeResponse")->getSignal()->connect(boost::bind(&LLFloaterPreference::onDoNotDisturbResponseChanged, this));
         mRejectTeleportConnection = gSavedPerAccountSettings.getControl("AlchemyRejectTeleportOffersResponse")->getSignal()->connect(boost::bind(&LLFloaterPreference::onRejectTeleportOffersResponseChanged, this));
+        mRejectFriendshipRequestsConnection = gSavedPerAccountSettings.getControl("AlchemyRejectFriendshipRequestsResponse")->getSignal()->connect(boost::bind(&LLFloaterPreference::onRejectFriendshipRequestResponseChanged, this));
     }
     gAgent.sendAgentUserInfoRequest();
 
@@ -1177,6 +1189,11 @@ void LLFloaterPreference::initAutoResponses()
     if (!gSavedPerAccountSettings.getBOOL("AlchemyRejectTeleportOffersResponseChanged"))
     {
         gSavedPerAccountSettings.setString("AlchemyRejectTeleportOffersResponse", LLTrans::getString("RejectTeleportOffersResponseDefault"));
+    }
+
+    if (!gSavedPerAccountSettings.getBOOL("AlchemyRejectFriendshipRequestsChanged"))
+    {
+        gSavedPerAccountSettings.setString("AlchemyRejectFriendshipRequestsResponse", LLTrans::getString("RejectFriendshipRequestsResponseDefault"));
     }
 }
 
