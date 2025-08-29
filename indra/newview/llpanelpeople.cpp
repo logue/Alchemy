@@ -1617,7 +1617,7 @@ void LLPanelPeople::onFriendListRefreshComplete(LLUICtrl*ctrl, const LLSD& param
     {
         showAccordion(mFriendsAllTab, param.asInteger());
     }
-    
+
     updateFriendAccordionTitles();
 }
 
