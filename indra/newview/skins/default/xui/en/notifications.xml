@@ -651,7 +651,7 @@ Save all changes to clothing/body parts?
    icon="alertmodal.tga"
    name="AllowMultipleViewers"
    type="alertmodal">
-    Running multiple Second Life viewers is not supported. It can lead to texture cache collisions, corruption and degraded visuals and performance.
+    Running multiple [APP_NAME] viewers is not supported. It can lead to texture cache collisions, corruption and degraded visuals and performance.
     <usetemplate
      name="okbutton"
      yestext="OK"/>
@@ -1664,6 +1664,13 @@ This debug setting change will take effect after you restart [APP_NAME].
    name="ChangeSkin"
    type="alertmodal">
 The new skin will appear after you restart [APP_NAME].
+Would you like to reset modified colors back to their defaults?
+   <tag>confirm</tag>
+   <usetemplate
+    canceltext="Cancel"
+    name="yesnocancelbuttons"
+    notext="No"
+    yestext="Yes"/>
   </notification>
 
   <notification
@@ -1837,7 +1844,7 @@ The object may be out of range or may have been deleted.
   type="alert">
     <unique/>
     <tag>confirm</tag>
-    You have requested a file download, which is not supported within [SECOND_LIFE].
+    You have requested a file download, which is not supported within [APP_NAME].
     <usetemplate
      ignoretext="Warn about unsupported file downloads"
      name="okignore"
@@ -2620,6 +2627,26 @@ Select objects with scripts that you have permission to modify.
 
   <notification
    icon="alertmodal.tga"
+   name="CannotDeleteSelectObjectsNoScripts"
+   type="alertmodal">
+Not able to perform &apos;delete&apos;.
+
+Select objects with scripts.
+  <tag>fail</tag>
+  </notification>
+	
+  <notification
+   icon="alertmodal.tga"
+   name="CannotResetSelectObjectsNoPermission"
+   type="alertmodal">
+Not able to perform &apos;delete&apos;.
+
+Select objects with scripts that you have permission to modify.
+  <tag>fail</tag>
+  </notification>
+  
+  <notification
+   icon="alertmodal.tga"
    name="CannotOpenScriptObjectNoMod"
    type="alertmodal">
     Unable to open script in object without modify permissions.
@@ -2674,9 +2701,9 @@ Your search terms were too short so no search was performed.
   <!-- Generic Teleport failure modes - strings will be inserted from
        teleport_strings.xml if available. -->
   <notification
-   icon="alertmodal.tga"
+   icon="notify.tga"
    name="CouldNotTeleportReason"
-   type="alertmodal">
+   type="notify">
     <unique/>
 Teleport failed.
 [REASON]
@@ -3950,7 +3977,7 @@ We&apos;re having trouble connecting. There may be a problem with your Internet 
 You can either check your Internet connection and try again in a few minutes, click Help to view the [SUPPORT_SITE], or click Teleport to attempt to teleport home.
     <url option="1" name="url">
 
-			http://secondlife.com/support/
+			https://github.com/AlchemyViewer/Alchemy/issues
     </url>
     <form name="form">
       <button
@@ -3978,7 +4005,7 @@ We&apos;re having trouble connecting. There may be a problem with your Internet 
 
 You can either check your Internet connection and try again in a few minutes or click Help to view the [SUPPORT_SITE].
     <url option="1" name="url">
-			http://secondlife.com/support/
+			https://github.com/AlchemyViewer/Alchemy/issues
     </url>
     <form name="form">
       <button
@@ -4472,7 +4499,7 @@ Finished download of raw terrain file to:
    name="RequiredUpdate"
    type="alertmodal">
 Version [VERSION] is required for login.
-Please download from https://secondlife.com/support/downloads/
+Please download the latest version from https://www.alchemyviewer.org/downloads
     <tag>confirm</tag>
     <usetemplate
      name="okbutton"
@@ -4867,7 +4894,7 @@ memberships allow up to [MAX_PREMIUM_PLUS]. [https://secondlife.com/my/account/m
    name="KickUser"
    type="alert">
    <tag>win</tag>
-Kick this Resident with what message?
+Log out [AVATAR_NAME] with what message?
     <tag>confirm</tag>
     <form name="form">
       <input name="message" type="text">
@@ -4914,7 +4941,7 @@ An administrator has logged you off.
    type="alert">
     <tag>win</tag>
     <tag>confirm</tag>
-Freeze this Resident with what message?
+Freeze [AVATAR_NAME] with what message?
     <form name="form">
       <input name="message" type="text">
 You have been frozen. You cannot move or chat. An administrator will contact you via instant message (IM).
@@ -4937,7 +4964,7 @@ You have been frozen. You cannot move or chat. An administrator will contact you
    type="alert">
    <tag>win</tag>
     <tag>confirm</tag>
-Unfreeze this Resident with what message?
+Unfreeze [AVATAR_NAME] with what message?
     <form name="form">
       <input name="message" type="text">
 You are no longer frozen.
@@ -5074,7 +5101,7 @@ Request a teleport to [NAME] with the following message
     <tag>confirm</tag>
     <form name="form">
       <input name="message" type="text">
-
+May I join you?
       </input>
       <button
        default="true"
@@ -6752,7 +6779,8 @@ The folder &apos;[FOLDERNAME]&apos; is a system folder. Deleting system folders 
 [COUNT] item(s) will be permanently deleted. Are you sure you want to permanently delete selected item(s) from your Trash?
     <tag>confirm</tag>
     <usetemplate
-     name="okcancelbuttons"
+     ignoretext="Warn me before permanently deleting items from the Trash"
+     name="okcancelignore"
      notext="Cancel"
      yestext="OK"/>
   </notification>
@@ -6764,7 +6792,8 @@ The folder &apos;[FOLDERNAME]&apos; is a system folder. Deleting system folders 
 [COUNT] items and folders will be permanently deleted. Are you sure you want to permanently delete the contents of your Trash?
     <tag>confirm</tag>
     <usetemplate
-     name="okcancelbuttons"
+     ignoretext="Warn me before permanently deleting items and folders from the Trash"
+     name="okcancelignore"
      notext="Cancel"
      yestext="OK"/>
   </notification>
