@@ -88,7 +88,7 @@ jobs:
       variants: ${{ matrix.configuration }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
 
@@ -98,14 +98,14 @@ jobs:
           python-version: "3.x"
 
       - name: Checkout build variables
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: AlchemyViewer/build-variables
           ref: main
           path: .build-variables
 
       - name: Checkout master-message-template
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: secondlife/master-message-template
           path: .master-message-template
