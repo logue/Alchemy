@@ -79,7 +79,7 @@ struct LLVBCache
 };
 
 static std::unordered_map<U64, LLVBCache> sVBCache;
-static thread_local std::list<LLVertexBufferData> *sBufferDataList = nullptr;
+static std::list<LLVertexBufferData> *sBufferDataList = nullptr;
 
 static const GLenum sGLTextureType[] =
 {

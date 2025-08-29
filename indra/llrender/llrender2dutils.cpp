@@ -451,8 +451,8 @@ void gl_draw_scaled_image_with_border(S32 x, S32 y, S32 width, S32 height, LLTex
         gGL.color4fv(color.mV);
 
         constexpr S32 NUM_VERTICES = 9 * 2 * 3; // 9 quads, 2 triangles per quad, 3 vertices per triangle
-        static thread_local LLVector2 uv[NUM_VERTICES];
-        static thread_local LLVector4a pos[NUM_VERTICES];
+        static LLVector2 uv[NUM_VERTICES];
+        static LLVector4a pos[NUM_VERTICES];
 
         S32 index = 0;
 
@@ -731,8 +731,8 @@ void gl_draw_scaled_rotated_image(S32 x, S32 y, S32 width, S32 height, F32 degre
     if (degrees == 0.f)
     {
         constexpr S32 NUM_VERTICES = 2 * 3;
-        static thread_local LLVector2 uv[NUM_VERTICES +1];
-        static thread_local LLVector4a pos[NUM_VERTICES +1];
+        static LLVector2 uv[NUM_VERTICES +1];
+        static LLVector4a pos[NUM_VERTICES +1];
 
         gGL.begin(LLRender::TRIANGLES);
         {

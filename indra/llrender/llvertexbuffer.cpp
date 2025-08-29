@@ -265,8 +265,8 @@ static GLuint gen_buffer()
     GLuint ret = 0;
     constexpr U32 pool_size = 4096;
 
-    thread_local static GLuint sNamePool[pool_size];
-    thread_local static U32 sIndex = 0;
+    static GLuint sNamePool[pool_size];
+    static U32 sIndex = 0;
 
     if (sIndex == 0)
     {
