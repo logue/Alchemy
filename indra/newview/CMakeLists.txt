@@ -387,6 +387,7 @@ set(viewer_SOURCE_FILES
     lllandmarkactions.cpp
     lllandmarklist.cpp
     lllegacyatmospherics.cpp
+    lllegacynotificationwellwindow.cpp
     lllistcontextmenu.cpp
     lllistview.cpp
     lllocalbitmaps.cpp
@@ -1083,6 +1084,7 @@ set(viewer_HEADER_FILES
     llkeyconflict.h
     lllandmarkactions.h
     lllandmarklist.h
+    lllegacynotificationwellwindow.h
     lllightconstants.h
     lllistcontextmenu.h
     lllistview.h

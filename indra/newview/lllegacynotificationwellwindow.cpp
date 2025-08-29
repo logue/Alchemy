@@ -54,7 +54,7 @@ LLLegacyNotificationWellWindow* LLLegacyNotificationWellWindow::getInstance(cons
 }
 
 // virtual
-BOOL LLLegacyNotificationWellWindow::postBuild()
+bool LLLegacyNotificationWellWindow::postBuild()
 {
     mNotificationUpdates.reset(new WellNotificationChannel(this));
 
@@ -64,7 +64,7 @@ BOOL LLLegacyNotificationWellWindow::postBuild()
 }
 
 // virtual
-void LLLegacyNotificationWellWindow::setVisible(BOOL visible)
+void LLLegacyNotificationWellWindow::setVisible(bool visible)
 {
     if (visible)
     {

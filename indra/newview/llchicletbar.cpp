@@ -51,7 +51,7 @@ bool LLChicletBar::postBuild()
     mToolbarStack = getChild<LLLayoutStack>("toolbar_stack");
     mChicletPanel = getChild<LLChicletPanel>("chiclet_list");
 
-    if (gSkinSettings.getBool("LegacyNotificationWell"))
+    if (gSkinSettings.getBOOL("LegacyNotificationWell"))
     {
         showWellButton("notification_well", !LLLegacyNotificationWellWindow::getInstance()->isWindowEmpty());
     }

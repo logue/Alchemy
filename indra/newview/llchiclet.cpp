@@ -178,7 +178,7 @@ LLNotificationChiclet::LLNotificationChiclet(const Params& p)
     mNotificationChannel.reset(new ChicletNotificationChannel(this));
     // ensure that notification well window exists, to synchronously
     // handle toast add/delete events.
-    if (gSkinSettings.getBool("LegacyNotificationWell"))
+    if (gSkinSettings.getBOOL("LegacyNotificationWell"))
     {
         LLLegacyNotificationWellWindow::getInstance()->setSysWellChiclet(this);
     }
@@ -198,7 +198,7 @@ void LLNotificationChiclet::onMenuItemClicked(const LLSD& user_data)
     std::string action = user_data.asString();
     if("close all" == action)
     {
-        if (gSkinSettings.getBool("LegacyNotificationWell"))
+        if (gSkinSettings.getBOOL("LegacyNotificationWell"))
         {
             LLLegacyNotificationWellWindow::getInstance()->closeAll();
         }
@@ -260,9 +260,9 @@ bool LLNotificationChiclet::ChicletNotificationChannel::filterNotification( LLNo
     bool displayNotification;
     if (   (notification->getName() == "ScriptDialog") // special case for scripts
         // if there is no toast window for the notification, filter it
-        || (gSkinSettings.getBool("LegacyNotificationWell")
+        || (gSkinSettings.getBOOL("LegacyNotificationWell")
             && !LLLegacyNotificationWellWindow::getInstance()->findItemByID(notification->getID()))
-        || (!gSkinSettings.getBool("LegacyNotificationWell")
+        || (!gSkinSettings.getBOOL("LegacyNotificationWell")
             && !LLFloaterNotificationsTabbed::getInstance()->findItemByID(notification->getID(), notification->getName()))
         )
     {

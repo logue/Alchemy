@@ -1787,7 +1787,7 @@ void LLViewerObjectList::renderObjectsForMap(LLNetMap &netmap)
     static const LLUIColor group_own_below_water_color =
                         LLUIColorTable::instance().getColor( "NetMapGroupOwnBelowWater" );
 
-    static const LLCachedControl max_radius(gSavedSettings, "MiniMapPrimMaxRadius", 16.f);
+    static LLCachedControl max_radius(gSavedSettings, "MiniMapPrimMaxRadius", 16.f);
 
     for (vobj_list_t::iterator iter = mMapObjects.begin(); iter != mMapObjects.end(); ++iter)
     {
@@ -1812,7 +1812,7 @@ void LLViewerObjectList::renderObjectsForMap(LLNetMap &netmap)
         // Limit the size of megaprims so they don't blot out everything on the minimap.
         // Attempting to draw very large megaprims also causes client lag.
         // See DEV-17370 and DEV-29869/SNOW-79 for details.
-        approx_radius = llmin(approx_radius, max_radius);
+        approx_radius = llmin(approx_radius, (F32)max_radius());
 
         LLColor4U color = above_water_color.get();
         if( objectp->permYouOwner() )

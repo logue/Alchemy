@@ -146,7 +146,7 @@ void LLChannelManager::onLoginCompleted()
             // init channel's position and size
             S32 channel_right_bound = gViewerWindow->getWorldViewRectScaled().mRight - gSavedSettings.getS32("NotificationChannelRightMargin");
             mStartUpChannel->init(channel_right_bound - NOTIFY_BOX_WIDTH, channel_right_bound);
-            if (gSkinSettings.getBool("LegacyNotificationWell"))
+            if (gSkinSettings.getBOOL("LegacyNotificationWell"))
             {
                 mStartUpChannel->setMouseDownCallback(boost::bind(&LLLegacyNotificationWellWindow::onStartUpToastClick,
                     LLLegacyNotificationWellWindow::getInstance(), _2, _3, _4));
