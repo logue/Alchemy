@@ -82,6 +82,11 @@ class ViewerManifest(LLManifest):
                 contributor_names = self.extract_names(contributions_path)
                 self.put_in_file(contributor_names.encode(), "contributors.txt", src=contributions_path)
 
+                # include the extracted list of supporters
+                supporters_path = os.path.join(self.args['source'], "..", "..", "doc", "supporters.txt")
+                supporters_names = self.extract_names(supporters_path)
+                self.put_in_file(supporters_names.encode(), "supporters.txt", src=supporters_path)
+
                 # ... and the default camera position settings
                 self.path("camera")
 
