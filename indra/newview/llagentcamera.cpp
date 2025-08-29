@@ -2925,7 +2925,7 @@ void LLAgentCamera::setFocusOnAvatar(bool focus_on_avatar, bool animate, bool re
 
 bool LLAgentCamera::setLookAt(ELookAtType target_type, LLViewerObject *object, LLVector3 position)
 {
-    static LLCachedControl<bool> isPrivate(gSavedSettings, "AlchemyLookAtPrivate", false);
+    static LLCachedControl<bool> isPrivate(gSavedSettings, "EnableLookAtTarget", false);
     if (isPrivate)
     {
         target_type = LOOKAT_TARGET_NONE;
@@ -3050,7 +3050,7 @@ bool LLAgentCamera::setPointAt(EPointAtType target_type, LLViewerObject *object,
         return false;
     }
 
-    static LLCachedControl<bool> disablePointAt(gSavedSettings, "AlchemyPointAtPrivate", false);
+    static LLCachedControl<bool> disablePointAt(gSavedSettings, "EnableSelectionHints", false);
     if (disablePointAt)
     {
         target_type = POINTAT_TARGET_CLEAR;

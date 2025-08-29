@@ -993,9 +993,8 @@ void LLVOAvatarSelf::updateRegion(LLViewerRegion *regionp)
 //virtual
 void LLVOAvatarSelf::idleUpdateTractorBeam()
 {
-    static LLCachedControl<bool> pointAtDisable(gSavedSettings, "AlchemyPointAtPrivate");
     // This is only done for yourself (maybe it should be in the agent?)
-    if (pointAtDisable || !needsRenderBeam() || !isBuilt())
+    if (!needsRenderBeam() || !isBuilt())
     {
         mBeam = NULL;
     }

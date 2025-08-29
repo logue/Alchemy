@@ -1629,7 +1629,7 @@ void LLToolDragAndDrop::dropScript(LLViewerObject* hit_obj,
         }
 
         // VEFFECT: SetScript
-        if (!gSavedSettings.getBOOL("AlchemyPointAtPrivate"))
+        if (!gSavedSettings.getBOOL("EnableSelectionHints"))
         {
             LLHUDEffectSpiral *effectp = (LLHUDEffectSpiral *)LLHUDManager::getInstance()->createViewerEffect(LLHUDObject::LL_HUD_EFFECT_BEAM, true);
             effectp->setSourceObject(gAgentAvatarp);
@@ -1803,7 +1803,7 @@ void LLToolDragAndDrop::dropObject(LLViewerObject* raycast_target,
     }
 
     // VEFFECT: DropObject
-    if (!gSavedSettings.getBOOL("AlchemyPointAtPrivate"))
+    if (!gSavedSettings.getBOOL("EnableSelectionHints"))
     {
         LLHUDEffectSpiral* effectp = (LLHUDEffectSpiral*)LLHUDManager::getInstance()->createViewerEffect(LLHUDObject::LL_HUD_EFFECT_BEAM, true);
         effectp->setSourceObject(gAgentAvatarp);
@@ -1869,7 +1869,7 @@ void LLToolDragAndDrop::dropInventory(LLViewerObject* hit_obj,
     }
 
     // VEFFECT: AddToInventory
-    if (!gSavedSettings.getBOOL("AlchemyPointAtPrivate"))
+    if (!gSavedSettings.getBOOL("EnableSelectionHints"))
     {
         LLHUDEffectSpiral *effectp = (LLHUDEffectSpiral *)LLHUDManager::getInstance()->createViewerEffect(LLHUDObject::LL_HUD_EFFECT_BEAM, true);
         effectp->setSourceObject(gAgentAvatarp);
@@ -2606,7 +2606,7 @@ EAcceptance LLToolDragAndDrop::dad3dApplyToObject(
         }
 
         // VEFFECT: SetTexture
-        if (!gSavedSettings.getBOOL("AlchemyPointAtPrivate"))
+        if (!gSavedSettings.getBOOL("EnableSelectionHints"))
         {
             LLHUDEffectSpiral* effectp = (LLHUDEffectSpiral*)LLHUDManager::getInstance()->createViewerEffect(LLHUDObject::LL_HUD_EFFECT_BEAM, true);
             effectp->setSourceObject(gAgentAvatarp);

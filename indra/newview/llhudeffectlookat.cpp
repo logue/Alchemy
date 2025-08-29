@@ -39,7 +39,6 @@
 #include "lldrawable.h"
 #include "llviewerobjectlist.h"
 #include "llviewercontrol.h"
-#include "llvoavatarself.h"
 #include "llrendersphere.h"
 #include "llselectmgr.h"
 #include "llglheaders.h"
@@ -408,21 +407,6 @@ bool LLHUDEffectLookAt::setLookAt(ELookAtType target_type, LLViewerObject *objec
         return false;
     }
 
-    static LLCachedControl<bool> enable_lookat_hints(gSavedSettings, "EnableLookAtTarget", true);
-    if (!enable_lookat_hints)
-    {
-        // Clear the effect so it doesn't linger around if it gets disabled
-        if (mTargetType != LOOKAT_TARGET_IDLE)
-        {
-            mTargetObject = gAgentAvatarp;
-            mTargetType = LOOKAT_TARGET_IDLE;
-            mTargetOffsetGlobal.set(2.f, 0.f, 0.f);
-            setDuration(3.f);
-            setNeedsSendToSim(true);
-        }
-        return false;
-    }
-
     if (target_type >= LOOKAT_NUM_TARGETS)
     {
         LL_WARNS() << "Bad target_type " << (int)target_type << " - ignoring." << LL_ENDL;
@@ -433,29 +417,6 @@ bool LLHUDEffectLookAt::setLookAt(ELookAtType target_type, LLViewerObject *objec
     if ((*mAttentions)[target_type].mPriority < (*mAttentions)[mTargetType].mPriority)
     {
         return false;
-    }
-
-    static LLCachedControl<bool> limit_lookat_hints(gSavedSettings, "LimitLookAtTarget", true);
-    // Don't affect the look at if object is gAgentAvatarp (cursor head follow)
-    if (limit_lookat_hints && object != gAgentAvatarp)
-    {
-        // If it is a object
-        if (object)
-        {
-            position += object->getRenderPosition();
-            object = NULL;
-        }
-
-        LLVector3 agentHeadPosition = gAgentAvatarp->mHeadp->getWorldPosition();
-        float dist = (float)dist_vec(agentHeadPosition, position);
-
-        static LLCachedControl<F32> limit_lookat_hints_distance(gSavedSettings, "LimitLookAtTargetDistance", 2.0f);
-        if (dist > limit_lookat_hints_distance)
-        {
-            LLVector3 headOffset = position - agentHeadPosition;
-            headOffset *= limit_lookat_hints_distance / dist;
-            position.setVec(agentHeadPosition + headOffset);
-        }
     }
 
     F32 current_time  = mTimer.getElapsedTimeF32();
@@ -471,7 +432,7 @@ bool LLHUDEffectLookAt::setLookAt(ELookAtType target_type, LLViewerObject *objec
             }
         }
     }
-    static LLCachedControl<bool> clamp_lookat_enabled(gSavedSettings, "AlchemyLookAtClampEnabled", false);
+    static LLCachedControl<bool> clamp_lookat_enabled(gSavedSettings, "LimitLookAtTarget", false);
     bool clamp_lookat = clamp_lookat_enabled && isAgentAvatarValid() && !looking_at_self &&
                         (*mAttentions)[target_type].mName != "Respond" &&
                         (*mAttentions)[target_type].mName != "Conversation" &&
@@ -523,7 +484,7 @@ bool LLHUDEffectLookAt::setLookAt(ELookAtType target_type, LLViewerObject *objec
 
         if (clamp_lookat)
         {
-            static LLCachedControl<F32> lookat_clamp_distance(gSavedSettings, "AlchemyLookAtClampDistance", 1.0f);
+            static LLCachedControl<F32> lookat_clamp_distance(gSavedSettings, "LimitLookAtTargetDistance", 1.0f);
             auto head_position = gAgent.getPosGlobalFromAgent(gAgentAvatarp->mHeadp->getWorldPosition());
             auto distance = dist_vec(mTargetOffsetGlobal, head_position);
 
@@ -607,7 +568,7 @@ void LLHUDEffectLookAt::render()
     if (show_lookat && mSourceObject.notNull())
     {
         static LLCachedControl<bool> isOwnHidden(gSavedSettings, "AlchemyLookAtHideSelf", true);
-        static LLCachedControl<bool> isPrivate(gSavedSettings, "AlchemyLookAtPrivate", false);
+        static LLCachedControl<bool> isPrivate(gSavedSettings, "EnableLookAtTarget", false);
 
         if ((isOwnHidden || isPrivate || gAgentCamera.cameraMouselook()) && static_cast<LLVOAvatar*>(mSourceObject.get())->isSelf())
             return;

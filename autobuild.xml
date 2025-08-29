@@ -2040,8 +2040,16 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <string>common</string>
           </map>
         </map>
+        <key>license</key>
+        <string>MIT</string>
+        <key>license_file</key>
+        <string>LICENSES/THREEJS_LICENSE.txt</string>
+        <key>copyright</key>
+        <string>Copyright © 2010-2021 three.js authors</string>
         <key>version</key>
         <string>0.132.2</string>
+        <key>name</key>
+        <string>threejs</string>
       </map>
       <key>tinyexr</key>
       <map>

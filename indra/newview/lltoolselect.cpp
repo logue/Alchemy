@@ -226,7 +226,7 @@ LLObjectSelectionHandle LLToolSelect::handleObjectSelection(const LLPickInfo& pi
             LLSelectMgr::getInstance()->setAgentHUDZoom(target_zoom, current_zoom);
         }
 
-        static LLCachedControl<bool> disablePointAt(gSavedSettings, "AlchemyPointAtPrivate", false);
+        static LLCachedControl<bool> disablePointAt(gSavedSettings, "EnableSelectionHints", false);
         if (!disablePointAt && !gAgentCamera.getFocusOnAvatar() &&                                      // if camera not glued to avatar
             LLVOAvatar::findAvatarFromAttachment(object) != gAgentAvatarp &&    // and it's not one of your attachments
             object != gAgentAvatarp)                                    // and it's not you

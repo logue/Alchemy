@@ -116,10 +116,6 @@ private:
     // Preset
     //--------------------------------------------------------------------
 public:
-// [RLVa:KB] - @setcam family
-    /** Determines default camera offset scale depending on the current camera preset */
-    ECameraPreset getCameraPreset() const { return mCameraPreset; }
-// [/RLVa:KB]
     void switchCameraPreset(ECameraPreset preset);
     ECameraPreset getCameraPreset() const { return mCameraPreset; }
     /** Determines default camera offset depending on the current camera preset */

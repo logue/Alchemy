@@ -453,7 +453,7 @@ bool LLGiveInventory::commitGiveInventoryItem(const LLUUID& to_agent,
     gAgent.sendReliableMessage();
 
     // VEFFECT: giveInventory
-    if (!gSavedSettings.getBOOL("AlchemyPointAtPrivate"))
+    if (!gSavedSettings.getBOOL("EnableSelectionHints"))
     {
         LLHUDEffectSpiral *effectp = (LLHUDEffectSpiral *)LLHUDManager::getInstance()->createViewerEffect(LLHUDObject::LL_HUD_EFFECT_BEAM, true);
         effectp->setSourceObject(gAgentAvatarp);
@@ -650,7 +650,7 @@ bool LLGiveInventory::commitGiveInventoryCategory(const LLUUID& to_agent,
         delete[] bucket;
 
         // VEFFECT: giveInventoryCategory
-        if (!gSavedSettings.getBOOL("AlchemyPointAtPrivate"))
+        if (!gSavedSettings.getBOOL("EnableSelectionHints"))
         {
             LLHUDEffectSpiral *effectp = (LLHUDEffectSpiral *)LLHUDManager::getInstance()->createViewerEffect(LLHUDObject::LL_HUD_EFFECT_BEAM, true);
             effectp->setSourceObject(gAgentAvatarp);

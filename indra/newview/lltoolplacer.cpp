@@ -445,7 +445,7 @@ bool LLToolPlacer::addObject( LLPCode pcode, S32 x, S32 y, U8 use_physics )
         gViewerWindow->getWindow()->incBusyCount();
     }
 
-    if (!gSavedSettings.getBOOL("AlchemyPointAtPrivate"))
+    if (!gSavedSettings.getBOOL("EnableSelectionHints"))
     {
         // VEFFECT: AddObject
         LLHUDEffectSpiral *effectp = (LLHUDEffectSpiral *)LLHUDManager::getInstance()->createViewerEffect(LLHUDObject::LL_HUD_EFFECT_BEAM, true);

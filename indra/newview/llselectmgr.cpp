@@ -1950,7 +1950,7 @@ bool LLSelectMgr::selectionSetImage(const LLUUID& imageid)
             if (!mItem)
             {
                 object->sendTEUpdate();
-                if (!gSavedSettings.getBOOL("AlchemyPointAtPrivate"))
+                if (!gSavedSettings.getBOOL("EnableSelectionHints"))
                 {
                     // 1 particle effect per object
                     LLHUDEffectSpiral *effectp = (LLHUDEffectSpiral *)LLHUDManager::getInstance()->createViewerEffect(LLHUDObject::LL_HUD_EFFECT_BEAM, true);
