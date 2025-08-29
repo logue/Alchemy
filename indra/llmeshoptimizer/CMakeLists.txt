@@ -2,7 +2,6 @@
 
 project(llmeshoptimizer)
 
-include(Meshoptimizer)
 
 include(00-Common)
 include(LLCommon)
@@ -28,7 +27,7 @@ target_include_directories( llmeshoptimizer INTERFACE ${CMAKE_CURRENT_SOURCE_DIR
 target_link_libraries(llmeshoptimizer
         llcommon
         llmath
-        ll::meshoptimizer)
+        meshoptimizer)
 
 if (USE_PRECOMPILED_HEADERS)
   target_precompile_headers(llmeshoptimizer REUSE_FROM llprecompiled)

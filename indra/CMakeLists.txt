@@ -78,6 +78,8 @@ endif (NOT CMAKE_BUILD_TYPE)
 
 add_subdirectory(cmake)
 
+add_subdirectory(externals)
+
 if (USE_PRECOMPILED_HEADERS)
   add_subdirectory(${LIBS_OPEN_PREFIX}llprecompiled)
 endif ()
