@@ -45,10 +45,6 @@ static int16_t PLAYOUT_DEVICE_BAD     = -2;
 static int16_t RECORD_DEVICE_DEFAULT  = -1;
 static int16_t RECORD_DEVICE_BAD      = -2;
 
-static const std::string DEFAULT_DEVICE_NAME = "Default";
-static const std::string NO_DEVICE_NAME = "No Device";
-static const std::string NO_DEVICE_GUID;
-
 LLAudioDeviceObserver::LLAudioDeviceObserver() : mSumVector {0}, mMicrophoneEnergy(0.0) {}
 
 float LLAudioDeviceObserver::getMicrophoneEnergy() { return mMicrophoneEnergy; }
@@ -439,7 +435,7 @@ void ll_set_device_module_capture_device(rtc::scoped_refptr<webrtc::AudioDeviceM
 void LLWebRTCImpl::setCaptureDevice(const std::string &id)
 {
     int16_t recordingDevice = RECORD_DEVICE_DEFAULT;
-    if (id != DEFAULT_DEVICE_NAME)
+    if (id != "Default")
     {
         for (int16_t i = 0; i < mRecordingDeviceList.size(); i++)
         {
@@ -503,7 +499,7 @@ void ll_set_device_module_render_device(rtc::scoped_refptr<webrtc::AudioDeviceMo
 void LLWebRTCImpl::setRenderDevice(const std::string &id)
 {
     int16_t playoutDevice = PLAYOUT_DEVICE_DEFAULT;
-    if (id != DEFAULT_DEVICE_NAME)
+    if (id != "Default")
     {
         for (int16_t i = 0; i < mPlayoutDeviceList.size(); i++)
         {
@@ -549,16 +545,6 @@ void LLWebRTCImpl::setRenderDevice(const std::string &id)
     }
 }
 
-bool LLWebRTCImpl::isCaptureNoDevice()
-{
-    return mRecordingDevice == mRecordingNoDevice;
-}
-
-bool LLWebRTCImpl::isRenderNoDevice()
-{
-    return mPlayoutDevice == mPlayoutNoDevice;
-}
-
 // updateDevices needs to happen on the worker thread.
 void LLWebRTCImpl::updateDevices()
 {
@@ -579,11 +565,6 @@ void LLWebRTCImpl::updateDevices()
         mTuningDeviceModule->PlayoutDeviceName(index, name, guid);
         mPlayoutDeviceList.emplace_back(name, guid);
     }
-    mPlayoutNoDevice = (int32_t)mPlayoutDeviceList.size();
-    if (mPlayoutNoDevice)
-    {
-        mPlayoutDeviceList.emplace_back(NO_DEVICE_NAME, NO_DEVICE_GUID);
-    }
 
     int16_t captureDeviceCount        = mTuningDeviceModule->RecordingDevices();
 
@@ -601,11 +582,6 @@ void LLWebRTCImpl::updateDevices()
         char guid[webrtc::kAdmMaxGuidSize];
         mTuningDeviceModule->RecordingDeviceName(index, name, guid);
         mRecordingDeviceList.emplace_back(name, guid);
-    }
-    mRecordingNoDevice = (int32_t)mRecordingDeviceList.size();
-    if (mRecordingNoDevice)
-    {
-        mRecordingDeviceList.emplace_back(NO_DEVICE_NAME, NO_DEVICE_GUID);
     }
 
     for (auto &observer : mVoiceDevicesObserverList)
@@ -963,20 +939,20 @@ void LLWebRTCPeerConnectionImpl::AnswerAvailable(const std::string &sdp)
 void LLWebRTCPeerConnectionImpl::setMute(bool mute)
 {
     mMute = mute;
-    mute |= mWebRTCImpl->isCaptureNoDevice();
     mWebRTCImpl->PostSignalingTask(
-        [this, mute]()
+        [this]()
         {
         if (mPeerConnection)
         {
             auto senders = mPeerConnection->GetSenders();
 
-            RTC_LOG(LS_INFO) << __FUNCTION__ << (mute ? "disabling" : "enabling") << " streams count " << senders.size();
+            RTC_LOG(LS_INFO) << __FUNCTION__ << (mMute ? "disabling" : "enabling") << " streams count " << senders.size();
             for (auto &sender : senders)
             {
-                if (auto track = sender->track())
+                auto track = sender->track();
+                if (track)
                 {
-                    track->set_enabled(!mute);
+                    track->set_enabled(!mMute);
                 }
             }
         }
@@ -990,11 +966,6 @@ void LLWebRTCPeerConnectionImpl::resetMute()
 
 void LLWebRTCPeerConnectionImpl::setReceiveVolume(float volume)
 {
-    if (mWebRTCImpl->isRenderNoDevice())
-    {
-        volume = 0;
-    }
-
     mWebRTCImpl->PostSignalingTask(
         [this, volume]()
         {

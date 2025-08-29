@@ -2800,7 +2800,6 @@ void LLVivoxVoiceClient::setCaptureDevice(const std::string& name)
         }
     }
 }
-
 void LLVivoxVoiceClient::setDevicesListUpdated(bool state)
 {
     mDevicesListUpdated = state;

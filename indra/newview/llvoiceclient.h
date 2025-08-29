@@ -192,9 +192,6 @@ public:
     virtual LLVoiceDeviceList& getCaptureDevices()=0;
     virtual LLVoiceDeviceList& getRenderDevices()=0;
 
-    virtual bool isCaptureNoDevice() = 0;
-    virtual bool isRenderNoDevice() = 0;
-
     virtual void getParticipantList(std::set<LLUUID> &participants)=0;
     virtual bool isParticipant(const LLUUID& speaker_id)=0;
     //@}
@@ -395,8 +392,6 @@ public:
 
     void setCaptureDevice(const std::string& name);
     void setRenderDevice(const std::string& name);
-    bool isCaptureNoDevice();
-    bool isRenderNoDevice();
     void setHidden(bool hidden);
 
     const LLVoiceDeviceList& getCaptureDevices();
