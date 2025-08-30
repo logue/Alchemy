@@ -2495,6 +2495,14 @@ class LLAdvancedShowDebugSettings : public view_listener_t
     }
 };
 
+class LLAdvancedToggleDebugSettings : public view_listener_t
+{
+    bool handleEvent(const LLSD& userdata)
+    {
+        LLFloaterReg::toggleInstanceOrBringToFront("settings_debug",userdata);
+        return true;
+    }
+};
 
 
 ////////////////////////
@@ -10625,6 +10633,7 @@ void initialize_menus()
     view_listener_t::addMenu(new LLAdvancedCompressImage(), "Advanced.CompressImage");
     view_listener_t::addMenu(new LLAdvancedCompressFileTest(), "Advanced.CompressFileTest");
     view_listener_t::addMenu(new LLAdvancedShowDebugSettings(), "Advanced.ShowDebugSettings");
+    view_listener_t::addMenu(new LLAdvancedShowDebugSettings(), "Advanced.ToggleDebugSettings");
     view_listener_t::addMenu(new LLAdvancedEnableViewAdminOptions(), "Advanced.EnableViewAdminOptions");
     view_listener_t::addMenu(new LLAdvancedToggleViewAdminOptions(), "Advanced.ToggleViewAdminOptions");
     view_listener_t::addMenu(new LLAdvancedCheckViewAdminOptions(), "Advanced.CheckViewAdminOptions");

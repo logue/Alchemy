@@ -6,6 +6,8 @@
  help_topic="floaterviewadvanced"
  title="CAMERA POSITION"
  save_rect="true"
+ single_instance="true"
+ reuse_instance="false"
  width="280">
 
   <text

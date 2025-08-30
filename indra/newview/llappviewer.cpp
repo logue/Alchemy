@@ -3337,9 +3337,9 @@ LLSD LLAppViewer::getViewerInfo() const
     info["CHANNEL"] = versionInfo.getChannel();
     info["ADDRESS_SIZE"] = ADDRESS_SIZE;
 #if LL_ARM64
-    info["ARCHITECTURE"] = "ARM";
+    info["ARCHITECTURE"] = "ARM64";
 #else
-    info["ARCHITECTURE"] = "x86";
+    info["ARCHITECTURE"] = "x86_64";
 #endif
     std::string build_config = versionInfo.getBuildConfig();
     if (build_config != "Release")
@@ -3358,6 +3358,20 @@ LLSD LLAppViewer::getViewerInfo() const
         url += LLURI::escape(versionInfo.getVersion()) + ".html";
     }
     info["VIEWER_RELEASE_NOTES_URL"] = url;
+
+#if LL_MSVC && !defined(LL_CLANG)
+    info["COMPILER"] = "MSVC";
+    info["COMPILER_VERSION"] = _MSC_FULL_VER;
+#elif LL_CLANG
+    info["COMPILER"] = "Clang";
+    info["COMPILER_VERSION"] = __clang_version__;
+#elif LL_GNUC
+    info["COMPILER"] = "GCC";
+    info["COMPILER_VERSION"] = GCC_VERSION;
+#elif LL_INTELC
+    info["COMPILER"] = "ICC";
+    info["COMPILER_VERSION"] = __ICC;
+#endif
 
     // Position
     LLViewerRegion* region = gAgent.getRegion();
@@ -3392,6 +3406,7 @@ LLSD LLAppViewer::getViewerInfo() const
     info["CPU"] = gSysCPU.getCPUString();
     info["MEMORY_MB"] = LLSD::Integer(gSysMemory.getPhysicalMemoryKB().valueInUnits<LLUnits::Megabytes>());
     // Moved hack adjustment to Windows memory size into llsys.cpp
+    info["CONCURRENCY"] = LLSD::Integer((S32) std::thread::hardware_concurrency());
     info["OS_VERSION"] = LLOSInfo::instance().getOSString();
     info["GRAPHICS_CARD_VENDOR"] = ll_safe_string((const char*)(glGetString(GL_VENDOR)));
     info["GRAPHICS_CARD"] = ll_safe_string((const char*)(glGetString(GL_RENDERER)));
@@ -3457,7 +3472,7 @@ LLSD LLAppViewer::getViewerInfo() const
 #endif
 
     // Libraries
-
+    info["LIBCURL_VERSION"] = LLCore::LLHttp::getCURLVersion();
     info["J2C_VERSION"] = LLImageJ2C::getEngineInfo();
     bool want_fullname = true;
     info["AUDIO_DRIVER_VERSION"] = gAudiop ? LLSD(gAudiop->getDriverName(want_fullname)) : "Undefined";
