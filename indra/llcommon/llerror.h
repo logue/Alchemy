@@ -53,10 +53,12 @@ const int LL_ERR_NOERR = 0;
 #define SHOW_WARN
 #define SHOW_INFO
 #define SHOW_ASSERT
+#define ENABLE_DEBUG_MACRO
 #else // _DEBUG
 
 #ifdef LL_RELEASE_WITH_DEBUG_INFO
 #define SHOW_ASSERT
+#define ENABLE_DEBUG_MACRO
 #endif // LL_RELEASE_WITH_DEBUG_INFO
 
 #ifdef RELEASE_SHOW_DEBUG
@@ -91,13 +93,8 @@ const int LL_ERR_NOERR = 0;
 #define llverify(func)          do {if (func) {}} while(0)
 #endif
 
-#ifdef LL_WINDOWS
 #define LL_STATIC_ASSERT(func, msg) static_assert(func, msg)
-#define LL_BAD_TEMPLATE_INSTANTIATION(type, msg) static_assert(false, msg)
-#else
-#define LL_STATIC_ASSERT(func, msg) BOOST_STATIC_ASSERT(func)
-#define LL_BAD_TEMPLATE_INSTANTIATION(type, msg) BOOST_STATIC_ASSERT(sizeof(type) != 0 && false);
-#endif
+#define LL_BAD_TEMPLATE_INSTANTIATION(type, msg) static_assert(sizeof(type) != 0 && false, msg)
 
 
 /** Error Logging Facility
@@ -395,6 +392,30 @@ typedef LLError::NoClassInfo _LL_CLASS_TO_LOG;
             std::ostringstream _out;            \
             _out
 
+#ifdef ENABLE_DEBUG_MACRO
+
+#define lllog_debug(level, once, ...)                                         \
+    do {                                                                \
+        const char* tags[] = {"", ##__VA_ARGS__};                       \
+        static LLError::CallSite _site(lllog_site_args_(level, once, tags)); \
+        lllog_test_debug_()
+
+#define lllog_test_debug_()                                       \
+        if (LL_UNLIKELY(_site.shouldLog()))                 \
+        {                                                   \
+            std::ostringstream _out; \
+            _out
+#else
+#define lllog_debug(level, once, ...)                                         \
+    do {                                                                \
+        if (false)                 \
+        {                                                   \
+            const char* tags[] = {"", ##__VA_ARGS__};                       \
+            LLError::CallSite _site(lllog_site_args_(level, once, tags)); \
+            std::ostringstream _out; \
+            _out
+#endif
+
 #define lllog_site_args_(level, once, tags)                 \
     level, __FILE__, __LINE__, typeid(_LL_CLASS_TO_LOG),    \
     __FUNCTION__, once, &tags[1], LL_ARRAY_SIZE(tags)-1
@@ -437,7 +458,7 @@ typedef LLError::NoClassInfo _LL_CLASS_TO_LOG;
 // NEW Macros for debugging, allow the passing of a string tag
 
 // Pass comma separated list of tags (currently only supports up to 0, 1, or 2)
-#define LL_DEBUGS(...)  lllog(LLError::LEVEL_DEBUG, false, ##__VA_ARGS__)
+#define LL_DEBUGS(...)  lllog_debug(LLError::LEVEL_DEBUG, false, ##__VA_ARGS__)
 #define LL_INFOS(...)   lllog(LLError::LEVEL_INFO, false, ##__VA_ARGS__)
 #define LL_WARNS(...)   lllog(LLError::LEVEL_WARN, false, ##__VA_ARGS__)
 #define LL_ERRS(...)    lllog(LLError::LEVEL_ERROR, false, ##__VA_ARGS__)
@@ -452,7 +473,7 @@ typedef LLError::NoClassInfo _LL_CLASS_TO_LOG;
 
 // Only print the log message once (good for warnings or infos that would otherwise
 // spam the log file over and over, such as tighter loops).
-#define LL_DEBUGS_ONCE(...) lllog(LLError::LEVEL_DEBUG, true, ##__VA_ARGS__)
+#define LL_DEBUGS_ONCE(...) lllog_debug(LLError::LEVEL_DEBUG, true, ##__VA_ARGS__)
 #define LL_INFOS_ONCE(...)  lllog(LLError::LEVEL_INFO, true, ##__VA_ARGS__)
 #define LL_WARNS_ONCE(...)  lllog(LLError::LEVEL_WARN, true, ##__VA_ARGS__)
 
