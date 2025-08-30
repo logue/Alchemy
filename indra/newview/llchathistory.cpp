@@ -516,7 +516,7 @@ public:
         {
             return LLMuteList::getInstance()->isMuted(getAvatarId(), LLMute::flagVoiceChat);
         }
-        if (level == "is_muted")
+        else if (level == "is_muted")
         {
             return LLMuteList::getInstance()->isMuted(getAvatarId(), LLMute::flagTextChat);
         }
@@ -714,12 +714,10 @@ public:
             && chat.mChatStyle == CHAT_STYLE_TELEPORT_SEP)
         {
             mFrom = chat.mFromName;
-            mNeedsTimeBox = false;
             user_name->setValue(mFrom);
             updateMinUserNameWidth();
             LLUIColor sep_color = LLUIColorTable::instance().getColor("ChatTeleportSeparatorColor");
             setTransparentColor(sep_color);
-            mTimeBoxTextBox->setVisible(false);
         }
         else if (chat.mFromName.empty()
                  || mSourceType == CHAT_SOURCE_SYSTEM)
@@ -1045,6 +1043,9 @@ private:
     void setTimeField(const LLChat& chat)
     {
         LLTextBox* time_box = getChild<LLTextBox>("time_box");
+
+        static LLUIColor timestamp_color = LLUIColorTable::instance().getColor("ChatHeaderTimestampColor"); // <alchemy/>
+        time_box->setColor(timestamp_color); // <alchemy/>
 
         LLRect rect_before = time_box->getRect();
 

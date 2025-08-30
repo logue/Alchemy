@@ -37,6 +37,7 @@
 #include "sound_ids.h"
 #include "raytrace.h"
 
+#include "alavatargroups.h"
 #include "llagent.h" //  Get state values from here
 #include "llagentbenefits.h"
 #include "llagentcamera.h"
@@ -3681,7 +3682,7 @@ void LLVOAvatar::idleUpdateNameTagText(bool new_name)
 
         static const LLUIColor user_chat_color = LLUIColorTable::instance().getColor("UserChatColor");
         static const LLUIColor agent_chat_color = LLUIColorTable::instance().getColor("AgentChatColor");
-        const LLColor4& new_chat = isSelf() ? user_chat_color : agent_chat_color;
+        LLColor4 new_chat = ALAvatarGroups::instance().getAvatarColor(getID(), isSelf() ? user_chat_color : agent_chat_color, ALAvatarGroups::COLOR_CHAT);
         LLColor4 normal_chat = lerp(new_chat, LLColor4(0.8f, 0.8f, 0.8f, 1.f), 0.7f);
         LLColor4 old_chat = lerp(normal_chat, LLColor4(0.6f, 0.6f, 0.6f, 1.f), 0.7f);
         if (mTyping && mChats.size() >= MAX_BUBBLE_CHAT_UTTERANCES)
@@ -3874,6 +3875,7 @@ void LLVOAvatar::idleUpdateNameTagAlpha(bool new_name, F32 alpha)
 
 LLColor4 LLVOAvatar::getNameTagColor(bool is_friend)
 {
+#if 0
     static LLUICachedControl<bool> show_friends("NameTagShowFriends", false);
     const char* color_name;
     if (show_friends && is_friend)
@@ -3899,6 +3901,12 @@ LLColor4 LLVOAvatar::getNameTagColor(bool is_friend)
         color_name = "NameTagLegacy";
     }
     return LLUIColorTable::getInstance()->getColor( color_name );
+#endif
+    static LLUIColor name_tag_match = LLUIColorTable::instance().getColor("NameTagMatch");
+    LLColor4 color_name = name_tag_match;
+    color_name = ALAvatarGroups::instance().getAvatarColor(getID(), color_name, ALAvatarGroups::COLOR_NAMETAG);
+
+    return color_name;
 }
 
 void LLVOAvatar::idleUpdateBelowWater()
