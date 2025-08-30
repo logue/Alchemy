@@ -1,6 +1,6 @@
 <picture>
-  <source srcset="doc/alchemy-logo.png">
-  <img alt="Alchemy Viewer Logo" src="doc/alchemy-logo.png">
+  <source srcset="doc/alchemy_logo.png">
+  <img alt="Alchemy Viewer Logo" src="doc/alchemy_logo.png">
 </picture>
 
 [Alchemy Viewer](https://www.alchemyviewer.org) is a third-party client for Second Life. Our focus is on creating a cohesive and modern experience, with carefully considered default behaviors and settings while maintaining a bleeding-edge approach to adopting new features and developments from the Second Life platform.
