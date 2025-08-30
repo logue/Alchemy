@@ -713,7 +713,7 @@ public:
     void add(const LLSD::String& name, const T& value,
              typename boost::enable_if<boost::is_integral<T> >::type* = 0)
     {
-        mStats[name] = LLSD::Integer(value);
+        mStats[name] = LLSD::Integer(llmin<T>(value, S32_MAX));
     }
 
     // Store every floating-point type as LLSD::Real.
@@ -777,8 +777,10 @@ U32Kilobytes LLMemoryInfo::getHardwareMemSize()
 U32Kilobytes LLMemoryInfo::getPhysicalMemoryKB() const
 {
 #if LL_WINDOWS
-    return LLMemoryAdjustKBResult(U32Kilobytes(mStatsMap["Total Physical KB"].asInteger()));
-
+    MEMORYSTATUSEX state = {};
+    state.dwLength = sizeof(state);
+    GlobalMemoryStatusEx(&state);
+    return LLMemoryAdjustKBResult(U64Bytes(state.ullTotalPhys));
 #elif LL_DARWIN
     return getHardwareMemSize();
 
@@ -798,11 +800,11 @@ void LLMemoryInfo::getAvailableMemoryKB(U32Kilobytes& avail_mem_kb)
 {
     LL_PROFILE_ZONE_SCOPED_CATEGORY_MEMORY;
 #if LL_WINDOWS
-    // Sigh, this shouldn't be a static method, then we wouldn't have to
-    // reload this data separately from refresh()
-    LLSD statsMap(loadStatsMap());
+    MEMORYSTATUSEX state = {};
+    state.dwLength = sizeof(state);
+    GlobalMemoryStatusEx(&state);
 
-    avail_mem_kb = (U32Kilobytes)statsMap["Avail Physical KB"].asInteger();
+    avail_mem_kb = U64Bytes(state.ullAvailPhys);
 
 #elif LL_DARWIN
     // use host_statistics64 to get memory info
@@ -949,8 +951,7 @@ LLSD LLMemoryInfo::loadStatsMap()
     GlobalMemoryStatusEx(&state);
 
     DWORDLONG div = 1024;
-
-    stats.add("Percent Memory use", state.dwMemoryLoad/div);
+    stats.add("Percent Memory use", state.dwMemoryLoad);
     stats.add("Total Physical KB",  state.ullTotalPhys/div);
     stats.add("Avail Physical KB",  state.ullAvailPhys/div);
     stats.add("Total page KB",      state.ullTotalPageFile/div);
@@ -1072,7 +1073,7 @@ LLSD LLMemoryInfo::loadStatsMap()
     }
 
 #elif LL_LINUX
-    std::ifstream meminfo(MEMINFO_FILE);
+    llifstream meminfo(MEMINFO_FILE);
     if (meminfo.is_open())
     {
         // MemTotal:        4108424 kB
@@ -1112,17 +1113,10 @@ LLSD LLMemoryInfo::loadStatsMap()
                 LLSD::String key(matched[1].first, matched[1].second);
                 LLSD::String value_str(matched[2].first, matched[2].second);
                 LLSD::Integer value(0);
-
-                // Skip over VmallocTotal. It's just a fixed and huge number on (modern) systems. "34359738367 kB"
-                // https://unix.stackexchange.com/questions/700724/why-is-vmalloctotal-34359738367-kb
-                // If not skipped converting it to a LLSD::integer (32 bit) will fail and spam the logs (this function
-                // is called quite frequently).
-                if( key == "VmallocTotal")
-                    continue;
-
+                S64 intval = 0;
                 try
                 {
-                    value = boost::lexical_cast<LLSD::Integer>(value_str);
+                    intval = llclamp(boost::lexical_cast<S64>(value_str), 0, S32_MAX);
                 }
                 catch (const boost::bad_lexical_cast&)
                 {
@@ -1131,6 +1125,7 @@ LLSD LLMemoryInfo::loadStatsMap()
                                              << line << LL_ENDL;
                     continue;
                 }
+                value = LLSD::Integer(intval);
                 // Store this statistic.
                 stats.add(key, value);
             }
