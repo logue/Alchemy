@@ -56,12 +56,6 @@ You are not a member of any groups.
 Learn about [https://community.secondlife.com/knowledgebase/joining-and-participating-in-groups-r51/ groups in Second Life.]
   </string>
 	<string
-	 name="MiniMapToolTipMsg"
-	 value="[REGION](Double-click to open Map, shift-drag to pan)"/>
-	<string
-	 name="AltMiniMapToolTipMsg"
-	 value="[REGION](Double-click to teleport, shift-drag to pan)"/>
-	<string
 	 name="GroupCountWithInfo"
 	 value="You belong to [COUNT] groups, and can join [REMAINING] more.  [secondlife:/// Raise your limit]"/>
    <string name="online_friends_count">Online ([COUNT])</string>
@@ -229,6 +223,7 @@ Learn about [https://community.secondlife.com/knowledgebase/joining-and-particip
              right="-1"
              user_resize="true">
              <avatar_list
+               show_distance="true"
                allow_select="true"
                follows="all"
                height="211"
@@ -237,6 +232,7 @@ Learn about [https://community.secondlife.com/knowledgebase/joining-and-particip
                left="3"
                keep_one_selected="false"
                multi_select="true"
+               use_colorizer="true"
                name="avatar_list"
                right="-1"
                top="2" />
@@ -344,8 +340,8 @@ Learn about [https://community.secondlife.com/knowledgebase/joining-and-particip
             </panel>
             <accordion
        		 background_visible="true"
-       		 bg_alpha_color="DkGray2"
-       		 bg_opaque_color="DkGray2"
+       		 bg_alpha_color="PanelDefaultBackgroundColor"
+       		 bg_opaque_color="PanelDefaultBackgroundColor"
              follows="all"
              height="408"
              layout="topleft"
@@ -368,7 +364,7 @@ Learn about [https://community.secondlife.com/knowledgebase/joining-and-particip
                          multi_select="true"
                          name="avatars_online"
                          keep_one_selected="false"
-                         show_permissions_granted="true"
+                         show_permissions_granted="hover"
                          top="0"
                          width="307" />
                 </accordion_tab>
@@ -386,7 +382,7 @@ Learn about [https://community.secondlife.com/knowledgebase/joining-and-particip
                          multi_select="true"
                          name="avatars_all"
                          keep_one_selected="false"
-                         show_permissions_granted="true"
+                         show_permissions_granted="hover"
                          top="0"
                          width="307" />
                 </accordion_tab>           

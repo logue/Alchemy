@@ -47,14 +47,21 @@ class LLAvatarList : public LLFlatListViewEx
 {
     LOG_CLASS(LLAvatarList);
 public:
+    struct ShowPermissionTypeNames : public LLInitParam::TypeValuesHelper<EShowPermissionType, ShowPermissionTypeNames>
+    {
+        static void declareValues();
+    };
+
     struct Params : public LLInitParam::Block<Params, LLFlatListViewEx::Params>
     {
         Optional<bool>  ignore_online_status, // show all items as online
                         show_last_interaction_time, // show most recent interaction time. *HACK: move this to a derived class
+                        show_distance,  // *HACK: my sinuses hurt and i want pizza.
                         show_info_btn,
                         show_profile_btn,
                         show_speaking_indicator,
-                        show_permissions_granted;
+                        use_colorize;
+        Optional<EShowPermissionType, ShowPermissionTypeNames> show_permissions_granted;
         Params();
     };
 
@@ -78,7 +85,7 @@ public:
 
     void toggleIcons();
     void setSpeakingIndicatorsVisible(bool visible);
-    void showPermissions(bool visible);
+    void showPermissions(EShowPermissionType spType);
     void sortByName();
     void setShowIcons(std::string param_name);
     bool getIconsVisible() const { return mShowIcons; }
@@ -119,6 +126,7 @@ protected:
         uuid_vec_t& vadded,
         uuid_vec_t& vremoved);
     void updateLastInteractionTimes();
+    void updateDistances();
     void rebuildNames();
     void onItemDoubleClicked(LLUICtrl* ctrl, S32 x, S32 y, MASK mask);
     void onItemClicked(LLUICtrl* ctrl, S32 x, S32 y, MASK mask);
@@ -128,18 +136,20 @@ private:
 
     bool mIgnoreOnlineStatus;
     bool mShowLastInteractionTime;
+    bool mShowDistance;
     bool mDirty;
     bool mNeedUpdateNames;
     bool mShowIcons;
     bool mShowInfoBtn;
     bool mShowProfileBtn;
     bool mShowSpeakingIndicator;
-    bool mShowPermissions;
+    EShowPermissionType mShowPermissions;
     bool mShowCompleteName;
     bool mForceCompleteName;
 // [RLVa:KB] - RLVa-1.2.0
     bool mRlvCheckShowNames;
 // [/RLVa:KB]
+    bool mUseColorizer;
 
     LLTimer*                mLITUpdateTimer; // last interaction time update timer
     std::string             mIconParamName;

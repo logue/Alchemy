@@ -44,6 +44,7 @@
 #include "llpanelpeople.h"
 
 // newview
+#include "alavataractions.h"
 #include "llaccordionctrl.h"
 #include "llaccordionctrltab.h"
 #include "llagent.h"
@@ -559,6 +560,7 @@ LLPanelPeople::LLPanelPeople()
     mCommitCallbackRegistrar.add("People.Nearby.ViewSort.Action",  boost::bind(&LLPanelPeople::onNearbyViewSortMenuItemClicked,  this, _2));
     mCommitCallbackRegistrar.add("People.Groups.ViewSort.Action",  boost::bind(&LLPanelPeople::onGroupsViewSortMenuItemClicked,  this, _2));
     mCommitCallbackRegistrar.add("People.Recent.ViewSort.Action",  boost::bind(&LLPanelPeople::onRecentViewSortMenuItemClicked,  this, _2));
+    mCommitCallbackRegistrar.add("People.Recent.ClearHistory.Action",   boost::bind(&LLPanelPeople::onRecentViewClearHistoryMenuItemClicked, this));
 
     mEnableCallbackRegistrar.add("People.Friends.ViewSort.CheckItem",   boost::bind(&LLPanelPeople::onFriendsViewSortMenuItemCheck, this, _2));
     mEnableCallbackRegistrar.add("People.Recent.ViewSort.CheckItem",    boost::bind(&LLPanelPeople::onRecentViewSortMenuItemCheck,  this, _2));
@@ -637,15 +639,19 @@ bool LLPanelPeople::postBuild()
     mFriendsGearBtn = friends_tab->getChild<LLButton>("gear_btn");
     mFriendsDelFriendBtn = friends_tab->getChild<LLUICtrl>("friends_del_btn");
 
+    EShowPermissionType spType = (EShowPermissionType)gSavedSettings.getU32("FriendsListShowPermissions");
+    if (spType >= SP_COUNT)
+        spType = SP_NEVER;
+
     mOnlineFriendList = friends_tab->getChild<LLAvatarList>("avatars_online");
     mAllFriendList = friends_tab->getChild<LLAvatarList>("avatars_all");
     mOnlineFriendList->setNoItemsCommentText(getString("no_friends_online"));
     mOnlineFriendList->setShowIcons("FriendsListShowIcons");
-    mOnlineFriendList->showPermissions(gSavedSettings.getBOOL("FriendsListShowPermissions"));
+    mOnlineFriendList->showPermissions(spType);
     mOnlineFriendList->setShowCompleteName(!gSavedSettings.getBOOL("FriendsListHideUsernames"));
     mAllFriendList->setNoItemsCommentText(getString("no_friends"));
     mAllFriendList->setShowIcons("FriendsListShowIcons");
-    mAllFriendList->showPermissions(gSavedSettings.getBOOL("FriendsListShowPermissions"));
+    mAllFriendList->showPermissions(spType);
     mAllFriendList->setShowCompleteName(!gSavedSettings.getBOOL("FriendsListHideUsernames"));
 
     LLPanel* nearby_tab = getChild<LLPanel>(NEARBY_TAB_NAME);
@@ -662,8 +668,14 @@ bool LLPanelPeople::postBuild()
     mNearbyList->setRlvCheckShowNames(true);
 // [/RLVa:KB]
     mMiniMap = nearby_tab->getChild<LLNetMap>("Net Map", true);
-    mMiniMap->setToolTipMsg(gSavedSettings.getBOOL("DoubleClickTeleport") ?
-        getString("AltMiniMapToolTipMsg") : getString("MiniMapToolTipMsg"));
+    mMiniMap->setToolTipMsg(LLTrans::getString("MinimapToolTipMsg"));
+    mMiniMap->setParcelNameMsg(LLTrans::getString("MinimapParcelNameMsg"));
+    mMiniMap->setParcelSalePriceMsg(LLTrans::getString("MinimapParcelSalePriceMsg"));
+    mMiniMap->setParcelSaleAreaMsg(LLTrans::getString("MinimapParcelSaleAreaMsg"));
+    mMiniMap->setParcelOwnerMsg(LLTrans::getString("MinimapParcelOwnerMsg"));
+    mMiniMap->setRegionNameMsg(LLTrans::getString("MinimapRegionNameMsg"));
+    mMiniMap->setToolTipHintMsg(LLTrans::getString("MinimapToolTipHintMsg"));
+    mMiniMap->setAltToolTipHintMsg(LLTrans::getString("MinimapAltToolTipHintMsg"));
 
     mNearbyGearBtn = nearby_tab->getChild<LLButton>("gear_btn");
     mNearbyAddFriendBtn = nearby_tab->getChild<LLButton>("add_friend_btn");
@@ -699,7 +711,7 @@ bool LLPanelPeople::postBuild()
 
     mOnlineFriendList->setItemDoubleClickCallback(boost::bind(&LLPanelPeople::onAvatarListDoubleClicked, this, _1));
     mAllFriendList->setItemDoubleClickCallback(boost::bind(&LLPanelPeople::onAvatarListDoubleClicked, this, _1));
-    mNearbyList->setItemDoubleClickCallback(boost::bind(&LLPanelPeople::onAvatarListDoubleClicked, this, _1));
+    mNearbyList->setItemDoubleClickCallback(boost::bind(&LLPanelPeople::onNearbyListDoubleClicked, this, _1));
     mRecentList->setItemDoubleClickCallback(boost::bind(&LLPanelPeople::onAvatarListDoubleClicked, this, _1));
 
     mOnlineFriendList->setCommitCallback(boost::bind(&LLPanelPeople::onAvatarListCommitted, this, mOnlineFriendList));
@@ -970,15 +982,16 @@ void LLPanelPeople::updateButtons()
         }
 
         {
-            if(nearby_tab_active)
-            {
 // [RLVa:KB] - Checked: RLVa-1.2.0
 //          if (cur_panel->hasChild("add_friend_btn", TRUE))
 //              cur_panel->getChildView("add_friend_btn")->setEnabled(item_selected && !is_friend && !is_self && ((!nearby_tab_active) || (RlvActions::canShowName(RlvActions::SNC_DEFAULT, selected_id))));
 // [/RLBa:KB]
 //          if (cur_panel->hasChild("add_friend_btn", TRUE))
 //              cur_panel->getChildView("add_friend_btn")->setEnabled(item_selected && !is_friend && !is_self);
-                mNearbyAddFriendBtn->setEnabled(item_selected && !is_friend && !is_self);
+
+            if(nearby_tab_active)
+            {
+                mNearbyAddFriendBtn->setEnabled(item_selected && !is_friend && !is_self && ((!nearby_tab_active) || (RlvActions::canShowName(RlvActions::SNC_DEFAULT, selected_id))));
                 mNearbyGearBtn->setEnabled(multiple_selected);
             }
 
@@ -990,7 +1003,7 @@ void LLPanelPeople::updateButtons()
 
             if (recent_tab_active)
             {
-                mRecentAddFriendBtn->setEnabled(item_selected && !is_friend && !is_self);
+                mRecentAddFriendBtn->setEnabled(item_selected && !is_friend && !is_self && ((!nearby_tab_active) || (RlvActions::canShowName(RlvActions::SNC_DEFAULT, selected_id))));
                 mRecentGearBtn->setEnabled(multiple_selected);
             }
         }
@@ -1247,6 +1260,38 @@ void LLPanelPeople::onAvatarListCommitted(LLAvatarList* list)
     updateButtons();
 }
 
+void LLPanelPeople::onNearbyListDoubleClicked(LLUICtrl* ctrl)
+{
+    LLAvatarListItem* item = dynamic_cast<LLAvatarListItem*>(ctrl);
+    if(!item)
+    {
+        return;
+    }
+
+    LLUUID clicked_id = item->getAvatarId();
+    if(gAgent.getID() == clicked_id)
+    {
+        return;
+    }
+    U32 nearby_list_click_behavior = gSavedSettings.getU32("AlchemyNearbyPeopleClickAction");
+    switch (nearby_list_click_behavior)
+    {
+    default:
+    case 0:
+        LLAvatarActions::startIM(clicked_id);
+        break;
+    case 1:
+        LLAvatarActions::showProfile(clicked_id);
+        break;
+    case 2:
+        handle_zoom_to_object(clicked_id);
+        break;
+    case 3:
+        ALAvatarActions::teleportTo(clicked_id);
+        break;
+    }
+}
+
 void LLPanelPeople::onAddFriendButtonClicked()
 {
     LLUUID id = getCurrentItemID();
@@ -1403,13 +1448,19 @@ void LLPanelPeople::onFriendsViewSortMenuItemClicked(const LLSD& userdata)
         mAllFriendList->toggleIcons();
         mOnlineFriendList->toggleIcons();
     }
-    else if (chosen_item == "view_permissions")
+    else if ( ("view_permissions_never" == chosen_item) ||
+              ("view_permissions_hover" == chosen_item) ||
+              ("view_permissions_nondefault" == chosen_item) )
     {
-        bool show_permissions = !gSavedSettings.getBOOL("FriendsListShowPermissions");
-        gSavedSettings.setBOOL("FriendsListShowPermissions", show_permissions);
+        EShowPermissionType spType = SP_NEVER;
+        if ("view_permissions_hover" == chosen_item)
+            spType = SP_HOVER;
+        else if ("view_permissions_nondefault" == chosen_item)
+            spType = SP_NONDEFAULT;
+        gSavedSettings.setU32("FriendsListShowPermissions", (U32)spType);
 
-        mAllFriendList->showPermissions(show_permissions);
-        mOnlineFriendList->showPermissions(show_permissions);
+        mAllFriendList->showPermissions(spType);
+        mOnlineFriendList->showPermissions(spType);
     }
     else if (chosen_item == "view_usernames")
     {
@@ -1465,21 +1516,46 @@ void LLPanelPeople::onNearbyViewSortMenuItemClicked(const LLSD& userdata)
         mNearbyList->setShowCompleteName(!hide_usernames);
         mNearbyList->handleDisplayNamesOptionChanged();
     }
+    else if (chosen_item == "click_im")
+    {
+        gSavedSettings.setU32("AlchemyNearbyPeopleClickAction", E_CLICK_TO_IM);
+    }
+    else if (chosen_item == "click_profile")
+    {
+        gSavedSettings.setU32("AlchemyNearbyPeopleClickAction", E_CLICK_TO_PROFILE);
+    }
+    else if (chosen_item == "click_zoom")
+    {
+        gSavedSettings.setU32("AlchemyNearbyPeopleClickAction", E_CLICK_TO_ZOOM);
+    }
+    else if (chosen_item == "click_teleport")
+    {
+        gSavedSettings.setU32("AlchemyNearbyPeopleClickAction", E_CLICK_TO_TELEPORT);
+    }
 }
 
 bool LLPanelPeople::onNearbyViewSortMenuItemCheck(const LLSD& userdata)
 {
     std::string item = userdata.asString();
     U32 sort_order = gSavedSettings.getU32("NearbyPeopleSortOrder");
+    U32 click_action = gSavedSettings.getU32("AlchemyNearbyPeopleClickAction");
 
     if (item == "sort_by_recent_speakers")
         return sort_order == E_SORT_BY_RECENT_SPEAKERS;
-    if (item == "sort_name")
+    else if (item == "sort_name")
         return sort_order == E_SORT_BY_NAME;
-    if (item == "sort_distance")
+    else if (item == "sort_distance")
         return sort_order == E_SORT_BY_DISTANCE;
-    if (item == "sort_arrival")
+    else if (item == "sort_arrival")
         return sort_order == E_SORT_BY_RECENT_ARRIVAL;
+    else if (item == "click_im")
+        return click_action == E_CLICK_TO_IM;
+    else if (item == "click_profile")
+        return click_action == E_CLICK_TO_PROFILE;
+    else if (item == "click_zoom")
+        return click_action == E_CLICK_TO_ZOOM;
+    else if (item == "click_teleport")
+        return click_action == E_CLICK_TO_TELEPORT;
 
     return false;
 }
@@ -1502,6 +1578,11 @@ void LLPanelPeople::onRecentViewSortMenuItemClicked(const LLSD& userdata)
     }
 }
 
+void LLPanelPeople::onRecentViewClearHistoryMenuItemClicked()
+{
+    LLRecentPeople::instance().clearHistory();
+}
+
 bool LLPanelPeople::onFriendsViewSortMenuItemCheck(const LLSD& userdata)
 {
     std::string item = userdata.asString();
@@ -1511,6 +1592,14 @@ bool LLPanelPeople::onFriendsViewSortMenuItemCheck(const LLSD& userdata)
         return sort_order == E_SORT_BY_NAME;
     if (item == "sort_status")
         return sort_order == E_SORT_BY_STATUS;
+
+    EShowPermissionType spType = (EShowPermissionType)gSavedSettings.getU32("FriendsListShowPermissions");
+    if ("view_permissions_never" == item)
+        return SP_NEVER == spType;
+    if ("view_permissions_hover" == item)
+        return SP_HOVER == spType;
+    if ("view_permissions_nondefault" == item)
+        return SP_NONDEFAULT == spType;
 
     return false;
 }
