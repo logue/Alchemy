@@ -216,14 +216,13 @@
        layout="topleft"
        left="0"
        name="inventory filter tabs"
-       tab_height="30"
        tab_position="top"
        tab_min_width="100"
        use_tab_offset="true"
        top="0">
         <inventory_panel
-         bg_opaque_color="DkGray2"
-         bg_alpha_color="DkGray2"
+         bg_opaque_color="PanelDefaultBackgroundColor"
+         bg_alpha_color="PanelDefaultBackgroundColor"
          background_visible="true"
          border="false"
          bevel_style="none"
@@ -239,8 +238,8 @@
             <folder double_click_override="true"/>
         </inventory_panel>
         <recent_inventory_panel
-         bg_opaque_color="DkGray2"
-         bg_alpha_color="DkGray2"
+         bg_opaque_color="PanelDefaultBackgroundColor"
+         bg_alpha_color="PanelDefaultBackgroundColor"
          background_visible="true"
          border="false"
          bevel_style="none"
@@ -260,8 +259,8 @@
          show_empty_message="false"
          follows="all"
          layout="topleft"
-         bg_opaque_color="DkGray2"
-         bg_alpha_color="DkGray2"
+         bg_opaque_color="PanelDefaultBackgroundColor"
+         bg_alpha_color="PanelDefaultBackgroundColor"
          background_visible="true"
          preinitialize_views="false"
          border="false"
@@ -270,8 +269,8 @@
             <folder double_click_override="true"/>
         </inventory_panel>
         <favorites_inventory_panel
-         bg_opaque_color="DkGray2"
-         bg_alpha_color="DkGray2"
+         bg_opaque_color="PanelDefaultBackgroundColor"
+         bg_alpha_color="PanelDefaultBackgroundColor"
          background_visible="true"
          border="false"
          bevel_style="none"

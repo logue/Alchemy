@@ -80,6 +80,7 @@
      max_length="65000"
      parse_urls="true"
      word_wrap="true"
+     show_emoji_helper="true"
     />
     <button
      name="fl_save_changes"
