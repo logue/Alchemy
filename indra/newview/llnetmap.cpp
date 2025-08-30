@@ -1023,6 +1023,8 @@ void LLNetMap::createObjectImage()
 
 bool LLNetMap::handleMouseDown(S32 x, S32 y, MASK mask)
 {
+    if (!(mask & MASK_SHIFT)) return FALSE;
+
     // Start panning
     gFocusMgr.setMouseCapture(this);
 
