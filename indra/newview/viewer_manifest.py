@@ -509,8 +509,8 @@ class Windows_x86_64_Manifest(ViewerManifest):
         debpkgdir = os.path.join(pkgdir, "lib", "debug")
 
         if self.is_packaging_viewer():
-            # Find secondlife-bin.exe in the 'configuration' dir, then rename it to the result of final_exe.
-            self.path(src='%s/secondlife-bin.exe' % self.args['configuration'], dst=self.final_exe())
+            # Find alchemy-bin.exe in the 'configuration' dir, then rename it to the result of final_exe.
+            self.path(src='%s/alchemy-bin.exe' % self.args['configuration'], dst=self.final_exe())
 
             GITHUB_OUTPUT = os.getenv('GITHUB_OUTPUT')
             if GITHUB_OUTPUT:
@@ -535,7 +535,7 @@ class Windows_x86_64_Manifest(ViewerManifest):
                                     # except for this stuff
                                     *(('!' + os.path.join(appbase, pattern))
                                         for pattern in (
-                                                'secondlife-bin.*',
+                                                'alchemy-bin.*',
                                                 '*_Setup.exe',
                                                 '*.bat',
                                                 '*.tar.xz')))
@@ -1229,7 +1229,7 @@ class LinuxManifest(ViewerManifest):
             self.path("install.sh")
 
         with self.prefix(dst="bin"):
-            self.path("secondlife-bin", "do-not-directly-run-alchemy-bin")
+            self.path("alchemy-bin", "do-not-directly-run-alchemy-bin")
             #self.path("../linux_crash_logger/linux-crash-logger","linux-crash-logger.bin")
             self.path2basename("../llplugin/slplugin", "SLPlugin")
             #this copies over the python wrapper script, associated utilities and required libraries, see SL-321, SL-322 and SL-323

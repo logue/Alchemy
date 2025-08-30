@@ -162,7 +162,7 @@ else (USE_BUGSPLAT)
 endif (USE_BUGSPLAT)
 
 add_subdirectory(${VIEWER_PREFIX}newview)
-add_dependencies(BUILD_VIEWER secondlife-bin)
+add_dependencies(BUILD_VIEWER alchemy-bin)
 
 # sets the 'startup project' for debugging from visual studio.
 set_property(

@@ -43,7 +43,7 @@ Unicode true                # Enable unicode support
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; - language files - one for each language (or flavor thereof)
-;; (these files are in the same place as the nsi template but the python script generates a new nsi file in the 
+;; (these files are in the same place as the nsi template but the python script generates a new nsi file in the
 ;; application directory so we have to add a path to these include files)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Ansariel notes: "Under certain circumstances the installer will fall back
@@ -153,7 +153,7 @@ Var DO_UNINSTALL_V2     # If non-null, path to a previous Viewer 2 installation 
 
 # Function definitions should go before file includes, because calls to
 # DLLs like LangDLL trigger an implicit file include, so if that call is at
-# the end of this script NSIS has to decompress the whole installer before 
+# the end of this script NSIS has to decompress the whole installer before
 # it can call the DLL function. JC
 
 !include "FileFunc.nsh"     # For GetParameters, GetOptions
@@ -170,13 +170,13 @@ Function dirPre
     StrCmp $SKIP_DIALOGS "true" 0 +2
 	Abort
 
-FunctionEnd    
+FunctionEnd
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Prep Installer Section
 ;;
-;; Note: to add new languages, add a language file include to the list 
-;; at the top of this file, add an entry to the menu and then add an 
+;; Note: to add new languages, add a language file include to the list
+;; at the top of this file, add an entry to the menu and then add an
 ;; entry to the language ID selector below
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 Function .onInit
@@ -204,7 +204,7 @@ Call CheckWindowsVersion					# Don't install On unsupported systems
     Push $0
     ${GetParameters} $COMMANDLINE			# Get our command line
 
-    ${GetOptions} $COMMANDLINE "/SKIP_DIALOGS" $0   
+    ${GetOptions} $COMMANDLINE "/SKIP_DIALOGS" $0
     IfErrors +2 0	# If error jump past setting SKIP_DIALOGS
         StrCpy $SKIP_DIALOGS "true"
 
@@ -224,7 +224,7 @@ lbl_configure_default_lang:
 # If we currently have a version of SL installed, default to the language of that install
 # Otherwise don't change $LANGUAGE and it will default to the OS UI language.
     ReadRegStr $0 SHELL_CONTEXT "${INSTNAME_KEY}" "InstallerLanguage"
-    IfErrors +2 0	# If error skip the copy instruction 
+    IfErrors +2 0	# If error skip the copy instruction
 	StrCpy $LANGUAGE $0
 
 # For silent installs, no language prompt, use default
@@ -232,11 +232,11 @@ lbl_configure_default_lang:
     StrCpy $SKIP_AUTORUN "true"
     Goto lbl_return
     StrCmp $SKIP_DIALOGS "true" lbl_return
-  
+
 	Push ""
 # Use separate file so labels can be UTF-16 but we can still merge changes into this ASCII file. JC
     !include "%%SOURCE%%\installers\windows\language_menu.nsi"
-    
+
 	Push A	# A means auto count languages for the auto count to work the first empty push (Push "") must remain
 	LangDLL::LangDialog $(InstallerLanguageTitle) $(SelectInstallerLanguage)
 	Pop $0
@@ -244,7 +244,7 @@ lbl_configure_default_lang:
 		Abort
     StrCpy $LANGUAGE $0
 
-# Save language in registry		
+# Save language in registry
 	WriteRegStr SHELL_CONTEXT "${INSTNAME_KEY}" "InstallerLanguage" $LANGUAGE
 lbl_return:
     Pop $0
@@ -341,7 +341,6 @@ StrCpy $INSTSHORTCUT "${SHORTCUT}"
 
 Call CheckIfAdministrator		# Make sure the user can install/uninstall
 Call CloseSecondLife			# Make sure Second Life not currently running
-Call CheckWillUninstallV2		# Check if Second Life is already installed
 
 StrCmp $DO_UNINSTALL_V2 "" PRESERVE_DONE
 PRESERVE_DONE:
@@ -456,14 +455,6 @@ WriteRegStr HKEY_CLASSES_ROOT "Applications\$INSTEXE" "IsHostApp" ""
 # Write out uninstaller
 WriteUninstaller "$INSTDIR\uninst.exe"
 
-# Uninstall existing "Second Life Viewer 2" install if needed.
-StrCmp $DO_UNINSTALL_V2 "" REMOVE_SLV2_DONE
-  ExecWait '"$PROGRAMFILES\SecondLifeViewer2\uninst.exe" /S _?=$PROGRAMFILES\SecondLifeViewer2'
-  Delete "$PROGRAMFILES\SecondLifeViewer2\uninst.exe"	# With _? option above, uninst.exe will be left behind.
-  RMDir "$PROGRAMFILES\SecondLifeViewer2"	# Will remove only if empty.
-
-REMOVE_SLV2_DONE:
-
 SectionEnd
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -531,36 +522,14 @@ lbl_is_admin:
 FunctionEnd
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Function CheckWillUninstallV2               
-;;
-;; If called through auto-update, need to uninstall any existing V2 installation.
-;; Don't want to end up with SecondLifeViewer2 and SecondLifeViewer installations
-;;  existing side by side with no indication on which to use.
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-Function CheckWillUninstallV2
-
-  StrCpy $DO_UNINSTALL_V2 ""
-
-  StrCmp $SKIP_DIALOGS "true" 0 CHECKV2_DONE
-  StrCmp $INSTDIR "$PROGRAMFILES\SecondLifeViewer2" CHECKV2_DONE	# Don't uninstall our own install dir.
-  IfFileExists "$PROGRAMFILES\SecondLifeViewer2\uninst.exe" CHECKV2_FOUND CHECKV2_DONE
-
-CHECKV2_FOUND:
-  StrCpy $DO_UNINSTALL_V2 "true"
-
-CHECKV2_DONE:
-
-FunctionEnd
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Close the program, if running. Modifies no variables.
 ;; Allows user to bail out of install process.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 Function CloseSecondLife
   Push $0
-  FindWindow $0 "Second Life" ""
+  FindWindow $0 "Alchemy" ""
   IntCmp $0 0 DONE
-  
+
   StrCmp $SKIP_DIALOGS "true" CLOSE
     MessageBox MB_OKCANCEL $(CloseSecondLifeInstMB) IDOK CLOSE IDCANCEL CANCEL_INSTALL
 
@@ -572,11 +541,11 @@ Function CloseSecondLife
     SendMessage $0 16 0 0
 
   LOOP:
-	  FindWindow $0 "Second Life" ""
+	  FindWindow $0 "Alchemy" ""
 	  IntCmp $0 0 SLEEP
 	  Sleep 500
 	  Goto LOOP
-	  
+
   SLEEP:
     # Second life window just closed, but program might not be fully done yet
     # and OS might have not released some locks, wait a bit more to make sure
@@ -596,7 +565,7 @@ FunctionEnd
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 Function un.CloseSecondLife
   Push $0
-  FindWindow $0 "Second Life" ""
+  FindWindow $0 "Alchemy" ""
   IntCmp $0 0 DONE
   MessageBox MB_OKCANCEL $(CloseSecondLifeUnInstMB) IDOK CLOSE IDCANCEL CANCEL_UNINSTALL
 
@@ -608,7 +577,7 @@ Function un.CloseSecondLife
     SendMessage $0 16 0 0
 
   LOOP:
-	  FindWindow $0 "Second Life" ""
+	  FindWindow $0 "Alchemy" ""
 	  IntCmp $0 0 DONE
 	  Sleep 500
 	  Goto LOOP
@@ -699,7 +668,7 @@ Push $2
     EnumRegKey $1 SHELL_CONTEXT "${MSNTCURRVER_KEY}\ProfileList" $0
     StrCmp $1 "" DONE               # No more users
 
-    ReadRegStr $2 SHELL_CONTEXT "${MSNTCURRVER_KEY}\ProfileList\$1" "ProfileImagePath" 
+    ReadRegStr $2 SHELL_CONTEXT "${MSNTCURRVER_KEY}\ProfileList\$1" "ProfileImagePath"
     StrCmp $2 "" CONTINUE 0         # "ProfileImagePath" value is missing
 
 # Required since ProfileImagePath is of type REG_EXPAND_SZ
@@ -843,7 +812,7 @@ Function .onInstSuccess
         # must be a distinct command-line token, but DO NOT quote the language
         # string because it must decompose into separate command-line tokens.
         Exec '"$INSTDIR\$INSTEXE" precheck "$INSTDIR\$VIEWER_EXE" $SHORTCUT_LANG_PARAM'
-# 
+#
 FunctionEnd
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
