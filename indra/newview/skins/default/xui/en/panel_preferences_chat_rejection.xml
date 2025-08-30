@@ -50,8 +50,6 @@
         use_ellipses="false"
         commit_on_focus_lost = "true"
         follows="left|top"
-        text_readonly_color="LabelDisabledColor"
-        bg_writeable_color="LtGray"
         height="45"
         layout="topleft"
         left="15"
