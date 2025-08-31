@@ -173,18 +173,18 @@ public:
     /*virtual*/ bool    handleDragAndDrop(S32 x, S32 y, MASK mask,
                                       bool drop, EDragAndDropType cargo_type, void *cargo_data,
                                       EAcceptance *accept,
-                                      std::string& tooltip_msg);
-    /*virtual*/ bool handleToolTip(S32 x, S32 y, MASK mask);
+                                      std::string& tooltip_msg) override;
+    /*virtual*/ bool handleToolTip(S32 x, S32 y, MASK mask) override;
 
     void setAllowCallingCardDrop(bool b) { mAllowCallingCardDrop = b; }
 
     void sortByName(bool ascending);
 
-    /*virtual*/ void updateColumns(bool force_update);
+    /*virtual*/ void updateColumns(bool force_update) override;
 
-    /*virtual*/ void mouseOverHighlightNthItem( S32 index );
+    /*virtual*/ void mouseOverHighlightNthItem( S32 index ) override;
 
-    /*virtual*/ bool handleRightMouseDown(S32 x, S32 y, MASK mask);
+    /*virtual*/ bool handleRightMouseDown(S32 x, S32 y, MASK mask) override;
 
     bool isSpecialType() { return (mNameListType == SPECIAL); }
 

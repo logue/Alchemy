@@ -86,7 +86,7 @@ public:
     LLAvatarListItem(bool not_from_ui_factory = true);
     virtual ~LLAvatarListItem();
 
-    virtual bool postBuild();
+    virtual bool postBuild() override;
 
     /**
      * Processes notification from speaker indicator to update children when indicator's visibility is changed.
@@ -131,7 +131,7 @@ public:
     void onPermissionBtnToggle(S32 toggleRight);
     void onModifyRightsConfirmationCallback(const LLSD& notification, const LLSD& response, bool fGrant);
 
-    /*virtual*/ bool handleDoubleClick(S32 x, S32 y, MASK mask);
+    /*virtual*/ bool handleDoubleClick(S32 x, S32 y, MASK mask) override;
 
 protected:
     /**
