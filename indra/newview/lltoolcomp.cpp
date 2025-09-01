@@ -785,7 +785,7 @@ bool LLToolCompGun::handleDoubleClick(S32 x, S32 y, MASK mask)
 
 bool LLToolCompGun::handleRightMouseDown(S32 x, S32 y, MASK mask)
 {
-    if (!(gKeyboard->currentMask(TRUE) & MASK_ALT))
+    if (!(gKeyboard->currentMask(true) & MASK_ALT))
     {
         mRightMouseDown = true;
 

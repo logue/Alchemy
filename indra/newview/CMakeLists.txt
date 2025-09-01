@@ -223,6 +223,7 @@ set(viewer_SOURCE_FILES
     llfloatercreatelandmark.cpp
     llfloaterdeleteprefpreset.cpp
     llfloaterdestinations.cpp
+    llfloaterdirectory.cpp
     llfloaterdisplayname.cpp
     llfloatereditenvironmentbase.cpp
     llfloatereditextdaycycle.cpp
@@ -242,6 +243,7 @@ set(viewer_SOURCE_FILES
     llfloatergridstatus.cpp
     llfloatergroupbulkban.cpp
     llfloatergroupinvite.cpp
+    llfloatergroupprofile.cpp
     llfloatergroups.cpp
     llfloaterhandler.cpp
     llfloaterhelpbrowser.cpp
@@ -289,6 +291,7 @@ set(viewer_SOURCE_FILES
     llfloaterpreferenceviewadvanced.cpp
     llfloaterpreviewtrash.cpp
     llfloaterprofiletexture.cpp
+    llfloaterprogressview.cpp
     llfloaterregiondebugconsole.cpp
     llfloaterregioninfo.cpp
     llfloaterreporter.cpp
@@ -449,6 +452,7 @@ set(viewer_SOURCE_FILES
     llpaneleditwearable.cpp
     llpanelemojicomplete.cpp
     llpanelenvironment.cpp
+    llpaneleventinfo.cpp
     llpanelexperiencelisteditor.cpp
     llpanelexperiencelog.cpp
     llpanelexperiencepicker.cpp
@@ -498,6 +502,14 @@ set(viewer_SOURCE_FILES
     llpanelprofile.cpp
     llpanelprofileclassifieds.cpp
     llpanelprofilepicks.cpp
+    llpanelsearchbase.cpp
+    llpanelsearchclassifieds.cpp
+    llpanelsearchevents.cpp
+    llpanelsearchgroups.cpp
+    llpanelsearchlandsales.cpp
+    llpanelsearchpeople.cpp
+    llpanelsearchplaces.cpp
+    llpanelsearchweb.cpp
     llpanelsnapshot.cpp
     llpanelsnapshotinventory.cpp
     llpanelsnapshotlocal.cpp
@@ -920,6 +932,7 @@ set(viewer_HEADER_FILES
     llfloatercreatelandmark.h
     llfloaterdeleteprefpreset.h
     llfloaterdestinations.h
+    llfloaterdirectory.h
     llfloaterdisplayname.h
     llfloatereditenvironmentbase.h
     llfloatereditextdaycycle.h
@@ -939,6 +952,7 @@ set(viewer_HEADER_FILES
     llfloatergridstatus.h
     llfloatergroupbulkban.h
     llfloatergroupinvite.h
+    llfloatergroupprofile.h
     llfloatergroups.h
     llfloaterhandler.h
     llfloaterhelpbrowser.h
@@ -989,6 +1003,7 @@ set(viewer_HEADER_FILES
     llfloaterpreferenceviewadvanced.h
     llfloaterpreviewtrash.h
     llfloaterprofiletexture.h
+    llfloaterprogressview.h
     llfloaterregiondebugconsole.h
     llfloaterregioninfo.h
     llfloaterreporter.h
@@ -1138,6 +1153,7 @@ set(viewer_HEADER_FILES
     llpaneleditwearable.h
     llpanelemojicomplete.h
     llpanelenvironment.h
+    llpaneleventinfo.h
     llpanelexperiencelisteditor.h
     llpanelexperiencelog.h
     llpanelexperiencepicker.h
@@ -1188,6 +1204,14 @@ set(viewer_HEADER_FILES
     llpanelprofile.h
     llpanelprofileclassifieds.h
     llpanelprofilepicks.h
+    llpanelsearchbase.h
+    llpanelsearchclassifieds.h
+    llpanelsearchevents.h
+    llpanelsearchgroups.h
+    llpanelsearchlandsales.h
+    llpanelsearchpeople.h
+    llpanelsearchplaces.h
+    llpanelsearchweb.h
     llpanelsnapshot.h
     llpanelteleporthistory.h
     llpaneltiptoast.h

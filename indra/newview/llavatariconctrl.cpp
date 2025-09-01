@@ -361,7 +361,7 @@ bool LLAvatarIconCtrl::handleToolTip(S32 x, S32 y, MASK mask)
 {
     // Don't show our tooltip if we were asked not to
     if (!mDrawTooltip)
-        return FALSE;
+        return false;
     return LLIconCtrl::handleToolTip(x, y, mask);
 }
 // [/SL:KB]

@@ -914,7 +914,7 @@ void RlvHandler::onSitOrStand(bool fSitting)
     else if ( (!fSitting) && (m_fPendingGroundSit) )
     {
         gAgent.setControlFlags(AGENT_CONTROL_SIT_ON_GROUND);
-        send_agent_update(TRUE, TRUE);
+        send_agent_update(true, true);
 
         m_fPendingGroundSit = false;
         m_idPendingSitActor = m_idPendingUnsitActor;
@@ -1562,7 +1562,7 @@ bool RlvHandler::setEnabled(bool fEnable)
 
         // Reset to show assertions if the viewer version changed
         if (gSavedSettings.getString("LastRunVersion") != gLastRunVersion)
-            gSavedSettings.set<bool>(RlvSettingNames::ShowAssertionFail, TRUE);
+            gSavedSettings.set<bool>(RlvSettingNames::ShowAssertionFail, true);
 
         // Set up camera debug controls
         static bool controls_init = false;
@@ -2818,7 +2818,7 @@ ERlvCmdRet RlvHandler::processForceCommand(const RlvCommand& rlvCmd) const
                 if ( (isAgentAvatarValid()) && (gAgentAvatarp->isSitting()) && (!hasBehaviourExcept(RLV_BHVR_UNSIT, rlvCmd.getObjectID())) )
                 {
                     gAgent.setControlFlags(AGENT_CONTROL_STAND_UP);
-                    send_agent_update(TRUE, TRUE);  // See behaviour notes on why we have to force an agent update here
+                    send_agent_update(true, true);  // See behaviour notes on why we have to force an agent update here
 
                     gRlvHandler.m_idPendingSitActor.setNull();
                     gRlvHandler.m_idPendingUnsitActor = gRlvHandler.getCurrentObject();
@@ -3287,7 +3287,7 @@ ERlvCmdRet RlvForceHandler<RLV_BHVR_SITGROUND>::onCommand(const RlvCommand& rlvC
         gRlvHandler.m_idPendingSitActor.setNull();
         gRlvHandler.m_idPendingUnsitActor = gRlvHandler.getCurrentObject();
     }
-    send_agent_update(TRUE, TRUE);
+    send_agent_update(true, true);
 
     return RLV_RET_SUCCESS;
 }

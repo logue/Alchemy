@@ -143,7 +143,7 @@ void RlvSettings::updateLoginLastLocation()
         if (gSavedPerAccountSettings.get<bool>(RlvSettingNames::LoginLastLocation) != fValue)
         {
             gSavedPerAccountSettings.set<bool>(RlvSettingNames::LoginLastLocation, fValue);
-            gSavedPerAccountSettings.saveToFile(gSavedSettings.getString("PerAccountSettingsFile"), TRUE);
+            gSavedPerAccountSettings.saveToFile(gSavedSettings.getString("PerAccountSettingsFile"), true);
         }
     }
 }

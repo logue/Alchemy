@@ -294,7 +294,7 @@ bool LLToolPie::handleLeftClickPick()
         // Blanket block all left-click special actions on objects the user can't interact with
         if ( (RlvActions::isRlvEnabled()) && (!RlvActions::canInteract(object, mPick.mObjectOffset)) )
         {
-            return TRUE;
+            return true;
         }
 // [/RLVa:KB]
 
@@ -819,7 +819,7 @@ bool LLToolPie::handleHover(S32 x, S32 y, MASK mask)
     if ( (RlvActions::isRlvEnabled()) && (!RlvActions::canInteract(object, mHoverPick.mObjectOffset)) )
     {
         gViewerWindow->setCursor(UI_CURSOR_ARROW);
-        return TRUE;
+        return true;
     }
 // [/RLVa:KB]
     LLSelectMgr::getInstance()->setHoverObject(object, mHoverPick.mObjectFace);
@@ -1346,7 +1346,7 @@ bool LLToolPie::handleToolTip(S32 local_x, S32 local_y, MASK mask)
     // Block the tooltip of anything the user can't interact with
     if ( (RlvActions::isRlvEnabled()) && (!RlvActions::canInteract(hover_object, mHoverPick.mObjectOffset)) )
     {
-        return TRUE;
+        return true;
     }
 // [/RLVa:KB]
 

@@ -773,7 +773,7 @@ static void on_avatar_name_cache_notify(const LLUUID& agent_id,
     notify_params.substitutions = args;
     if (online)
     {
-        notify_params.payload = payload.with("respond_on_mousedown", TRUE);
+        notify_params.payload = payload.with("respond_on_mousedown", true);
 
         LLNotification::Params::Functor functor_p;
         functor_p.function = boost::bind(&LLAvatarActions::startIM, agent_id);

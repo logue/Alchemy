@@ -511,7 +511,7 @@ bool LLHUDEffectLookAt::setLookAt(ELookAtType target_type, LLViewerObject *objec
                 mLastSentOffsetGlobal = gAgent.getPosAgentFromGlobal(mTargetOffsetGlobal);
                 F32 timeout = (*mAttentions)[target_type].mTimeout;
                 setDuration(timeout);
-                setNeedsSendToSim(TRUE);
+                setNeedsSendToSim(true);
             }
         }
         mKillTime = mTimer.getElapsedTimeF32() + mDuration;

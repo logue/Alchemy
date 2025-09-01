@@ -983,10 +983,10 @@ void LLPanelPeople::updateButtons()
 
         {
 // [RLVa:KB] - Checked: RLVa-1.2.0
-//          if (cur_panel->hasChild("add_friend_btn", TRUE))
+//          if (cur_panel->hasChild("add_friend_btn", true))
 //              cur_panel->getChildView("add_friend_btn")->setEnabled(item_selected && !is_friend && !is_self && ((!nearby_tab_active) || (RlvActions::canShowName(RlvActions::SNC_DEFAULT, selected_id))));
 // [/RLBa:KB]
-//          if (cur_panel->hasChild("add_friend_btn", TRUE))
+//          if (cur_panel->hasChild("add_friend_btn", true))
 //              cur_panel->getChildView("add_friend_btn")->setEnabled(item_selected && !is_friend && !is_self);
 
             if(nearby_tab_active)

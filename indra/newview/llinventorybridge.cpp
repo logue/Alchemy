@@ -2170,7 +2170,7 @@ bool LLItemBridge::isItemRenameable() const
 // [RLVa:KB] - Checked: 2011-03-29 (RLVa-1.3.0g) | Modified: RLVa-1.3.0g
         if ( (rlv_handler_t::isEnabled()) && (!RlvFolderLocks::instance().canRenameItem(mUUID)) )
         {
-            return FALSE;
+            return false;
         }
 // [/RLVa:KB]
 

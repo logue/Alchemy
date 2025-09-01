@@ -831,7 +831,7 @@ void RlvWearableLocks::addWearableTypeLock(LLWearableType::EType eType, const LL
 // Checked: 2010-03-19 (RLVa-1.2.0c) | Added: RLVa-1.2.0a
 bool RlvWearableLocks::canRemove(LLWearableType::EType eType) const
 {
-    // NOTE: we return TRUE if the wearable type has at least one wearable that can be removed by the user
+    // NOTE: we return true if the wearable type has at least one wearable that can be removed by the user
     for (U32 idxWearable = 0, cntWearable = gAgentWearables.getWearableCount(eType); idxWearable < cntWearable; idxWearable++)
         if (!isLockedWearable(gAgentWearables.getViewerWearable(eType, idxWearable)))
             return true;
@@ -841,7 +841,7 @@ bool RlvWearableLocks::canRemove(LLWearableType::EType eType) const
 // Checked: 2010-03-19 (RLVa-1.2.0c) | Added: RLVa-1.2.0a
 bool RlvWearableLocks::hasLockedWearable(LLWearableType::EType eType) const
 {
-    // NOTE: we return TRUE if there is at least 1 non-removable wearable currently worn on this wearable type
+    // NOTE: we return true if there is at least 1 non-removable wearable currently worn on this wearable type
     for (U32 idxWearable = 0, cntWearable = gAgentWearables.getWearableCount(eType); idxWearable < cntWearable; idxWearable++)
         if (isLockedWearable(gAgentWearables.getViewerWearable(eType, idxWearable)))
             return true;

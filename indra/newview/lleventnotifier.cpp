@@ -166,11 +166,13 @@ bool LLEventNotifier::handleResponse(U32 eventId, const LLSD& notification, cons
     return true;
 }
 
-bool LLEventNotifier::add(U32 eventId, F64 eventEpoch, const std::string& eventDateStr, const std::string &eventName)
+bool LLEventNotifier::add(const LLEventStruct& event)
 {
-    LLEventNotification *new_enp = new LLEventNotification(eventId, eventEpoch, eventDateStr, eventName);
+    if (mNewEventSignal(event)) { return false; }
 
-    LL_INFOS() << "Add event " << eventName << " id " << eventId << " date " << eventDateStr << LL_ENDL;
+    LLEventNotification *new_enp = new LLEventNotification(event.eventId, event.eventEpoch, event.eventDateStr, event.eventName);
+
+    LL_INFOS() << "Add event " << event.eventName << " id " << event.eventId << " date " << event.eventDateStr << LL_ENDL;
     if(!new_enp->isValid())
     {
         delete new_enp;
@@ -206,12 +208,23 @@ void LLEventNotifier::processEventInfoReply(LLMessageSystem *msg, void **)
     U32 event_time_utc;
 
     msg->getUUIDFast(_PREHASH_AgentData, _PREHASH_AgentID, agent_id );
-    msg->getU32("EventData", "EventID", event_id);
-    msg->getString("EventData", "Name", event_name);
-    msg->getString("EventData", "Date", eventd_date);
-    msg->getU32("EventData", "DateUTC", event_time_utc);
+    msg->getU32Fast(_PREHASH_EventData, _PREHASH_EventID, event_id);
+    msg->getStringFast(_PREHASH_EventData, _PREHASH_Name, event_name);
+    msg->getStringFast(_PREHASH_EventData, _PREHASH_Date, eventd_date);
+    msg->getU32Fast(_PREHASH_EventData, _PREHASH_DateUTC, event_time_utc);
 
-    gEventNotifier.add(event_id, (F64)event_time_utc, eventd_date, event_name);
+    LLEventStruct event(event_id, (F64)event_time_utc, eventd_date, event_name);
+    msg->getString(_PREHASH_EventData, _PREHASH_Creator, event.creator);
+    msg->getString(_PREHASH_EventData, _PREHASH_Category, event.category);
+    msg->getString(_PREHASH_EventData, _PREHASH_Desc, event.desc);
+    msg->getU32(_PREHASH_EventData, _PREHASH_Duration, event.duration);
+    msg->getU32(_PREHASH_EventData, _PREHASH_Cover, event.cover);
+    msg->getU32(_PREHASH_EventData, _PREHASH_Amount, event.amount);
+    msg->getString(_PREHASH_EventData, _PREHASH_SimName, event.simName);
+    msg->getVector3d(_PREHASH_EventData, _PREHASH_GlobalPos, event.globalPos);
+    msg->getU32(_PREHASH_EventData, _PREHASH_EventFlags, event.flags);
+
+    gEventNotifier.add(event);
 }
 
 
@@ -249,11 +262,11 @@ void LLEventNotifier::load(const LLSD& event_options)
             substitution["datetime"] = date;
             LLStringUtil::format(dateStr, substitution);
 
-            add(response["event_id"].asInteger(), response["event_date_ut"], dateStr, response["event_name"].asString());
+            add(LLEventStruct(response["event_id"].asInteger(), response["event_date_ut"], dateStr, response["event_name"].asString()));
         }
         else
         {
-            add(response["event_id"].asInteger(), response["event_date_ut"], response["event_date"].asString(), response["event_name"].asString());
+            add(LLEventStruct(response["event_id"].asInteger(), response["event_date_ut"], response["event_date"].asString(), response["event_name"].asString()));
         }
     }
 }
@@ -287,12 +300,12 @@ void LLEventNotifier::remove(const U32 event_id)
 void LLEventNotifier::serverPushRequest(U32 event_id, bool add)
 {
     // Push up a message to tell the server we have this notification.
-    gMessageSystem->newMessage(add?"EventNotificationAddRequest":"EventNotificationRemoveRequest");
+    gMessageSystem->newMessageFast(add ? _PREHASH_EventNotificationAddRequest : _PREHASH_EventNotificationRemoveRequest);
     gMessageSystem->nextBlockFast(_PREHASH_AgentData);
     gMessageSystem->addUUIDFast(_PREHASH_AgentID, gAgent.getID() );
     gMessageSystem->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
-    gMessageSystem->nextBlock("EventData");
-    gMessageSystem->addU32("EventID", event_id);
+    gMessageSystem->nextBlockFast(_PREHASH_EventData);
+    gMessageSystem->addU32Fast(_PREHASH_EventID, event_id);
     gAgent.sendReliableMessage();
 }
 

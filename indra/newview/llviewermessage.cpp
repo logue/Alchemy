@@ -5899,7 +5899,7 @@ void notify_cautioned_script_question(const LLSD& notification, const LLSD& resp
 //      if (caution)
 //      {
 //          LLChat chat(notice.getString());
-//  //      LLFloaterChat::addChat(chat, FALSE, FALSE);
+//  //      LLFloaterChat::addChat(chat, false, false);
 //      }
     }
 }

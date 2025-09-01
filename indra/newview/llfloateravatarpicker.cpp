@@ -489,11 +489,11 @@ void LLFloaterAvatarPicker::onAvatarNameCache(const LLUUID& agent_id, const LLAv
 
     getChildView("ok_btn")->setEnabled(true);
     search_results->setEnabled(true);
-    search_results->sortByColumnIndex(1, TRUE);
+    search_results->sortByColumnIndex(1, true);
     search_results->selectFirstItem();
 
     onList();
-    search_results->setFocus(TRUE);
+    search_results->setFocus(true);
 }
 
 void LLFloaterAvatarPicker::find()
@@ -504,12 +504,12 @@ void LLFloaterAvatarPicker::find()
     getChild<LLScrollListCtrl>("SearchResults")->deleteAllItems();
     getChild<LLScrollListCtrl>("SearchResults")->setCommentText(getString("searching"));
 
-    getChildView("ok_btn")->setEnabled(FALSE);
+    getChildView("ok_btn")->setEnabled(false);
     mNumResultsReturned = 0;
 
     std::string text = getChild<LLUICtrl>("Edit")->getValue().asString();
 
-    bool is_uuid = LLUUID::validate(text) != FALSE;
+    bool is_uuid = LLUUID::validate(text);
     if(is_uuid)
     {
         LLUUID search_id(text);

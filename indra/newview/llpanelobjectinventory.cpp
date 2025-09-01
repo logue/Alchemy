@@ -297,7 +297,7 @@ bool LLTaskInvFVBridge::isItemRenameable() const
     LLViewerObject* object = gObjectList.findObject(mPanel->getTaskUUID());
     if ( (rlv_handler_t::isEnabled()) && (object) && (gRlvAttachmentLocks.isLockedAttachment(object->getRootEdit())) )
     {
-        return FALSE;
+        return false;
     }
 // [/RLVa:KB]
 
@@ -325,7 +325,7 @@ bool LLTaskInvFVBridge::renameItem(const std::string& new_name)
     LLViewerObject* object = gObjectList.findObject(mPanel->getTaskUUID());
     if ( (rlv_handler_t::isEnabled()) && (object) && (gRlvAttachmentLocks.isLockedAttachment(object->getRootEdit())) )
     {
-        return FALSE;
+        return false;
     }
 // [/RLVa:KB]
 
@@ -362,12 +362,12 @@ bool LLTaskInvFVBridge::isItemMovable() const
         {
             if (gRlvAttachmentLocks.isLockedAttachment(pObj->getRootEdit()))
             {
-                return FALSE;
+                return false;
             }
             else if ( (gRlvHandler.hasBehaviour(RLV_BHVR_UNSIT)) || (gRlvHandler.hasBehaviour(RLV_BHVR_SITTP)) )
             {
                 if ( (isAgentAvatarValid()) && (gAgentAvatarp->isSitting()) && (gAgentAvatarp->getRoot() == pObj->getRootEdit()) )
-                    return FALSE;
+                    return false;
             }
         }
     }
@@ -383,12 +383,12 @@ bool LLTaskInvFVBridge::isItemRemovable(bool check_worn) const
     {
         if (gRlvAttachmentLocks.isLockedAttachment(object->getRootEdit()))
         {
-            return FALSE;
+            return false;
         }
         else if ( (gRlvHandler.hasBehaviour(RLV_BHVR_UNSIT)) || (gRlvHandler.hasBehaviour(RLV_BHVR_SITTP)) )
         {
             if ( (isAgentAvatarValid()) && (gAgentAvatarp->isSitting()) && (gAgentAvatarp->getRoot() == object->getRootEdit()) )
-                return FALSE;
+                return false;
         }
     }
 // [/RLVa:KB]
@@ -543,7 +543,7 @@ bool LLTaskInvFVBridge::startDrag(EDragAndDropType* type, LLUUID* id) const
                 // Kind of redundant due to the note below, but in case that ever gets fixed
                 if ( (rlv_handler_t::isEnabled()) && (gRlvAttachmentLocks.isLockedAttachment(object->getRootEdit())) )
                 {
-                    return FALSE;
+                    return false;
                 }
 // [/RLVa:KB]
             if (!can_copy && object->isAttachment())

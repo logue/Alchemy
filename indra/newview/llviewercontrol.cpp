@@ -175,7 +175,7 @@ static bool handleSetShaderChanged(const LLSD& newvalue)
     if ( (RlvActions::isRlvEnabled()) && (!RlvActions::canChangeEnvironment() || (LLVfxManager::instance().hasEffect(EVisualEffect::RlvSphere))) &&
          (LLFeatureManager::getInstance()->isFeatureAvailable("WindLightUseAtmosShaders"))&& (!gSavedSettings.getBOOL("WindLightUseAtmosShaders")) )
     {
-        gSavedSettings.setBOOL("WindLightUseAtmosShaders", TRUE);
+        gSavedSettings.setBOOL("WindLightUseAtmosShaders", true);
         return true;
     }
 // [/RLVa:KB]

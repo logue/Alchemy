@@ -134,7 +134,7 @@ bool LLToolPlacer::raycastForNewObjPos( S32 x, S32 y, LLViewerObject** hit_obj, 
     {
         static RlvCachedBehaviourModifier<float> s_nFartouchDist(RLV_MODIFIER_FARTOUCHDIST);
         if (dist_vec_squared(gAgent.getPositionGlobal(), pick.mPosGlobal) > s_nFartouchDist * s_nFartouchDist)
-            return FALSE;
+            return false;
     }
 // [/RLVa:KB]
 
@@ -523,7 +523,7 @@ bool LLToolPlacer::placeObject(S32 x, S32 y, MASK mask)
 // [RLVa:KB] - Checked: 2010-03-23 (RLVa-1.2.0e) | Modified: RLVa-1.1.0l
     if ( (rlv_handler_t::isEnabled()) && ((gRlvHandler.hasBehaviour(RLV_BHVR_REZ)) || (gRlvHandler.hasBehaviour(RLV_BHVR_INTERACT))) )
     {
-        return TRUE; // Callers seem to expect a "did you handle it?" so we return TRUE rather than FALSE
+        return true; // Callers seem to expect a "did you handle it?" so we return true rather than false
     }
 // [/RLVa:KB]
 

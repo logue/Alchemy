@@ -441,7 +441,7 @@ LLAgent::LLAgent() :
     mFrameAgent(),
 
     mIsDoNotDisturb(false),
-    mIgnorePrejump(FALSE),
+    mIgnorePrejump(false),
 
     mControlFlags(0x00000000),
 
@@ -886,7 +886,7 @@ bool LLAgent::canFly()
 // [RLVa:KB] - Checked: RLVa-1.0
     if (!RlvActions::canFly())
     {
-        return FALSE;
+        return false;
     }
 // [/RLVa:KB]
     if (isGodlike() || canManageEstate()) return true;

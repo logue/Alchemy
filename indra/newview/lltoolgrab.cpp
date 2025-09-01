@@ -462,8 +462,8 @@ bool LLToolGrabBase::handleHover(S32 x, S32 y, MASK mask)
             gBasicToolset->selectTool(gGrabTransientTool);
             gGrabTransientTool = NULL;
         }
-        setMouseCapture(FALSE);
-        return TRUE;
+        setMouseCapture(false);
+        return true;
     }
 // [/RLVa:KB]
 

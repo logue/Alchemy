@@ -5205,7 +5205,7 @@ void handle_take_copy()
         // Allow only if the avie isn't sitting on any of the selected objects
         LLObjectSelectionHandle hSel = LLSelectMgr::getInstance()->getSelection();
         RlvSelectIsSittingOn f(gAgentAvatarp);
-        if ( (hSel.notNull()) && (hSel->getFirstRootNode(&f, TRUE) != NULL) )
+        if ( (hSel.notNull()) && (hSel->getFirstRootNode(&f, true) != nullptr) )
             return;
     }
 // [/RLVa:KB]
@@ -6642,11 +6642,13 @@ class LLWorldAlwaysRun : public view_listener_t
         {
             gAgent.clearAlwaysRun();
 //          gAgent.clearRunning();
+            LLNotifications::instance().add("AlwaysRunDisabled" , LLSD(), LLSD());
         }
         else
         {
             gAgent.setAlwaysRun();
 //          gAgent.setRunning();
+            LLNotifications::instance().add("AlwaysRunEnabled", LLSD(), LLSD());
         }
 
         // tell the simulator.
@@ -7803,7 +7805,7 @@ class LLAttachmentDrop : public view_listener_t
                 // NOTE: copy/paste of the code in enable_detach()
                 LLObjectSelectionHandle hSelect = LLSelectMgr::getInstance()->getSelection();
                 RlvSelectHasLockedAttach f;
-                if ( (hSelect->isAttachment()) && (hSelect->getFirstRootNode(&f, FALSE) != NULL) )
+                if ( (hSelect->isAttachment()) && (hSelect->getFirstRootNode(&f, false) != NULL) )
                     return true;
             }
             if (gRlvHandler.hasBehaviour(RLV_BHVR_REZ))
@@ -7981,7 +7983,7 @@ class LLAttachmentDetach : public view_listener_t
         {
             LLObjectSelectionHandle hSelect = LLSelectMgr::getInstance()->getSelection();
             RlvSelectHasLockedAttach f;
-            if ( (hSelect->isAttachment()) && (hSelect->getFirstRootNode(&f, FALSE) != NULL) )
+            if ( (hSelect->isAttachment()) && (hSelect->getFirstRootNode(&f, false) != NULL) )
                 return true;
         }
 // [/RLVa:KB]
@@ -8101,8 +8103,8 @@ bool enable_detach(const LLSD&)
             {
                 LLObjectSelectionHandle hSelect = LLSelectMgr::getInstance()->getSelection();
                 RlvSelectHasLockedAttach f;
-                if ( (hSelect->isAttachment()) && (hSelect->getFirstRootNode(&f, FALSE) != NULL) )
-                    return FALSE;
+                if ( (hSelect->isAttachment()) && (hSelect->getFirstRootNode(&f, false) != NULL) )
+                    return false;
             }
 // [/RLVa:KB]
             return true;

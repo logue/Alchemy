@@ -110,6 +110,7 @@
 #include "llfloatermap.h"
 #include "llfloaternamedesc.h"
 #include "llfloaterpreference.h"
+#include "llfloaterprogressview.h"
 #include "llfloatersnapshot.h"
 #include "llfloatertools.h"
 #include "llfloaterworldmap.h"
@@ -4512,7 +4513,7 @@ LLViewerObject* LLViewerWindow::cursorIntersect(S32 mouse_x, S32 mouse_y, F32 de
 
 // [RLVa:KB] - Checked: 2010-03-31 (RLVa-1.2.0c) | Modified: RLVa-1.2.0c
         if ( (rlv_handler_t::isEnabled()) && (found) &&
-             (LLToolCamera::getInstance()->hasMouseCapture()) && (gKeyboard->currentMask(TRUE) & MASK_ALT) )
+             (LLToolCamera::getInstance()->hasMouseCapture()) && (gKeyboard->currentMask(true) & MASK_ALT) )
         {
             found = NULL;
         }
@@ -5834,6 +5835,11 @@ void LLViewerWindow::setProgressPercent(const F32 percent)
 
 void LLViewerWindow::setProgressCancelButtonVisible( bool b, const std::string& label )
 {
+    LLFloaterProgressView* pProgFloater = LLFloaterReg::findTypedInstance<LLFloaterProgressView>("progress_view");
+    if(pProgFloater)
+    {
+        pProgFloater->setProgressCancelButtonVisible(b, label);
+    }
     if (mProgressView)
     {
         mProgressView->setCancelButtonVisible( b, label );

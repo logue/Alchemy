@@ -29,6 +29,7 @@
 
 // Library includes
 #include "llbutton.h"
+#include "llclipboard.h"
 #include "llfloatersidepanelcontainer.h"
 #include "lltabcontainer.h"
 #include "lltextbox.h"
@@ -42,6 +43,8 @@
 #include "llfloaterreg.h"
 #include "llfloater.h"
 #include "llgroupactions.h"
+#include "llfloatergroupprofile.h"
+#include "llslurl.h"
 
 #include "llagent.h"
 
@@ -92,6 +95,7 @@ LLPanelGroup::LLPanelGroup()
     // Set up the factory callbacks.
     // Roles sub tabs
     LLGroupMgr::getInstance()->addObserver(this);
+    mCommitCallbackRegistrar.add("Profile.Commit", [this](LLUICtrl*, const LLSD& userdata) { onCommitMenu(userdata); });
 }
 
 
@@ -131,7 +135,7 @@ void LLPanelGroup::onOpen(const LLSD& key)
         if(panel_notices)
             panel_notices->refreshNotices();
     }
-    if (str_action == "show_notices")
+    else if (str_action == "show_notices")
     {
         setGroupID(group_id);
 
@@ -140,7 +144,14 @@ void LLPanelGroup::onOpen(const LLSD& key)
         getChild<LLAccordionCtrlTab>("group_notices_tab")->setDisplayChildren(true);
         tab_ctrl->arrange();
     }
-
+// [SL:KB] - Patch: Notification-GroupCreateNotice | Checked: 2012-02-16 (Catznip-3.2)
+    else if(str_action == "view_notices")
+    {
+        setGroupID(group_id);
+        getChild<LLAccordionCtrl>("groups_accordion")->expandTab("group_notices_tab");
+        return;
+    }
+// [/SL:KB]
 }
 
 bool LLPanelGroup::postBuild()
@@ -183,11 +194,10 @@ bool LLPanelGroup::postBuild()
     if(panel_general)
     {
         panel_general->setupCtrls(this);
-        LLButton* button = panel_general->getChild<LLButton>("btn_join");
-        button->setVisible(false);
-        button->setEnabled(true);
+        mButtonJoin = panel_general->getChild<LLButton>("btn_join");
+        mButtonJoin->setVisible(false);
+        mButtonJoin->setEnabled(true);
 
-        mButtonJoin = button;
         mButtonJoin->setCommitCallback(boost::bind(&LLPanelGroup::onBtnJoin,this));
 
         mJoinText = panel_general->getChild<LLUICtrl>("join_cost_text");
@@ -224,10 +234,18 @@ void LLPanelGroup::reshape(S32 width, S32 height, bool called_from_parent )
 
 void LLPanelGroup::onBackBtnClick()
 {
-    LLSideTrayPanelContainer* parent = dynamic_cast<LLSideTrayPanelContainer*>(getParent());
-    if(parent)
+    LLFloaterGroupProfile* parent = dynamic_cast<LLFloaterGroupProfile*>(getParent());
+    if (parent)
     {
-        parent->openPreviousPanel();
+        parent->closeHostedFloater();
+    }
+    else
+    {
+        LLSideTrayPanelContainer* parent = dynamic_cast<LLSideTrayPanelContainer*>(getParent());
+        if (parent)
+        {
+            parent->openPreviousPanel();
+        }
     }
 }
 
@@ -297,9 +315,21 @@ void LLPanelGroup::update(LLGroupChange gc)
     LLGroupMgrGroupData* gdatap = LLGroupMgr::getInstance()->getGroupData(mID);
     if(gdatap)
     {
-        std::string group_name =  gdatap->mName.empty() ? LLTrans::getString("LoadingData") : gdatap->mName;
-        mGroupNameCtrl->setValue(group_name);
-        mGroupNameCtrl->setToolTip(group_name);
+
+        {
+            LLFloaterGroupProfile* parent = dynamic_cast<LLFloaterGroupProfile*>(getParent());
+            if (parent)
+            {
+                parent->setGroupName(gdatap->mName);
+            }
+        }
+
+        {
+            std::string group_name =  gdatap->mName.empty() ? LLTrans::getString("LoadingData") : gdatap->mName;
+            mGroupNameCtrl->setValue(group_name);
+            mGroupNameCtrl->setToolTip(group_name);
+        }
+
 
         LLGroupData agent_gdatap;
         bool is_member = gAgent.getGroupData(mID,agent_gdatap) || gAgent.isGodlikeWithoutAdminMenuFakery();
@@ -355,6 +385,8 @@ void LLPanelGroup::setGroupID(const LLUUID& group_id)
         mGroupNameCtrl->setToolTip(group_name);
     }
 
+    getChild<LLUICtrl>("group_key")->setValue(str_group_id);
+
     bool is_null_group_id = group_id == LLUUID::null;
     if(mButtonApply)
         mButtonApply->setVisible(!is_null_group_id);
@@ -400,6 +432,9 @@ void LLPanelGroup::setGroupID(const LLUUID& group_id)
         tab_experiences->setVisible(false);
 
         mGroupNameCtrl->setVisible(false);
+        getChild<LLUICtrl>("Key:")->setVisible(false);
+        getChild<LLUICtrl>("group_key")->setVisible(false);
+        getChild<LLUICtrl>("clipboard_group")->setVisible(false);
         getChild<LLUICtrl>("group_name_editor")->setVisible(true);
 
         if(mButtonCall)
@@ -432,6 +467,9 @@ void LLPanelGroup::setGroupID(const LLUUID& group_id)
         tab_experiences->setVisible(is_member);
 
         mGroupNameCtrl->setVisible(true);
+        getChild<LLUICtrl>("Key:")->setVisible(true);
+        getChild<LLUICtrl>("group_key")->setVisible(true);
+        getChild<LLUICtrl>("clipboard_group")->setVisible(true);
         getChild<LLUICtrl>("group_name_editor")->setVisible(false);
 
         if(mButtonApply)
@@ -582,7 +620,16 @@ void LLPanelGroup::showNotice(const std::string& subject,
                        const std::string& inventory_name,
                        LLOfferInfo* inventory_offer)
 {
-    LLPanelGroup* panel = LLFloaterSidePanelContainer::getPanel<LLPanelGroup>("people", "panel_group_info_sidetray");
+    LLPanelGroup* panel(NULL);
+    if (auto* floater = LLFloaterReg::findTypedInstance<LLFloaterGroupProfile>("group_profile", LLSD(group_id)))
+    {
+        panel = floater->getGroupPanel();
+    }
+    else
+    {
+        panel = LLFloaterSidePanelContainer::getPanel<LLPanelGroup>("people", "panel_group_info_sidetray");
+    }
+
     if(!panel)
         return;
 
@@ -592,4 +639,26 @@ void LLPanelGroup::showNotice(const std::string& subject,
 
 }
 
-
+void LLPanelGroup::onCommitMenu(const LLSD& userdata)
+{
+    const std::string item_name = userdata.asString();
+    if (item_name == "copy_group_slurl")
+    {
+        LLWString wstr = utf8str_to_wstring(LLSLURL("group", mID, "about").getSLURLString());
+        LLClipboard::instance().copyToClipboard(wstr, 0, narrow(wstr.size()));
+    }
+    else if (item_name == "copy_group_id")
+    {
+        LLWString wstr = utf8str_to_wstring(mID.asString());
+        LLClipboard::instance().copyToClipboard(wstr, 0, narrow(wstr.size()));
+    }
+    else if (item_name == "copy_group_name")
+    {
+        std::string name;
+        if (gCacheName->getGroupName(mID, name))
+        {
+            LLWString wstr = utf8str_to_wstring(name);
+            LLClipboard::instance().copyToClipboard(wstr, 0, narrow(wstr.size()));
+        }
+    }
+}

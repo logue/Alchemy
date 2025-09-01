@@ -44,6 +44,8 @@
 #include "llenvironment.h"
 #include "llfasttimer.h"
 #include "llfeaturemanager.h"
+#include "llfloaterprogressview.h"
+#include "llfloaterreg.h"
 #include "llfloatertools.h"
 #include "llfocusmgr.h"
 #include "llgl.h"
@@ -289,11 +291,13 @@ static void update_tp_display(bool minimized)
         gAgent.setTeleportMessage(std::string());
     }
 
+    LLFloaterProgressView* pProgFloater = LLFloaterReg::getTypedInstance<LLFloaterProgressView>("progress_view");
+
     // Make sure the TP progress panel gets hidden in case the viewer window
     // is minimized *during* a TP. HB
     if (minimized)
     {
-        gViewerWindow->setShowProgress(false);
+        pProgFloater->setShowProgress(false);
     }
 
     const std::string& message = gAgent.getTeleportMessage();
@@ -305,9 +309,9 @@ static void update_tp_display(bool minimized)
             const std::string& msg = LLAgent::sTeleportProgressMessages["pending"];
             if (!minimized)
             {
-                gViewerWindow->setShowProgress(true);
-                gViewerWindow->setProgressPercent(llmin(teleport_percent, 0.0f));
-                gViewerWindow->setProgressString(msg);
+                pProgFloater->setShowProgress(true);
+                pProgFloater->setProgressPercent(llmin(teleport_percent, 0.0f));
+                pProgFloater->setProgressString(msg);
             }
             gAgent.setTeleportMessage(msg);
             break;
@@ -324,10 +328,10 @@ static void update_tp_display(bool minimized)
             gAgent.setTeleportMessage(msg);
             if (!minimized)
             {
-                gViewerWindow->setShowProgress(true);
-                gViewerWindow->setProgressPercent(llmin(teleport_percent, 0.0f));
-                gViewerWindow->setProgressString(msg);
-                gViewerWindow->setProgressMessage(gAgent.mMOTD);
+                pProgFloater->setShowProgress(true);
+                pProgFloater->setProgressPercent(llmin(teleport_percent, 0.0f));
+                pProgFloater->setProgressString(msg);
+                //pProgFloater->setProgressMessage(gAgent.mMOTD);
             }
             break;
         }
@@ -336,8 +340,8 @@ static void update_tp_display(bool minimized)
             // Waiting for source simulator to respond
             if (!minimized)
             {
-                gViewerWindow->setProgressPercent(llmin(teleport_percent, 37.5f));
-                gViewerWindow->setProgressString(message);
+                pProgFloater->setProgressPercent(llmin(teleport_percent, 37.5f));
+                pProgFloater->setProgressString(message);
             }
             break;
 
@@ -345,8 +349,8 @@ static void update_tp_display(bool minimized)
             // Viewer has received destination location from source simulator
             if (!minimized)
             {
-                gViewerWindow->setProgressPercent(llmin(teleport_percent, 75.f));
-                gViewerWindow->setProgressString(message);
+                pProgFloater->setProgressPercent(llmin(teleport_percent, 75.f));
+                pProgFloater->setProgressString(message);
             }
             break;
 
@@ -362,8 +366,8 @@ static void update_tp_display(bool minimized)
             gAgentCamera.resetView(true, true);
             if (!minimized)
             {
-                gViewerWindow->setProgressCancelButtonVisible(false, LLTrans::getString("Cancel"));
-                gViewerWindow->setProgressPercent(75.f);
+                pProgFloater->setProgressCancelButtonVisible(false, LLTrans::getString("Cancel"));
+                pProgFloater->setProgressPercent(75.f);
             }
             break;
 
@@ -380,9 +384,9 @@ static void update_tp_display(bool minimized)
             }
             if (!minimized)
             {
-                gViewerWindow->setProgressCancelButtonVisible(false, LLTrans::getString("Cancel"));
-                gViewerWindow->setProgressPercent(arrival_fraction * 25.f + 75.f);
-                gViewerWindow->setProgressString(message);
+                pProgFloater->setProgressCancelButtonVisible(false, LLTrans::getString("Cancel"));
+                pProgFloater->setProgressPercent(arrival_fraction * 25.f + 75.f);
+                pProgFloater->setProgressString(message);
             }
             break;
         }
@@ -405,7 +409,7 @@ static void update_tp_display(bool minimized)
 
         case LLAgent::TELEPORT_NONE:
             // No teleport in progress
-            gViewerWindow->setShowProgress(false);
+            pProgFloater->setShowProgress(false);
             gTeleportDisplay = false;
     }
 }

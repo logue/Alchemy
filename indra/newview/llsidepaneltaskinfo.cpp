@@ -424,7 +424,7 @@ void LLSidepanelTaskInfo::refresh()
 //  {
 //      mDACreatorName->setValue(creator_name);
 //  }
-//  mDACreatorName->setEnabled(TRUE);
+//  mDACreatorName->setEnabled(true);
 // [RLVa:KB] - Moved further down to avoid an annoying flicker when the text is set twice in a row
 
     // Update owner text field
@@ -464,7 +464,7 @@ void LLSidepanelTaskInfo::refresh()
 //  {
 //      mDAOwnerName->setValue(owner_name);
 //  }
-//  getChildView("Owner Name")->setEnabled(TRUE);
+//  getChildView("Owner Name")->setEnabled(true);
 
 // [RLVa:KB] - Checked: 2010-11-01 (RLVa-1.2.2a) | Modified: RLVa-1.2.2a
     if (gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES))
@@ -482,13 +482,13 @@ void LLSidepanelTaskInfo::refresh()
     {
         mDACreatorName->setValue(creator_name);
     }
-    mDACreatorName->setEnabled(TRUE);
+    mDACreatorName->setEnabled(true);
 
     if(mDAOwnerName->getValue().asString() == LLStringUtil::null)
     {
         mDAOwnerName->setValue(owner_name);
     }
-    mDAOwnerName->setEnabled(TRUE);
+    mDAOwnerName->setEnabled(true);
 // [/RLVa:KB]
 
     // update group text field

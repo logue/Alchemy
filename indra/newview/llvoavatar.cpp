@@ -56,6 +56,7 @@
 #include "llpolyskeletaldistortion.h"
 #include "lleditingmotion.h"
 #include "llemote.h"
+#include "llfilepicker.h"
 #include "llfloatertools.h"
 #include "llheadrotmotion.h"
 #include "llhudeffecttrail.h"
@@ -78,6 +79,7 @@
 #include "llregionhandle.h"
 #include "llresmgr.h"
 #include "llselectmgr.h"
+#include "llslurl.h"
 #include "llsprite.h"
 #include "lltargetingmotion.h"
 #include "lltoolmgr.h"
@@ -86,6 +88,8 @@
 #include "llviewertexlayer.h"
 #include "llviewertexturelist.h"
 #include "llviewermenu.h"
+#include "llviewermenufile.h"
+#include "llviewernetwork.h"
 #include "llviewerobjectlist.h"
 #include "llviewerparcelmgr.h"
 #include "llviewerregion.h"
@@ -6223,7 +6227,14 @@ bool LLVOAvatar::processSingleAnimationStateChange( const LLUUID& anim_id, bool 
         {
             sitDown(true);
         }
-
+        else if (anim_id == ANIM_AGENT_SNAPSHOT)
+        {
+            static LLCachedControl<bool> announce_snapshot(gSavedSettings, "SnapshotDetection");
+            if (announce_snapshot)
+            {
+                LLNotificationsUtil::add("SnapshotDetected", LLSD().with("NAME", LLSLURL("agent", mID, "about").getSLURLString()));
+            }
+        }
 
         if (startMotion(anim_id))
         {
@@ -10456,13 +10467,21 @@ void LLVOAvatar::dumpArchetypeXML(const std::string& prefix, bool group_by_weara
     std::string outprefix(prefix);
     if (outprefix.empty())
     {
-        outprefix = getDebugName() + (isSelf() ? "_s" : "_o");
+        outprefix = getFullname() + (isSelf() ? "_s" : "_o");
+    }
+    if (outprefix.empty())
+    {
+        outprefix = std::string("new_archetype");
     }
     std::string outfilename = get_sequential_numbered_file_name(outprefix, ".xml");
+    LLFilePickerReplyThread::startPicker(boost::bind(&LLVOAvatar::dumpArchetypeXMLCallback, this, _1, group_by_wearables), LLFilePicker::FFSAVE_XML, outfilename);
+}
 
+void LLVOAvatar::dumpArchetypeXMLCallback(const std::vector<std::string>& filenames, bool group_by_wearables)
+{
     LLAPRFile outfile;
     LLWearableType *wr_inst = LLWearableType::getInstance();
-    std::string fullpath = gDirUtilp->getExpandedFilename(LL_PATH_LOGS, outfilename);
+    std::string fullpath = filenames[0];
     if (APR_SUCCESS == outfile.open(fullpath, LL_APR_WB ))
     {
         apr_file_t* file = outfile.getFileHandle();
@@ -10686,6 +10705,8 @@ void LLVOAvatar::dumpArchetypeXML(const std::string& prefix, bool group_by_weara
         LLNotificationsUtil::add("AppearanceToXMLFailed");
     }
     // File will close when handle goes out of scope
+    LL_INFOS("DumpArchetypeXML") << "Archetype xml written successfully!" << LL_ENDL;
+    LLNotificationsUtil::add("DumpArchetypeSuccess", LLSD().with("FILE_PATH", fullpath));
 }
 
 

@@ -780,7 +780,7 @@ bool get_is_item_removable(const LLInventoryModel* model, const LLUUID& id, bool
     if ( (RlvActions::isRlvEnabled()) &&
          (RlvFolderLocks::instance().hasLockedFolder(RLV_LOCK_ANY)) && (!RlvFolderLocks::instance().canRemoveItem(id)) )
     {
-        return FALSE;
+        return false;
     }
 // [/RLVa:KB]
 
@@ -862,7 +862,7 @@ bool get_is_category_removable(const LLInventoryModel* model, const LLUUID& id)
     if ( ((RlvActions::isRlvEnabled()) &&
          (RlvFolderLocks::instance().hasLockedFolder(RLV_LOCK_ANY)) && (!RlvFolderLocks::instance().canRemoveFolder(id))) )
     {
-        return FALSE;
+        return false;
     }
 // [/RLVa:KB]
 
@@ -966,7 +966,7 @@ bool get_is_category_renameable(const LLInventoryModel* model, const LLUUID& id)
 // [RLVa:KB] - Checked: 2011-03-29 (RLVa-1.3.0g) | Modified: RLVa-1.3.0g
     if ( (RlvActions::isRlvEnabled()) && (model == &gInventory) && (!RlvFolderLocks::instance().canRenameFolder(id)) )
     {
-        return FALSE;
+        return false;
     }
 // [/RLVa:KB]
 

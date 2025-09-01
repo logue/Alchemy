@@ -12859,7 +12859,14 @@ are wearing now.
           yestext="OK"/>
   </notification>
  <!-- ALCHEMY BELOW THIS LINE -->
-
+ 
+  <notification
+   icon="notify.tga"
+   name="DumpArchetypeSuccess"
+   type="notify">
+    Successfully saved appearance to [FILE_PATH].
+  </notification>
+  
   <notification
    icon="alertmodal.tga"
    name="CannotDeleteSelectObjectsNoScripts"
@@ -13025,6 +13032,45 @@ Your privilege to find [NAME]&apos;s map location has been revoked.
     type="notify">
 [NAME] has given you permission to find their location on the map.
   </notification>
+  <notification
+   icon="notifytip.tga"
+   name="ShapeImportGenericFail"
+   type="notifytip">
+    <tag>fail</tag>
+    There was a problem importing [FILENAME]. Please see the log for more details.
+  </notification>
+  <notification
+   icon="notifytip.tga"
+   name="ShapeImportVersionFail"
+   type="notifytip">
+    <tag>fail</tag>
+    Shape import failed. Are you sure [FILENAME] is an avatar genepool file?
+  </notification>
+
+  <notification
+	icon="notifytip.tga"
+	name="SnapshotDetected"
+	type="notifytip">
+	[NAME] took a snapshot! :O
+  </notification>
+
+  <notification
+   icon="notifytip.tga"
+   name="AlwaysRunEnabled"
+   persist="true"
+   log_to_chat="true"
+   type="notifytip">
+Always Run enabled.
+  </notification>
+  <notification
+    icon="notifytip.tga"
+    name="AlwaysRunDisabled"
+    persist="true"
+    log_to_chat="true"
+    type="notifytip">
+Always Run disabled.
+  </notification>
+
  <notification
   icon="notifytip.tga"
   name="AlchemyUnpoweredWizard"

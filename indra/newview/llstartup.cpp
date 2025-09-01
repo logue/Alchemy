@@ -175,6 +175,7 @@
 #include "pipeline.h"
 #include "llappviewer.h"
 #include "llfasttimerview.h"
+#include "llfloaterdirectory.h"
 #include "llfloatermap.h"
 #include "llweb.h"
 #include "llvoiceclient.h"
@@ -2822,6 +2823,14 @@ void register_viewer_callbacks(LLMessageSystem* msg)
     // Special handler as this message is sometimes used for group land.
     msg->setHandlerFuncFast(_PREHASH_PlacesReply,                   process_places_reply);
     msg->setHandlerFuncFast(_PREHASH_GroupNoticesListReply,         LLPanelGroupNotices::processGroupNoticesListReply);
+
+    // directory search
+    msg->setHandlerFunc("DirPeopleReply", LLFloaterDirectory::processSearchPeopleReply);
+    msg->setHandlerFunc("DirGroupsReply", LLFloaterDirectory::processSearchGroupsReply);
+    msg->setHandlerFunc("DirPlacesReply", LLFloaterDirectory::processSearchPlacesReply);
+    msg->setHandlerFunc("DirEventsReply", LLFloaterDirectory::processSearchEventsReply);
+    msg->setHandlerFunc("DirLandReply",   LLFloaterDirectory::processSearchLandReply);
+    msg->setHandlerFunc("DirClassifiedReply",  LLFloaterDirectory::processSearchClassifiedsReply);
 
     msg->setHandlerFuncFast(_PREHASH_AvatarPickerReply,             LLFloaterAvatarPicker::processAvatarPickerReply);
 
