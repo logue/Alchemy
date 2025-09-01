@@ -2055,7 +2055,7 @@ LLVector3d LLAgentCamera::calcCameraPositionTargetGlobal(bool *hit_limit)
             const LLVector3d offsetCamera(gAgent.getFrameAgent().rotateToAbsolute(offsetCameraLocal));
             const LLVector3d posFocusCam = frame_center_global + head_offset + offsetCamera;
             if (clampCameraPosition(camera_position_global, posFocusCam, nCamOriginDistLimitMin, nCamOriginDistLimitMax))
-                isConstrained = TRUE;
+                isConstrained = true;
         }
 
         // Check avatar distance limits
@@ -2063,7 +2063,7 @@ LLVector3d LLAgentCamera::calcCameraPositionTargetGlobal(bool *hit_limit)
         {
             const LLVector3d posAvatarCam = gAgent.getPosGlobalFromAgent( (isAgentAvatarValid()) ? gAgentAvatarp->mHeadp->getWorldPosition() : gAgent.getPositionAgent() );
             if (clampCameraPosition(camera_position_global, posAvatarCam, nCamAvDistLimitMin, nCamAvDistLimitMax))
-                isConstrained = TRUE;
+                isConstrained = true;
         }
     }
 // [/RLVa:KB]

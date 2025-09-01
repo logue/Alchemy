@@ -58,7 +58,7 @@ bool LLLegacyNotificationWellWindow::postBuild()
 {
     mNotificationUpdates.reset(new WellNotificationChannel(this));
 
-    BOOL rv = LLSysWellWindow::postBuild();
+    bool rv = LLSysWellWindow::postBuild();
     setTitle(getString("title_notification_well_window"));
     return rv;
 }

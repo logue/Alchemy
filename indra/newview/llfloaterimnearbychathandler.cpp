@@ -505,12 +505,12 @@ void LLFloaterIMNearbyChatHandler::processChat(const LLChat& chat_msg,
         if ( (!RlvActions::canShowLocation()) && (!tmp_chat.mRlvLocFiltered) && (CHAT_SOURCE_AGENT != tmp_chat.mSourceType) )
         {
             RlvUtil::filterLocation(tmp_chat.mText);
-            tmp_chat.mRlvLocFiltered = TRUE;
+            tmp_chat.mRlvLocFiltered = true;
         }
         if ( (!RlvActions::canShowName(RlvActions::SNC_DEFAULT)) && (!tmp_chat.mRlvNamesFiltered) && (CHAT_SOURCE_AGENT != tmp_chat.mSourceType) )
         {
             RlvUtil::filterNames(tmp_chat.mText);
-            tmp_chat.mRlvNamesFiltered = TRUE;
+            tmp_chat.mRlvNamesFiltered = true;
         }
     }
 // [/RLVa:KB]

@@ -311,7 +311,7 @@ protected:
     S32                         mHeldDownFrameDelay;    // frames, after which held-down callbacks get called
     S32                         mLastDrawCharsCount;
 
-    bool                    	mImageOverlayEnable;
+    bool                        mImageOverlayEnable;
     LLPointer<LLUIImage>        mImageOverlay;
     LLFontGL::HAlign            mImageOverlayAlignment;
     LLUIColor                   mImageOverlayColor;

@@ -3527,3 +3527,16 @@ bool LLScrollListCtrl::highlightMatchingItems(const std::string& filter_str)
     }
     return res;
 }
+
+void LLScrollListIcon::setClickCallback(bool (*callback)(void*), void* user_data)
+{
+    mCallback = callback;
+    mUserData = user_data;
+}
+
+bool LLScrollListIcon::handleClick()
+{
+    if(mCallback) return mCallback(mUserData);
+    return false;
+}
+

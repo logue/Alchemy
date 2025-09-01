@@ -134,7 +134,7 @@
      follows="top|right"
      halign="left"
      height="13"
-     top_delta="6"
+     top_delta="3"
      left_pad="5"
      layout="topleft"
      name="me_label"
@@ -306,7 +306,7 @@
      follows="top|right"
      halign="left"
      height="13"
-     top_delta="6"
+     top_delta="3"
      left_pad="5"
      layout="topleft"
      name="Home_label"
@@ -425,6 +425,16 @@
      width="66">
         Adult
     </text>
+    <check_box
+     control_name="AlchemyMapShowAgentCount"
+     follows="top|left"
+     height="16"
+     layout="topleft"
+     left="135"
+     name="AlchemyMapShowAgentCount"
+     top_pad="2"
+     width="22"
+     label="Agent Count"/>
 </panel>
 
 
@@ -434,7 +444,7 @@
   top_pad="0"
   width="238"
   background_visible="true"
-  bg_alpha_color="DkGray2"
+  bg_alpha_color="PanelDefaultBackgroundColor"
   name="layout_panel_3">
     <text
      text_color="White"
@@ -695,9 +705,22 @@
      top_pad="5"
      name="Show Destination"
      tool_tip="Center map on selected location"
-     width="213">
+     width="104">
 		<button.commit_callback
 		function="WMap.ShowTarget" />
+    </button>
+    <button
+     enabled="false"
+     follows="right|bottom"
+     height="23"
+     label="Track Region"
+     left_pad="5"
+     name="track_region"
+     tool_tip="Add the region to the region tracker"
+	 top_delta="0"
+     width="104">
+		<button.commit_callback
+		function="WMap.TrackRegion" />
     </button>
     </panel>
       <panel
@@ -706,7 +729,7 @@
   top_pad="0"
   width="238"
   background_visible="true"
-  bg_alpha_color="DkGray2"
+  bg_alpha_color="PanelDefaultBackgroundColor"
   name="layout_panel_5">
     <text
      text_color="White"

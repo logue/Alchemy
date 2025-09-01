@@ -24,6 +24,7 @@
      image_name="Generic_Person_Large"
      show_loading="false"
      follows="top|left"
+     interactable="true"
      layout="topleft"
      top="10"
      left="8"

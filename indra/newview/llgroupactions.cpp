@@ -456,7 +456,7 @@ void LLGroupActions::show(const LLUUID &group_id, bool expand_notices_tab)
         LLFloater *floater = LLFloaterReg::getTypedInstance<LLFloaterSidePanelContainer>("people");
         if (!floater->isFrontmost())
         {
-        	floater->setVisibleAndFrontmost(true, params);
+            floater->setVisibleAndFrontmost(true, params);
         }
     }
 }

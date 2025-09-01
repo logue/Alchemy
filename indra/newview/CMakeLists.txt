@@ -78,6 +78,7 @@ set(viewer_SOURCE_FILES
     alchatcommand.cpp
     alfloatergenerictext.cpp
     alfloaterparticleeditor.cpp
+    alfloaterregiontracker.cpp
     alpanelradaralert.cpp
     alunzip.cpp
     alviewermenu.cpp
@@ -95,6 +96,7 @@ set(viewer_SOURCE_FILES
     llagentbenefits.cpp
     llagentcamera.cpp
     llagentdata.cpp
+    llagenthandler.cpp
     llagentlanguage.cpp
     llagentlistener.cpp
     llagentpicksinfo.cpp
@@ -128,9 +130,11 @@ set(viewer_SOURCE_FILES
     llchathistory.cpp
     llchatitemscontainerctrl.cpp
     llchatmsgbox.cpp
+    llcheatcodes.cpp
     llchiclet.cpp
     llchicletbar.cpp
     llclassifiedinfo.cpp
+    llclassifieditem.cpp
     llcofwearables.cpp
     llcolorswatch.cpp
     llcommanddispatcherlistener.cpp
@@ -170,6 +174,7 @@ set(viewer_SOURCE_FILES
     lldrawpoolwater.cpp
     lldrawpoolwlsky.cpp
     lldrawpoolwaterexclusion.cpp
+    lldroptarget.cpp
     lldynamictexture.cpp
     llemote.cpp
     llenvironment.cpp
@@ -292,6 +297,7 @@ set(viewer_SOURCE_FILES
     llfloaterpreviewtrash.cpp
     llfloaterprofiletexture.cpp
     llfloaterprogressview.cpp
+    llfloaterpublishclassified.cpp
     llfloaterregiondebugconsole.cpp
     llfloaterregioninfo.cpp
     llfloaterreporter.cpp
@@ -319,12 +325,14 @@ set(viewer_SOURCE_FILES
     llfloatertopobjects.cpp
     llfloatertos.cpp
     llfloatertoybox.cpp
+    llfloatertransactionlog.cpp
     llfloatertranslationsettings.cpp
     llfloateruipreview.cpp
     llfloaterurlentry.cpp
     llfloatervoiceeffect.cpp
     llfloatervoicevolume.cpp
     llfloaterwebcontent.cpp
+    llfloaterwebprofile.cpp
     llfloaterwhitelistentry.cpp
     llfloaterwindowsize.cpp
     llfloaterworldmap.cpp
@@ -446,6 +454,7 @@ set(viewer_SOURCE_FILES
     llpanelavatartag.cpp
     llpanelblockedlist.cpp
     llpanelclassified.cpp
+    llpanelclassifiededit.cpp
     llpanelcontents.cpp
     llpaneleditsky.cpp
     llpaneleditwater.cpp
@@ -492,6 +501,7 @@ set(viewer_SOURCE_FILES
     llpanelpeople.cpp
     llpanelpeoplemenus.cpp
     llpanelpermissions.cpp
+    llpanelpick.cpp
     llpanelplaceinfo.cpp
     llpanelplaceprofile.cpp
     llpanelplaces.cpp
@@ -543,6 +553,7 @@ set(viewer_SOURCE_FILES
     llpersistentnotificationstorage.cpp
     llphysicsmotion.cpp
     llphysicsshapebuilderutil.cpp
+    llpickitem.cpp
     llpipelinelistener.cpp
     llplacesinventorybridge.cpp
     llplacesinventorypanel.cpp
@@ -558,6 +569,8 @@ set(viewer_SOURCE_FILES
     llpreviewsound.cpp
     llpreviewtexture.cpp
     llproductinforequest.cpp
+    llprofileimagectrl.cpp
+    llprofileimagepicker.cpp
     llprogressview.cpp
     llrecentpeople.cpp
     llreflectionmap.cpp
@@ -784,6 +797,7 @@ set(viewer_HEADER_FILES
     alchatcommand.h
     alfloatergenerictext.h
     alfloaterparticleeditor.h
+    alfloaterregiontracker.h
     alpanelradaralert.h
     alunzip.h
     alviewermenu.h
@@ -840,6 +854,7 @@ set(viewer_HEADER_FILES
     llchiclet.h
     llchicletbar.h
     llclassifiedinfo.h
+    llclassifieditem.h
     llcofwearables.h
     llcolorswatch.h
     llcommanddispatcherlistener.h
@@ -879,6 +894,7 @@ set(viewer_HEADER_FILES
     lldrawpoolwater.h
     lldrawpoolwlsky.h
     lldrawpoolwaterexclusion.h
+    lldroptarget.h
     lldynamictexture.h
     llemote.h
     llenvironment.h
@@ -1004,6 +1020,7 @@ set(viewer_HEADER_FILES
     llfloaterpreviewtrash.h
     llfloaterprofiletexture.h
     llfloaterprogressview.h
+    llfloaterpublishclassified.h
     llfloaterregiondebugconsole.h
     llfloaterregioninfo.h
     llfloaterreporter.h
@@ -1031,12 +1048,14 @@ set(viewer_HEADER_FILES
     llfloatertopobjects.h
     llfloatertos.h
     llfloatertoybox.h
+    llfloatertransactionlog.h
     llfloatertranslationsettings.h
     llfloateruipreview.h
     llfloaterurlentry.h
     llfloatervoiceeffect.h
     llfloatervoicevolume.h
     llfloaterwebcontent.h
+    llfloaterwebprofile.h
     llfloaterwhitelistentry.h
     llfloaterwindowsize.h
     llfloaterworldmap.h
@@ -1147,6 +1166,7 @@ set(viewer_HEADER_FILES
     llpanelavatartag.h
     llpanelblockedlist.h
     llpanelclassified.h
+    llpanelclassifiededit.h
     llpanelcontents.h
     llpaneleditsky.h
     llpaneleditwater.h
@@ -1194,6 +1214,7 @@ set(viewer_HEADER_FILES
     llpanelpeople.h
     llpanelpeoplemenus.h
     llpanelpermissions.h
+    llpanelpick.h
     llpanelplaceinfo.h
     llpanelplaceprofile.h
     llpanelplaces.h
@@ -1240,6 +1261,7 @@ set(viewer_HEADER_FILES
     llpersistentnotificationstorage.h
     llphysicsmotion.h
     llphysicsshapebuilderutil.h
+    llpickitem.h
     llpipelinelistener.h
     llplacesinventorybridge.h
     llplacesinventorypanel.h
@@ -1255,6 +1277,8 @@ set(viewer_HEADER_FILES
     llpreviewsound.h
     llpreviewtexture.h
     llproductinforequest.h
+    llprofileimagectrl.h
+    llprofileimagepicker.h
     llprogressview.h
     llrecentpeople.h
     llreflectionmap.h

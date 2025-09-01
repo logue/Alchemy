@@ -65,6 +65,7 @@
 #include "llfloaterpreference.h"
 #include "llfloatersidepanelcontainer.h"
 #include "llfloatersnapshot.h"
+#include "llfloatertransactionlog.h"
 #include "llhudeffecttrail.h"
 #include "llhudmanager.h"
 #include "llimprocessing.h"
@@ -2629,7 +2630,7 @@ void process_chat_from_simulator(LLMessageSystem *msg, void **user_data)
                 else if (!RlvActions::canShowName(RlvActions::SNC_DEFAULT, chat.mFromID))
                 {
                     chat.mFromName = RlvStrings::getAnonym(chat.mFromName);
-                    chat.mRlvNamesFiltered = TRUE;
+                    chat.mRlvNamesFiltered = true;
                 }
             }
 
@@ -5069,6 +5070,13 @@ static void process_money_balance_reply_extended(LLMessageSystem* msg)
         // make notification loggable
         payload["from_id"] = source_id;
         notification = "PaymentReceived";
+    }
+
+    LLFloaterTransactionLog* floater = LLFloaterReg::findTypedInstance<LLFloaterTransactionLog>("transaction_log");
+    // only log the successful transactions --FLN
+    if (success && floater)
+    {
+        floater->addTransaction(LLDate::now(), source_id, amount, !you_paid_someone);
     }
 
     // Despite using SLURLs, wait until the name is available before

@@ -83,7 +83,7 @@ void LLFloaterProgressView::setProgressPercent(const F32 percent)
     mProgressBar->setValue(percent);
 }
 
-void LLFloaterProgressView::setShowProgress(BOOL visible)
+void LLFloaterProgressView::setShowProgress(bool visible)
 {
     if(visible)
     {
@@ -95,7 +95,7 @@ void LLFloaterProgressView::setShowProgress(BOOL visible)
     }
 }
 
-void LLFloaterProgressView::setProgressCancelButtonVisible(BOOL visible, const std::string& label)
+void LLFloaterProgressView::setProgressCancelButtonVisible(bool visible, const std::string& label)
 {
     mCancelBtn->setVisible(visible);
     mCancelBtn->setEnabled(visible);

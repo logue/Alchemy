@@ -32,6 +32,7 @@
 
 #include "alfloatergenerictext.h"
 #include "alfloaterparticleeditor.h"
+#include "alfloaterregiontracker.h"
 #include "llcommandhandler.h"
 #include "llcompilequeue.h"
 #include "llfasttimerview.h"
@@ -130,6 +131,7 @@
 #include "llfloaterpreviewtrash.h"
 #include "llfloaterprofile.h"
 #include "llfloaterprogressview.h"
+#include "llfloaterpublishclassified.h"
 #include "llfloaterregiondebugconsole.h"
 #include "llfloaterregioninfo.h"
 #include "llfloaterregionrestarting.h"
@@ -156,10 +158,12 @@
 #include "llfloatertopobjects.h"
 #include "llfloatertos.h"
 #include "llfloatertoybox.h"
+#include "llfloatertransactionlog.h"
 #include "llfloatertranslationsettings.h"
 #include "llfloateruipreview.h"
 #include "llfloatervoiceeffect.h"
 #include "llfloaterwebcontent.h"
+#include "llfloaterwebprofile.h"
 #include "llfloatervoicevolume.h"
 #include "llfloaterwhitelistentry.h"
 #include "llfloaterwindowsize.h"
@@ -481,7 +485,7 @@ void LLViewerFloaterReg::registerFloaters()
     LLFloaterReg::add("preview_sound", "floater_preview_sound.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLPreviewSound>, "preview");
     LLFloaterReg::add("preview_texture", "floater_preview_texture.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLPreviewTexture>, "preview");
     LLFloaterReg::add("preview_trash", "floater_preview_trash.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterPreviewTrash>);
-    LLFloaterReg::add("publish_classified", "floater_publish_classified.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLPublishClassifiedFloater>);
+    LLFloaterReg::add("publish_classified", "floater_publish_classified.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterPublishClassified>);
     LLFloaterReg::add("save_pref_preset", "floater_save_pref_preset.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterSavePrefPreset>);
     LLFloaterReg::add("save_camera_preset", "floater_save_camera_preset.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterSaveCameraPreset>);
     LLFloaterReg::add("script_colors", "floater_script_ed_prefs.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterScriptEdPrefs>);
@@ -554,6 +558,10 @@ void LLViewerFloaterReg::registerFloaters()
     LLFloaterReg::add("group_profile", "floater_group_profile.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterGroupProfile>);
     LLFloaterReg::add("particle_editor", "floater_particle_editor.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<ALFloaterParticleEditor>);
     LLFloaterReg::add("progress_view", "floater_progress_view.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterProgressView>);
+    LLFloaterReg::add("region_tracker", "floater_region_tracker.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<ALFloaterRegionTracker>);
     LLFloaterReg::add("search", "floater_directory.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterDirectory>);
+    LLFloaterReg::add("transaction_log", "floater_transaction_log.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterTransactionLog>);
+    LLFloaterReg::add("webprofile", "floater_web_profile.xml", (LLFloaterBuildFunc)&LLFloaterWebProfile::create);
+
     LLFloaterReg::registerControlVariables(); // Make sure visibility and rect controls get preserved when saving
 }

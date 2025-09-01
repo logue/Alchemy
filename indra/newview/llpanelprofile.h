@@ -33,6 +33,8 @@
 #include "llpanel.h"
 #include "llpanelavatar.h"
 #include "llmediactrl.h"
+#include "llprofileimagectrl.h"
+#include "llprofileimagepicker.h"
 #include "llvoiceclient.h"
 
 // class LLPanelProfileClassifieds;
@@ -288,6 +290,7 @@ protected:
     void onSetDescriptionDirty();
     void onSaveDescriptionChanges();
     void onDiscardDescriptionChanges();
+    void onShowAgentFirstlifeTexture();
 
     LLTextEditor*   mDescriptionEdit;
     LLProfileImageCtrl* mPicture;
@@ -297,6 +300,7 @@ protected:
     LLButton* mSaveChanges;
     LLButton* mDiscardChanges;
 
+    LLHandle<LLFloater> mFloaterProfileTextureHandle;
     LLHandle<LLFloater> mFloaterTexturePickerHandle;
 
     std::string     mCurrentDescription;

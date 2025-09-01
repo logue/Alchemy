@@ -96,7 +96,7 @@ void LLFloaterGroupProfile::createGroup() const
 }
 
 //static
-LLFloater* LLFloaterGroupProfile::showInstance(const LLSD& key, BOOL focus)
+LLFloater* LLFloaterGroupProfile::showInstance(const LLSD& key, bool focus)
 {
     // [RLVa:KB] - Checked: 2010-02-28 (RLVa-1.4.0a) | Modified: RLVa-1.2.0a
     if (!LLFloaterReg::canShowInstance("group_profile", key["group_id"].asUUID()))

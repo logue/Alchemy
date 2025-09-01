@@ -3436,8 +3436,8 @@ void LLVOAvatar::idleUpdateNameTag(const LLVector3& root_pos_last)
     {
         if (mRenderGroupTitles)
         {
-            mRenderGroupTitles = FALSE;
-            new_name = TRUE;
+            mRenderGroupTitles = false;
+            new_name = true;
         }
     }
     else if (sRenderGroupTitles != mRenderGroupTitles)
@@ -4019,7 +4019,7 @@ bool LLVOAvatar::isRlvSilhouette() const
         if (fIsRlvSilhouette != mCachedIsRlvSilhouette)
         {
             mCachedIsRlvSilhouette = fIsRlvSilhouette;
-            mNeedsImpostorUpdate = TRUE;
+            mNeedsImpostorUpdate = true;
         }
         mCachedRlvSilhouetteUpdateTime = now + SECONDS_BETWEEN_SILHOUETTE_UPDATES;
     }

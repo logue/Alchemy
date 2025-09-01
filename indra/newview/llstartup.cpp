@@ -769,7 +769,7 @@ bool idle_startup()
 // [RLVa:KB] - Patch: RLVa-2.1.0
         if (gSavedSettings.get<bool>(RlvSettingNames::Main))
         {
-            show_connect_box = TRUE;
+            show_connect_box = true;
         }
 // [/RVA:KB]
 

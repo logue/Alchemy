@@ -108,6 +108,16 @@
             <menu_item_call.on_click
             function="Avatar.OpenMarketplace"  />
         </menu_item_call>
+        <menu_item_check
+         label="Transaction Log..."
+         name="transaction_log">
+            <menu_item_check.on_check
+             function="Floater.Visible"
+             parameter="transaction_log" />
+            <menu_item_check.on_click
+             function="Floater.Toggle"
+             parameter="transaction_log" />
+        </menu_item_check>
         <menu_item_call
             label="Marketplace listings..."
             name="MarketplaceListings">
@@ -723,6 +733,16 @@
              function="Advanced.ShowURL"
              parameter="https://secondlife.com/my/community/events"/>
         </menu_item_call>
+        <menu_item_check
+        label="Region Tracker..."
+        name="Region Tracker">
+            <menu_item_check.on_check
+             function="Floater.Visible"
+             parameter="region_tracker" />
+            <menu_item_check.on_click
+             function="Floater.Toggle"
+             parameter="region_tracker" />
+        </menu_item_check>
         <menu_item_check
         label="Search..."
         name="Search"

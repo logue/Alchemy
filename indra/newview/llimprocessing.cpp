@@ -277,7 +277,7 @@ void inventory_offer_handler(LLOfferInfo* info)
         // Only filter if the object owner is a nearby agent
         if ( (RlvActions::isRlvEnabled()) && (!RlvActions::canShowName(RlvActions::SNC_DEFAULT, info->mFromID)) && (RlvUtil::isNearbyAgent(info->mFromID)) )
         {
-            payload["rlv_shownames"] = TRUE;
+            payload["rlv_shownames"] = true;
             args["NAME_SLURL"] = LLSLURL("agent", info->mFromID, "rlvanonym").getSLURLString();
         }
 // [/RLVa:KB]
@@ -302,7 +302,7 @@ void inventory_offer_handler(LLOfferInfo* info)
             (RlvActions::canShowName(RlvActions::SNC_DEFAULT, info->mFromID)) || (!RlvUtil::isNearbyAgent(info->mFromID)) || (RlvUIEnabler::hasOpenIM(info->mFromID)) || (RlvUIEnabler::hasOpenProfile(info->mFromID));
         if (!fRlvCanShowName)
         {
-            payload["rlv_shownames"] = TRUE;
+            payload["rlv_shownames"] = true;
             args["NAME"] = RlvStrings::getAnonym(info->mFromName);
             args["NAME_SLURL"] = LLSLURL("agent", info->mFromID, "rlvanonym").getSLURLString();
         }
@@ -1122,7 +1122,7 @@ void LLIMProcessing::processNewMessage(LLUUID from_id,
                 // NOTE: the chat message itself will be filtered in LLNearbyChatHandler::processChat()
                 if ( (!RlvActions::canShowName(RlvActions::SNC_DEFAULT)) && (!from_group) && (RlvUtil::isNearbyAgent(from_id)) )
                 {
-                    query_string["rlv_shownames"] = TRUE;
+                    query_string["rlv_shownames"] = true;
 
                     RlvUtil::filterNames(name);
                     chat.mFromName = name;

@@ -31,6 +31,7 @@
 // Viewer includes
 #include "llagent.h"
 #include "llagentpicksinfo.h"
+#include "llappviewer.h"
 #include "lldateutil.h"
 #include "llviewergenericmessage.h"
 #include "llstartup.h"
@@ -41,7 +42,6 @@
 #include "lltrans.h"
 #include "llui.h"               // LLUI::getLanguage()
 #include "message.h"
-#include "llappviewer.h"
 
 LLAvatarPropertiesProcessor::LLAvatarPropertiesProcessor()
 {
@@ -473,6 +473,8 @@ void LLAvatarPropertiesProcessor::processClassifiedInfoReply(LLMessageSystem* ms
     // Request processed, no longer pending
     self->removePendingRequest(c_info.creator_id, APT_CLASSIFIED_INFO);
     self->notifyObservers(c_info.creator_id, &c_info, APT_CLASSIFIED_INFO);
+    self->removePendingRequest(c_info.classified_id, APT_CLASSIFIED_INFO);
+    self->notifyObservers(c_info.classified_id, &c_info, APT_CLASSIFIED_INFO);
 }
 
 

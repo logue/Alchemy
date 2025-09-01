@@ -171,7 +171,7 @@ void LLToolSelectRect::handleRectangleSelection(S32 x, S32 y, MASK mask)
         LLViewerCamera::getInstance()->setNear(new_near);
 
         // Usurp these two
-        limit_select_distance = TRUE;
+        limit_select_distance = true;
         select_dist_squared = s_nFartouchDist * s_nFartouchDist;
     }
 // [/RLVa:KB]
