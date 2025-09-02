@@ -36,6 +36,7 @@
 class LLAvatarName;
 class LLInventoryPanel;
 class LLFloater;
+struct LLPickData;
 class LLView;
 
 std::string getProfileURL(const std::string& agent_name, bool feed_only = false);
@@ -106,7 +107,9 @@ public:
     static void hideProfile(const LLUUID& avatar_id);
     static bool profileVisible(const LLUUID& avatar_id);
     static bool isPickTabSelected(const LLUUID& avatar_id);
-    static LLFloater* getProfileFloater(const LLUUID& avatar_id);
+    static LLFloater* findProfileFloater(const LLUUID& avatar_id);
+
+    static void createPick(const LLPickData& data);
 
     /**
      * Show avatar on world map.
@@ -189,6 +192,7 @@ public:
      */
     static void inviteToGroup(const LLUUID& id);
 
+#if 0
     static void freezeAvatar(const LLUUID& id);
 
     static void ejectAvatar(const LLUUID& id, bool ban_enabled = false);
@@ -206,6 +210,7 @@ public:
      * Unfreeze avatar
      */
     static void unfreeze(const LLUUID& id);
+#endif
 
     /**
      * Open csr page for avatar

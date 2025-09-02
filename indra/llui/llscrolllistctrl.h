@@ -326,7 +326,7 @@ public:
     void setCommitOnKeyboardMovement(bool b)    { mCommitOnKeyboardMovement = b; }
     void setCommitOnSelectionChange(bool b)     { mCommitOnSelectionChange = b; }
 // [SL:KB] - Patch: Control-ScrollList | Checked: Catznip-3.3
-    void setCommitOnDelete(BOOL b)              { mCommitOnDelete = b; }
+    void setCommitOnDelete(bool b)              { mCommitOnDelete = b; }
 // [/SL:KB]
     void setAllowKeyboardMovement(bool b)       { mAllowKeyboardMovement = b; }
 

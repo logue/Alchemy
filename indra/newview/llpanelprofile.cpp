@@ -1819,7 +1819,7 @@ void LLPanelProfileFirstLife::onShowAgentFirstlifeTexture()
                 texture_view->resetAsset();
             }
             texture_view->openFloater();
-            texture_view->setVisibleAndFrontmost(TRUE);
+            texture_view->setVisibleAndFrontmost(true);
 
             parent_floater->addDependentFloater(mFloaterProfileTextureHandle);
         }
@@ -1828,7 +1828,7 @@ void LLPanelProfileFirstLife::onShowAgentFirstlifeTexture()
     {
         LLFloaterProfileTexture* texture_view = dynamic_cast<LLFloaterProfileTexture*>(floater);
         texture_view->setMinimized(FALSE);
-        texture_view->setVisibleAndFrontmost(TRUE);
+        texture_view->setVisibleAndFrontmost(true);
         if (mPicture->getImageAssetId().notNull())
         {
             texture_view->loadAsset(mPicture->getImageAssetId());

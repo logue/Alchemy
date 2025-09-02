@@ -1272,7 +1272,7 @@ void LLInventoryModel::collectDescendents(const LLUUID& id,
 //void LLInventoryModel::collectDescendentsIf(const LLUUID& id,
 //                                          cat_array_t& cats,
 //                                          item_array_t& items,
-//                                          BOOL include_trash,
+//                                          bool include_trash,
 //                                          LLInventoryCollectFunctor& add)
 // [RLVa:KB] - Checked: 2013-04-15 (RLVa-1.4.8)
 void LLInventoryModel::collectDescendentsIf(const LLUUID& id,

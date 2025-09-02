@@ -397,7 +397,7 @@ bool LLColor4::parseColor(const std::string& buf, LLColor4* color)
         return false;
     }
 
-    boost_tokenizer           tokens(buf, boost::char_separator<char>(", "));
+    boost_tokenizer tokens(buf, boost::char_separator<char>(", "));
     boost_tokenizer::iterator token_iter = tokens.begin();
     if (token_iter == tokens.end())
     {

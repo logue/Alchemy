@@ -208,6 +208,7 @@
 #include "threadpool.h"
 #include "llperfstats.h"
 
+#include "llfloatersidepanelcontainer.h"
 
 #if LL_WINDOWS
 #include "lldxhardware.h"
@@ -343,19 +344,14 @@ void do_startup_frame()
 
 void pump_idle_startup_network(void)
 {
-    // while there are message to process:
-    //     process one then call display_startup()
-    S32 num_messages = 0;
     {
         LockMessageChecker lmc(gMessageSystem);
         while (lmc.checkAllMessages(gFrameCount, gServicePump))
         {
             display_startup();
-            ++num_messages;
         }
         lmc.processAcks();
     }
-    // finally call one last display_startup()
     display_startup();
 }
 
@@ -1592,6 +1588,11 @@ bool idle_startup()
         }
 
         gAgent.addRegionChangedCallback(boost::bind(&LLPerfStats::StatsRecorder::clearStats));
+        // Create people views early enough to register with avatar tracker
+        LLFloaterSidePanelContainer::getPanel("people", "panel_people");
+
+        // Create search early enough to not cause stutter
+        LLFloaterReg::getInstance("search");
 
         // *Note: this is where gWorldMap used to be initialized.
 

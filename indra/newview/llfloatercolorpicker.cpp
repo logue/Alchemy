@@ -172,7 +172,7 @@ void LLFloaterColorPicker::showUI ()
     setFocus ( true );
 
     // HACK: if system color picker is required - close the SL one we made and use default system dialog
-    if ( gSavedSettings.getBOOL ( "UseDefaultColorPicker" ) )
+    if ( gSavedSettings.getBOOL( "UseDefaultColorPicker" ) )
     {
         LLColorSwatchCtrl* swatch = getSwatch ();
 

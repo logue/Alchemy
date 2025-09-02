@@ -396,10 +396,12 @@ const std::string LLControlGroup::mTypeString[TYPE_COUNT] = { "U32"
                                                              ,"String"
                                                              ,"Vector3"
                                                              ,"Vector3D"
+                                                             ,"Vector4"
                                                              ,"Quaternion"
                                                              ,"Rect"
                                                              ,"Color4"
                                                              ,"Color3"
+                                                             ,"UUID"
                                                              ,"LLSD"
                                                              };
 

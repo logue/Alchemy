@@ -147,7 +147,7 @@ void LLAvatarPropertiesProcessor::sendGenericRequest(const LLUUID& avatar_id, EA
     // indicate we're going to make a request
     addPendingRequest(avatar_id, type);
 
-    std::vector<std::string> strings{ avatar_id.asString() };
+    const std::vector<std::string> strings{ avatar_id.asString() };
     send_generic_message(method, strings);
 }
 
@@ -180,6 +180,21 @@ void LLAvatarPropertiesProcessor::sendAvatarPropertiesRequest(const LLUUID& avat
 void LLAvatarPropertiesProcessor::sendAvatarLegacyPropertiesRequest(const LLUUID& avatar_id)
 {
     sendRequest(avatar_id, APT_PROPERTIES_LEGACY, "AvatarPropertiesRequest");
+}
+
+void LLAvatarPropertiesProcessor::sendAvatarLegacyPicksRequest(const LLUUID& avatar_id)
+{
+    sendGenericRequest(avatar_id, APT_PICKS, "avatarpicksrequest");
+}
+
+void LLAvatarPropertiesProcessor::sendAvatarLegacyNotesRequest(const LLUUID& avatar_id)
+{
+    sendGenericRequest(avatar_id, APT_NOTES, "avatarnotesrequest");
+}
+
+void LLAvatarPropertiesProcessor::sendAvatarLegacyGroupsRequest(const LLUUID& avatar_id)
+{
+    sendGenericRequest(avatar_id, APT_GROUPS, "avatargroupsrequest");
 }
 
 void LLAvatarPropertiesProcessor::sendAvatarTexturesRequest(const LLUUID& avatar_id)
@@ -420,6 +435,21 @@ void LLAvatarPropertiesProcessor::processAvatarInterestsReply(LLMessageSystem* m
     That will suppress the warnings and be compatible with old server versions.
     WARNING: LLTemplateMessageReader::decodeData: Message from 216.82.37.237:13000 with no handler function received: AvatarInterestsReply
 */
+
+    LLLegacyInterestsData interests_data;
+
+    msg->getUUIDFast(_PREHASH_AgentData, _PREHASH_AgentID, interests_data.agent_id);
+    msg->getUUIDFast(_PREHASH_AgentData, _PREHASH_AvatarID, interests_data.avatar_id);
+    msg->getU32Fast(_PREHASH_PropertiesData, _PREHASH_WantToMask, interests_data.want_to_mask);
+    msg->getStringFast(_PREHASH_PropertiesData, _PREHASH_WantToText, interests_data.want_to_text);
+    msg->getU32Fast(_PREHASH_PropertiesData, _PREHASH_SkillsMask, interests_data.skills_mask);
+    msg->getStringFast(_PREHASH_PropertiesData, _PREHASH_SkillsText, interests_data.skills_text);
+    msg->getString(_PREHASH_PropertiesData, _PREHASH_LanguagesText, interests_data.languages_text);
+
+    LLAvatarPropertiesProcessor* self = getInstance();
+    // Request processed, no longer pending
+    self->removePendingRequest(interests_data.avatar_id, APT_INTERESTS_INFO);
+    self->notifyObservers(interests_data.avatar_id, &interests_data, APT_INTERESTS_INFO);
 }
 
 void LLAvatarPropertiesProcessor::processAvatarClassifiedsReply(LLMessageSystem* msg, void**)
@@ -537,7 +567,7 @@ void LLAvatarPropertiesProcessor::processAvatarGroupsReply(LLMessageSystem* msg,
     LL_DEBUGS("AvatarProperties") << "Received AvatarGroupsReply for " << avatar_id << LL_ENDL;
 }
 
-void LLAvatarPropertiesProcessor::notifyObservers(const LLUUID& id, void* data, EAvatarProcessorType type)
+void LLAvatarPropertiesProcessor::notifyObservers(const LLUUID& id, void* data, EAvatarProcessorType type) const
 {
     // Copy the map (because observers may delete themselves when updated?)
     LLAvatarPropertiesProcessor::observer_multimap_t observers = mObservers;
@@ -665,6 +695,27 @@ void LLAvatarPropertiesProcessor::sendClassifiedInfoUpdate(const LLAvatarClassif
     msg->addVector3d(_PREHASH_PosGlobal, c_data->pos_global);
     msg->addU8(_PREHASH_ClassifiedFlags, c_data->flags);
     msg->addS32(_PREHASH_PriceForListing, c_data->price_for_listing);
+
+    gAgent.sendReliableMessage();
+}
+
+void LLAvatarPropertiesProcessor::sendInterestsInfoUpdate(const LLLegacyInterestsData* interests_data)
+{
+    if (!interests_data)
+        return;
+
+    LLMessageSystem* msg = gMessageSystem;
+
+    msg->newMessage(_PREHASH_AvatarInterestsUpdate);
+    msg->nextBlockFast(_PREHASH_AgentData);
+    msg->addUUIDFast(_PREHASH_AgentID, gAgentID);
+    msg->addUUIDFast(_PREHASH_SessionID, gAgentSessionID);
+    msg->nextBlockFast(_PREHASH_PropertiesData);
+    msg->addU32Fast(_PREHASH_WantToMask, interests_data->want_to_mask);
+    msg->addStringFast(_PREHASH_WantToText, interests_data->want_to_text);
+    msg->addU32Fast(_PREHASH_SkillsMask, interests_data->skills_mask);
+    msg->addStringFast(_PREHASH_SkillsText, interests_data->skills_text);
+    msg->addString(_PREHASH_LanguagesText, interests_data->languages_text);
 
     gAgent.sendReliableMessage();
 }

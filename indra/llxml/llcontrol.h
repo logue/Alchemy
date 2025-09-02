@@ -335,9 +335,7 @@ public:
         bindToControl(group, name);
     }
 
-    ~LLControlCache()
-    {
-    }
+    ~LLControlCache() = default;
 
     const T& getValue() const { return mCachedValue; }
 

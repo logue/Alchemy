@@ -197,7 +197,7 @@ Account: [ACCTTYPE]
      visible="false">
       <icon
        name="badge_icon"
-       image_name="Beta_Tester"
+       image_name="Profile_Badge_Beta"
        layout="topleft"
        follows="left|top"
        top="10"

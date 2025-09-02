@@ -291,6 +291,7 @@ set(viewer_SOURCE_FILES
     llfloaterperformance.cpp
     llfloaterperms.cpp
     llfloaterprofile.cpp
+    llfloaterprofilelegacy.cpp
     llfloaterpreference.cpp
     llfloaterpreferencesgraphicsadvanced.cpp
     llfloaterpreferenceviewadvanced.cpp
@@ -451,6 +452,7 @@ set(viewer_SOURCE_FILES
     lloutputmonitorctrl.cpp
     llpanelappearancetab.cpp
     llpanelavatar.cpp
+    llpanelavatarlegacy.cpp
     llpanelavatartag.cpp
     llpanelblockedlist.cpp
     llpanelclassified.cpp
@@ -510,6 +512,7 @@ set(viewer_SOURCE_FILES
     llpanelpresetspulldown.cpp
     llpanelprimmediacontrols.cpp
     llpanelprofile.cpp
+    llpanelprofilelegacy.cpp
     llpanelprofileclassifieds.cpp
     llpanelprofilepicks.cpp
     llpanelsearchbase.cpp
@@ -1014,6 +1017,7 @@ set(viewer_HEADER_FILES
     llfloaterperformance.h
     llfloaterperms.h
     llfloaterprofile.h
+    llfloaterprofilelegacy.h
     llfloaterpreference.h
     llfloaterpreferencesgraphicsadvanced.h
     llfloaterpreferenceviewadvanced.h
@@ -1163,6 +1167,7 @@ set(viewer_HEADER_FILES
     lloutputmonitorctrl.h
     llpanelappearancetab.h
     llpanelavatar.h
+    llpanelavatarlegacy.h
     llpanelavatartag.h
     llpanelblockedlist.h
     llpanelclassified.h
@@ -1223,6 +1228,7 @@ set(viewer_HEADER_FILES
     llpanelpresetspulldown.h
     llpanelprimmediacontrols.h
     llpanelprofile.h
+    llpanelprofilelegacy.h
     llpanelprofileclassifieds.h
     llpanelprofilepicks.h
     llpanelsearchbase.h
