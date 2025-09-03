@@ -1232,12 +1232,12 @@ void LLFloaterPreference::initAutoResponses()
         gSavedPerAccountSettings.setString("AlchemyRejectFriendshipRequestsResponse", LLTrans::getString("RejectFriendshipRequestsResponseDefault"));
     }
 
-    if (!gSavedPerAccountSettings.getBOOL(""))
+    if (!gSavedPerAccountSettings.getBOOL("AlchemyAutoresponseEnable"))
     {
         gSavedPerAccountSettings.setString("AlchemyAutoresponse", LLTrans::getString("AutoResponseModeDefault"));
     }
 
-    if (!gSavedPerAccountSettings.getBOOL(""))
+    if (!gSavedPerAccountSettings.getBOOL("AlchemyAutoresponseNotFriendEnable"))
     {
         gSavedPerAccountSettings.setString("AlchemyAutoresponseNotFriend", LLTrans::getString("AutoResponseModeNonFriendsDefault"));
     }
