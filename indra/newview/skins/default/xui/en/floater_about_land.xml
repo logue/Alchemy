@@ -67,7 +67,7 @@
         <panel
          border="true"
          follows="all"
-         label="GENERAL"
+         label="General"
          layout="topleft"
          left="0"
          help_topic="land_general_tab"
@@ -582,7 +582,7 @@
         <panel
          border="true"
          follows="all"
-         label="COVENANT"
+         label="Covenant"
          layout="topleft"
          left="0"
          top="0"
@@ -816,7 +816,7 @@
         <panel
          border="true"
          follows="all"
-         label="OBJECTS"
+         label="Objects"
          layout="topleft"
          left="0"
          top="0"
@@ -1177,7 +1177,7 @@
         <panel
          border="true"
          follows="all"
-         label="OPTIONS"
+         label="Options"
          layout="topleft"
          help_topic="land_options_tab"
          name="land_options_panel"
@@ -1478,7 +1478,7 @@ Only large parcels can be listed in search.
              type="string"
              length="1"
              follows="left|top"
-             text_color="LtGray"
+			 text_color="LabelTextColor"
              text_readonly_color="LabelDisabledColor"
              height="32"
              layout="topleft"
@@ -1575,7 +1575,7 @@ Only large parcels can be listed in search.
         <panel
          border="true"
          follows="all"
-         label="MEDIA"
+         label="Media"
          layout="topleft"
          left="0"
          top="0"
@@ -1789,7 +1789,7 @@ Only large parcels can be listed in search.
         <panel
          border="true"
          follows="all"
-         label="SOUND"
+         label="Sound"
          layout="topleft"
          left="0"
          top="0"
@@ -1807,12 +1807,14 @@ Only large parcels can be listed in search.
              width="364">
                 Music URL:
             </text>
-            <line_editor
+            <combo_box
+             allow_text_entry="true"
+             allow_new_values="true"
              follows="left|top|right"
              height="23"
              layout="topleft"
              left="100"
-             max_length_bytes="255"
+             max_chars="255"
              name="music_url"
              top_delta="0"
              right="-15"
@@ -1926,7 +1928,7 @@ Only large parcels can be listed in search.
         <panel
          border="true"
          follows="all"
-         label="ACCESS"
+         label="Access"
          layout="topleft"
          left="0"
          top="0"
@@ -2168,25 +2170,23 @@ Only large parcels can be listed in search.
        <panel
           border="true"
           follows="all"
-          label="EXPERIENCES"
+          label="Experiences"
           layout="topleft"
           left="0"
           top="0"
           help_topic="land_experiences_tab"
           name="land_experiences_panel"
-            class="land_experiences_panel"
           filename="panel_region_experiences.xml">
        </panel>
     <panel
           border="true"
           follows="all"
-          label="ENVIRONMENT"
+          label="Environment"
           layout="topleft"
           left="0"
           top="0"
           help_topic="land_environment_tab"
           name="land_environment_panel"
-          class="land_environment_panel"
           filename="panel_region_environment.xml">
        </panel>
     </tab_container>

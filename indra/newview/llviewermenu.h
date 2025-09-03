@@ -56,8 +56,6 @@ void show_topinfobar_context_menu(LLView* ctrl, S32 x, S32 y);
 void handle_reset_view();
 void process_grant_godlike_powers(LLMessageSystem* msg, void**);
 
-bool is_agent_mappable(const LLUUID& agent_id);
-
 bool enable_god_full();
 bool enable_god_liaison();
 bool enable_god_basic();

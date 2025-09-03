@@ -782,7 +782,7 @@ void LLPanelProfileLegacy::onCommitChangeImage(LLProfileImageCtrl* ctrl)
 
         getWindow()->setCursor(UI_CURSOR_WAIT);
         LLFloaterTexturePicker* picker =
-            new LLFloaterTexturePicker(this, ctrl->getImageAssetId(), LLUUID::null, ctrl->getImageAssetId(), false, false,
+            new LLFloaterTexturePicker(this, ctrl->getImageAssetId(), LLUUID::null, ctrl->getImageAssetId(), ctrl->getImageAssetId(), false, false,
                                        "SELECT IMAGE", PERM_NONE, PERM_NONE, false, nullptr, PICK_TEXTURE);
         mTexturePicker = picker->getHandle();
         picker->setOnFloaterCommitCallback(

@@ -4516,21 +4516,6 @@ void process_grant_godlike_powers(LLMessageSystem* msg, void**)
     }
 }
 
-bool is_agent_mappable(const LLUUID& agent_id)
-{
-    const LLRelationship* buddy_info = NULL;
-    bool is_friend = LLAvatarActions::isFriend(agent_id);
-
-    if (is_friend)
-        buddy_info = LLAvatarTracker::instance().getBuddyInfo(agent_id);
-
-    return (buddy_info &&
-        buddy_info->isOnline() &&
-        buddy_info->isRightGrantedFrom(LLRelationship::GRANT_MAP_LOCATION)
-        );
-}
-
-
 // Enable a menu item when you don't have someone's card.
 class LLAvatarEnableAddFriend : public view_listener_t
 {

@@ -77,7 +77,6 @@
 #include "llprofileimagepicker.h"
 #include "lltrans.h"
 #include "llviewercontrol.h"
-#include "llviewermenu.h" //is_agent_mappable
 #include "llviewermenufile.h"
 #include "llviewertexturelist.h"
 #include "llvoiceclient.h"
@@ -1335,6 +1334,7 @@ void LLPanelProfileSecondLife::onShowTexturePicker()
                 mSecondLifePic->getImageAssetId(),
                 LLUUID::null,
                 mSecondLifePic->getImageAssetId(),
+                mSecondLifePic->getImageAssetId(),
                 false,
                 false,
                 "SELECT PHOTO",
@@ -1658,6 +1658,7 @@ void LLPanelProfileFirstLife::onChangePhoto()
                 this,
                 mPicture->getImageAssetId(),
                 LLUUID::null,
+                mPicture->getImageAssetId(),
                 mPicture->getImageAssetId(),
                 false,
                 false,

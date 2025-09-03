@@ -598,9 +598,6 @@ public:
     const LLFontGL* mFont;
 
 private:
-
-
-    static LLColor4 sDefaultBackgroundColor;
     static bool     sKeyboardMode;
 
     bool            mAlwaysShowMenu;

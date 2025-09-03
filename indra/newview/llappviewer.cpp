@@ -3337,9 +3337,11 @@ LLSD LLAppViewer::getViewerInfo() const
     info["CHANNEL"] = versionInfo.getChannel();
     info["ADDRESS_SIZE"] = ADDRESS_SIZE;
 #if LL_ARM64
-    info["ARCHITECTURE"] = "ARM64";
+    info["ARCHITECTURE"] = "NEON";
+#elif defined(__AVX2__)
+    info["ARCHITECTURE"] = "AVX2";
 #else
-    info["ARCHITECTURE"] = "x86_64";
+    info["ARCHITECTURE"] = "SSE4_2";
 #endif
     std::string build_config = versionInfo.getBuildConfig();
     if (build_config != "Release")
