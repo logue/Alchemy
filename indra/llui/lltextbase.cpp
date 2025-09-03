@@ -6,6 +6,7 @@
  * $LicenseInfo:firstyear=2009&license=viewerlgpl$
  * Second Life Viewer Source Code
  * Copyright (C) 2009-2010, Linden Research, Inc.
+ * Copyright (C) 2010-2016, Kitty Barnett
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -2239,6 +2240,7 @@ void LLTextBase::createUrlContextMenu(S32 x, S32 y, const std::string &in_url)
     registrar.add("Url.ShowParcelOnMap", boost::bind(&LLUrlAction::showParcelOnMap, url));
     registrar.add("Url.CopyLabel", boost::bind(&LLUrlAction::copyLabelToClipboard, url));
     registrar.add("Url.CopyUrl", boost::bind(&LLUrlAction::copyURLToClipboard, url));
+    registrar.add("Url.CopyUUID", boost::bind(&LLUrlAction::copyUUIDToClipboard, url));
 
     // create and return the context menu from the XUI file
 
@@ -2257,12 +2259,12 @@ void LLTextBase::createUrlContextMenu(S32 x, S32 y, const std::string &in_url)
 
         if (mIsFriendSignal)
         {
-            bool isFriend = *(*mIsFriendSignal)(LLUUID(LLUrlAction::getUserID(url)));
-            LLView* addFriendButton = menu->getChild<LLView>("add_friend");
-            LLView* removeFriendButton = menu->getChild<LLView>("remove_friend");
+            LLView* addFriendButton = menu->findChild<LLView>("add_friend");
+            LLView* removeFriendButton = menu->findChild<LLView>("remove_friend");
 
             if (addFriendButton && removeFriendButton)
             {
+                bool isFriend = *(*mIsFriendSignal)(LLUUID(LLUrlAction::getUserID(url)));
                 addFriendButton->setEnabled(!isFriend);
                 removeFriendButton->setEnabled(isFriend);
             }
@@ -2270,12 +2272,12 @@ void LLTextBase::createUrlContextMenu(S32 x, S32 y, const std::string &in_url)
 
         if (mIsObjectBlockedSignal)
         {
-            bool is_blocked = *(*mIsObjectBlockedSignal)(LLUUID(LLUrlAction::getObjectId(url)), LLUrlAction::getObjectName(url));
-            LLView* blockButton = menu->getChild<LLView>("block_object");
-            LLView* unblockButton = menu->getChild<LLView>("unblock_object");
+            LLView* blockButton = menu->findChild<LLView>("block_object");
+            LLView* unblockButton = menu->findChild<LLView>("unblock_object");
 
             if (blockButton && unblockButton)
             {
+                bool is_blocked = *(*mIsObjectBlockedSignal)(LLUUID(LLUrlAction::getObjectId(url)), LLUrlAction::getObjectName(url));
                 blockButton->setVisible(!is_blocked);
                 unblockButton->setVisible(is_blocked);
             }
