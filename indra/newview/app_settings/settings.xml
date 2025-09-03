@@ -7222,7 +7222,7 @@
       <key>Type</key>
       <string>Boolean</string>
       <key>Value</key>
-      <integer>1</integer>
+      <integer>0</integer>
     </map>
     <key>QAMode</key>
     <map>
@@ -8489,7 +8489,7 @@
     <key>Comment</key>
     <string>EXPERIMENTAL: Prime the depth buffer with simple prim geometry before rendering with textures.</string>
     <key>Persist</key>
-    <integer>1</integer>
+    <integer>0</integer>
     <key>Type</key>
     <string>Boolean</string>
     <key>Value</key>
@@ -8874,7 +8874,7 @@
       <key>Comment</key>
       <string>Dynamically adjust level of detail.</string>
       <key>Persist</key>
-      <integer>1</integer>
+      <integer>0</integer>
       <key>Type</key>
       <string>Boolean</string>
       <key>Value</key>
@@ -9271,7 +9271,7 @@
       <key>Type</key>
       <string>Boolean</string>
       <key>Value</key>
-      <integer>0</integer>
+      <integer>1</integer>
     </map>
     <key>NameTagShowUsernames</key>
     <map>
@@ -9366,7 +9366,7 @@
       <key>Comment</key>
       <string>Render influence volumes of Reflection Probes</string>
       <key>Persist</key>
-      <integer>0</integer>
+      <integer>1</integer>
       <key>Type</key>
       <string>Boolean</string>
       <key>Value</key>
@@ -9559,7 +9559,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <integer>64</integer>
+    <real>64</real>
   </map>
   <key>RenderReflectionProbeAmbiance</key>
   <map>
@@ -10794,7 +10794,7 @@
       <key>Comment</key>
       <string>Select reflection probes</string>
       <key>Persist</key>
-      <integer>0</integer>
+      <integer>1</integer>
       <key>Type</key>
       <string>Boolean</string>
       <key>Value</key>
@@ -10996,7 +10996,7 @@
       <key>Type</key>
       <string>Boolean</string>
       <key>Value</key>
-      <integer>0</integer>
+      <integer>1</integer>
     </map>
     <key>NavBarShowParcelProperties</key>
     <map>
@@ -11650,7 +11650,7 @@
       <key>Type</key>
       <string>String</string>
       <key>Value</key>
-      <string>default</string>
+      <string>alchemy</string>
     </map>
     <key>SkinningSettingsFile</key>
     <map>
@@ -12087,7 +12087,7 @@
       <key>Comment</key>
       <string>If TRUE, always load textures at full resolution (discard = 0)</string>
       <key>Persist</key>
-      <integer>1</integer>
+      <integer>0</integer>
       <key>Type</key>
       <string>Boolean</string>
       <key>Value</key>
@@ -14645,6 +14645,7 @@
 	      <string>postcard</string>
 	      <string>mini_map</string>
 	      <string>beacons</string>
+	      <string>stats</string>
       </array>
     </map>
     <key>LandmarksSortedByDate</key>
@@ -15332,6 +15333,17 @@
     <map>
       <key>Comment</key>
       <string>Newly created clothing or body part is shared with the currently active group</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>0</integer>
+    </map>
+    <key>SettingsNextOwnerCopy</key>
+    <map>
+      <key>Comment</key>
+      <string>Newly created Environment setting can copied by next owner</string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>
@@ -16075,7 +16087,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>1.0</real>
+    <real>0</real>
   </map>
   <key>FMODExProfilerEnable</key>
   <map>
@@ -16430,7 +16442,7 @@
     <key>Type</key>
     <string>U32</string>
     <key>Value</key>
-    <integer>95</integer>
+    <integer>100</integer>
   </map>
   <key>360CaptureDebugSaveImage</key>
   <map>
