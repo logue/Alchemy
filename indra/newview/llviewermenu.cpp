@@ -6758,6 +6758,60 @@ class LLCommunicateGetRejectFriendshipRequests  : public view_listener_t
     }
 };
 
+class LLCommunicateSetAutoRespond : public view_listener_t
+{
+    bool handleEvent(const LLSD& userdata)
+    {
+        bool is_autorespond_set = gSavedPerAccountSettings.getBOOL("AlchemyAutoresponseEnable");
+        if (is_autorespond_set)
+        {
+            gSavedPerAccountSettings.setBOOL("AlchemyAutoresponseEnable", false);
+        }
+        else
+        {
+            gSavedPerAccountSettings.setBOOL("AlchemyAutoresponseEnable", true);
+            LLNotificationsUtil::add("AutoRespondModeSet");
+        }
+        return true;
+    }
+};
+
+class LLCommunicateCheckAutoRespond : public view_listener_t
+{
+    bool handleEvent(const LLSD& userdata)
+    {
+        bool is_autorespond_set = gSavedPerAccountSettings.getBOOL("AlchemyAutoresponseEnable");
+        return is_autorespond_set;
+    }
+};
+
+class LLCommunicateSetAutoRespondNonFriends : public view_listener_t
+{
+    bool handleEvent(const LLSD& userdata)
+    {
+       bool is_autorespond_nonfriends_set = gSavedPerAccountSettings.getBOOL("AlchemyAutoresponseNotFriendEnable");
+        if (is_autorespond_nonfriends_set)
+        {
+            gSavedPerAccountSettings.setBOOL("AlchemyAutoresponseNotFriendEnable", false);
+        }
+        else
+        {
+            gSavedPerAccountSettings.setBOOL("AlchemyAutoresponseNotFriendEnable", true);
+            LLNotificationsUtil::add("AutoRespondNonFriendsModeSet");
+        }
+        return true;
+    }
+};
+
+class LLCommunicateCheckAutoRespondNonFriends : public view_listener_t
+{
+    bool handleEvent(const LLSD& userdata)
+    {
+        bool is_autorespond_nonfriends_set = gSavedPerAccountSettings.getBOOL("AlchemyAutoresponseNotFriendEnable");
+        return is_autorespond_nonfriends_set;
+    }
+};
+
 class LLWorldCreateLandmark : public view_listener_t
 {
     bool handleEvent(const LLSD& userdata)
@@ -10379,6 +10433,10 @@ void initialize_menus()
     view_listener_t::addMenu(new LLCommunicateGetRejectTeleportOffers(), "Communicate.GetRejectTeleportOffers");
     view_listener_t::addMenu(new LLCommunicateSetRejectFriendshipRequests(), "Communicate.SetRejectFriendshipRequests");
     view_listener_t::addMenu(new LLCommunicateGetRejectFriendshipRequests(), "Communicate.GetRejectFriendshipRequests");
+    view_listener_t::addMenu(new LLCommunicateSetAutoRespond(), "Communicate.SetAutoRespond");
+    view_listener_t::addMenu(new LLCommunicateSetAutoRespondNonFriends(), "Communicate.SetAutoRespondNonFriends");
+    view_listener_t::addMenu(new LLCommunicateCheckAutoRespond(), "Communicate.GetAutoRespond");
+    view_listener_t::addMenu(new LLCommunicateCheckAutoRespondNonFriends(), "Communicate.GetAutoRespondNonFriends");
 
     // World menu
     view_listener_t::addMenu(new LLWorldAlwaysRun(), "World.AlwaysRun");

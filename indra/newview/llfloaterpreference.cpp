@@ -621,6 +621,24 @@ void LLFloaterPreference::onAdHocSelectionChanged(const LLSD& newvalue)
     getChild<LLCheckBoxCtrl>("AlchemyReportIgnoredAdHocSession")->setEnabled(value != 0);
 }
 
+void LLFloaterPreference::onAutoRespondResponseChanged()
+{
+    bool auto_response_changed_flag =
+            LLTrans::getString("AutoResponseModeDefault")
+                    != getChild<LLUICtrl>("autorespond_response")->getValue().asString();
+
+    gSavedPerAccountSettings.setBOOL("ALAutoRespondChanged", auto_response_changed_flag);
+}
+
+void LLFloaterPreference::onAutoRespondNonFriendsResponseChanged()
+{
+    bool auto_response_non_friends_changed_flag =
+            LLTrans::getString("AutoResponseModeNonFriendsDefault")
+                    != getChild<LLUICtrl>("autorespond_nf_response")->getValue().asString();
+
+    gSavedPerAccountSettings.setBOOL("ALAutoRespondNonFriendsChanged", auto_response_non_friends_changed_flag);
+}
+
 ////////////////////////////////////////////////////
 // Skins panel
 
@@ -892,6 +910,8 @@ LLFloaterPreference::~LLFloaterPreference()
     mImpostorsChangedSignal.disconnect();
     mRejectTeleportConnection.disconnect();
     mRejectFriendshipRequestsConnection.disconnect();
+    mAutoResponseConnection.disconnect();
+    mAutoResponseNonFriendsConnection.disconnect();
 }
 
 void LLFloaterPreference::draw()
@@ -980,6 +1000,15 @@ void LLFloaterPreference::apply()
         }
     }
 
+    // Setting this up so we sync the settings with menu.
+    // i.e Checking the checkox form the Preferences will also check it in the menu.
+    // --Fallen
+    bool autoresponse_enabled = getChild<LLCheckBoxCtrl>("AlchemyAutoresponseEnable")->get();
+    bool autoresponse_notfriends_enabled = getChild<LLCheckBoxCtrl>("AlchemyAutoresponseNotFriendEnable")->get();
+
+    gSavedPerAccountSettings.setBOOL("AlchemyAutoresponseEnable", autoresponse_enabled);
+    gSavedPerAccountSettings.setBOOL("AlchemyAutoresponseNotFriendEnable", autoresponse_notfriends_enabled);
+
     saveAvatarProperties();
 }
 
@@ -1056,7 +1085,8 @@ void LLFloaterPreference::onOpen(const LLSD& key)
         gSavedPerAccountSettings.getControl("DoNotDisturbModeResponse")->getSignal()->connect(boost::bind(&LLFloaterPreference::onDoNotDisturbResponseChanged, this));
         mRejectTeleportConnection = gSavedPerAccountSettings.getControl("AlchemyRejectTeleportOffersResponse")->getSignal()->connect(boost::bind(&LLFloaterPreference::onRejectTeleportOffersResponseChanged, this));
         mRejectFriendshipRequestsConnection = gSavedPerAccountSettings.getControl("AlchemyRejectFriendshipRequestsResponse")->getSignal()->connect(boost::bind(&LLFloaterPreference::onRejectFriendshipRequestResponseChanged, this));
-    }
+        mAutoResponseConnection = gSavedPerAccountSettings.getControl("AlchemyAutoresponse")->getSignal()->connect(boost::bind(&LLFloaterPreference::onAutoRespondResponseChanged, this));
+        mAutoResponseNonFriendsConnection = gSavedPerAccountSettings.getControl("AlchemyAutoresponseNotFriend")->getSignal()->connect(boost::bind(&LLFloaterPreference::onAutoRespondNonFriendsResponseChanged, this));    }
     gAgent.sendAgentUserInfoRequest();
 
     /////////////////////////// From LLPanelGeneral //////////////////////////
@@ -1200,6 +1230,16 @@ void LLFloaterPreference::initAutoResponses()
     if (!gSavedPerAccountSettings.getBOOL("AlchemyRejectFriendshipRequestsChanged"))
     {
         gSavedPerAccountSettings.setString("AlchemyRejectFriendshipRequestsResponse", LLTrans::getString("RejectFriendshipRequestsResponseDefault"));
+    }
+
+    if (!gSavedPerAccountSettings.getBOOL(""))
+    {
+        gSavedPerAccountSettings.setString("AlchemyAutoresponse", LLTrans::getString("AutoResponseModeDefault"));
+    }
+
+    if (!gSavedPerAccountSettings.getBOOL(""))
+    {
+        gSavedPerAccountSettings.setString("AlchemyAutoresponseNotFriend", LLTrans::getString("AutoResponseModeNonFriendsDefault"));
     }
 }
 
