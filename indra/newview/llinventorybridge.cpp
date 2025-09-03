@@ -1967,6 +1967,20 @@ void LLItemBridge::restoreToWorld()
     LLViewerInventoryItem* itemp = static_cast<LLViewerInventoryItem*>(getItem());
     if (itemp)
     {
+        {
+            // do not restore to last position when the item is no-copy to prevent
+            // inventory loss
+            if(!itemp->getPermissions().allowCopyBy(gAgent.getID()))
+            {
+                // debug guard for future testing of a server side fix
+                if(!gSavedSettings.getBOOL("AllowNoCopyRezRestoreToWorld"))
+                {
+                    LLNotificationsUtil::add("CantRestoreToWorldNoCopy");
+                    return;
+                }
+            }
+        }
+
         LLMessageSystem* msg = gMessageSystem;
         msg->newMessage("RezRestoreToWorld");
         msg->nextBlockFast(_PREHASH_AgentData);
@@ -7502,8 +7516,7 @@ void LLObjectBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
                 items.push_back(std::string("Wearable Add"));
                 items.push_back(std::string("Attach To"));
                 items.push_back(std::string("Attach To HUD"));
-                // commented out for DEV-32347
-                //items.push_back(std::string("Restore to Last Position"));
+                items.push_back(std::string("Restore to Last Position"));
 
                 if (!gAgentAvatarp->canAttachMoreObjects())
                 {

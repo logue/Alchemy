@@ -2413,7 +2413,7 @@ Wrong chunk size in WAV file:
    icon="alertmodal.tga"
    name="SoundFileInvalidTooLong"
    type="alertmodal">
-Audio file is too long (30 second maximum):
+Audio file is too long (60 second maximum):
 [FILE]
   <tag>fail</tag>
   </notification>
@@ -13119,6 +13119,12 @@ Always Run disabled.
   type="notifytip">
 	 Irrevocably destroying object. Hope you didn't need that.
  </notification>
+  <notification
+   icon="alertmodal.tga"
+   name="CantRestoreToWorldNoCopy"
+   type="alertmodal">
+Restore to Last Position is not allowed for no copy items to prevent possible content loss.
+  </notification>
  <notification
       icon="alert.tga"
       name="RejectTeleportOffersModeSet"

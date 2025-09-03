@@ -86,6 +86,10 @@
 #include "raytrace.h"
 
 // newview includes
+#include "llagent.h"
+// [SL:KB] - Patch: Build-DragNDrop | Checked: 2013-07-22 (Catznip-3.6)
+#include "llagentbenefits.h"
+// [/SL:KB]
 #include "llbox.h"
 #include "llchicletbar.h"
 #include "llconsole.h"
@@ -126,6 +130,8 @@
 #include "llimageworker.h"
 #include "llkeyboard.h"
 #include "lllineeditor.h"
+#include "lllocalbitmaps.h"
+#include "lllocalgltfmaterials.h"
 #include "llmenugl.h"
 #include "llmenuoptionpathfindingrebakenavmesh.h"
 #include "llmodaldialog.h"
@@ -171,6 +177,10 @@
 #include "llviewerinventory.h"
 #include "llviewermedia.h"
 #include "llviewermediafocus.h"
+#include "llviewermenu.h"
+// [SL:KB] - Patch: Build-DragNDrop | Checked: 2013-07-22 (Catznip-3.6)
+#include "llviewermenufile.h"
+// [/SL:KB]
 #include "llviewermessage.h"
 #include "llviewerobjectlist.h"
 #include "llviewerparcelmgr.h"
@@ -216,6 +226,8 @@
 #include "llwindowwin32.h" // For AltGr handling
 #endif
 
+void upload_single_file(const std::vector<std::string>& filenames, LLFilePicker::ELoadFilter type, const LLUUID& dest);
+void upload_bulk(const std::vector<std::string>& filenames, LLFilePicker::ELoadFilter type, bool allow_2k, const LLUUID& dest);
 //
 // Globals
 //
@@ -1230,7 +1242,29 @@ bool LLViewerWindow::handleMiddleMouseDown(LLWindow *window,  LLCoordGL pos, MAS
     return true;
 }
 
-LLWindowCallbacks::DragNDropResult LLViewerWindow::handleDragNDrop( LLWindow *window, LLCoordGL pos, MASK mask, LLWindowCallbacks::DragNDropAction action, std::string data)
+// [SL:KB] - Patch: Build-DragNDrop | Checked: 2013-07-22 (Catznip-3.6)
+LLWindowCallbacks::DragNDropResult LLViewerWindow::handleDragNDrop(LLWindow *window, LLCoordGL pos, MASK mask, LLWindowCallbacks::DragNDropAction action,
+                                                                   LLWindowCallbacks::DragNDropType type, const std::vector<std::string>& data)
+{
+    LLWindowCallbacks::DragNDropResult result = LLWindowCallbacks::DND_NONE;
+    switch (type)
+    {
+        case LLWindowCallbacks::DNDT_FILE:
+            result = handleDragNDropFile(window, pos, mask, action, type, data);
+            break;
+        case LLWindowCallbacks::DNDT_DEFAULT:
+        default:
+            result = handleDragNDropDefault(window, pos, mask, action, (!data.empty()) ? data.front() : LLStringUtil::null);
+            break;
+    }
+    return result;
+}
+// [/SL:KB]
+
+//LLWindowCallbacks::DragNDropResult LLViewerWindow::handleDragNDrop( LLWindow *window, LLCoordGL pos, MASK mask, LLWindowCallbacks::DragNDropAction action, std::string data)
+// [SL:KB] - Patch: Build-DragNDrop | Checked: 2013-07-22 (Catznip-3.6)
+LLWindowCallbacks::DragNDropResult LLViewerWindow::handleDragNDropDefault(LLWindow* window, LLCoordGL pos, MASK mask, LLWindowCallbacks::DragNDropAction action, std::string data)
+// [/SL:KB]
 {
     LLWindowCallbacks::DragNDropResult result = LLWindowCallbacks::DND_NONE;
 
@@ -1374,6 +1408,197 @@ LLWindowCallbacks::DragNDropResult LLViewerWindow::handleDragNDrop( LLWindow *wi
 
     return result;
 }
+
+// [SL:KB] - Patch: Build-DragNDrop | Checked: 2013-07-22 (Catznip-3.6)
+// This really should be standardized somewhere instead of having extensions duplicated all over the code
+typedef std::tuple<const char*, LLAssetType::EType, LLFilePicker::ELoadFilter> dragdrop_type_lookup_t;
+static dragdrop_type_lookup_t s_DragDropTypesLookup[] = {
+    std::make_tuple("bmp", LLAssetType::AT_TEXTURE, LLFilePicker::FFLOAD_IMAGE),
+    std::make_tuple("jpg", LLAssetType::AT_TEXTURE, LLFilePicker::FFLOAD_IMAGE),
+    std::make_tuple("jpeg", LLAssetType::AT_TEXTURE, LLFilePicker::FFLOAD_IMAGE),
+    std::make_tuple("png", LLAssetType::AT_TEXTURE, LLFilePicker::FFLOAD_IMAGE),
+    std::make_tuple("tga", LLAssetType::AT_TEXTURE, LLFilePicker::FFLOAD_IMAGE),
+    std::make_tuple("webp", LLAssetType::AT_TEXTURE, LLFilePicker::FFLOAD_IMAGE),
+    std::make_tuple("bvh", LLAssetType::AT_ANIMATION, LLFilePicker::FFLOAD_ANIM),
+    std::make_tuple("anim", LLAssetType::AT_ANIMATION, LLFilePicker::FFLOAD_ANIM),
+    std::make_tuple("wav", LLAssetType::AT_SOUND_WAV, LLFilePicker::FFLOAD_WAV),
+    std::make_tuple("dae", LLAssetType::AT_MESH, LLFilePicker::FFLOAD_MODEL),
+    std::make_tuple("gltf", LLAssetType::AT_MATERIAL, LLFilePicker::FFLOAD_GLTF),
+    std::make_tuple("glb", LLAssetType::AT_MATERIAL, LLFilePicker::FFLOAD_GLTF),
+};
+
+static LLAssetType::EType getAssetTypeFromFilename(const std::string strFilename)
+{
+    const std::string& strExt = gDirUtilp->getExtension(strFilename);
+    for (int idxLookup = 0, cntLookup = sizeof(s_DragDropTypesLookup) / sizeof(dragdrop_type_lookup_t); idxLookup < cntLookup; idxLookup++)
+    {
+        if (strExt == std::get<0>(s_DragDropTypesLookup[idxLookup]))
+            return std::get<1>(s_DragDropTypesLookup[idxLookup]);
+    }
+    return LLAssetType::AT_NONE;
+}
+
+static LLFilePicker::ELoadFilter getLoadFilterFromFilename(const std::string strFilename)
+{
+    const std::string& strExt = gDirUtilp->getExtension(strFilename);
+    for (int idxLookup = 0, cntLookup = sizeof(s_DragDropTypesLookup) / sizeof(dragdrop_type_lookup_t); idxLookup < cntLookup; idxLookup++)
+    {
+        if (strExt == std::get<0>(s_DragDropTypesLookup[idxLookup]))
+            return std::get<2>(s_DragDropTypesLookup[idxLookup]);
+    }
+    return LLFilePicker::FFLOAD_ALL;
+}
+
+LLWindowCallbacks::DragNDropResult LLViewerWindow::handleDragNDropFile(LLWindow *window, LLCoordGL pos, MASK mask, LLWindowCallbacks::DragNDropAction action,
+                                                                       LLWindowCallbacks::DragNDropType type, const std::vector<std::string>& data)
+{
+    bool fDrop = (LLWindowCallbacks::DNDA_DROPPED == action);
+
+    LLWindowCallbacks::DragNDropResult result = LLWindowCallbacks::DND_NONE;
+    switch (action)
+    {
+        case LLWindowCallbacks::DNDA_START_TRACKING:
+            {
+                mDragItems.clear();
+                if (gLoggedInTime.getStarted())
+                {
+                    for (std::vector<std::string>::const_iterator itFile = data.begin(); itFile != data.end(); ++itFile)
+                    {
+                        const std::string& strFile = *itFile;
+
+                        LLAssetType::EType eAssetType = getAssetTypeFromFilename(strFile);
+                        if (LLAssetType::AT_NONE != eAssetType)
+                        {
+                            LLPointer<LLViewerInventoryItem> pItem = new LLViewerInventoryItem(LLUUID::generateNewID(), LLUUID::null, gDirUtilp->getBaseFileName(strFile), LLInventoryType::defaultForAssetType(eAssetType));
+                            pItem->setType(eAssetType);
+                            mDragItems.push_back(drag_item_t(pItem, strFile));
+                        }
+                    }
+                }
+
+                if (!mDragItems.empty())
+                {
+                    result = LLWindowCallbacks::DND_LINK;
+                }
+            }
+            // Fall through to tracking and dropping for now
+        case LLWindowCallbacks::DNDA_TRACK:
+        case LLWindowCallbacks::DNDA_DROPPED:
+            {
+                if (!LLToolMgr::getInstance()->inBuildMode())
+                {
+                    if (!mDragItems.empty())
+                    {
+                        if (fDrop)
+                        {
+                            bool fCanBulkUpload = (mDragItems.size() > 1) && (std::all_of(mDragItems.begin(), mDragItems.end(), [](const drag_item_t& dragItem)
+                                                                                                                                {
+                                                                                                                                    auto asset_type = getAssetTypeFromFilename(dragItem.second);
+                                                                                                                                    return (asset_type == LLAssetType::AT_TEXTURE)
+                                                                                                                                        || (asset_type == LLAssetType::AT_ANIMATION)
+                                                                                                                                        || (asset_type == LLAssetType::AT_SOUND_WAV)
+                                                                                                                                        || (asset_type == LLAssetType::AT_MATERIAL);
+                                                                                                                                }));
+                            if (!fCanBulkUpload)
+                            {
+                                if (gAgentCamera.cameraMouselook())
+                                {
+                                    gAgentCamera.changeCameraToDefault();
+                                }
+
+                                for (const drag_item_t& dragItem : mDragItems)
+                                {
+                                    std::vector<std::string> tmpvec;
+                                    tmpvec.push_back(dragItem.second);
+                                    upload_single_file(tmpvec, getLoadFilterFromFilename(dragItem.second), LLUUID::null);
+                                }
+                            }
+                            else
+                            {
+                                std::vector<std::string> files;
+                                for (const drag_item_t& dragItem : mDragItems)
+                                    files.push_back(dragItem.second);
+
+                                upload_bulk(files, LLFilePicker::FFLOAD_ALL, true, LLUUID::null);
+                            }
+                        }
+                        result = DND_COPY;
+                    }
+                }
+                else
+                {
+                    if ( (1 == mDragItems.size()) && (LLAssetType::AT_TEXTURE == mDragItems.front().first->getType() || LLAssetType::AT_MATERIAL == mDragItems.front().first->getType()) )
+                    {
+                        LLPickInfo pick = pickImmediate(pos.mX, pos.mY, TRUE);
+
+                        LLViewerObject* pObj = pick.getObject();
+                        if ( (pObj) && (pObj->permModify()) )
+                        {
+                            result = LLWindowCallbacks::DND_LINK;
+                            if (!fDrop)
+                            {
+                                if (pObj != mDragHoveredObject.get())
+                                {
+                                    LLSelectMgr::getInstance()->unhighlightObjectOnly(mDragHoveredObject);
+                                    mDragHoveredObject = pObj;
+                                    LLSelectMgr::getInstance()->highlightObjectOnly(mDragHoveredObject);
+                                }
+                            }
+                            else
+                            {
+                                LLSelectMgr::getInstance()->unhighlightObjectOnly(mDragHoveredObject);
+                                mDragHoveredObject = NULL;
+
+                                const std::string& strFilename = mDragItems.front().second;
+
+                                if (LLAssetType::AT_TEXTURE == mDragItems.front().first->getType())
+                                {
+                                    LLUUID idLocalBitmap = LLLocalBitmapMgr::instance().getUnitID(strFilename);
+                                    if (idLocalBitmap.isNull())
+                                    {
+                                        idLocalBitmap = LLLocalBitmapMgr::instance().addUnit(strFilename);
+                                    }
+
+                                    if (idLocalBitmap.notNull())
+                                    {
+                                        pObj->setTETexture(pick.mObjectFace, LLLocalBitmapMgr::instance().getWorldID(idLocalBitmap));
+                                        pObj->sendTEUpdate();
+                                    }
+                                }
+                                else if (LLAssetType::AT_MATERIAL == mDragItems.front().first->getType())
+                                {
+                                    LLUUID isLocalMat = LLLocalGLTFMaterialMgr::instance().getUnitID(strFilename, 0);
+                                    if (isLocalMat.isNull())
+                                    {
+                                        LLLocalGLTFMaterialMgr::instance().addUnit(strFilename, isLocalMat);
+                                    }
+
+                                    if (isLocalMat.notNull())
+                                    {
+                                        pObj->setRenderMaterialID(pick.mObjectFace, LLLocalGLTFMaterialMgr::instance().getWorldID(isLocalMat));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        case LLWindowCallbacks::DNDA_STOP_TRACKING:
+            {
+                mDragItems.clear();
+            }
+            break;
+    }
+
+    if ( (LLWindowCallbacks::DND_NONE == result) && (mDragHoveredObject.notNull()) )
+    {
+        LLSelectMgr::getInstance()->unhighlightObjectOnly(mDragHoveredObject);
+        mDragHoveredObject = NULL;
+    }
+    return result;
+}
+// [/SL:KB]
 
 bool LLViewerWindow::handleMiddleMouseUp(LLWindow *window,  LLCoordGL pos, MASK mask)
 {
@@ -2898,6 +3123,7 @@ bool LLViewerWindow::handleKey(KEY key, MASK mask)
     if (keyboard_focus
         && !gFocusMgr.getKeystrokesOnly())
     {
+#if 0 // THIS BREAKS SO MUCH - RYE
         //Most things should fall through, but mouselook is an exception,
         //don't switch to mouselook if any floater has focus
         if ((key == KEY_MOUSELOOK) && !(mask & (MASK_CONTROL | MASK_ALT)))
@@ -2907,6 +3133,7 @@ bool LLViewerWindow::handleKey(KEY key, MASK mask)
 
         LLUICtrl* cur_focus = dynamic_cast<LLUICtrl*>(keyboard_focus);
         if (cur_focus && cur_focus->acceptsTextInput())
+#endif
         {
 #if defined(LL_WINDOWS) && !LL_SDL_WINDOW
             // On windows Alt Gr key generates additional Ctrl event, as result handling situations

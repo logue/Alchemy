@@ -17,6 +17,10 @@
      name="Copy">
         Copy To Inventory
     </floater.string>
+    <floater.string
+     name="UploadInfo">
+       - Uploaded by [UPLOADER] on [DATE]
+    </floater.string>
     <layout_stack
      animate="false"
      name="preview_stack"

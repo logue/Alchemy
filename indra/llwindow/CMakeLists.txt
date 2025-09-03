@@ -25,7 +25,6 @@ set(llwindow_SOURCE_FILES
     llcursortypes.cpp
     llkeyboard.cpp
     llkeyboardheadless.cpp
-    llsdl.cpp
     llwindowheadless.cpp
     llwindowcallbacks.cpp
     llwindow.cpp
@@ -37,7 +36,6 @@ set(llwindow_HEADER_FILES
     llcursortypes.h
     llkeyboard.h
     llkeyboardheadless.h
-    llsdl.h
     llwindowheadless.h
     llwindowcallbacks.h
     )
@@ -62,17 +60,22 @@ set(llwindow_LINK_LIBRARIES
         ll::glm
         ll::glext
         ll::uilibraries
-        ll::SDL3
         )
 
 if (USE_SDL_WINDOW)
   list(APPEND viewer_SOURCE_FILES
+       llsdl.cpp
        llkeyboardsdl.cpp
        llwindowsdl.cpp
        )
   list(APPEND viewer_HEADER_FILES
+       llsdl.h
        llkeyboardsdl.h
        llwindowsdl.h
+       )
+
+  list(APPEND llwindow_LINK_LIBRARIES
+       ll::SDL3
        )
 endif ()
 

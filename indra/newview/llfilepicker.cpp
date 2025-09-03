@@ -939,6 +939,9 @@ bool LLFilePicker::getSaveFile(ESaveFilter filter, const std::string& filename, 
         mOFN.lpstrFilter =
             L"PNG Images (*.png)\0*.png\0" \
             L"Targa Images (*.tga)\0*.tga\0" \
+            L"Jpeg Images (*.jpg)\0*.jpg\0" \
+            L"Jpeg2000 Images (*.j2c)\0*.j2c\0" \
+            L"Bitmap Images (*.bmp)\0*.bmp\0" \
             L"\0";
         break;
 
@@ -1236,12 +1239,12 @@ void set_nav_save_data(LLFilePicker::ESaveFilter filter, std::string &extension,
         case LLFilePicker::FFSAVE_TGAPNG:
             type = "PNG";
             creator = "prvw";
-            extension = "png,tga";
+            extension = "png,tga,jpg,jpeg,j2c,bmp,bmpf,";
             break;
         case LLFilePicker::FFSAVE_BMP:
             type = "BMPf";
             creator = "prvw";
-            extension = "bmp";
+            extension = "bmp,bmpf";
             break;
         case LLFilePicker::FFSAVE_JPEG:
             type = "JPEG";
