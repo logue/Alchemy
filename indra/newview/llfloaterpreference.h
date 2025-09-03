@@ -130,6 +130,8 @@ protected:
     void onRejectTeleportOffersResponseChanged();
     void onRejectFriendshipRequestResponseChanged();
     void onAdHocSelectionChanged(const LLSD& newValue);
+    void onAutoRespondResponseChanged();
+    void onAutoRespondNonFriendsResponseChanged();
 
     // if the custom settings box is clicked
     void onChangeCustom();
@@ -262,6 +264,8 @@ private:
     boost::signals2::connection mComplexityChangedSignal;
     boost::signals2::connection mRejectTeleportConnection;
     boost::signals2::connection mRejectFriendshipRequestsConnection;
+    boost::signals2::connection mAutoResponseConnection;
+    boost::signals2::connection mAutoResponseNonFriendsConnection;
 
     void onUpdateFilterTerm( bool force = false );
     void collectSearchableItems();
