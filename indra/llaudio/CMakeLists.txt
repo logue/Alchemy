@@ -4,6 +4,7 @@ project(llaudio)
 
 include(00-Common)
 include(LLAudio)
+include(FMODSTUDIO)
 include(OPENAL)
 include(LLCommon)
 
@@ -23,6 +24,20 @@ set(llaudio_HEADER_FILES
     llvorbisencode.h
     llwindgen.h
     )
+
+if (TARGET ll::fmodstudio)
+    list(APPEND llaudio_SOURCE_FILES
+         llaudioengine_fmodstudio.cpp
+         lllistener_fmodstudio.cpp
+         llstreamingaudio_fmodstudio.cpp
+         )
+
+    list(APPEND llaudio_HEADER_FILES
+         llaudioengine_fmodstudio.h
+         lllistener_fmodstudio.h
+         llstreamingaudio_fmodstudio.h
+         )
+endif ()
 
 if (TARGET ll::openal)
   list(APPEND llaudio_SOURCE_FILES

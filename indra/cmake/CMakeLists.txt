@@ -25,6 +25,7 @@ set(cmake_SOURCE_FILES
         EXPAT.cmake
         FindAutobuild.cmake
         FindPipeWire.cmake
+        FMODSTUDIO.cmake
         FreeType.cmake
         GLEXT.cmake
         GLIB.cmake

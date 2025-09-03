@@ -569,6 +569,13 @@ class Windows_x86_64_Manifest(ViewerManifest):
             if self.args['discord'] == 'ON':
                 self.path("discord_partner_sdk.dll")
 
+            # Get fmodstudio dll if needed
+            if self.args['fmodstudio'] == 'ON':
+                if(self.args['buildtype'].lower() == 'debug'):
+                    self.path("fmodL.dll")
+                else:
+                    self.path("fmod.dll")
+
             if self.args['openal'] == 'ON':
                 # Get openal dll
                 self.path("OpenAL32.dll")
@@ -1035,6 +1042,19 @@ class Darwin_x86_64_Manifest(ViewerManifest):
                                 ):
                     self.path2basename(relpkgdir, libfile)
 
+                # Fmod studio dylibs (vary based on configuration)
+                if self.args['fmodstudio'] == 'ON':
+                    if self.args['buildtype'].lower() == 'debug':
+                        for libfile in (
+                                    "libfmodL.dylib",
+                                    ):
+                            dylibs += path_optional(os.path.join(debpkgdir, libfile), libfile)
+                    else:
+                        for libfile in (
+                                    "libfmod.dylib",
+                                    ):
+                            dylibs += path_optional(os.path.join(relpkgdir, libfile), libfile)
+
                 # Discord social SDK
                 if self.args['discord'] == 'ON':
                     for libfile in (
@@ -1389,6 +1409,16 @@ class Linux_x86_64_Manifest(LinuxManifest):
 
             self.path("libopenjp2.so*")
 
+            if self.args['fmodstudio'] == 'ON':
+                try:
+                    self.path("libfmod.so.11.7")
+                    self.path("libfmod.so.11")
+                    self.path("libfmod.so")
+                    pass
+                except:
+                    print("Skipping libfmod.so - not found")
+                    pass
+
         # Vivox runtimes
         with self.prefix(src=relpkgdir, dst="bin"):
             self.path("SLVoice")
@@ -1407,10 +1437,12 @@ if __name__ == "__main__":
     print(('%s \\\n%s' %
           (sys.executable,
            ' '.join((("'%s'" % arg) if ' ' in arg else arg) for arg in sys.argv))))
+    # fmodstudio and openal can be used simultaneously and controled by environment
     extra_arguments = [
         dict(name='bugsplat', description="""BugSplat database to which to post crashes,
              if BugSplat crash reporting is desired""", default=''),
         dict(name='discord', description="""Indication discord social sdk libraries are needed""", default='OFF'),
+        dict(name='fmodstudio', description="""Indication if fmod studio libraries are needed""", default='OFF'),
         dict(name='openal', description="""Indication openal libraries are needed""", default='OFF'),
         dict(name='tracy', description="""Indication tracy profiler is enabled""", default='OFF'),
         ]

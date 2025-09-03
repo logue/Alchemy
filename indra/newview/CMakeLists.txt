@@ -16,6 +16,7 @@ include(CubemapToEquirectangularJS)
 include(DragDrop)
 include(Discord)
 include(EXPAT)
+include(FMODSTUDIO)
 include(Hunspell)
 include(JPEGEncoderBasic)
 include(LLAppearance)
@@ -1916,6 +1917,12 @@ if (WINDOWS)
              )
     endif ()
 
+    if (TARGET ll::fmodstudio)
+      list(APPEND COPY_INPUT_DEPENDENCIES
+           ${SHARED_LIB_STAGING_DIR}/fmod.dll
+          )
+    endif ()
+
     if (TARGET ll::openal)
       list(APPEND COPY_INPUT_DEPENDENCIES
            ${SHARED_LIB_STAGING_DIR}/OpenAL32.dll
@@ -1933,6 +1940,7 @@ if (WINDOWS)
         --artwork=${ARTWORK_DIR}
         "--bugsplat=${BUGSPLAT_DB}"
         "--discord=${USE_DISCORD}"
+        "--fmodstudio=${USE_FMODSTUDIO}"
         "--openal=${USE_OPENAL}"
         "--tracy=${USE_TRACY}"
         --build=${CMAKE_CURRENT_BINARY_DIR}
@@ -2019,6 +2027,7 @@ if (WINDOWS)
               --artwork=${ARTWORK_DIR}
               "--bugsplat=${BUGSPLAT_DB}"
               "--discord=${USE_DISCORD}"
+              "--fmodstudio=${USE_FMODSTUDIO}"
               "--openal=${USE_OPENAL}"
               "--tracy=${USE_TRACY}"
               --build=${CMAKE_CURRENT_BINARY_DIR}
@@ -2175,6 +2184,7 @@ if (LINUX)
         --artwork=${ARTWORK_DIR}
         "--bugsplat=${BUGSPLAT_DB}"
         "--discord=${USE_DISCORD}"
+        "--fmodstudio=${USE_FMODSTUDIO}"
         "--openal=${USE_OPENAL}"
         "--tracy=${USE_TRACY}"
         --build=${CMAKE_CURRENT_BINARY_DIR}
@@ -2204,6 +2214,7 @@ if (LINUX)
       --artwork=${ARTWORK_DIR}
       "--bugsplat=${BUGSPLAT_DB}"
       "--discord=${USE_DISCORD}"
+      "--fmodstudio=${USE_FMODSTUDIO}"
       "--openal=${USE_OPENAL}"
       "--tracy=${USE_TRACY}"
       --build=${CMAKE_CURRENT_BINARY_DIR}
@@ -2279,6 +2290,7 @@ if (DARWIN)
       --artwork=${ARTWORK_DIR}
       "--bugsplat=${BUGSPLAT_DB}"
       "--discord=${USE_DISCORD}"
+      "--fmodstudio=${USE_FMODSTUDIO}"
       "--openal=${USE_OPENAL}"
       "--tracy=${USE_TRACY}"
       --build=${CMAKE_CURRENT_BINARY_DIR}
@@ -2312,6 +2324,7 @@ if (DARWIN)
               --artwork=${ARTWORK_DIR}
               "--bugsplat=${BUGSPLAT_DB}"
               "--discord=${USE_DISCORD}"
+	      "--fmodstudio=${USE_FMODSTUDIO}"
               "--openal=${USE_OPENAL}"
               "--tracy=${USE_TRACY}"
               --build=${CMAKE_CURRENT_BINARY_DIR}
