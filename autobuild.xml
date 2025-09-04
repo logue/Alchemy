@@ -16,11 +16,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>f88a2b61b476019b44789583475c7af16f7b0dd153977043a3317e262eb24064f3ce31de386994259e83475a8ad74b841d2d8ab4b1309d9c3801e3ce69545bc2</string>
+              <string>b61571b08992a99319fa9828eab282e2a1ec46d30be0b12b02f2f6f14097aa839994760e064871a5d11ea5f582fe04145f3b5c1effcba47964e64d53de351d8c</string>
               <key>hash_algorithm</key>
               <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/AlchemyViewer/3p-sdl3/releases/download/v3.2.8-r1/SDL3-3.2.8-r1-windows64-13702972961.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-sdl3/releases/download/v3.2.22-r1/SDL3-3.2.22-r1-windows64-17459306396.tar.zst</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -30,11 +30,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>ad6d15e97f78d413612061af8929c0a6b54ef297cc7dc5c21959d295d4263d48ed9c71b524a62a9bc68df534abb4aa3f61ed5d7e1dd64f414170547511d2eb73</string>
+              <string>5562e019ca4288493c25d7d5bac45091834db602a112892ddaba4f7a29148f5807b03319770f510c13e237c66f11acc0d6efaad11df0b2ac750623424adb3b4a</string>
               <key>hash_algorithm</key>
               <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/AlchemyViewer/3p-sdl3/releases/download/v3.2.8-r1/SDL3-3.2.8-r1-linux64-13702972961.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-sdl3/releases/download/v3.2.22-r1/SDL3-3.2.22-r1-linux64-17459306396.tar.zst</string>
             </map>
             <key>name</key>
             <string>linux64</string>
@@ -44,11 +44,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>6f8c2e943f9a5f4e7c0f8b712edec20991af90893009fd4b93ac03f7db70892f8222b63fff321625bae2203bf92eda1e5ed0ba10374e45ac0693407410c61157</string>
+              <string>63a173b6fc3b6992467c39d7c86754dfbc410fcc8d93bf51d380f04eccbdb4ee4abba7eaeaa02f5040e4d47f1575bfb9345afc61db043cce075eecd786211459</string>
               <key>hash_algorithm</key>
               <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/AlchemyViewer/3p-sdl3/releases/download/v3.2.8-r1/SDL3-3.2.8-r1-darwin64-13702972961.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-sdl3/releases/download/v3.2.22-r1/SDL3-3.2.22-r1-darwin64-17459306396.tar.zst</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
@@ -61,7 +61,7 @@
         <key>copyright</key>
         <string>Copyright (C) 1997-2022 Sam Lantinga (slouken@libsdl.org)</string>
         <key>version</key>
-        <string>3.2.8-r1</string>
+        <string>3.2.22-r1</string>
         <key>use_scm_version</key>
         <boolean>true</boolean>
         <key>name</key>
@@ -1792,11 +1792,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>fc322b32f6b06866471d3cdf7b9d82bcac5f60cbc2a977449f6dd912e06f31a74c2941b1985da8e5002e35dc2c53a6b693c459fbdab4f04cf688fe7ce1fe48c3</string>
+              <string>d943ed1d139ba2b014ebf7210f20306d4fbb08847f72dcb75ece17d41683e243407c066c99ce02bb26ba73ff3cd09ead2f2c79bdfb966cd655ccc4e2d6601d13</string>
               <key>hash_algorithm</key>
               <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/AlchemyViewer/3p-open-libndofdev/releases/download/v0.14.0-r1/open_libndofdev-0.14.0-linux64-13722920211.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-open-libndofdev/releases/download/v0.14.0-r2/open_libndofdev-0.14.0-linux64-17463841480.tar.zst</string>
             </map>
             <key>name</key>
             <string>linux64</string>
