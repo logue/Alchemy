@@ -1824,11 +1824,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>d2fef3bfe319c6401e548b4b835baaccecd1accca0d817ba6cf975a0c37ae86e93d81a4fc2d8526151982a2bb16313dd41b343af714b7c3999282b41ba5daf22</string>
+              <string>b9c01fe06a441d6a0f5a3afa3587f37fc8371b783de0bc8bcd2e6cc6467d715c2fda5c5a382bed2c872f790cddf4f090c59e482295ab32da40ac54e9f1e99988</string>
               <key>hash_algorithm</key>
               <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/AlchemyViewer/3p-openal-soft/releases/download/v1.24.2-r1/openal-1.24.2-r1-darwin64-13574206340.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-openal-soft/releases/download/v1.24.3-r1/openal-1.24.3-r1-darwin64-17464547283.tar.zst</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
@@ -1838,11 +1838,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>20ff6fd3a1eeb29bcdcbeb7e6bbef12e1662673f23de5b249e82f7c4ecb14ed2e806156616037b1b1f9df3e2c4123633f0eabd25d0f18530263e2b03874d5a87</string>
+              <string>cd0dc7c4d269f22b1e8a8c6493ee158251275d3d220c12b1e7ed08713ae8356753034977f2784b197ade84badcc49ab93ec51f9bf1f57841fb29c015f2fbf123</string>
               <key>hash_algorithm</key>
               <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/AlchemyViewer/3p-openal-soft/releases/download/v1.24.2-r1/openal-1.24.2-r1-linux64-13574206340.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-openal-soft/releases/download/v1.24.3-r1/openal-1.24.3-r1-linux64-17464547283.tar.zst</string>
             </map>
             <key>name</key>
             <string>linux64</string>
@@ -1852,11 +1852,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>9114e84a5b9ac2d58d92f095ce57682c88029cd903717c77cf4d2d6266a91ebf0093b38c43a3e7d91a7d986d14e1cccc68cf3acd907b1c416588953cfddd9189</string>
+              <string>c6608f62c4adb411cff872e215d770974cf0fb8c93ce88b54498c262a730aae4f76e02685665faa4e4525aba6be31c6dd78ea7ba0f1c8a3fe2b3340d11479d00</string>
               <key>hash_algorithm</key>
               <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/AlchemyViewer/3p-openal-soft/releases/download/v1.24.2-r1/openal-1.24.2-r1-windows64-13574206340.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-openal-soft/releases/download/v1.24.3-r1/openal-1.24.3-r1-windows64-17464547283.tar.zst</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -1869,7 +1869,7 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
         <key>copyright</key>
         <string>Copyright (C) 1999-2007 by authors.</string>
         <key>version</key>
-        <string>1.24.2-r1</string>
+        <string>1.24.3-r1</string>
         <key>name</key>
         <string>openal</string>
         <key>description</key>
