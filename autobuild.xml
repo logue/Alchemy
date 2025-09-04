@@ -2196,11 +2196,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>5f3d1c70117cb3b91d9cbe4010ed286af84e91d3464a4d210953b533e150bc23dc0271aae801fc1554cb7b2c88058982e5a08f1a47867bf654ff7f2952b13dea</string>
+              <string>30a158c4ef5873d3609345241e8b226332d97fccf0f23423a0a0f9c016c8d07421119dee9ed145dd0e8ca82136d7da2844488e4502795a6bf197f2c851d1637b</string>
               <key>hash_algorithm</key>
               <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/AlchemyViewer/3p-tracy/releases/download/v0.11.1-r1/tracy-v0.11.1.13574068108-darwin64-13574068108.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-tracy/releases/download/v0.12.2-r1/tracy-v0.12.2.17448527925-darwin64-17448527925.tar.zst</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
@@ -2210,11 +2210,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>22865c3b78d30010b9faf552fcc9c751e55fbccd10f906338e89b430203c8810bb98134fe3a24212b2cb8dfa3cf5aedc08b6fa245979a746e580d96d871c20f5</string>
+              <string>71c0bfc5034e1b36c480c253d94923883e288d66fd80a125a32525424ee477ae76488fff334d12912dd103f929b7fb52c981e97912081243dd5a4783a2877dfa</string>
               <key>hash_algorithm</key>
               <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/AlchemyViewer/3p-tracy/releases/download/v0.11.1-r1/tracy-v0.11.1.13574068108-windows64-13574068108.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-tracy/releases/download/v0.12.2-r1/tracy-v0.12.2.17448527925-windows64-17448527925.tar.zst</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -2224,11 +2224,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>d10e7dad94d4e397515600b186b723e55333b861b11edd018d20ed5a1b92c66a7050f6a56478320e1b5d0db67fc1a943e2faaeb2f6358aa3a957f56adc52cb07</string>
+              <string>03e20532ab34d91db1837d0b115fb0d86c89484673e6094b42fc49200e6f635af4815c1fa40dad22265238f88b11491705eb976f7fe2211f70490287aa1c035a</string>
               <key>hash_algorithm</key>
               <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/AlchemyViewer/3p-tracy/releases/download/v0.11.1-r1/tracy-v0.11.1.13574068108-linux64-13574068108.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/3p-tracy/releases/download/v0.12.2-r1/tracy-v0.12.2.17448527925-linux64-17448527925.tar.zst</string>
             </map>
             <key>name</key>
             <string>linux64</string>
@@ -2241,7 +2241,7 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
         <key>copyright</key>
         <string>Copyright (c) 2017-2024, Bartosz Taudul (wolf@nereid.pl)</string>
         <key>version</key>
-        <string>v0.11.1.13574068108</string>
+        <string>v0.12.2.17448527925</string>
         <key>name</key>
         <string>tracy</string>
         <key>canonical_repo</key>
