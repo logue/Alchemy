@@ -772,15 +772,15 @@ void LLPanelProfileSecondLife::fillAccountStatus(const LLAvatarData* avatar_data
     {
         getChild<LLUICtrl>("badge_icon")->setValue("AccountLevel_Premium");
         getChild<LLUICtrl>("badge_text")->setValue(getString("BadgePremium"));
-        childSetVisible("badge_layout", TRUE);
-        childSetVisible("partner_spacer_layout", FALSE);
+        childSetVisible("badge_layout", true);
+        childSetVisible("partner_spacer_layout", false);
     }
     else if (customer_lower.find("premium_plus") != std::string::npos)
     {
         getChild<LLUICtrl>("badge_icon")->setValue("AccountLevel_Plus");
         getChild<LLUICtrl>("badge_text")->setValue(getString("BadgePremiumPlus"));
-        childSetVisible("badge_layout", TRUE);
-        childSetVisible("partner_spacer_layout", FALSE);
+        childSetVisible("badge_layout", true);
+        childSetVisible("partner_spacer_layout", false);
     }
     else
     {
@@ -1828,7 +1828,7 @@ void LLPanelProfileFirstLife::onShowAgentFirstlifeTexture()
     else // already open
     {
         LLFloaterProfileTexture* texture_view = dynamic_cast<LLFloaterProfileTexture*>(floater);
-        texture_view->setMinimized(FALSE);
+        texture_view->setMinimized(false);
         texture_view->setVisibleAndFrontmost(true);
         if (mPicture->getImageAssetId().notNull())
         {

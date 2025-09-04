@@ -50,7 +50,7 @@ LLFloaterProfileLegacy::~LLFloaterProfileLegacy()
 bool LLFloaterProfileLegacy::postBuild()
 {
     mPanel = dynamic_cast<LLPanelProfileLegacy*>(getChild<LLPanel>("panel_profile_legacy_sidetray"));
-    return TRUE;
+    return true;
 }
 
 void LLFloaterProfileLegacy::onOpen(const LLSD& key)

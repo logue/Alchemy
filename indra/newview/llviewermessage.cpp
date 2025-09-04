@@ -2307,7 +2307,7 @@ void send_rejecting_tp_offers_message (LLMessageSystem* msg, const LLUUID& from_
     pack_instant_message(
         msg,
         gAgent.getID(),
-        FALSE,
+        false,
         gAgent.getSessionID(),
         from_id,
         my_name,
@@ -2326,7 +2326,7 @@ void send_rejecting_friendship_requests_message  (LLMessageSystem* msg, const LL
     pack_instant_message(
         msg,
         gAgent.getID(),
-        FALSE,
+        false,
         gAgent.getSessionID(),
         from_id,
         my_name,

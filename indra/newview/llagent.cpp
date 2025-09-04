@@ -4668,7 +4668,7 @@ void LLAgent::doTeleportViaLocationLookAt(const LLVector3d& pos_global, const LL
 //
 //  if(!gAgentCamera.isfollowCamLocked())
 //  {
-//      gAgentCamera.setFocusOnAvatar(FALSE, ANIMATE);  // detach camera form avatar, so it keeps direction
+//      gAgentCamera.setFocusOnAvatar(false, ANIMATE);  // detach camera form avatar, so it keeps direction
 //  }
 //
 //  U64 region_handle = to_region_handle(pos_global);

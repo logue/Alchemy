@@ -1529,7 +1529,7 @@ LLWindowCallbacks::DragNDropResult LLViewerWindow::handleDragNDropFile(LLWindow 
                 {
                     if ( (1 == mDragItems.size()) && (LLAssetType::AT_TEXTURE == mDragItems.front().first->getType() || LLAssetType::AT_MATERIAL == mDragItems.front().first->getType()) )
                     {
-                        LLPickInfo pick = pickImmediate(pos.mX, pos.mY, TRUE);
+                        LLPickInfo pick = pickImmediate(pos.mX, pos.mY, true);
 
                         LLViewerObject* pObj = pick.getObject();
                         if ( (pObj) && (pObj->permModify()) )

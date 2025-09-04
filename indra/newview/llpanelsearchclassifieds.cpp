@@ -104,7 +104,7 @@ void LLPanelSearchClassifieds::search()
         LLNotificationsUtil::add("NoContentToSearch");
         return;
     }
-    query.scope = pack_classified_flags_request(/*auto_renew*/ FALSE, inc_pg, inc_mature, inc_adult);
+    query.scope = pack_classified_flags_request(/*auto_renew*/ false, inc_pg, inc_mature, inc_adult);
 
     mFloater->queryDirectory(query, true);
 }

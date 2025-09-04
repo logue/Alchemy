@@ -325,9 +325,9 @@ void LLFloaterTopObjects::updateSelectionInfo()
     }
     else
     {
-        getChild<LLButton>("profile_btn")->setEnabled(FALSE);
-        getChild<LLButton>("estate_kick_btn")->setEnabled(FALSE);
-        getChild<LLButton>("estate_ban_btn")->setEnabled(FALSE);
+        getChild<LLButton>("profile_btn")->setEnabled(false);
+        getChild<LLButton>("estate_kick_btn")->setEnabled(false);
+        getChild<LLButton>("estate_ban_btn")->setEnabled(false);
         LLAvatarNameCache::get(object_id, boost::bind(&LLFloaterTopObjects::callbackAvatarName, this, _1, _2));
     }
 
