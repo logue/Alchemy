@@ -837,7 +837,7 @@ void log_upload_error(
                        << " (" << status.toTerseString() << ")" << LL_ENDL;
 
     std::ostringstream details;
-    typedef std::unordered_set<std::string> mav_errors_set_t;
+    typedef boost::unordered_set<std::string> mav_errors_set_t;
     mav_errors_set_t mav_errors;
 
     if (content.has("error"))
@@ -2734,10 +2734,10 @@ void LLMeshUploadThread::wholeModelToLLSD(LLSD& dest, std::vector<std::string>& 
     S32 mesh_num = 0;
     S32 texture_num = 0;
 
-    std::unordered_set<LLViewerTexture* > textures;
-    std::unordered_map<LLViewerTexture*,S32> texture_index;
+    boost::unordered_set<LLViewerTexture* > textures;
+    boost::unordered_map<LLViewerTexture*,S32> texture_index;
 
-    std::unordered_map<LLModel*,S32> mesh_index;
+    boost::unordered_map<LLModel*,S32> mesh_index;
     std::string model_name;
 
     S32 instance_num = 0;
@@ -4884,7 +4884,7 @@ void LLMeshRepository::fetchPhysicsShape(const LLUUID& mesh_id)
         {
             LLMutexLock lock(mMeshMutex);
             //add volume to list of loading meshes
-            std::unordered_set<LLUUID>::iterator iter = mLoadingPhysicsShapes.find(mesh_id);
+            boost::unordered_set<LLUUID>::iterator iter = mLoadingPhysicsShapes.find(mesh_id);
             if (iter == mLoadingPhysicsShapes.end())
             { //no request pending for this skin info
                 // *FIXME:  Nothing ever deletes entries, can't be right
@@ -4914,7 +4914,7 @@ LLModel::Decomposition* LLMeshRepository::getDecomposition(const LLUUID& mesh_id
         {
             LLMutexLock lock(mMeshMutex);
             //add volume to list of loading meshes
-            std::unordered_set<LLUUID>::iterator iter = mLoadingDecompositions.find(mesh_id);
+            boost::unordered_set<LLUUID>::iterator iter = mLoadingDecompositions.find(mesh_id);
             if (iter == mLoadingDecompositions.end())
             { //no request pending for this skin info
                 mLoadingDecompositions.insert(mesh_id);

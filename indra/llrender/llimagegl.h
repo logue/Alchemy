@@ -280,7 +280,7 @@ protected:
 
     // STATICS
 public:
-    static std::unordered_set<LLImageGL*> sImageList;
+    static boost::unordered_set<LLImageGL*> sImageList;
     static S32 sCount;
     static U32 sFrameCount;
     static F32 sLastFrameTime;

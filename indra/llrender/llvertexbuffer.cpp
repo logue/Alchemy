@@ -400,7 +400,7 @@ public:
         clear();
     }
 
-    typedef std::unordered_map<U32, std::list<Entry>> Pool;
+    typedef boost::unordered_map<U32, std::list<Entry>> Pool;
 
     Pool mVBOPool;
     Pool mIBOPool;
@@ -531,7 +531,7 @@ public:
 
         LL_PROFILE_ZONE_SCOPED_CATEGORY_VERTEX;
 
-        std::unordered_map<U32, std::list<Entry>>* pools[] = { &mVBOPool, &mIBOPool };
+        boost::unordered_map<U32, std::list<Entry>>* pools[] = { &mVBOPool, &mIBOPool };
 
         using namespace std::chrono_literals;
 

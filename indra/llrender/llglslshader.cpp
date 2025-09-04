@@ -1303,7 +1303,7 @@ void LLGLSLShader::uniform1i(U32 index, GLint x)
         if (mUniform[index] >= 0)
         {
             const auto& iter = mValue.find(mUniform[index]);
-            if (iter == mValue.end() || iter->second.mV[0] != x)
+            if (iter == mValue.end() || iter->second.mV[0] != (F32)x)
             {
                 glUniform1i(mUniform[index], x);
                 mValue[mUniform[index]] = LLVector4((F32)x, 0.f, 0.f, 0.f);

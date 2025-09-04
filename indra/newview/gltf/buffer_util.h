@@ -455,7 +455,7 @@ namespace LL
         }
 
         template<typename T>
-        inline bool copy(const Value& src, std::unordered_map<std::string, T>& dst)
+        inline bool copy(const Value& src, boost::unordered_map<std::string, T>& dst)
         {
             if (src.is_object())
             {
@@ -470,7 +470,7 @@ namespace LL
         }
 
         template<typename T>
-        inline bool write(const std::unordered_map<std::string, T>& src, Value& dst)
+        inline bool write(const boost::unordered_map<std::string, T>& src, Value& dst)
         {
             boost::json::object obj;
             for (const auto& [key, value] : src)
@@ -663,7 +663,7 @@ namespace LL
         }
 
         template<typename T>
-        inline bool write(const std::unordered_map<std::string, T>& src, string_view member, boost::json::object& dst, const std::unordered_map<std::string, T>& default_value = std::unordered_map<std::string, T>())
+        inline bool write(const boost::unordered_map<std::string, T>& src, string_view member, boost::json::object& dst, const std::unordered_map<std::string, T>& default_value = std::unordered_map<std::string, T>())
         {
             if (!src.empty())
             {

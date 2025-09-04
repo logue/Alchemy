@@ -45,12 +45,12 @@ namespace LL
 {
     namespace GLTF
     {
-        static std::unordered_set<std::string> ExtensionsSupported = {
+        static boost::unordered_set<std::string> ExtensionsSupported = {
             "KHR_materials_unlit",
             "KHR_texture_transform"
         };
 
-        static std::unordered_set<std::string> ExtensionsIgnored = {
+        static boost::unordered_set<std::string> ExtensionsIgnored = {
             "KHR_materials_pbrSpecularGlossiness"
         };
 

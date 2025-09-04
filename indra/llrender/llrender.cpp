@@ -78,7 +78,7 @@ struct LLVBCache
     std::chrono::steady_clock::time_point touched;
 };
 
-static std::unordered_map<U64, LLVBCache> sVBCache;
+static boost::unordered_flat_map<U64, LLVBCache> sVBCache;
 static std::list<LLVertexBufferData> *sBufferDataList = nullptr;
 
 static const GLenum sGLTextureType[] =
@@ -1020,7 +1020,7 @@ void LLRender::syncMatrices()
                 S32 loc = shader->getUniformLocation(LLShaderMgr::MODELVIEW_PROJECTION_MATRIX);
                 if (loc > -1)
                 {
-                    if (cached_mvp_mdv_hash != mMatHash[MM_PROJECTION] || cached_mvp_proj_hash != mMatHash[MM_PROJECTION])
+                    if (cached_mvp_mdv_hash != mMatHash[MM_MODELVIEW] || cached_mvp_proj_hash != mMatHash[MM_PROJECTION])
                     {
                         U32 mdv = MM_MODELVIEW;
                         cached_mvp = mat;
@@ -1595,7 +1595,7 @@ LLVertexBuffer* LLRender::bufferfromCache(U32 attribute_mask, U32 count)
     // To leverage this, we maintain a running hash of the vertex stream being
     // built up before a flush, and then check that hash against a VB
     // cache just before creating a vertex buffer in VRAM
-    std::unordered_map<U64, LLVBCache>::iterator cache = sVBCache.find(vhash);
+    auto cache = sVBCache.find(vhash);
 
     if (cache != sVBCache.end())
     {
@@ -1621,7 +1621,7 @@ LLVertexBuffer* LLRender::bufferfromCache(U32 attribute_mask, U32 count)
 
             using namespace std::chrono_literals;
             // every 1024 misses, clean the cache of any VBs that haven't been touched in the last second
-            for (std::unordered_map<U64, LLVBCache>::iterator iter = sVBCache.begin(); iter != sVBCache.end(); )
+            for (auto iter = sVBCache.begin(); iter != sVBCache.end(); )
             {
                 if (now - iter->second.touched > 1s)
                 {

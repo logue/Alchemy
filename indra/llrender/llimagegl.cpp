@@ -63,7 +63,7 @@ U32 LLImageGL::sFrameCount = 0;
 
 // texture memory accounting (for macOS)
 static LLMutex sTexMemMutex;
-static std::unordered_map<U32, U64> sTextureAllocs;
+static boost::unordered_map<U32, U64> sTextureAllocs;
 static U64 sTextureBytes = 0;
 
 // track a texture alloc on the currently bound texture.
@@ -142,7 +142,7 @@ bool LLImageGL::sGlobalUseAnisotropic   = false;
 F32 LLImageGL::sLastFrameTime           = 0.f;
 LLImageGL* LLImageGL::sDefaultGLTexture = NULL ;
 bool LLImageGL::sCompressTextures = false;
-std::unordered_set<LLImageGL*> LLImageGL::sImageList;
+boost::unordered_set<LLImageGL*> LLImageGL::sImageList;
 
 
 bool LLImageGLThread::sEnabledTextures = false;

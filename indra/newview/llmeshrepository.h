@@ -534,12 +534,12 @@ public:
     std::deque<LoadedMesh> mLoadedQ;
 
     //map of pending header requests and currently desired LODs
-    typedef std::unordered_map<LLUUID, std::array<S32, LLModel::NUM_LODS> > pending_lod_map;
+    typedef boost::unordered_map<LLUUID, std::array<S32, LLModel::NUM_LODS> > pending_lod_map;
     pending_lod_map mPendingLOD;
 
     // map of mesh ID to skin info (mirrors LLMeshRepository::mSkinMap)
     /// NOTE: LLMeshRepository::mSkinMap is accessed very frequently, so maintain a copy here to avoid mutex overhead
-    typedef std::unordered_map<LLUUID, LLPointer<LLMeshSkinInfo>> skin_map;
+    typedef boost::unordered_map<LLUUID, LLPointer<LLMeshSkinInfo>> skin_map;
     skin_map mSkinMap;
 
     // workqueue for processing generic requests
@@ -556,7 +556,7 @@ public:
     LLCore::HttpRequest::policy_t       mHttpPolicyClass;
     LLCore::HttpRequest::policy_t       mHttpLargePolicyClass;
 
-    typedef std::unordered_set<LLCore::HttpHandler::ptr_t> http_request_set;
+    typedef boost::unordered_set<LLCore::HttpHandler::ptr_t> http_request_set;
     http_request_set                    mHttpRequestSet;            // Outstanding HTTP requests
 
     std::string mGetMeshCapability;
@@ -889,10 +889,10 @@ public:
     static void metricsProgress(unsigned int count);
     static void metricsUpdate();
 
-    typedef std::unordered_map<LLUUID, MeshLoadData> mesh_load_map;
+    typedef boost::unordered_map<LLUUID, MeshLoadData> mesh_load_map;
     mesh_load_map mLoadingMeshes[4];
 
-    typedef std::unordered_map<LLUUID, LLPointer<LLMeshSkinInfo>> skin_map;
+    typedef boost::unordered_map<LLUUID, LLPointer<LLMeshSkinInfo>> skin_map;
     skin_map mSkinMap;
 
     typedef std::map<LLUUID, LLModel::Decomposition*> decomposition_map;
@@ -904,17 +904,17 @@ public:
     pending_requests_vec mPendingRequests;
 
     //list of mesh ids awaiting skin info
-    typedef std::unordered_map<LLUUID, MeshLoadData > skin_load_map;
+    typedef boost::unordered_map<LLUUID, MeshLoadData > skin_load_map;
     skin_load_map mLoadingSkins;
 
     //list of mesh ids awaiting decompositions
-    std::unordered_set<LLUUID> mLoadingDecompositions;
+    boost::unordered_set<LLUUID> mLoadingDecompositions;
 
     //list of mesh ids that need to send decomposition fetch requests
     std::queue<LLUUID> mPendingDecompositionRequests;
 
     //list of mesh ids awaiting physics shapes
-    std::unordered_set<LLUUID> mLoadingPhysicsShapes;
+    boost::unordered_set<LLUUID> mLoadingPhysicsShapes;
 
     //list of mesh ids that need to send physics shape fetch requests
     std::queue<LLUUID> mPendingPhysicsShapeRequests;
