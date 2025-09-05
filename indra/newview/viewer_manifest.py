@@ -1410,14 +1410,10 @@ class Linux_x86_64_Manifest(LinuxManifest):
             self.path("libopenjp2.so*")
 
             if self.args['fmodstudio'] == 'ON':
-                try:
-                    self.path("libfmod.so.11.7")
-                    self.path("libfmod.so.11")
-                    self.path("libfmod.so")
-                    pass
-                except:
-                    print("Skipping libfmod.so - not found")
-                    pass
+                self.path("libfmod.so*")
+
+            if self.args['discord'] == 'ON':
+                self.path("libdiscord_partner_sdk.so*")
 
         # Vivox runtimes
         with self.prefix(src=relpkgdir, dst="bin"):

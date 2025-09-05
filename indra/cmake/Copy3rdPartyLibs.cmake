@@ -224,7 +224,7 @@ elseif(LINUX)
          list( APPEND release_files
                 libSDL3.so
                 libSDL3.so.0
-                libSDL3.so.0.2.8
+                libSDL3.so.0.2.22
                 )
      endif()
 
