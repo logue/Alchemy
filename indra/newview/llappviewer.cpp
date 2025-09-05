@@ -6023,105 +6023,35 @@ void LLAppViewer::initDiscordSocial()
     gDiscordPartyMaxSize = 0;
     gDiscordTimestampsStart = time(nullptr);
     gDiscordClient = std::make_shared<discordpp::Client>();
-    gDiscordClient->SetStatusChangedCallback([](discordpp::Client::Status status, discordpp::Client::Error, int32_t) {
-        if (status == discordpp::Client::Status::Ready)
-        {
-            updateDiscordActivity();
-        }
-    });
-    if (gSavedSettings.getBOOL("EnableDiscord"))
-    {
-        auto credential = gSecAPIHandler->loadCredential("Discord");
-        if (credential.notNull())
-        {
-            gDiscordClient->UpdateToken(discordpp::AuthorizationTokenType::Bearer, credential->getAuthenticator()["token"].asString(), [](discordpp::ClientResult result) {
-                if (result.Successful())
-                    gDiscordClient->Connect();
-                else
-                    LL_WARNS("Discord") << result.Error() << LL_ENDL;
-            });
-        }
-        else
-        {
-            LL_WARNS("Discord") << "Integration was enabled, but no credentials. Disabling integration." << LL_ENDL;
-            gSavedSettings.setBOOL("EnableDiscord", false);
-        }
-    }
-}
-
-void LLAppViewer::toggleDiscordIntegration(const LLSD& value)
-{
-    static const uint64_t APPLICATION_ID = 1394782217405862001;
-    if (value.asBoolean())
-    {
-        discordpp::AuthorizationArgs args{};
-        args.SetClientId(APPLICATION_ID);
-        args.SetScopes(discordpp::Client::GetDefaultPresenceScopes());
-        auto codeVerifier = gDiscordClient->CreateAuthorizationCodeVerifier();
-        args.SetCodeChallenge(codeVerifier.Challenge());
-        gDiscordClient->Authorize(args, [codeVerifier](auto result, auto code, auto redirectUri) {
-            if (result.Successful())
-            {
-                gDiscordClient->GetToken(APPLICATION_ID, code, codeVerifier.Verifier(), redirectUri, [](discordpp::ClientResult result, std::string accessToken, std::string, discordpp::AuthorizationTokenType, int32_t, std::string) {
-                    if (result.Successful())
-                    {
-                        gDiscordClient->UpdateToken(discordpp::AuthorizationTokenType::Bearer, accessToken, [accessToken](discordpp::ClientResult result) {
-                            if (result.Successful())
-                            {
-                                LLSD authenticator = LLSD::emptyMap();
-                                authenticator["token"] = accessToken;
-                                gSecAPIHandler->saveCredential(gSecAPIHandler->createCredential("Discord", LLSD::emptyMap(), authenticator), true);
-                                gDiscordClient->Connect();
-                            }
-                            else
-                            {
-                                LL_WARNS("Discord") << result.Error() << LL_ENDL;
-                            }
-                        });
-                    }
-                    else
-                    {
-                        LL_WARNS("Discord") << result.Error() << LL_ENDL;
-                    }
-                });
-            }
-            else
-            {
-                LL_WARNS("Discord") << result.Error() << LL_ENDL;
-                gSavedSettings.setBOOL("EnableDiscord", false);
-            }
-        });
-    }
-    else
-    {
-        gDiscordClient->Disconnect();
-        auto credential = gSecAPIHandler->loadCredential("Discord");
-        if (credential.notNull())
-        {
-            gDiscordClient->RevokeToken(APPLICATION_ID, credential->getAuthenticator()["token"].asString(), [](discordpp::ClientResult result) {
-                if (result.Successful())
-                    LL_INFOS("Discord") << "Access token successfully revoked." << LL_ENDL;
-                else
-                    LL_WARNS("Discord") << "No access token to revoke." << LL_ENDL;
-            });
-            auto cred = new LLCredential("Discord");
-            gSecAPIHandler->deleteCredential(cred);
-        }
-        else
-        {
-            LL_WARNS("Discord") << "Credentials are already nonexistent." << LL_ENDL;
-        }
-    }
+    gDiscordClient->SetApplicationId(564763931009220608);
+    updateDiscordActivity();
 }
 
 void LLAppViewer::updateDiscordActivity()
 {
     LL_PROFILE_ZONE_SCOPED;
+
+    static LLCachedControl<bool> integration_enabled(gSavedSettings, "EnableDiscord", true);
+    if (!integration_enabled)
+    {
+        gDiscordClient->ClearRichPresence();
+        return;
+    }
+
     discordpp::Activity activity;
     activity.SetType(discordpp::ActivityTypes::Playing);
     discordpp::ActivityTimestamps timestamps;
     timestamps.SetStart(gDiscordTimestampsStart);
     activity.SetTimestamps(timestamps);
+
+    discordpp::ActivityAssets activityAssets;
+    activityAssets.SetLargeImage("alchemy_1024");
+    activityAssets.SetLargeText(LLTrans::getString("APP_NAME"));
+    activityAssets.SetLargeUrl("https://www.alchemyviewer.org");
+    activityAssets.SetSmallImage("secondlife_512");
+    activityAssets.SetSmallText(LLTrans::getString("SECOND_LIFE"));
+    activityAssets.SetSmallUrl("https://secondlife.com/");
+    activity.SetAssets(activityAssets);
 
     if (gAgent.getID() == LLUUID::null)
     {
@@ -6144,6 +6074,7 @@ void LLAppViewer::updateDiscordActivity()
         activity.SetDetails(gDiscordActivityDetails);
     }
 
+    std::string location = "Hidden Region";
     static LLCachedControl<bool> show_state(gSavedSettings, "ShowDiscordActivityState", false);
     if (show_state)
     {
@@ -6166,15 +6097,16 @@ void LLAppViewer::updateDiscordActivity()
             pos_x -= pos_x % 2;
             pos_y -= pos_y % 2;
         }
-        auto location = llformat("%s (%d, %d, %d)", gAgent.getRegion()->getName().c_str(), pos_x, pos_y, pos_z);
-        activity.SetState(location);
 
-        discordpp::ActivityParty party;
-        party.SetId(location);
-        party.SetCurrentSize(gDiscordPartyCurrentSize);
-        party.SetMaxSize(gDiscordPartyMaxSize);
-        activity.SetParty(party);
+        location = llformat("%s (%d, %d, %d)", gAgent.getRegion()->getName().c_str(), pos_x, pos_y, pos_z);
     }
+    activity.SetState(location);
+
+    discordpp::ActivityParty party;
+    party.SetId(location);
+    party.SetCurrentSize(gDiscordPartyCurrentSize);
+    party.SetMaxSize(gDiscordPartyMaxSize);
+    activity.SetParty(party);
 
     gDiscordClient->UpdateRichPresence(activity, [](discordpp::ClientResult) {});
 }
