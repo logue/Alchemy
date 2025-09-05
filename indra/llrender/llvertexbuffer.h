@@ -99,6 +99,7 @@ public:
     };
 
     LLVertexBuffer(const LLVertexBuffer& rhs)
+        : LLRefCount(rhs)
     {
         *this = rhs;
     }

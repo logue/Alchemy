@@ -27,15 +27,8 @@
 #ifndef LL_LLSTRING_H
 #define LL_LLSTRING_H
 
-#if LL_GNUC && GCC_VERSION >= 90000
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-copy-dtor"
-#endif
 #include <boost/call_traits.hpp>
 #include <boost/unordered/unordered_flat_map.hpp>
-#if LL_GNUC && GCC_VERSION >= 90000
-#pragma GCC diagnostic pop
-#endif
 #include <optional>
 #include <string>
 #include <string_view>

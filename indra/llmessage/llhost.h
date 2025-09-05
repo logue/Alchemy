@@ -49,6 +49,11 @@ public:
         mIP(INVALID_HOST_IP_ADDRESS)
     { } // STL's hash_map expect this T()
 
+    LLHost(const LLHost& rhs)
+    {
+        *this = rhs;
+    }
+
     LLHost( U32 ipv4_addr, U32 port )
     :   mPort( port )
     {
@@ -71,8 +76,7 @@ public:
 
     explicit LLHost(const std::string& ip_and_port);
 
-    ~LLHost()
-    { }
+    ~LLHost() = default;
 
     // MANIPULATORS
     void    set( U32 ip, U32 port )             { mIP = ip; mPort = port; }
