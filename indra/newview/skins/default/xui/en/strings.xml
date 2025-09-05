@@ -4247,6 +4247,7 @@ name="Command_360_Capture_Label">360 snapshot</string>
   <string name="Command_Places_Label">Places</string>
   <string name="Command_Preferences_Label">Preferences</string>
   <string name="Command_Profile_Label">Profile</string>
+  <string name="Command_RegionTracker_Label">Region Tracker</string>
   <string name="Command_Report_Abuse_Label">Report Abuse</string>
   <string name="Command_Scripts_Label">My Scripts</string>
   <string name="Command_Stats_Label">Statistics</string>
