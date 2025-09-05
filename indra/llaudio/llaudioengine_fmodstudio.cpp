@@ -44,7 +44,9 @@
 
 #include "sound_ids.h"
 
-FMOD_RESULT F_CALLBACK windCallback(FMOD_DSP_STATE *dsp_state, float *inbuffer, float *outbuffer, unsigned int length, int inchannels, int *outchannels);
+constexpr U32 EXTRA_SOUND_CHANNELS = 10;
+
+FMOD_RESULT F_CALL windCallback(FMOD_DSP_STATE *dsp_state, float *inbuffer, float *outbuffer, unsigned int length, int inchannels, int *outchannels);
 
 FMOD::ChannelGroup *LLAudioEngine_FMODSTUDIO::mChannelGroups[LLAudioEngine::AUDIO_TYPE_COUNT] = {0};
 
@@ -98,11 +100,10 @@ bool LLAudioEngine_FMODSTUDIO::init(void* userdata, const std::string &app_title
     }
 
     // In this case, all sounds, PLUS wind and stream will be software.
-    result = mSystem->setSoftwareChannels(LL_MAX_AUDIO_CHANNELS + 2);
+    result = mSystem->setSoftwareChannels(LL_MAX_AUDIO_CHANNELS + EXTRA_SOUND_CHANNELS);
     Check_FMOD_Error(result, "FMOD::System::setSoftwareChannels");
 
-    FMOD_ADVANCEDSETTINGS settings;
-    memset(&settings, 0, sizeof(settings));
+    FMOD_ADVANCEDSETTINGS settings = { };
     settings.cbSize = sizeof(FMOD_ADVANCEDSETTINGS);
     settings.resamplerMethod = FMOD_DSP_RESAMPLER_LINEAR;
 
@@ -126,8 +127,8 @@ bool LLAudioEngine_FMODSTUDIO::init(void* userdata, const std::string &app_title
         if (NULL == env_string)
         {
             LL_DEBUGS("AppInit") << "Trying PulseAudio audio output..." << LL_ENDL;
-            if (mSystem->setOutput(FMOD_OUTPUTTYPE_PULSEAUDIO) == FMOD_OK &&
-                (result = mSystem->init(LL_MAX_AUDIO_CHANNELS + 2, fmod_flags, const_cast<char*>(app_title.c_str()))) == FMOD_OK)
+            if ((result = mSystem->setOutput(FMOD_OUTPUTTYPE_PULSEAUDIO)) == FMOD_OK &&
+                (result = mSystem->init(LL_MAX_AUDIO_CHANNELS + EXTRA_SOUND_CHANNELS, fmod_flags, const_cast<char*>(app_title.c_str()))) == FMOD_OK)
             {
                 LL_DEBUGS("AppInit") << "PulseAudio output initialized OKAY" << LL_ENDL;
                 audio_ok = true;
@@ -148,8 +149,8 @@ bool LLAudioEngine_FMODSTUDIO::init(void* userdata, const std::string &app_title
         if (NULL == env_string)
         {
             LL_DEBUGS("AppInit") << "Trying ALSA audio output..." << LL_ENDL;
-            if (mSystem->setOutput(FMOD_OUTPUTTYPE_ALSA) == FMOD_OK &&
-                (result = mSystem->init(LL_MAX_AUDIO_CHANNELS + 2, fmod_flags, 0)) == FMOD_OK)
+            if ((result = mSystem->setOutput(FMOD_OUTPUTTYPE_ALSA)) == FMOD_OK &&
+                (result = mSystem->init(LL_MAX_AUDIO_CHANNELS + EXTRA_SOUND_CHANNELS, fmod_flags, 0)) == FMOD_OK)
             {
                 LL_DEBUGS("AppInit") << "ALSA audio output initialized OKAY" << LL_ENDL;
                 audio_ok = true;
@@ -173,24 +174,26 @@ bool LLAudioEngine_FMODSTUDIO::init(void* userdata, const std::string &app_title
     // We're interested in logging which output method we
     // ended up with, for QA purposes.
     FMOD_OUTPUTTYPE output_type;
-    mSystem->getOutput(&output_type);
-    switch (output_type)
+    if (!Check_FMOD_Error(mSystem->getOutput(&output_type), "FMOD::System::getOutput"))
     {
-    case FMOD_OUTPUTTYPE_NOSOUND:
-        LL_INFOS("AppInit") << "Audio output: NoSound" << LL_ENDL; break;
-    case FMOD_OUTPUTTYPE_PULSEAUDIO:
-        LL_INFOS("AppInit") << "Audio output: PulseAudio" << LL_ENDL; break;
-    case FMOD_OUTPUTTYPE_ALSA:
-        LL_INFOS("AppInit") << "Audio output: ALSA" << LL_ENDL; break;
-    default:
-        LL_INFOS("AppInit") << "Audio output: Unknown!" << LL_ENDL; break;
-    };
+        switch (output_type)
+        {
+            case FMOD_OUTPUTTYPE_NOSOUND:
+                LL_INFOS("AppInit") << "Audio output: NoSound" << LL_ENDL; break;
+            case FMOD_OUTPUTTYPE_PULSEAUDIO:
+                LL_INFOS("AppInit") << "Audio output: PulseAudio" << LL_ENDL; break;
+            case FMOD_OUTPUTTYPE_ALSA:
+                LL_INFOS("AppInit") << "Audio output: ALSA" << LL_ENDL; break;
+            default:
+                LL_INFOS("AppInit") << "Audio output: Unknown!" << LL_ENDL; break;
+        };
+    }
 #else // LL_LINUX
 
     // initialize the FMOD engine
     // number of channel in this case looks to be identiacal to number of max simultaneously
     // playing objects and we can set practically any number
-    result = mSystem->init(LL_MAX_AUDIO_CHANNELS + 2, fmod_flags, 0);
+    result = mSystem->init(LL_MAX_AUDIO_CHANNELS + EXTRA_SOUND_CHANNELS, fmod_flags, 0);
     if (Check_FMOD_Error(result, "Error initializing FMOD Studio with default settins, retrying with other format"))
     {
         result = mSystem->setSoftwareFormat(44100, FMOD_SPEAKERMODE_STEREO, 0/*- ignore*/);
@@ -198,7 +201,7 @@ bool LLAudioEngine_FMODSTUDIO::init(void* userdata, const std::string &app_title
         {
             return false;
         }
-        result = mSystem->init(LL_MAX_AUDIO_CHANNELS + 2, fmod_flags, 0);
+        result = mSystem->init(LL_MAX_AUDIO_CHANNELS + EXTRA_SOUND_CHANNELS, fmod_flags, 0);
     }
     if (Check_FMOD_Error(result, "Error initializing FMOD Studio"))
     {
@@ -208,20 +211,35 @@ bool LLAudioEngine_FMODSTUDIO::init(void* userdata, const std::string &app_title
     }
 #endif
 
+    if (mEnableProfiler)
+    {
+        Check_FMOD_Error(mSystem->createChannelGroup("None", &mChannelGroups[AUDIO_TYPE_NONE]), "FMOD::System::createChannelGroup");
+        Check_FMOD_Error(mSystem->createChannelGroup("SFX", &mChannelGroups[AUDIO_TYPE_SFX]), "FMOD::System::createChannelGroup");
+        Check_FMOD_Error(mSystem->createChannelGroup("UI", &mChannelGroups[AUDIO_TYPE_UI]), "FMOD::System::createChannelGroup");
+        Check_FMOD_Error(mSystem->createChannelGroup("Ambient", &mChannelGroups[AUDIO_TYPE_AMBIENT]), "FMOD::System::createChannelGroup");
+    }
+
     LL_INFOS("AppInit") << "LLAudioEngine_FMODSTUDIO::init() FMOD Studio initialized correctly" << LL_ENDL;
+
+    FMOD_ADVANCEDSETTINGS adv_settings = { };
+    mSystem->getAdvancedSettings(&adv_settings);
+
+    LL_INFOS("AppInit") << "LLAudioEngine_FMODSTUDIO::init(): resampler=" << adv_settings.resamplerMethod << " bytes" << LL_ENDL;
 
     int r_numbuffers, r_samplerate, r_channels;
     unsigned int r_bufferlength;
-    char r_name[512];
-    int latency = 100;
     mSystem->getDSPBufferSize(&r_bufferlength, &r_numbuffers);
     LL_INFOS("AppInit") << "LLAudioEngine_FMODSTUDIO::init(): r_bufferlength=" << r_bufferlength << " bytes" << LL_ENDL;
     LL_INFOS("AppInit") << "LLAudioEngine_FMODSTUDIO::init(): r_numbuffers=" << r_numbuffers << LL_ENDL;
 
-    mSystem->getDriverInfo(0, r_name, 511, NULL, &r_samplerate, NULL, &r_channels);
+    char r_name[512];
+    mSystem->getDriverInfo(0, r_name, 511, nullptr, &r_samplerate, nullptr, &r_channels);
     r_name[511] = '\0';
-    LL_INFOS("AppInit") << "LLAudioEngine_FMODSTUDIO::init(): r_name=\"" << r_name << "\"" << LL_ENDL;
+    LL_INFOS("AppInit") << "LLAudioEngine_FMODSTUDIO::init(): r_name=\"" << r_name << "\"" <<  LL_ENDL;
+    LL_INFOS("AppInit") << "LLAudioEngine_FMODSTUDIO::init(): r_samplerate=" << r_samplerate << "Hz" << LL_ENDL;
+    LL_INFOS("AppInit") << "LLAudioEngine_FMODSTUDIO::init(): r_channels=" << r_channels << LL_ENDL;
 
+    int latency = 100; // optimistic default - i suspect if sample rate is 0, everything breaks.
     if (r_samplerate != 0)
         latency = (int)(1000.0f * r_bufferlength * r_numbuffers / r_samplerate);
     LL_INFOS("AppInit") << "LLAudioEngine_FMODSTUDIO::init(): latency=" << latency << "ms" << LL_ENDL;
@@ -245,7 +263,7 @@ std::string LLAudioEngine_FMODSTUDIO::getDriverName(bool verbose)
             return llformat("FMOD Studio %1x.%02x.%02x", version >> 16, version >> 8 & 0x000000FF, version & 0x000000FF);
         }
     }
-    return "FMOD STUDIO";
+    return "FMOD Studio";
 }
 
 
@@ -664,7 +682,7 @@ bool LLAudioBufferFMODSTUDIO::loadWAV(const std::string& filename)
         return false;
     }
 
-    if (!gDirUtilp->fileExists(filename))
+    if (!LLFile::isfile(filename))
     {
         // File not found, abort.
         return false;
@@ -736,7 +754,7 @@ void LLAudioChannelFMODSTUDIO::set3DMode(bool use3d)
 // not the main thread.  May have implications for callees or audio
 // engine shutdown.
 
-FMOD_RESULT F_CALLBACK windCallback(FMOD_DSP_STATE *dsp_state, float *inbuffer, float *outbuffer, unsigned int length, int inchannels, int *outchannels)
+FMOD_RESULT F_CALL windCallback(FMOD_DSP_STATE *dsp_state, float *inbuffer, float *outbuffer, unsigned int length, int inchannels, int *outchannels)
 {
     // inbuffer = fmod's original mixbuffer.
     // outbuffer = the buffer passed from the previous DSP unit.
