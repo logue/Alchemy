@@ -6045,12 +6045,13 @@ void LLAppViewer::updateDiscordActivity()
     activity.SetTimestamps(timestamps);
 
     discordpp::ActivityAssets activityAssets;
-    activityAssets.SetLargeImage("alchemy_1024");
-    activityAssets.SetLargeText(LLTrans::getString("APP_NAME"));
-    activityAssets.SetLargeUrl("https://www.alchemyviewer.org");
-    activityAssets.SetSmallImage("secondlife_512");
-    activityAssets.SetSmallText(LLTrans::getString("SECOND_LIFE"));
-    activityAssets.SetSmallUrl("https://secondlife.com/");
+    activityAssets.SetSmallImage("alchemy_1024");
+    activityAssets.SetSmallText(std::format("via {}", LLTrans::getString("APP_NAME")));
+    activityAssets.SetSmallUrl("https://www.alchemyviewer.org");
+
+    activityAssets.SetLargeImage("secondlife_512");
+    activityAssets.SetLargeText(LLTrans::getString("SECOND_LIFE"));
+    activityAssets.SetLargeUrl("https://secondlife.com/");
     activity.SetAssets(activityAssets);
 
     if (gAgent.getID() == LLUUID::null)

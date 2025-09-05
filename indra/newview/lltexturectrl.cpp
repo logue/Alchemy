@@ -195,6 +195,7 @@ LLFloaterTexturePicker::LLFloaterTexturePicker(
     mCanApplyImmediately = can_apply_immediately;
     buildFromFile("floater_texture_ctrl.xml");
     setCanMinimize(false);
+    setCanCollapse(false);
 }
 
 LLFloaterTexturePicker::~LLFloaterTexturePicker()
