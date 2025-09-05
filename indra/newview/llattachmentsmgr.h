@@ -76,7 +76,7 @@ public:
 // [RLVa:KB] - Checked: 2010-09-13 (RLVa-1.2.1)
     void addAttachmentRequest(const LLUUID& item_id,
                               const U8 attachment_pt,
-                              const bool add, const bool fRlvForce = FALSE);
+                              const bool add, const bool fRlvForce = false);
 // [/RLVa:KB]
 //  void addAttachmentRequest(const LLUUID& item_id,
 //                              const U8 attachment_pt,

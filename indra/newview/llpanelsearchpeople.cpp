@@ -61,7 +61,7 @@ void LLPanelSearchPeople::onCommitSearch(LLUICtrl* ctrl)
     {
         std::string text = pSearchEditor->getText();
         LLStringUtil::trim(text);
-        if (LLUUID::validate(text) == TRUE)
+        if (LLUUID::validate(text))
         {
             LLDirQuery query;
             query.type = SE_PEOPLE;

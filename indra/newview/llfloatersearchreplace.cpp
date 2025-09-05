@@ -120,7 +120,7 @@ bool LLFloaterSearchReplace::handleKeyHere(KEY key, MASK mask)
             LLView* pEditView = dynamic_cast<LLView*>(LLEditMenuHandler::gEditMenuHandler);
             if ( (pEditView) && (pEditView->hasAncestor(this)) && (gEditMenu) && (gEditMenu->handleAcceleratorKey(key, mask)) )
             {
-                return TRUE;
+                return true;
             }
         }
 
@@ -128,7 +128,7 @@ bool LLFloaterSearchReplace::handleKeyHere(KEY key, MASK mask)
         while (pView)
         {
             if ( (pView->hasAccelerators()) && (pView->handleKeyHere(key, mask)) )
-                return TRUE;
+                return true;
             pView = pView->getParent();
         }
     }

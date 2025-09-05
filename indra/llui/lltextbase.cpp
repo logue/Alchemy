@@ -3157,7 +3157,7 @@ void LLTextBase::scrollTo(S32 nLine, S32 nColumn)
     }
 
     setCursor(nLine, nColumn);
-    mScrollNeeded = FALSE;
+    mScrollNeeded = false;
 }
 // [/SL:KB
 

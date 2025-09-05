@@ -167,7 +167,7 @@ bool LLPreviewNotecard::handleKeyHere(KEY key, MASK mask)
     if(('F' == key) && (MASK_CONTROL == (mask & MASK_CONTROL)))
     {
         LLFloaterSearchReplace::show(getEditor());
-        return TRUE;
+        return true;
     }
 // [/SL:KB]
 

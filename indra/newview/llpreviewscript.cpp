@@ -1301,7 +1301,7 @@ bool LLScriptEdCore::handleKeyHere(KEY key, MASK mask)
 // [SL:KB] - Patch: Build-ScriptEditor | Checked: 2014-01-29 (Catznip-3.6)
     if (mMenuBar->handleAcceleratorKey(key, mask))
     {
-        return TRUE;
+        return true;
     }
 // [/SL:KB]
 
