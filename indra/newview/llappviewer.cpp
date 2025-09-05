@@ -259,6 +259,9 @@ using namespace LL;
 #include "llcoproceduremanager.h"
 #include "llviewereventrecorder.h"
 
+
+#include "alstreaminfo.h"
+
 // *FIX: These extern globals should be cleaned up.
 // The globals either represent state/config/resource-storage of either
 // this app, or another 'component' of the viewer. App globals should be
@@ -1827,6 +1830,8 @@ bool LLAppViewer::cleanup()
     LLCalc::cleanUp();
 
     LL_INFOS() << "Global stuff deleted" << LL_ENDL;
+
+    ALStreamInfo::deleteSingleton();
 
     if (gAudiop)
     {

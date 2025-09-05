@@ -80,7 +80,10 @@ set(viewer_SOURCE_FILES
     alfloatergenerictext.cpp
     alfloaterparticleeditor.cpp
     alfloaterregiontracker.cpp
+    alpanelmusicticker.cpp
     alpanelradaralert.cpp
+    alpanelstreaminfo.cpp
+    alstreaminfo.cpp
     alunzip.cpp
     alviewermenu.cpp
     gltfscenemanager.cpp
@@ -803,7 +806,10 @@ set(viewer_HEADER_FILES
     alfloatergenerictext.h
     alfloaterparticleeditor.h
     alfloaterregiontracker.h
+    alpanelmusicticker.h
     alpanelradaralert.h
+    alpanelstreaminfo.h
+    alstreaminfo.h
     alunzip.h
     alviewermenu.h
     gltfscenemanager.h
