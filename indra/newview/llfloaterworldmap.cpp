@@ -1787,8 +1787,6 @@ void LLFloaterWorldMap::updateSims(bool found_null_sim)
 
     mSearchResults->operateOnAll(LLCtrlListInterface::OP_DELETE);
 
-    auto name_length = mCompletingRegionName.length();
-
     LLSD match;
 
     S32 num_results = 0;

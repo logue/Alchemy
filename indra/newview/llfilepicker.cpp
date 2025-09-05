@@ -424,7 +424,6 @@ bool LLFilePicker::getSaveFileModeless(ESaveFilter filter,
     {
         return false;
     }
-    bool success = false;
 
     // if local file browsing is turned off, return without opening dialog
     if (!check_local_file_access_enabled())

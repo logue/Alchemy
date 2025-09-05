@@ -183,8 +183,6 @@ if (LINUX)
           -fsigned-char
           -g
           -pthread
-          -Wno-parentheses
-          -Wno-deprecated
           -fvisibility=hidden
   )
 
@@ -221,16 +219,16 @@ if (DARWIN)
 endif(DARWIN)
 
 if (LINUX OR DARWIN)
-  add_compile_options(-Wall -Wno-sign-compare -Wno-trigraphs -Wno-reorder -Wno-unused-but-set-variable -Wno-unused-variable)
+  add_compile_options(-Wall -Wno-sign-compare -Wno-trigraphs -Wno-reorder)
 
   if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
     # libstdc++ headers contain deprecated declarations that fail on clang
     # macOS currently has many deprecated calls
-    add_compile_options(-Wno-unused-local-typedef -Wno-deprecated-declarations)
+    add_compile_options(-Wno-unused-local-typedef)
   endif()
 
   if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    add_compile_options(-Wno-stringop-truncation -Wno-stringop-overflow -Wno-parentheses -Wno-maybe-uninitialized)
+    add_compile_options(-Wno-stringop-truncation -Wno-stringop-overflow -Wno-maybe-uninitialized)
   endif()
 
   if (NOT GCC_DISABLE_FATAL_WARNINGS AND NOT CLANG_DISABLE_FATAL_WARNINGS)

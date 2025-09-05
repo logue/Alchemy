@@ -2308,7 +2308,6 @@ void LLVoiceWebRTCConnection::processIceUpdatesCoro(connectionPtr_t connection)
         return;
     }
 
-    bool iceCompleted = false;
     LLSD body;
     if (!connection->mIceCandidates.empty() || connection->mIceCompleted)
     {
@@ -2347,7 +2346,6 @@ void LLVoiceWebRTCConnection::processIceUpdatesCoro(connectionPtr_t connection)
             LLSD body_candidate;
             body_candidate["completed"] = true;
             body["candidate"]           = body_candidate;
-            iceCompleted                = connection->mIceCompleted;
             connection->mIceCompleted   = false;
         }
 

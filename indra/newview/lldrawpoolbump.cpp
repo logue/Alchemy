@@ -894,7 +894,6 @@ void LLBumpImageList::onSourceUpdated(LLViewerTexture* src, EBumpEffect bump_cod
 
         bump->setExplicitFormat(GL_RGBA, GL_RGBA);
 
-        LLImageGL* src_img = src->getGLTexture();
         LLImageGL* dst_img = bump->getGLTexture();
         dst_img->setSize(src->getWidth(), src->getHeight(), 4, 0);
         dst_img->setUseMipMaps(true);

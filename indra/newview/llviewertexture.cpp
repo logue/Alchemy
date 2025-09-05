@@ -527,7 +527,6 @@ void LLViewerTexture::updateClass()
     bool is_low = is_sys_low || over_pct > 0.f;
 
     static bool was_low = false;
-    static bool was_sys_low = false;
 
     if (is_low && !was_low)
     {
@@ -545,7 +544,6 @@ void LLViewerTexture::updateClass()
     }
 
     was_low = is_low;
-    was_sys_low = is_sys_low;
 
     if (is_low)
     {
@@ -3020,8 +3018,6 @@ void LLViewerLODTexture::processTextureStats()
 {
     LL_PROFILE_ZONE_SCOPED_CATEGORY_TEXTURE;
     updateVirtualSize();
-
-    bool did_downscale = false;
 
     static LLCachedControl<bool> textures_fullres(gSavedSettings,"TextureLoadFullRes", false);
 

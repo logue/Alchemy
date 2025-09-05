@@ -2721,10 +2721,8 @@ void LLPanelLandAccess::refresh_ui()
         bool public_access = mPublicAccessCheck->getValue().asBoolean();
         if (public_access)
         {
-            bool override = false;
             if(parcel->getRegionDenyAnonymousOverride())
             {
-                override = true;
                 mPaymentInfoCheck->setEnabled(false);
             }
             else
@@ -2733,7 +2731,6 @@ void LLPanelLandAccess::refresh_ui()
             }
             if(parcel->getRegionDenyAgeUnverifiedOverride())
             {
-                override = true;
                 mAgeVerifiedCheck->setEnabled(false);
             }
             else

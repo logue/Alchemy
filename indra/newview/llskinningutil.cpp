@@ -341,7 +341,6 @@ void LLSkinningUtil::updateRiggingInfo(const LLMeshSkinInfo* skin, LLVOAvatar *a
                     F32 *weights = vol_face.mWeights[i].getF32ptr();
                     LLVector4 wght;
                     S32 idx[4];
-                    F32 scale = 0.0f;
                     // FIXME unpacking of weights should be pulled into a common function and optimized if possible.
                     for (U32 k = 0; k < 4; k++)
                     {

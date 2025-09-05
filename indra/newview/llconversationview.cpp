@@ -283,7 +283,6 @@ void LLConversationViewSession::draw()
 {
     getViewModelItem()->update();
 
-    const LLFolderViewItem::Params& default_params = LLUICtrlFactory::getDefaultParams<LLFolderViewItem>();
     const bool show_context = (getRoot() ? getRoot()->getShowSelectionContext() : false);
 
     // Indicate that flash can start (moot operation if already started, done or not flashing)

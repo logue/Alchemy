@@ -4863,14 +4863,6 @@ bool LLVOAvatar::updateCharacter(LLAgent &agent)
     }
 
     bool visible = isVisible();
-    bool is_control_avatar = isControlAvatar(); // capture state to simplify tracing
-    bool is_attachment = false;
-
-    if (is_control_avatar)
-    {
-        LLControlAvatar *cav = dynamic_cast<LLControlAvatar*>(this);
-        is_attachment = cav && cav->mRootVolp && cav->mRootVolp->isAttachment(); // For attached animated objects
-    }
 
     // For fading out the names above heads, only let the timer
     // run if we're visible.
@@ -5136,7 +5128,7 @@ void LLVOAvatar::updateVisibility()
 
         if (sDebugInvisible)
         {
-            if (LLNameValue* firstname = getNVPair("FirstName"))
+            if (getNVPair("FirstName"))
             {
                 LL_DEBUGS("Avatar") << avString() << " updating visibility" << LL_ENDL;
             }
@@ -8285,7 +8277,7 @@ void LLVOAvatar::rebuildAttachments()
                 pAttachVol->forceLOD(3);
                 for (LLViewerObject* pChildObj : pAttachObj->getChildren())
                 {
-                    if (LLVOVolume* pChildVol = (pChildObj->isMesh()) ? dynamic_cast<LLVOVolume*>(pChildObj) : nullptr)
+                    if (pChildObj->isMesh() && dynamic_cast<LLVOVolume*>(pChildObj))
                         pAttachVol->forceLOD(3);
                 }
             }
@@ -10912,8 +10904,6 @@ void LLVOAvatar::getAssociatedVolumes(std::vector<LLVOVolume*>& volumes)
     for (const auto& iter : mAttachmentPoints)
     {
         LLViewerJointAttachment* attachment = iter.second;
-        LLViewerJointAttachment::attachedobjs_vec_t::iterator attach_end = attachment->mAttachedObjects.end();
-
         for (LLViewerObject* attached_object : attachment->mAttachedObjects)
         {
             if (attached_object->isDead())

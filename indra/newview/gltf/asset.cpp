@@ -615,8 +615,8 @@ bool Asset::prep()
                     // allocate vertex buffer and pack it
                     if (vertex_count[variant] > 0)
                     {
-                        U32 mat_idx = mat_id + 1;
                         #if 0
+                        U32 mat_idx = mat_id + 1;
                         LLVertexBuffer* vb = new LLVertexBuffer(attribute_mask);
 
                         rd.mBatches[variant][mat_idx].mVertexBuffer = vb;
@@ -643,7 +643,7 @@ bool Asset::prep()
                 }
             }
         }
-
+#if 0
         // sanity check that all primitives have a vertex buffer
         for (auto& mesh : mMeshes)
         {
@@ -652,6 +652,7 @@ bool Asset::prep()
                 //llassert(primitive.mVertexBuffer.notNull());
             }
         }
+#endif
     }
     #if 0
     // build render batches

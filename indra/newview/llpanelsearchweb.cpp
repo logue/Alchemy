@@ -182,7 +182,6 @@ void LLPanelSearchWeb::loadUrl(const SearchQuery& p)
 
     // Get the search URL and expand all of the substitutions
     // (also adds things like [LANGUAGE], [VERSION], [OS], etc.)
-    LLViewerRegion* regionp = gAgent.getRegion();
     std::string url = gSavedSettings.getString("SearchURL");
     url = LLWeb::expandURLSubstitutions(url, subs);
     // Finally, load the URL in the webpanel

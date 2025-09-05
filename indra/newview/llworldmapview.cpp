@@ -524,7 +524,6 @@ void LLWorldMapView::draw()
         if (mMapScale >= DRAW_TEXT_THRESHOLD)
         {
             static LLCachedControl<bool> mapShowAgentCount(gSavedSettings, "AlchemyMapShowAgentCount", true);
-            static LLFontGL* font = LLFontGL::getFont(LLFontDescriptor("SansSerif", "Small", LLFontGL::BOLD));
             std::string mesg;
             if (info->isDown())
             {
