@@ -3364,9 +3364,6 @@ LLSD LLAppViewer::getViewerInfo() const
 #elif LL_GNUC
     info["COMPILER"] = "GCC";
     info["COMPILER_VERSION"] = GCC_VERSION;
-#elif LL_INTELC
-    info["COMPILER"] = "ICC";
-    info["COMPILER_VERSION"] = __ICC;
 #endif
 
     // Position
