@@ -59,8 +59,6 @@
 #include "rlvcommon.h"
 // [/RLVa:KB]
 
-const char* const DEFAULT_DESC = "(No Description)";
-
 class PropertiesChangedCallback : public LLInventoryCallback
 {
 public:

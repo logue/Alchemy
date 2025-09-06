@@ -223,7 +223,7 @@ public:
     /*virtual*/ void    setValue(const LLSD& value);
 
     void setClickCallback(bool (*callback)(void*), void* user_data);
-    bool handleClick() override;
+    bool handleClick();
 
 private:
     LLPointer<LLUIImage>    mIcon;

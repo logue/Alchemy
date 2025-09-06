@@ -103,7 +103,6 @@
 const std::string HELP_LSL_PORTAL_TOPIC = "LSL_Portal";
 
 const std::string DEFAULT_SCRIPT_NAME = "New Script"; // *TODO:Translate?
-const std::string DEFAULT_SCRIPT_DESC = "(No Description)"; // *TODO:Translate?
 
 // Description and header information
 const S32 MAX_HISTORY_COUNT = 10;

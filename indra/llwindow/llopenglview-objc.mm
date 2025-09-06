@@ -695,6 +695,12 @@ attributedStringInfo getSegments(NSAttributedString *str)
     }
 }
 
+#if LL_DARWIN
+// For commitEditing deprecation
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#endif
+
 - (void)commitCurrentPreedit
 {
     if (mHasMarkedText)
@@ -705,6 +711,10 @@ attributedStringInfo getSegments(NSAttributedString *str)
         }
     }
 }
+
+#if LL_DARWIN
+#pragma clang diagnostic pop
+#endif
 
 - (void)unmarkText
 {

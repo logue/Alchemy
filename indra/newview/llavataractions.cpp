@@ -427,8 +427,12 @@ void LLAvatarActions::showPick(const LLUUID& avatar_id, const LLUUID& pick_id)
         {
             const LLFloaterProfileLegacy* profile = LLFloaterReg::showTypedInstance<LLFloaterProfileLegacy>(
                 "legacy_profile", LLSD().with("avatar_id", avatar_id), TAKE_FOCUS_YES);
-            /*auto* tab = */dynamic_cast<LLPanelProfileLegacy::LLPanelProfilePicks*>(profile->expandTab("avatar_picks_tab"));
-            // *TODO: Finish
+            auto* tab = dynamic_cast<LLPanelProfileLegacy::LLPanelProfilePicks*>(profile->expandTab("avatar_picks_tab"));
+            if(tab)
+            {
+                // *TODO: Finish
+                (void)tab;
+            }
         }
         else
         {

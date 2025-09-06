@@ -35,7 +35,6 @@
 #include "lltextutil.h"
 #include "lluictrl.h"
 
-static const std::string DD_BUTTON_NAME = "dd_button";
 static const std::string DD_TEXTBOX_NAME = "dd_textbox";
 static const std::string DD_HEADER_NAME = "dd_header";
 

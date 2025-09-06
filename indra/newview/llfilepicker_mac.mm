@@ -29,6 +29,11 @@
 #include <iostream>
 #include "llfilepicker_mac.h"
 
+#if LL_DARWIN
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#endif
+
 NSOpenPanel *init_panel(const std::vector<std::string>* allowed_types, unsigned int flags)
 {
     int i;
@@ -227,5 +232,9 @@ void doSaveDialogModeless(const std::string* file,
         }];
     }
 }
+
+#if LL_DARWIN
+#pragma clang diagnostic pop
+#endif
 
 #endif

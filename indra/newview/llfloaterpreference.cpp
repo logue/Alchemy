@@ -133,11 +133,6 @@ const F32 BANDWIDTH_UPDATER_TIMEOUT = 0.5f;
 char const* const VISIBILITY_DEFAULT = "default";
 char const* const VISIBILITY_HIDDEN = "hidden";
 
-//control value for middle mouse as talk2push button
-const static std::string MIDDLE_MOUSE_CV = "MiddleMouse"; // for voice client and redability
-const static std::string MOUSE_BUTTON_4_CV = "MouseButton4";
-const static std::string MOUSE_BUTTON_5_CV = "MouseButton5";
-
 /// This must equal the maximum value set for the IndirectMaxComplexity slider in panel_preferences_graphics1.xml
 static const U32 INDIRECT_MAX_ARC_OFF = 101; // all the way to the right == disabled
 static const U32 MIN_INDIRECT_ARC_LIMIT = 1; // must match minimum of IndirectMaxComplexity in panel_preferences_graphics1.xml

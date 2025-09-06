@@ -97,7 +97,6 @@ static const std::string PANEL_PICKS        = "panel_profile_picks";
 static const std::string PANEL_CLASSIFIEDS  = "panel_profile_classifieds";
 static const std::string PANEL_FIRSTLIFE    = "panel_profile_firstlife";
 static const std::string PANEL_NOTES        = "panel_profile_notes";
-static const std::string PANEL_PROFILE_VIEW = "panel_profile_view";
 
 static const std::string PROFILE_PROPERTIES_CAP = "AgentProfile";
 static const std::string PROFILE_IMAGE_UPLOAD_CAP = "UploadAgentProfileImage";

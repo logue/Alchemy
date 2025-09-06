@@ -252,8 +252,6 @@ void LLPanelVoiceDeviceSettings::refresh()
     }
     else if (LLVoiceClient::getInstance()->deviceSettingsUpdated())
     {
-        LLVoiceDeviceList::const_iterator device;
-
         if(mCtrlInputDevices)
         {
             LLVoiceDeviceList devices = LLVoiceClient::getInstance()->getCaptureDevices();

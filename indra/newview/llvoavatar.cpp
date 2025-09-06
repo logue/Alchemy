@@ -8792,7 +8792,6 @@ void LLVOAvatar::updateTooSlow()
     LL_PROFILE_ZONE_SCOPED_CATEGORY_AVATAR;
     static LLCachedControl<S32> complexity_render_mode(gSavedSettings, "RenderAvatarComplexityMode");
     static LLCachedControl<bool> allowSelfImpostor(gSavedSettings, "AllowSelfImpostor");
-    const auto id = getID();
 
     // mTooSlow - Is the avatar flagged as being slow (includes shadow time)
     // mTooSlowWithoutShadows - Is the avatar flagged as being slow even with shadows removed.

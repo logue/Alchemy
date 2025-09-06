@@ -420,13 +420,6 @@ std::string make_dump_name(std::string prefix, S32 num)
 void dump_llsd_to_file(const LLSD& content, std::string filename);
 LLSD llsd_from_file(std::string filename);
 
-const std::string header_lod[] =
-{
-    "lowest_lod",
-    "low_lod",
-    "medium_lod",
-    "high_lod"
-};
 const char * const LOG_MESH = "Mesh";
 
 // Static data and functions to measure mesh load

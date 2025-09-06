@@ -47,7 +47,7 @@
 #include <boost/regex.hpp>
 
 
-const std::string NOTIFICATION_PERSIST_VERSION = "0.93";
+//const std::string NOTIFICATION_PERSIST_VERSION = "0.93";
 
 void NotificationPriorityValues::declareValues()
 {

@@ -121,14 +121,6 @@ const std::string alt_prefixes[] = {
     "water",
 };
 
-const std::string alt_panels[] = {
-    "pnl_alt1",
-    "pnl_alt2",
-    "pnl_alt3",
-    "pnl_ground",
-    "pnl_water",
-};
-
 static LLDefaultChildRegistry::Register<LLSettingsDropTarget> r("settings_drop_target");
 
 //=========================================================================

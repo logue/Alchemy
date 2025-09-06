@@ -94,8 +94,6 @@ U32 LLViewerTexture::sBiasTexturesUpdated = 0;
 
 S32 LLViewerTexture::sMaxSculptRez = 128; //max sculpt image size
 constexpr S32 MAX_CACHED_RAW_IMAGE_AREA = 64 * 64;
-const S32 MAX_CACHED_RAW_SCULPT_IMAGE_AREA = LLViewerTexture::sMaxSculptRez * LLViewerTexture::sMaxSculptRez;
-constexpr S32 MAX_CACHED_RAW_TERRAIN_IMAGE_AREA = 128 * 128;
 constexpr S32 DEFAULT_ICON_DIMENSIONS = 32;
 constexpr S32 DEFAULT_THUMBNAIL_DIMENSIONS = 256;
 U32 LLViewerTexture::sMinLargeImageSize = 65536; //256 * 256.

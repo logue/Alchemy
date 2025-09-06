@@ -6051,7 +6051,7 @@ void LLAppViewer::updateDiscordActivity()
 
     discordpp::ActivityAssets activityAssets;
     activityAssets.SetSmallImage("alchemy_1024");
-    activityAssets.SetSmallText(std::format("via {}", LLTrans::getString("APP_NAME")));
+    activityAssets.SetSmallText(llformat("via %s", LLTrans::getString("APP_NAME").c_str()));
     activityAssets.SetSmallUrl("https://www.alchemyviewer.org");
 
     activityAssets.SetLargeImage("secondlife_512");

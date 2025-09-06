@@ -83,7 +83,7 @@ const std::string WEBRTC_VOICE_SERVER_TYPE = "webrtc";
 namespace {
 
     const F32 MAX_AUDIO_DIST      = 50.0f;
-    const F32 VOLUME_SCALE_WEBRTC = 0.01f;
+    //const F32 VOLUME_SCALE_WEBRTC = 0.01f;
     const F32 LEVEL_SCALE_WEBRTC  = 0.008f;
 
     const F32 SPEAKING_AUDIO_LEVEL = 0.30;
@@ -2982,7 +2982,6 @@ void LLVoiceWebRTCConnection::OnDataReceivedImpl(const std::string &data, bool b
             return;
         }
         boost::json::object voice_data = voice_data_parsed.as_object();
-        bool new_participant = false;
         boost::json::object mute;
         boost::json::object user_gain;
         for (auto &participant_elem : voice_data)
@@ -3035,7 +3034,6 @@ void LLVoiceWebRTCConnection::OnDataReceivedImpl(const std::string &data, bool b
                 }
             }
 
-            new_participant |= joined;
             if (!participant && joined && (primary || !isSpatial()))
             {
                 participant = LLWebRTCVoiceClient::getInstance()->addParticipantByID(mChannelID, agent_id, mRegionID);

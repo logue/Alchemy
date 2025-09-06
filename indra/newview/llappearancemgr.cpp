@@ -3685,7 +3685,7 @@ void LLAppearanceMgr::updateIsDirty()
 }
 
 // *HACK: Must match name in Library or agent inventory
-const std::string ROOT_GESTURES_FOLDER = "Gestures";
+//const std::string ROOT_GESTURES_FOLDER = "Gestures";
 const std::string COMMON_GESTURES_FOLDER = "Common Gestures";
 const std::string MALE_GESTURES_FOLDER = "Male Gestures";
 const std::string FEMALE_GESTURES_FOLDER = "Female Gestures";
