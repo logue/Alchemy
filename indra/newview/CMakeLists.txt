@@ -1571,7 +1571,6 @@ if (DARWIN)
 
   # Add resource files to the project.
   set(viewer_RESOURCE_FILES
-    secondlife.icns
     Info-SecondLife.plist
     SecondLife.xib
     # CMake doesn't seem to support Xcode language variants well just yet
@@ -2256,13 +2255,13 @@ if (DARWIN)
   set(product "${VIEWER_CHANNEL}")
   set(MACOSX_EXECUTABLE_NAME "${VIEWER_CHANNEL}")
   set(MACOSX_BUNDLE_INFO_STRING "${VIEWER_CHANNEL}")
-  set(MACOSX_BUNDLE_ICON_FILE "secondlife.icns")
+  set(MACOSX_BUNDLE_ICON_FILE "alchemy.icns")
   set(MACOSX_BUNDLE_GUI_IDENTIFIER "org.alchemyviewer.viewer")
   set(MACOSX_BUNDLE_LONG_VERSION_STRING "${VIEWER_CHANNEL} ${VIEWER_SHORT_VERSION}.${VIEWER_VERSION_REVISION}")
   set(MACOSX_BUNDLE_BUNDLE_NAME "Alchemy")
   set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${VIEWER_SHORT_VERSION}.${VIEWER_VERSION_REVISION}")
   set(MACOSX_BUNDLE_BUNDLE_VERSION "${VIEWER_SHORT_VERSION}${VIEWER_MACOSX_PHASE}${VIEWER_REVISION}")
-  set(MACOSX_BUNDLE_COPYRIGHT "Copyright © Linden Research, Inc. 2020")
+  set(MACOSX_BUNDLE_COPYRIGHT "Copyright (C) 2013-2025 Alchemy Development Group")
   set(MACOSX_BUNDLE_NSMAIN_NIB_FILE "SecondLife.nib")
   set(MACOSX_BUNDLE_NSPRINCIPAL_CLASS "LLApplication")
 
