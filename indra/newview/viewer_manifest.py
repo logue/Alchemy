@@ -900,6 +900,17 @@ class Darwin_x86_64_Manifest(ViewerManifest):
                                 ):
                         self.path(libfile)
 
+                # Fmod studio dylibs (vary based on configuration)
+                if self.args['fmodstudio'] == 'ON':
+                    self.path("libfmod.dylib")
+
+                # Discord social SDK
+                if self.args['discord'] == 'ON':
+                    for libfile in (
+                                "libdiscord_partner_sdk.dylib",
+                                ):
+                        self.path(libfile)
+
                 # WebRTC libraries
                 with self.prefix(src=os.path.join(self.args['build'], os.pardir,
                                           'sharedlibs', self.args['buildtype'], 'Resources')):
@@ -1041,27 +1052,6 @@ class Darwin_x86_64_Manifest(ViewerManifest):
                                 'libvivoxsdk.dylib',
                                 ):
                     self.path2basename(relpkgdir, libfile)
-
-                # Fmod studio dylibs (vary based on configuration)
-                if self.args['fmodstudio'] == 'ON':
-                    if self.args['buildtype'].lower() == 'debug':
-                        for libfile in (
-                                    "libfmodL.dylib",
-                                    ):
-                            dylibs += path_optional(os.path.join(debpkgdir, libfile), libfile)
-                    else:
-                        for libfile in (
-                                    "libfmod.dylib",
-                                    ):
-                            dylibs += path_optional(os.path.join(relpkgdir, libfile), libfile)
-
-                # Discord social SDK
-                if self.args['discord'] == 'ON':
-                    for libfile in (
-                                "libdiscord_partner_sdk.dylib",
-                                ):
-                        self.path2basename(relpkgdir, libfile)
-
 
                 # our apps
                 executable_path = {}

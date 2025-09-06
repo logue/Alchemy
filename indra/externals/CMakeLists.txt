@@ -1,6 +1,7 @@
 
 project(externals)
 
+include(Variables)
 include(00-Common)
 include(FetchContent)
 include(UI)
