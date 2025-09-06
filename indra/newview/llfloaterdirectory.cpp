@@ -74,7 +74,6 @@ LLFloaterDirectory::LLFloaterDirectory(const Params& key)
     , mResultsStatus(nullptr)
 {
     mCommitCallbackRegistrar.add("Search.NavigateResults", boost::bind(&LLFloaterDirectory::navigateResults, this, _2));
-    mCommitCallbackRegistrar.add("Search.NavigateResults", boost::bind(&LLFloaterDirectory::navigateResults, this, _2));
     mCommitCallbackRegistrar.add("Search.Popout", boost::bind(&LLFloaterDirectory::onCommitPopoutResult, this));
 }
 
