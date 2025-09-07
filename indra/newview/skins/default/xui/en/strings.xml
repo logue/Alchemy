@@ -3064,7 +3064,7 @@ If you continue to receive this message, contact the [SUPPORT_SITE].
     <string name="MBOutOfMemoryErr">
         [APP_NAME]'s request for memory failed. Application can't proceed and will be closed.
 
-If your computer's RAM is low, quit any heavy applications before runing Second Life, allocate a page file or reduce graphical settings like draw distance.
+If your computer's RAM is low, quit any heavy applications before running Alchemy, allocate a page file or reduce graphical settings like draw distance.
     </string>
     <string name="MBMissingFile">
         [APP_NAME] couldn't access or find some of the files it needs and will be closed.

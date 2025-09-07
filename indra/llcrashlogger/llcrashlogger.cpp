@@ -565,12 +565,12 @@ bool LLCrashLogger::init()
     LLCore::LLHttp::initialize();
 
     // We assume that all the logs we're looking for reside on the current drive
-    gDirUtilp->initAppDirs("SecondLife");
+    gDirUtilp->initAppDirs("Alchemy");
 
     LLError::initForApplication(gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, ""), gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, ""));
 
-    // Default to the product name "Second Life" (this is overridden by the -name argument)
-    mProductName = "Second Life";
+    // Default to the product name "Alchemy" (this is overridden by the -name argument)
+    mProductName = "Alchemy";
 
     // Rename current log file to ".old"
     std::string old_log_file = gDirUtilp->getExpandedFilename(LL_PATH_LOGS, "crashreport.log.old");
