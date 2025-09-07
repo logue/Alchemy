@@ -1786,13 +1786,28 @@ void LLViewerObjectList::renderObjectsForMap(LLNetMap &netmap)
                         LLUIColorTable::instance().getColor( "NetMapGroupOwnAboveWater" );
     static const LLUIColor group_own_below_water_color =
                         LLUIColorTable::instance().getColor( "NetMapGroupOwnBelowWater" );
+    static const LLUIColor you_own_physical_color =
+                        LLUIColorTable::instance().getColor("NetMapYouPhysical", LLColor4::red);
+    static const LLUIColor group_own_physical_color =
+                        LLUIColorTable::instance().getColor("NetMapGroupPhysical", LLColor4::green);
+    static const LLUIColor other_own_physical_color =
+                        LLUIColorTable::instance().getColor("NetMapOtherPhysical", LLColor4::green);
+    static const LLUIColor scripted_object_color =
+                        LLUIColorTable::instance().getColor("NetMapScripted", LLColor4::orange);
+    static const LLUIColor temp_on_rez_object_color =
+                        LLUIColorTable::instance().getColor("NetMapTempOnRez", LLColor4::orange);
+
+    const F32 MIN_RADIUS_FOR_ACCENTED_OBJECTS = 2.f;
 
     static LLCachedControl max_radius(gSavedSettings, "MiniMapPrimMaxRadius", 16.f);
+    static LLCachedControl max_zdistance_from_avatar(gSavedSettings, "MiniMapPrimMaxVertDistance", 256.f);
+    static LLCachedControl netmap_scripted(gSavedSettings, "MiniMapPrimScripted", false);
+    static LLCachedControl netmap_physical(gSavedSettings, "MiniMapPrimPhysical", true);
+    static LLCachedControl netmap_temp_on_rez(gSavedSettings, "MiniMapPrimTempOnRez", false);
+    static LLCachedControl netmap_phantom_opacity(gSavedSettings, "MiniMapPrimPhantomOpacity", 100U);
 
-    for (vobj_list_t::iterator iter = mMapObjects.begin(); iter != mMapObjects.end(); ++iter)
+    for (LLViewerObject* objectp : mMapObjects)
     {
-        LLViewerObject* objectp = *iter;
-
         if(objectp->isDead())//some dead objects somehow not cleaned.
         {
             continue ;
@@ -1805,7 +1820,16 @@ void LLViewerObjectList::renderObjectsForMap(LLNetMap &netmap)
         const LLVector3& scale = objectp->getScale();
         const LLVector3d pos = objectp->getPositionGlobal();
         const F64 water_height = F64( objectp->getRegion()->getWaterHeight() );
-        // LLWorld::getInstance()->getWaterHeight();
+
+        // Skip all objects that are more than MiniMapPrimMaxVertDistance above or below the avatar
+        if (max_zdistance_from_avatar > 0.0)
+        {
+            F64 zdistance = pos.mdV[VZ] - gAgent.getPositionGlobal().mdV[VZ];
+            if (zdistance < (-max_zdistance_from_avatar) || zdistance > max_zdistance_from_avatar)
+            {
+                continue;
+            }
+        }
 
         F32 approx_radius = (scale.mV[VX] + scale.mV[VY]) * 0.5f * 0.5f * 1.3f;  // 1.3 is a fudge
 
@@ -1831,8 +1855,8 @@ void LLViewerObjectList::renderObjectsForMap(LLNetMap &netmap)
                 }
                 else
                 {
-                color = you_own_above_water_color.get();
-            }
+                    color = you_own_above_water_color.get();
+                }
             }
             else
             {
@@ -1840,16 +1864,58 @@ void LLViewerObjectList::renderObjectsForMap(LLNetMap &netmap)
                 {
                     color = group_own_below_water_color.get();
                 }
-            else
-            {
-                color = you_own_below_water_color.get();
+                else
+                {
+                    color = you_own_below_water_color.get();
+                }
             }
         }
-        }
-        else
-        if( pos.mdV[VZ] < water_height )
+        else if( pos.mdV[VZ] < water_height )
         {
             color = below_water_color.get();
+        }
+
+        if (netmap_scripted && objectp->flagScripted())
+        {
+            color = scripted_object_color.get();
+            if( approx_radius < MIN_RADIUS_FOR_ACCENTED_OBJECTS )
+            {
+                approx_radius = MIN_RADIUS_FOR_ACCENTED_OBJECTS;
+            }
+        }
+
+        if (netmap_physical && objectp->flagUsePhysics())
+        {
+            if (objectp->permYouOwner())
+            {
+                color = you_own_physical_color.get();
+            }
+            else if (objectp->permGroupOwner())
+            {
+                color = group_own_physical_color.get();
+            }
+            else
+            {
+                color = other_own_physical_color.get();
+            }
+            if( approx_radius < MIN_RADIUS_FOR_ACCENTED_OBJECTS )
+            {
+                approx_radius = MIN_RADIUS_FOR_ACCENTED_OBJECTS;
+            }
+        }
+
+        if (netmap_temp_on_rez && objectp->flagTemporaryOnRez())
+        {
+            color = temp_on_rez_object_color.get();
+            if( approx_radius < MIN_RADIUS_FOR_ACCENTED_OBJECTS )
+            {
+                approx_radius = MIN_RADIUS_FOR_ACCENTED_OBJECTS;
+            }
+        }
+
+        if (objectp->flagPhantom())
+        {
+            color.setAlpha(llclampb(netmap_phantom_opacity()));
         }
 
         netmap.renderScaledPointGlobal(
