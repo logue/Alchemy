@@ -367,7 +367,7 @@ void LLNetMap::draw()
             new_center.mV[VX] -= mCurPan.mV[VX];
             new_center.mV[VY] -= mCurPan.mV[VY];
             new_center.mV[VZ] = 0.f;
-            mObjectImageCenterGlobal = viewPosToGlobal(llfloor(new_center.mV[VX]), llfloor(new_center.mV[VY]));
+            LLVector3d pos_center_global = viewPosToGlobal(llfloor(new_center.mV[VX]), llfloor(new_center.mV[VY]));
 
             F32 image_half_width = 0.5f * mObjectMapPixels;
             F32 image_half_height = 0.5f * mObjectMapPixels;
@@ -380,6 +380,8 @@ void LLNetMap::draw()
                 if (mUpdateObjectImage || (map_timer.getElapsedTimeF32() > object_layer_update_time))
                 {
                     mUpdateObjectImage = false;
+
+                    mObjectImageCenterGlobal = pos_center_global;
 
                     // Create the base texture.
                     LLImageDataLock lock(mObjectRawImagep);
@@ -422,10 +424,10 @@ void LLNetMap::draw()
 
             if (minimap_parcel_boundries)
             {
-                if (mUpdateParcelImage || dist_vec_squared2D(mParcelImageCenterGlobal, mObjectImageCenterGlobal) > 9.0f)
+                if (mUpdateParcelImage || dist_vec_squared2D(mParcelImageCenterGlobal, pos_center_global) > 9.0f)
                 {
                     mUpdateParcelImage = false;
-                    mParcelImageCenterGlobal = mObjectImageCenterGlobal;
+                    mParcelImageCenterGlobal = pos_center_global;
 
                     // Create the base texture.
                     LLImageDataLock lock(mParcelRawImagep);

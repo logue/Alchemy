@@ -133,6 +133,8 @@ namespace {
         RecordToFile(const std::string& filename):
             mName(filename)
         {
+            showMultiline(true);
+
             mFile.open(filename.c_str(), std::ios_base::out | std::ios_base::app);
             if (!mFile)
             {
@@ -1625,8 +1627,8 @@ namespace LLError
         // Files Are missing, likely can't localize.
         const std::string error_string =
             "Alchemy Viewer couldn't access some of the files it needs and will be closed."
-            "\n\nPlease reinstall viewer from  https://secondlife.com/support/downloads/ and "
-            "contact https://support.secondlife.com if issue persists after reinstall.";
+            "\n\nPlease reinstall viewer from  https://www.alchemyviewer.org/downloads and "
+            "contact the Alchemy Viewer team if the issue persists after reinstall.";
         sHandler("Missing Files", error_string, ERROR_MISSING_FILES);
     }
 
