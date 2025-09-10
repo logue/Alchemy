@@ -194,7 +194,7 @@ Learn about [https://community.secondlife.com/knowledgebase/joining-and-particip
            mouse_opaque="false"
            orientation="vertical"
            right="-1"
-           top_pad="0">
+           top_pad="1">
            <layout_panel
              height="142"
              layout="topleft"
@@ -226,7 +226,7 @@ Learn about [https://community.secondlife.com/knowledgebase/joining-and-particip
                show_distance="true"
                allow_select="true"
                follows="all"
-               height="211"
+               height="195"
                ignore_online_status="true"
                layout="topleft"
                left="3"
