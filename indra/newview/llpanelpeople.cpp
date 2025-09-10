@@ -784,7 +784,7 @@ void LLPanelPeople::updateFriendAccordionTitles()
     if (mOnlineFriendList)
     {
         LLStringUtil::format_map_t args_online;
-        args_online["[COUNT]"] = std::to_string(mOnlineFriendList->size());
+        args_online["[COUNT]"] = llformat("%d", mOnlineFriendList->size());
         std::string online_title = getString("online_friends_count", args_online);
 
         mFriendsOnlineTab->setTitle(online_title);
@@ -793,7 +793,7 @@ void LLPanelPeople::updateFriendAccordionTitles()
     if (mAllFriendList)
     {
         LLStringUtil::format_map_t args_all;
-        args_all["[COUNT]"] = std::to_string(mAllFriendList->size());
+        args_all["[COUNT]"] = llformat("%d", mAllFriendList->size());
         std::string all_title = getString("all_friends_count", args_all);
 
         mFriendsAllTab->setTitle(all_title);
@@ -818,6 +818,12 @@ void LLPanelPeople::updateFriendListHelpText()
         LLStringUtil::format_map_t args;
         args["[SEARCH_TERM]"] = LLURI::escape(filter);
         no_friends_text->setText(getString(message_name, args));
+    }
+    else
+    {
+        // Move this away from `LLPanelPeople::updateFriendList()` as it makes sense only to update if there's friends.
+        // -- Fallen
+        updateFriendAccordionTitles();
     }
 }
 
@@ -874,7 +880,6 @@ void LLPanelPeople::updateFriendList()
     mAllFriendList->setDirty(true, !mAllFriendList->filterHasMatches());
     //update trash and other buttons according to a selected item
     updateButtons();
-    updateFriendAccordionTitles();
     showFriendsAccordionsIfNeeded();
 }
 
@@ -911,8 +916,8 @@ void LLPanelPeople::updateNearbyList()
             }
         }
 
-        mNearbyCountText->setTextArg("[TOTAL]", std::to_string(mNearbyList->size()));
-        mNearbyCountText->setTextArg("[COUNT]", std::to_string(count_in_region));
+        mNearbyCountText->setTextArg("[TOTAL]", llformat("%d", mNearbyList->size()));
+        mNearbyCountText->setTextArg("[COUNT]", llformat("%d", count_in_region));
         mNearbyCountText->setTextArg("[REGION]", RlvActions::canShowLocation() ? cur_region->getName() : "[REDACTED]");
 // [RLVa:KB] - Checked: RLVa-2.0.3
     }
