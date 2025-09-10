@@ -500,7 +500,7 @@ void LLNetMap::draw()
             pos_map = globalPosToView(positions[i]);
 
 // [RLVa:KB] - Checked: RLVa-1.2.0
-            bool show_as_friend = (LLAvatarTracker::instance().getBuddyInfo(uuid) != NULL) && (RlvActions::canShowName(RlvActions::SNC_DEFAULT, uuid));
+//            bool show_as_friend = (LLAvatarTracker::instance().getBuddyInfo(uuid) != NULL) && (RlvActions::canShowName(RlvActions::SNC_DEFAULT, uuid));
 // [/RLVa:KB]
 //          bool show_as_friend = (LLAvatarTracker::instance().getBuddyInfo(uuid) != NULL);
 
