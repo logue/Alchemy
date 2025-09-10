@@ -819,6 +819,12 @@ void LLPanelPeople::updateFriendListHelpText()
         args["[SEARCH_TERM]"] = LLURI::escape(filter);
         no_friends_text->setText(getString(message_name, args));
     }
+    else
+    {
+        // Move this away from `LLPanelPeople::updateFriendList()` as it makes sense only to update if there's friends.
+        // -- Fallen
+        updateFriendAccordionTitles();
+    }
 }
 
 void LLPanelPeople::updateFriendList()
@@ -874,7 +880,6 @@ void LLPanelPeople::updateFriendList()
     mAllFriendList->setDirty(true, !mAllFriendList->filterHasMatches());
     //update trash and other buttons according to a selected item
     updateButtons();
-    updateFriendAccordionTitles();
     showFriendsAccordionsIfNeeded();
 }
 
