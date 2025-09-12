@@ -1,48 +1,20 @@
 #!/bin/bash
 
-## Here are some configuration options for Linux Client Testers.
-## These options are for self-assisted troubleshooting during this beta
-## testing phase; you should not usually need to touch them.
+## Here are some configuration options for Linux Client Users.
 
 ## - Avoids using any FMOD STUDIO audio driver.
 #export LL_BAD_FMODSTUDIO_DRIVER=x
 ## - Avoids using any OpenAL audio driver.
 #export LL_BAD_OPENAL_DRIVER=x
 
-## - Avoids using the FMOD Studio or FMOD Ex PulseAudio audio driver.
+## - Avoids using the FMOD Studio PulseAudio audio driver.
 #export LL_BAD_FMOD_PULSEAUDIO=x
-## - Avoids using the FMOD Studio or FMOD Ex ALSA audio driver.
+## - Avoids using the FMOD Studio ALSA audio driver.
 #export LL_BAD_FMOD_ALSA=x
 
-## - Avoids the optional OpenGL extensions which have proven most problematic
-##   on some hardware.  Disabling this option may cause BETTER PERFORMANCE but
-##   may also cause CRASHES and hangs on some unstable combinations of drivers
-##   and hardware.
-## NOTE: This is now disabled by default.
-#export LL_GL_BASICEXT=x
-
-## - Avoids *all* optional OpenGL extensions.  This is the safest and least-
-##   exciting option.  Enable this if you experience stability issues, and
-##   report whether it helps in the Linux Client Testers forum.
-#export LL_GL_NOEXT=x
-
-## - For advanced troubleshooters, this lets you disable specific GL
-##   extensions, each of which is represented by a letter a-o.  If you can
-##   narrow down a stability problem on your system to just one or two
-##   extensions then please post details of your hardware (and drivers) to
-##   the Linux Client Testers forum along with the minimal
-##   LL_GL_BLACKLIST which solves your problems.
-#export LL_GL_BLACKLIST=abcdefghijklmno
-
-## - Some ATI/Radeon users report random X server crashes when the mouse
-##   cursor changes shape.  If you suspect that you are a victim of this
-##   driver bug, try enabling this option and report whether it helps:
-#export LL_ATI_MOUSE_CURSOR_BUG=x
-
-if [ "`uname -m`" = "x86_64" ]; then
-    echo '64-bit Linux detected.'
-fi
-
+# Completely prevent gamemode from enabling even if set to true in the settings
+# This can be useful if you run Alchemy on a battery-operated device (i.e. laptop)
+# export DISABLE_GAMEMODE=1
 
 ## Everything below this line is just for advanced troubleshooters.
 ##-------------------------------------------------------------------
@@ -52,111 +24,120 @@ fi
 ##   you're building your own viewer, bear in mind that the executable
 ##   in the bin directory will be stripped: you should replace it with
 ##   an unstripped binary before you run.
-#export LL_WRAPPER='gdb --args'
-#export LL_WRAPPER='valgrind --smc-check=all --error-limit=no --log-file=secondlife.vg --leak-check=full --suppressions=/usr/lib/valgrind/glibc-2.5.supp --suppressions=secondlife-i686.supp'
+if [ -n "${AL_GDB}" ]; then
+    export LL_WRAPPER='gdb --args'
+fi
 
-## - Avoids an often-buggy X feature that doesn't really benefit us anyway.
-export SDL_VIDEO_X11_DGAMOUSE=0
+if [ -n "${AL_VALGRIND}" ]; then
+    export LL_WRAPPER='valgrind --smc-check=all --error-limit=no --log-file=secondlife.vg --leak-check=full --suppressions=/usr/lib/valgrind/glibc-2.5.supp --suppressions=secondlife-i686.supp'
+fi
 
-## - Works around a problem with misconfigured 64-bit systems not finding GL
-I386_MULTIARCH="$(dpkg-architecture -ai386 -qDEB_HOST_MULTIARCH 2>/dev/null)"
-MULTIARCH_ERR=$?
-if [ $MULTIARCH_ERR -eq 0 ]; then
-    echo 'Multi-arch support detected.'
-    MULTIARCH_GL_DRIVERS="/usr/lib/${I386_MULTIARCH}/dri"
-    export LIBGL_DRIVERS_PATH="${LIBGL_DRIVERS_PATH}:${MULTIARCH_GL_DRIVERS}:/usr/lib64/dri:/usr/lib32/dri:/usr/lib/dri"
+if [ -n "${AL_MANGO}" ]; then
+    export LL_WRAPPER='mangohud --dlsym'
+fi
+
+## For controlling various sanitizer options
+#export ASAN_OPTIONS="halt_on_error=0 detect_leaks=1 symbolize=1"
+#export UBSAN_OPTIONS="print_stacktrace=1 print_summary=1 halt_on_error=0"
+
+install_dir=$(dirname "$0")
+build_data_file="${install_dir}/build_data.json"
+if [ -f "${build_data_file}" ]; then
+    channel=$(sed -n 's/.*"Channel"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' "${build_data_file}")
 else
-    export LIBGL_DRIVERS_PATH="${LIBGL_DRIVERS_PATH}:/usr/lib64/dri:/usr/lib32/dri:/usr/lib/dri"
+    echo "Error: File ${build_data_file} not found." >&2
+    channel="Alchemy" # Fail safely if we're unable to determine the channel
 fi
 
-## - The 'scim' GTK IM module widely crashes the viewer.  Avoid it.
-if [ "$GTK_IM_MODULE" = "scim" ]; then
-    export GTK_IM_MODULE=xim
-fi
+## Allow Gnome 3 to properly display window title in app bar
+export SDL_VIDEO_WAYLAND_WMCLASS=$channel
+export SDL_VIDEO_X11_WMCLASS=$channel
 
-## - Automatically work around the ATI mouse cursor crash bug:
-## (this workaround is disabled as most fglrx users do not see the bug)
-#if lsmod | grep fglrx &>/dev/null ; then
-#	export LL_ATI_MOUSE_CURSOR_BUG=x
-#fi
+## - Enable threaded mesa GL impl
+export mesa_glthread=true
 
+## - Uncomment to enable nvidia threaded GL optimizations - MAY CAUSE INSTABILITY
+#export __GL_THREADED_OPTIMIZATIONS=1
 
 ## Nothing worth editing below this line.
 ##-------------------------------------------------------------------
 
-SCRIPTSRC=`readlink -f "$0" || echo "$0"`
-RUN_PATH=`dirname "${SCRIPTSRC}" || echo .`
+SCRIPTSRC=$(readlink -f "$0" || echo "$0")
+RUN_PATH=$(dirname "${SCRIPTSRC}" || echo .)
 echo "Running from ${RUN_PATH}"
-cd "${RUN_PATH}"
+cd "${RUN_PATH}" || return
 
 # Re-register the secondlife:// protocol handler every launch, for now.
-./etc/register_secondlifeprotocol.sh
+# NOTE: this should no longer be required with the new desktop shortcut, combined with XDG integration.
+#./etc/register_secondlifeprotocol.sh
 
 # Re-register the application with the desktop system every launch, for now.
-./etc/refresh_desktop_app_entry.sh
+# NOTE: this should no longer be required with XDG integration. App icon should be created at install time, not run time.
+#./etc/refresh_desktop_app_entry.sh
 
 ## Before we mess with LD_LIBRARY_PATH, save the old one to restore for
 ##  subprocesses that care.
 export SAVED_LD_LIBRARY_PATH="${LD_LIBRARY_PATH}"
 
-# if [ -n "$LL_TCMALLOC" ]; then
-#    tcmalloc_libs='/usr/lib/libtcmalloc.so.0 /usr/lib/libstacktrace.so.0 /lib/libpthread.so.0'
-#    all=1
-#    for f in $tcmalloc_libs; do
-#        if [ ! -f $f ]; then
-#	    all=0
-#	fi
-#    done
-#    if [ $all != 1 ]; then
-#        echo 'Cannot use tcmalloc libraries: components missing' 1>&2
-#    else
-#	export LD_PRELOAD=$(echo $tcmalloc_libs | tr ' ' :)
-#	if [ -z "$HEAPCHECK" -a -z "$HEAPPROFILE" ]; then
-#	    export HEAPCHECK=${HEAPCHECK:-normal}
-#	fi
-#    fi
-#fi
-
+# Add our library directory
 export LD_LIBRARY_PATH="$PWD/lib:${LD_LIBRARY_PATH}"
 
-# Copy "$@" to ARGS array specifically to delete the --skip-gridargs switch.
+# Copy "$@" to ARGS string specifically to delete the --skip-gridargs switch.
 # The gridargs.dat file is no more, but we still want to avoid breaking
 # scripts that invoke this one with --skip-gridargs.
-ARGS=()
+# Note: In sh, we don't have arrays like in Bash. So, we use a string instead to store the arguments.
+ARGS=""
 for ARG in "$@"; do
     if [ "--skip-gridargs" != "$ARG" ]; then
-        ARGS[${#ARGS[*]}]="$ARG"
+        ARGS="$ARGS \"$ARG\""
     fi
 done
 
+# Check chrome-sandbox permissions, and try to set them if they are not already
+SANDBOX_BIN=bin/llplugin/chrome-sandbox
+# if set-user-id = false || is writable || executable = false || read is false || is owned by effective uid || is owned by effective gid
+OPTOUT_FILE="bin/llplugin/.user_does_not_want_chrome_sandboxing_and_accepts_the_risks"
+if [ ! -u "$SANDBOX_BIN" ] || [ -w "$SANDBOX_BIN" ] || [ ! -x "$SANDBOX_BIN" ] || [ ! -r "$SANDBOX_BIN" ] || [ -O "$SANDBOX_BIN" ] || [ -G "$SANDBOX_BIN" ]; then
+    echo "$SANDBOX_BIN permissions are not set properly to run under sandboxing."
+    if [ ! -f "$OPTOUT_FILE" ]; then
+        SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
+        pkexec "$SCRIPT_DIR/etc/chrome_sandboxing_permissions_setup.sh"
+    fi
+fi
+
+#setup wine voice
+if command -v wine >/dev/null 2>&1; then
+    export WINEDEBUG=-all # disable all debug output for wine
+    export WINEPREFIX="$HOME/.alchemynext/wine"
+    if [ ! -d "$WINEPREFIX" ]; then
+        DISPLAY="" wine hostname
+    fi
+else
+    export VIEWER_DISABLE_WINE=1
+    echo "Please install wine to enable full voice functionality."
+fi
+
+# Check if switcheroo is needed
+if [ -d /sys/class/drm/card1 ] && command -v switcherooctl >/dev/null 2>&1 && [ "$(switcherooctl)" = "" ]; then
+    notify-send "Automatic GPU selection is not available" "Please enable switcheroo-control.service"
+fi
+
 # Run the program.
 # Don't quote $LL_WRAPPER because, if empty, it should simply vanish from the
-# command line. But DO quote "${ARGS[@]}": preserve separate args as
+# command line. But DO quote "$ARGS": preserve separate args as
 # individually quoted.
-$LL_WRAPPER bin/do-not-directly-run-alchemy-bin "${ARGS[@]}"
+# Note: In sh, we don't have arrays like in Bash. So, we use a string instead to store the arguments.
+eval "$LL_WRAPPER bin/do-not-directly-run-alchemy-bin $ARGS"
 LL_RUN_ERR=$?
 
 # Handle any resulting errors
 if [ $LL_RUN_ERR -ne 0 ]; then
-	# generic error running the binary
-	echo '*** Bad shutdown ($LL_RUN_ERR). ***'
-	if [ "$(uname -m)" = "x86_64" ]; then
-		echo
-		cat << EOFMARKER
-You are running the Second Life Viewer on a x86_64 platform.  The
-most common problems when launching the Viewer (particularly
-'bin/do-not-directly-run-alchemy-bin: not found' and 'error while
-loading shared libraries') may be solved by installing your Linux
-distribution's 32-bit compatibility packages.
-For example, on Ubuntu and other Debian-based Linuxes you might run:
-$ sudo apt-get install ia32-libs ia32-libs-gtk ia32-libs-kde ia32-libs-sdl
+    # generic error running the binary
+    echo "*** Bad shutdown ($LL_RUN_ERR). ***"
+    if [ "$(uname -m)" = "x86_64" ]; then
+        echo
+        cat << EOFMARKER
+You are running Alchemy Viewer on a x86_64 platform.
 EOFMARKER
-	fi
+    fi
 fi
-
-echo
-echo '*******************************************************'
-echo 'This is a BETA release of the Second Life linux client.'
-echo 'Thank you for testing!'
-echo 'Please see README-linux.txt before reporting problems.'
-echo
