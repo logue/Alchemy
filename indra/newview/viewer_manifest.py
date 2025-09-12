@@ -1198,17 +1198,17 @@ class LinuxManifest(ViewerManifest):
             self.path( "libvulkan*" )
             self.path( "libvk_swiftshader*" )
             self.path( "libGLESv2*" )
-            self.path( "vk_swiftshader_icd.json")
+
 
         with self.prefix(src=os.path.join(pkgdir, 'bin', 'release'), dst="bin"):
             self.path( "chrome-sandbox" )
             self.path( "dullahan_host" )
-            self.path( "snapshot_blob.bin" )
             self.path( "v8_context_snapshot.bin" )
+            self.path( "vk_swiftshader_icd.json")
 
         with self.prefix(src=os.path.join(pkgdir, 'bin', 'release'), dst="lib"):
-            self.path( "snapshot_blob.bin" )
             self.path( "v8_context_snapshot.bin" )
+            self.path( "vk_swiftshader_icd.json")
 
         with self.prefix(src=os.path.join(pkgdir, 'resources'), dst="lib"):
             self.path( "chrome_100_percent.pak" )

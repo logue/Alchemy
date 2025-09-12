@@ -42,8 +42,6 @@ class LLSearchHandler : public LLCommandHandler {
         // requires trusted browser to trigger
         LLSearchHandler() : LLCommandHandler("search", UNTRUSTED_CLICK_ONLY) { }
         bool handle(const LLSD& tokens, const LLSD& query_map, const std::string& grid, LLMediaCtrl* web) {
-            const size_t parts = tokens.size();
-
             // open the search floater and perform the requested search
             LLFloaterReg::showInstance("search", tokens);
             return true;
