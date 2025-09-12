@@ -15,6 +15,7 @@ if(USE_DISCORD)
         NAMES
         discord_partner_sdk
         discord_partner_sdk.lib
+        libdiscord_partner_sdk.dylib
         PATHS "${ARCH_PREBUILT_DIRS_ARCH_RELEASE}" "${ARCH_PREBUILT_DIRS_RELEASE}" REQUIRED NO_DEFAULT_PATH)
 
     target_include_directories(ll::discord_sdk SYSTEM INTERFACE ${LIBS_PREBUILT_DIR}/include/discord_sdk)
