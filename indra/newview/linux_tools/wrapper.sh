@@ -92,28 +92,28 @@ for ARG in "$@"; do
 done
 
 # Check chrome-sandbox permissions, and try to set them if they are not already
-SANDBOX_BIN=bin/llplugin/chrome-sandbox
+# SANDBOX_BIN=bin/llplugin/chrome-sandbox
 # if set-user-id = false || is writable || executable = false || read is false || is owned by effective uid || is owned by effective gid
-OPTOUT_FILE="bin/llplugin/.user_does_not_want_chrome_sandboxing_and_accepts_the_risks"
-if [ ! -u "$SANDBOX_BIN" ] || [ -w "$SANDBOX_BIN" ] || [ ! -x "$SANDBOX_BIN" ] || [ ! -r "$SANDBOX_BIN" ] || [ -O "$SANDBOX_BIN" ] || [ -G "$SANDBOX_BIN" ]; then
-    echo "$SANDBOX_BIN permissions are not set properly to run under sandboxing."
-    if [ ! -f "$OPTOUT_FILE" ]; then
-        SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
-        pkexec "$SCRIPT_DIR/etc/chrome_sandboxing_permissions_setup.sh"
-    fi
-fi
+# OPTOUT_FILE="bin/llplugin/.user_does_not_want_chrome_sandboxing_and_accepts_the_risks"
+# if [ ! -u "$SANDBOX_BIN" ] || [ -w "$SANDBOX_BIN" ] || [ ! -x "$SANDBOX_BIN" ] || [ ! -r "$SANDBOX_BIN" ] || [ -O "$SANDBOX_BIN" ] || [ -G "$SANDBOX_BIN" ]; then
+#     echo "$SANDBOX_BIN permissions are not set properly to run under sandboxing."
+#     if [ ! -f "$OPTOUT_FILE" ]; then
+#         SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
+#         pkexec "$SCRIPT_DIR/etc/chrome_sandboxing_permissions_setup.sh"
+#     fi
+# fi
 
 #setup wine voice
-if command -v wine >/dev/null 2>&1; then
-    export WINEDEBUG=-all # disable all debug output for wine
-    export WINEPREFIX="$HOME/.alchemynext/wine"
-    if [ ! -d "$WINEPREFIX" ]; then
-        DISPLAY="" wine hostname
-    fi
-else
-    export VIEWER_DISABLE_WINE=1
-    echo "Please install wine to enable full voice functionality."
-fi
+# if command -v wine >/dev/null 2>&1; then
+#     export WINEDEBUG=-all # disable all debug output for wine
+#     export WINEPREFIX="$HOME/.alchemynext/wine"
+#     if [ ! -d "$WINEPREFIX" ]; then
+#         DISPLAY="" wine hostname
+#     fi
+# else
+#     export VIEWER_DISABLE_WINE=1
+#     echo "Please install wine to enable full voice functionality."
+# fi
 
 # Check if switcheroo is needed
 if [ -d /sys/class/drm/card1 ] && command -v switcherooctl >/dev/null 2>&1 && [ "$(switcherooctl)" = "" ]; then
