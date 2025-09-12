@@ -1,9 +1,10 @@
 /**
- * @file postDeferredGammaCorrect.glsl
+ * @file llfloatermarketplace.cpp
+ * @brief floater for the Marketplace web site
  *
- * $LicenseInfo:firstyear=2007&license=viewerlgpl$
+ * $LicenseInfo:firstyear=2011&license=viewerlgpl$
  * Second Life Viewer Source Code
- * Copyright (C) 2007, Linden Research, Inc.
+ * Copyright (C) 2011, Linden Research, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,37 +24,24 @@
  * $/LicenseInfo$
  */
 
-/*[EXTRA_CODE_HERE]*/
+#include "llviewerprecompiledheaders.h"
 
-out vec4 frag_color;
+#include "llfloatermarketplace.h"
+#include "lluictrlfactory.h"
 
-uniform sampler2D diffuseRect;
-
-uniform float gamma;
-uniform vec2 screen_res;
-in vec2 vary_fragcoord;
-
-vec3 linear_to_srgb(vec3 cl);
-
-vec3 legacyGamma(vec3 color)
+LLFloaterMarketplace::LLFloaterMarketplace(const LLSD& key)
+    :   LLFloater(key)
 {
-    vec3 c = 1. - clamp(color, vec3(0.), vec3(1.));
-    c = 1. - pow(c, vec3(gamma)); // s/b inverted already CPU-side
-
-    return c;
 }
 
-void main()
+LLFloaterMarketplace::~LLFloaterMarketplace()
 {
-    //this is the one of the rare spots where diffuseRect contains linear color values (not sRGB)
-    vec4 diff = texture(diffuseRect, vary_fragcoord);
-    diff.rgb = linear_to_srgb(diff.rgb);
-
-#ifdef LEGACY_GAMMA
-    diff.rgb = legacyGamma(diff.rgb);
-#endif
-
-    diff.rgb = clamp(diff.rgb, vec3(0.0), vec3(1.0));
-    frag_color = diff;
 }
+
+bool LLFloaterMarketplace::postBuild()
+{
+    enableResizeCtrls(true, true, false);
+    return true;
+}
+
 

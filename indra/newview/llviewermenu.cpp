@@ -4471,13 +4471,6 @@ void set_god_level(U8 god_level)
 
     // changing god-level can affect which menus we see
     show_debug_menus();
-
-    // changing god-level can invalidate search results
-    LLFloaterSearch *search = dynamic_cast<LLFloaterSearch*>(LLFloaterReg::getInstance("search"));
-    if (search)
-    {
-        search->godLevelChanged(god_level);
-    }
 }
 
 #ifdef TOGGLE_HACKED_GODLIKE_VIEWER
@@ -6872,7 +6865,7 @@ void handle_look_at_selection(const LLSD& param)
     }
 }
 
-void handle_zoom_to_object(const LLUUID& object_id)
+bool handle_zoom_to_object(const LLUUID& object_id)
 {
     const F32 PADDING_FACTOR = 2.f;
 
@@ -6890,12 +6883,14 @@ void handle_zoom_to_object(const LLUUID& object_id)
         obj_to_cam.normVec();
 
 
-            LLVector3d object_center_global = gAgent.getPosGlobalFromAgent(bbox.getCenterAgent());
+        LLVector3d object_center_global = gAgent.getPosGlobalFromAgent(bbox.getCenterAgent());
 
-            gAgentCamera.setCameraPosAndFocusGlobal(object_center_global + LLVector3d(obj_to_cam * distance),
+        gAgentCamera.setCameraPosAndFocusGlobal(object_center_global + LLVector3d(obj_to_cam * distance),
                                             object_center_global,
                                             object_id );
+        return true;
     }
+    return false;
 }
 
 class LLAvatarInviteToGroup : public view_listener_t

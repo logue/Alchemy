@@ -12324,6 +12324,17 @@ Changes won't take effect until after you restart [APP_NAME].
 
   <notification
    icon="alertmodal.tga"
+   name="PreferenceQualityWithLowMemory"
+   type="alert">
+Your system has [TOTAL_MEM]MB of memory, which might not be enough to run viewer at higher settings and might result in issues.
+      <usetemplate
+       name="okcancelbuttons"
+       notext="Cancel"
+       yestext="Continue"/>
+  </notification>
+
+  <notification
+   icon="alertmodal.tga"
    name="DefaultObjectPermissions"
    type="alert">
 	There was a problem saving the default object permissions: [REASON].  Please try setting the default permissions later.

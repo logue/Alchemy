@@ -310,7 +310,7 @@ jobs:
       AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
       AZURE_TENANT_ID:     ${{ secrets.AZURE_TENANT_ID }}
     needs: build
-    runs-on: windows-latest
+    runs-on: windows-2022
     steps:
       - name: Sign and package Windows viewer
         uses: AlchemyViewer/viewer-build-util/sign-pkg-windows@v2

@@ -276,7 +276,6 @@ static const F32 MIN_UI_SCALE = 0.75f;
 // sanity check, so leaving space for larger values from DPI updates.
 static const F32 MAX_UI_SCALE = 7.0f;
 static const F32 MIN_DISPLAY_SCALE = 0.75f;
-
 LLTrace::SampleStatHandle<> LLViewerWindow::sMouseVelocityStat("Mouse Velocity");
 
 
@@ -2557,6 +2556,18 @@ void LLViewerWindow::initWorldUI()
             std::string url = gSavedSettings.getString("AvatarWelcomePack");
             url = LLWeb::expandURLSubstitutions(url, LLSD());
             avatar_welcome_pack->navigateTo(url, HTTP_CONTENT_TEXT_HTML);
+        }
+        LLMediaCtrl* search = LLFloaterReg::getInstance("search")->findChild<LLMediaCtrl>("search_contents");
+        if (search)
+        {
+            search->setErrorPageURL(gSavedSettings.getString("GenericErrorPageURL"));
+        }
+        LLMediaCtrl* marketplace = LLFloaterReg::getInstance("marketplace")->getChild<LLMediaCtrl>("marketplace_contents");
+        if (marketplace)
+        {
+            marketplace->setErrorPageURL(gSavedSettings.getString("GenericErrorPageURL"));
+            std::string url = gSavedSettings.getString("MarketplaceURL");
+            marketplace->navigateTo(url, HTTP_CONTENT_TEXT_HTML);
         }
     }
 }

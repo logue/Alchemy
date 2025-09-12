@@ -296,7 +296,7 @@ void LLImageJ2CKDU::setupCodeStream(LLImageJ2C &base, bool keep_codestream, ECod
         // two U32s and a pointer, so it's not as if it would be a huge overhead
         // to allocate a new one every time.
         // Also -- why is base.getData() tested specifically here? If that returns
-        // NULL, shouldn't we bail out of the whole method?
+        // nullptr, shouldn't we bail out of the whole method?
         if (!mInputp && base.getData())
         {
             // The compressed data has been loaded
@@ -306,7 +306,7 @@ void LLImageJ2CKDU::setupCodeStream(LLImageJ2C &base, bool keep_codestream, ECod
 
         if (mInputp)
         {
-            // This is LLKDUMemSource::reset(), not boost::scoped_ptr::reset().
+            // This is LLKDUMemSource::reset(), not std::unique_ptr::reset().
             mInputp->reset();
         }
 

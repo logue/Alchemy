@@ -424,11 +424,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>762bcc18b99df0ccb6f3b55be36bd6899c52dc97275b7f0da2730008b736090cffd50ce8ce202b90f3a5798ec5714e389656e0ed3e04a1c463e6b96181cc8893</string>
+              <string>d44256458ff0ef4db4c91e8e8cc83e8f98b4f1b8</string>
               <key>hash_algorithm</key>
-              <string>blake2b</string>
+              <string>sha1</string>
               <key>url</key>
-              <string>https://github.com/AlchemyViewer/dullahan/releases/download/v1.14.0-cef118-r2/dullahan-1.14.0.202503020951_118.4.1_g3dd6078_chromium-118.0.5993.54-darwin64-13614255946.tar.zst</string>
+              <string>https://github.com/secondlife/dullahan/releases/download/v1.21.0-CEF_139.0.28/dullahan-1.21.0.202508272158_139.0.28_g55ab8a8_chromium-139.0.7258.139-darwin64-17279703032.tar.zst</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
@@ -452,11 +452,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>cde10a41e5cfda690eebd358f07f325f98d6c059e001a588324b0a4bee15744aff2a03ff0fd4de6fa701f940c8afcedc7a79aaa4686aa7dd6e0091894a06215c</string>
+              <string>9d5af766a87052808e4062978504e9af124fb558</string>
               <key>hash_algorithm</key>
-              <string>blake2b</string>
+              <string>sha1</string>
               <key>url</key>
-              <string>https://github.com/AlchemyViewer/dullahan/releases/download/v1.14.0-cef118-r2/dullahan-1.14.0.202503020950_118.4.1_g3dd6078_chromium-118.0.5993.54-windows64-13614255946.tar.zst</string>
+              <string>https://github.com/secondlife/dullahan/releases/download/v1.21.0-CEF_139.0.28/dullahan-1.21.0.202508272159_139.0.28_g55ab8a8_chromium-139.0.7258.139-windows64-17279703032.tar.zst</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -469,7 +469,7 @@
         <key>copyright</key>
         <string>Copyright (c) 2017, Linden Research, Inc.</string>
         <key>version</key>
-        <string>1.14.0.202503020952_118.4.1_g3dd6078_chromium-118.0.5993.54</string>
+        <string>1.21.0.202508272158_139.0.28_g55ab8a8_chromium-139.0.7258.139</string>
         <key>name</key>
         <string>dullahan</string>
         <key>description</key>
@@ -926,11 +926,11 @@
               <key>creds</key>
               <string>github</string>
               <key>hash</key>
-              <string>243709fbbb58a91dca81d16df650e9c6ff910d0d</string>
+              <string>da318f0813e4126d90e35b22a8dce235e908707a</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://api.github.com/repos/secondlife/3p-kdu/releases/assets/202118207</string>
+              <string>https://api.github.com/repos/secondlife/3p-kdu/releases/assets/208381808</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
@@ -942,11 +942,11 @@
               <key>creds</key>
               <string>github</string>
               <key>hash</key>
-              <string>7fd0a7ee71a4e76b49e31b75f8622852324d58a4</string>
+              <string>1ba58cf884726dfdf02a7662d52f1befe3f16d44</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://api.github.com/repos/secondlife/3p-kdu/releases/assets/202118208</string>
+              <string>https://api.github.com/repos/secondlife/3p-kdu/releases/assets/208381812</string>
             </map>
             <key>name</key>
             <string>linux64</string>
@@ -958,14 +958,30 @@
               <key>creds</key>
               <string>github</string>
               <key>hash</key>
-              <string>8c475dd9616c7e0e3029cc38aefc1e0ab34d2e73</string>
+              <string>e8d693089b9ecd15b6644f13ada7ae7c317944df</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://api.github.com/repos/secondlife/3p-kdu/releases/assets/202118209</string>
+              <string>https://api.github.com/repos/secondlife/3p-kdu/releases/assets/208381814</string>
             </map>
             <key>name</key>
             <string>windows64</string>
+          </map>
+          <key>linux</key>
+          <map>
+            <key>archive</key>
+            <map>
+              <key>creds</key>
+              <string>github</string>
+              <key>hash</key>
+              <string>85e294becce8b2ac5d2e5e052b0e21ff865d1108</string>
+              <key>hash_algorithm</key>
+              <string>sha1</string>
+              <key>url</key>
+              <string>https://api.github.com/repos/secondlife/3p-kdu/releases/assets/208381806</string>
+            </map>
+            <key>name</key>
+            <string>linux</string>
           </map>
         </map>
         <key>license</key>
@@ -975,7 +991,7 @@
         <key>copyright</key>
         <string>Kakadu software</string>
         <key>version</key>
-        <string>8.4.1.11540433907</string>
+        <string>8.4.1.11976899217</string>
         <key>name</key>
         <string>kdu</string>
         <key>description</key>
@@ -1279,11 +1295,11 @@
               <key>creds</key>
               <string>github</string>
               <key>hash</key>
-              <string>9e59c93c7110e87b4ff3db330f11a23c50e5000f</string>
+              <string>7facda95e2f00c260513f3d4db42588fa8ba703c</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://api.github.com/repos/secondlife/llphysicsextensions_source/releases/assets/178910560</string>
+              <string>https://api.github.com/repos/secondlife/llphysicsextensions_source/releases/assets/196289774</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
@@ -1295,11 +1311,11 @@
               <key>creds</key>
               <string>github</string>
               <key>hash</key>
-              <string>7ed994db5bafa9a7ad09a1b53da850a84715c65e</string>
+              <string>01d08f13c7bc8d1b95b0330fa6833b7d8274e4d0</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://api.github.com/repos/secondlife/llphysicsextensions_source/releases/assets/178910561</string>
+              <string>https://api.github.com/repos/secondlife/llphysicsextensions_source/releases/assets/196289775</string>
             </map>
             <key>name</key>
             <string>linux64</string>
@@ -1311,11 +1327,11 @@
               <key>creds</key>
               <string>github</string>
               <key>hash</key>
-              <string>66824c02e0e5eabbfbe37bfb173360195f89697c</string>
+              <string>6d00345c7d3471bc5f7c1218e014dd0f1a2c069b</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://api.github.com/repos/secondlife/llphysicsextensions_source/releases/assets/178910562</string>
+              <string>https://api.github.com/repos/secondlife/llphysicsextensions_source/releases/assets/196289778</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -1328,7 +1344,7 @@
         <key>copyright</key>
         <string>Copyright (c) 2010, Linden Research, Inc.</string>
         <key>version</key>
-        <string>1.0.66e6919</string>
+        <string>1.0.11137145495</string>
         <key>name</key>
         <string>llphysicsextensions_source</string>
       </map>
@@ -2419,6 +2435,14 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
         <key>license_file</key>
         <string>LICENSES/vlc.txt</string>
         <key>copyright</key>
+        <string>Copyright (C) 1998-2016 VLC authors and VideoLAN</string>
+        <key>name</key>
+        <string>vlc-bin</string>
+        <key>license</key>
+        <string>GPL2</string>
+        <key>license_file</key>
+        <string>LICENSES/vlc.txt</string>
+        <key>copyright</key>
         <string>Copyright (C) 1998-2020 VLC authors and VideoLAN</string>
         <key>version</key>
         <string>3.0.21</string>
@@ -2968,7 +2992,7 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             </map>
           </map>
           <key>build_directory</key>
-          <string>build-darwin-x86_64</string>
+          <string>build-darwin-universal</string>
           <key>name</key>
           <string>darwin64</string>
         </map>

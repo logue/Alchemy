@@ -29,6 +29,7 @@
 #import "llappdelegate-objc.h"
 
 #import <Carbon/Carbon.h>
+
 extern BOOL gHiDPISupport;
 
 #pragma mark local functions
@@ -110,7 +111,6 @@ attributedStringInfo getSegments(NSAttributedString *str)
 
 @implementation LLOpenGLView
 
-
 - (unsigned long)getVramSize
 {
     CGLRendererInfoObj info = 0;
@@ -165,11 +165,10 @@ attributedStringInfo getSegments(NSAttributedString *str)
     }
 }
 
-
 - (void)windowResized:(NSNotification *)notification;
 {
     NSSize dev_sz = [self convertSizeToBacking:[self frame].size];
-        callResize(dev_sz.width, dev_sz.height);
+    callResize(dev_sz.width, dev_sz.height);
 }
 
 - (void)windowWillMiniaturize:(NSNotification *)notification;
@@ -218,6 +217,7 @@ attributedStringInfo getSegments(NSAttributedString *str)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #endif
+
 - (id) initWithFrame:(NSRect)frame withSamples:(NSUInteger)samples andVsync:(BOOL)vsync
 {
     [self registerForDraggedTypes:[NSArray arrayWithObject:NSPasteboardTypeURL]];
@@ -280,7 +280,6 @@ attributedStringInfo getSegments(NSAttributedString *str)
         [glContext setValues:&swapInterval forParameter:NSOpenGLContextParameterSwapInterval];
     }
 
-
     return self;
 }
 
@@ -307,6 +306,7 @@ attributedStringInfo getSegments(NSAttributedString *str)
     [ctx makeCurrentContext];
     return true;
 }
+
 #if LL_DARWIN
 #pragma clang diagnostic pop
 #endif
@@ -328,7 +328,6 @@ attributedStringInfo getSegments(NSAttributedString *str)
 
 - (void) mouseDown:(NSEvent *)theEvent
 {
-
     // Apparently people still use this?
     if ([theEvent modifierFlags] & NSEventModifierFlagCommand &&
         !([theEvent modifierFlags] & NSEventModifierFlagControl) &&

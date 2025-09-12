@@ -167,10 +167,12 @@ void showNSCursor()
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #endif
+
 bool isCGCursorVisible()
 {
     return CGCursorIsVisible();
 }
+
 #if LL_DARWIN
 #pragma clang diagnostic pop
 #endif
@@ -222,7 +224,7 @@ NSWindowRef createNSWindow(int x, int y, int width, int height)
 {
     LLNSWindow *window = [[LLNSWindow alloc]initWithContentRect:NSMakeRect(x, y, width, height)
                                                       styleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskResizable | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable
-                                backing:NSBackingStoreBuffered defer:NO];
+                                                      backing:NSBackingStoreBuffered defer:NO];
     [window makeKeyAndOrderFront:nil];
     [window setAcceptsMouseMovedEvents:TRUE];
     [window setRestorable:FALSE]; // Viewer manages state from own settings
@@ -332,7 +334,6 @@ void convertRectToScreen(NSWindowRef window, float *coord)
 void convertRectFromScreen(NSWindowRef window, float *coord)
 {
     NSRect point = NSMakeRect(coord[0], coord[1], coord[2], coord[3]);
-
     point = [(LLNSWindow*)window convertRectFromScreen:point];
 
     coord[0] = point.origin.x;
@@ -340,7 +341,6 @@ void convertRectFromScreen(NSWindowRef window, float *coord)
     coord[2] = point.size.width;
     coord[3] = point.size.height;
 }
-
 
 void convertWindowToScreen(NSWindowRef window, float *coord)
 {

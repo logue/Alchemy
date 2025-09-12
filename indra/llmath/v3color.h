@@ -154,7 +154,6 @@ static_assert(std::is_trivially_move_assignable<LLColor3>::value, "LLColor3 must
 static_assert(std::is_standard_layout<LLColor3>::value, "LLColor3 must be a standard layout type");
 
 LLColor3 lerp(const LLColor3& a, const LLColor3& b, F32 u);
-
 void LLColor3::clamp()
 {
     // Clamp the color...

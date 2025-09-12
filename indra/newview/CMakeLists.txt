@@ -419,6 +419,7 @@ set(viewer_SOURCE_FILES
     llmaniprotate.cpp
     llmanipscale.cpp
     llmaniptranslate.cpp
+    llfloatermarketplace.cpp
     llmarketplacefunctions.cpp
     llmarketplacenotifications.cpp
     llmaterialeditor.cpp
@@ -1003,6 +1004,7 @@ set(viewer_HEADER_FILES
     llfloaterlinkreplace.h
     llfloaterloadprefpreset.h
     llfloatermap.h
+    llfloatermarketplace.h
     llfloatermarketplacelistings.h
     llfloatermediasettings.h
     llfloatermemleak.h
@@ -1784,7 +1786,7 @@ set(viewer_APPSETTINGS_FILES
     app_settings/toolbars.xml
     app_settings/trees.xml
     app_settings/viewerart.xml
-    ${CMAKE_SOURCE_DIR}/../etc/message.xml
+    app_settings/message.xml
     ${CMAKE_SOURCE_DIR}/../scripts/messages/message_template.msg
     packages-info.txt
     featuretable.txt
@@ -1889,7 +1891,7 @@ if (WINDOWS)
 
     set(COPY_INPUT_DEPENDENCIES
       # The following commented dependencies are determined variably at build time. Can't do this here.
-      ${CMAKE_SOURCE_DIR}/../etc/message.xml
+      app_settings/message.xml
       ${CMAKE_SOURCE_DIR}/../scripts/messages/message_template.msg
       ${SHARED_LIB_STAGING_DIR}/openjp2.dll
       ${SHARED_LIB_STAGING_DIR}/llwebrtc.dll
