@@ -2,6 +2,10 @@ include(Prebuilt)
 
 include_guard()
 
+if (INSTALL_PROPRIETARY)
+   set(USE_DISCORD ON CACHE BOOL "Enable Discord SDK")
+endif (INSTALL_PROPRIETARY)
+
 option(USE_DISCORD "Enable Discord SDK" OFF)
 
 if(USE_DISCORD)
@@ -15,6 +19,7 @@ if(USE_DISCORD)
         NAMES
         discord_partner_sdk
         discord_partner_sdk.lib
+        libdiscord_partner_sdk.so
         libdiscord_partner_sdk.dylib
         PATHS "${ARCH_PREBUILT_DIRS_ARCH_RELEASE}" "${ARCH_PREBUILT_DIRS_RELEASE}" REQUIRED NO_DEFAULT_PATH)
 

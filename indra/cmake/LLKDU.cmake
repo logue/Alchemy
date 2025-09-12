@@ -3,9 +3,9 @@
 # USE_KDU can be set when launching cmake as an option using the argument -DUSE_KDU:BOOL=ON
 # When building using proprietary binaries though (i.e. having access to LL private servers),
 # we always build with KDU
-if (INSTALL_PROPRIETARY)
-  set(USE_KDU ON CACHE BOOL "Use Kakadu library.")
-endif (INSTALL_PROPRIETARY)
+# if (INSTALL_PROPRIETARY)
+#   set(USE_KDU ON CACHE BOOL "Use Kakadu library.")
+# endif (INSTALL_PROPRIETARY)
 
 include_guard()
 add_library( ll::kdu INTERFACE IMPORTED )
