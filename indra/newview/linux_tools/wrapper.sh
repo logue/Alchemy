@@ -68,12 +68,10 @@ echo "Running from ${RUN_PATH}"
 cd "${RUN_PATH}" || return
 
 # Re-register the secondlife:// protocol handler every launch, for now.
-# NOTE: this should no longer be required with the new desktop shortcut, combined with XDG integration.
-#./etc/register_secondlifeprotocol.sh
+./etc/register_secondlifeprotocol.sh
 
 # Re-register the application with the desktop system every launch, for now.
-# NOTE: this should no longer be required with XDG integration. App icon should be created at install time, not run time.
-#./etc/refresh_desktop_app_entry.sh
+./etc/refresh_desktop_app_entry.sh
 
 ## Before we mess with LD_LIBRARY_PATH, save the old one to restore for
 ##  subprocesses that care.
