@@ -424,11 +424,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>d44256458ff0ef4db4c91e8e8cc83e8f98b4f1b8</string>
+              <string>913b8e97bac6fdd25a2ff6577e3cbb0b680b0a23c07c7654db4f58ee09585242158b7e07e328fef71f1c74b6d11a56c335f19da593234428d9b7f4eb9957a83d</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/dullahan/releases/download/v1.21.0-CEF_139.0.28/dullahan-1.21.0.202508272158_139.0.28_g55ab8a8_chromium-139.0.7258.139-darwin64-17279703032.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/dullahan/releases/download/v1.23.0-140-r1/dullahan-1.23.0.202509121210_140.1.13_g5eb3258_chromium-140.0.7339.41-darwin64-17673983492.tar.zst</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
@@ -438,11 +438,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>209d031ae67bc66d8e8f8509c71d259014c65ceb</string>
+              <string>3dd303d91051b18e48198a2c10bf7b8ce2c6e45cd7fddf954c358fdbd38206afafa2401650517ba9f347658b6ec2e133b7406d39bc8463d3784f1c8336947dba</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/dullahan/releases/download/v1.14.0-r3/dullahan-1.14.0.202408091637_118.4.1_g3dd6078_chromium-118.0.5993.54-linux64-10322607516.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/dullahan/releases/download/v1.23.0-140-r1/dullahan-1.23.0.202509121212_140.1.13_g5eb3258_chromium-140.0.7339.41-linux64-17673983492.tar.zst</string>
             </map>
             <key>name</key>
             <string>linux64</string>
@@ -452,11 +452,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>9d5af766a87052808e4062978504e9af124fb558</string>
+              <string>515e40939b9cfd5d6e818440829f87e94ae0043bf29b78aa7f620c0a4d016c67cbef4fc88aa8f5750d19b05d9c5eba4a63c128b33cf44b5bbcb68bf5f93f1d6a</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>blake2b</string>
               <key>url</key>
-              <string>https://github.com/secondlife/dullahan/releases/download/v1.21.0-CEF_139.0.28/dullahan-1.21.0.202508272159_139.0.28_g55ab8a8_chromium-139.0.7258.139-windows64-17279703032.tar.zst</string>
+              <string>https://github.com/AlchemyViewer/dullahan/releases/download/v1.23.0-140-r1/dullahan-1.23.0.202509121212_140.1.13_g5eb3258_chromium-140.0.7339.41-windows64-17673983492.tar.zst</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -469,7 +469,7 @@
         <key>copyright</key>
         <string>Copyright (c) 2017, Linden Research, Inc.</string>
         <key>version</key>
-        <string>1.21.0.202508272158_139.0.28_g55ab8a8_chromium-139.0.7258.139</string>
+        <string>1.23.0.202509121212_140.1.13_g5eb3258_chromium-140.0.7339.41</string>
         <key>name</key>
         <string>dullahan</string>
         <key>description</key>
@@ -2430,14 +2430,6 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <string>windows64</string>
           </map>
         </map>
-        <key>license</key>
-        <string>GPL2</string>
-        <key>license_file</key>
-        <string>LICENSES/vlc.txt</string>
-        <key>copyright</key>
-        <string>Copyright (C) 1998-2016 VLC authors and VideoLAN</string>
-        <key>name</key>
-        <string>vlc-bin</string>
         <key>license</key>
         <string>GPL2</string>
         <key>license_file</key>

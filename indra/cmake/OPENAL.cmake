@@ -16,6 +16,7 @@ if (USE_OPENAL)
       NAMES
       OpenAL32
       openal
+      OpenAL32.lib
       libopenal.dylib
       libopenal.so
       PATHS "${ARCH_PREBUILT_DIRS_RELEASE}" REQUIRED NO_DEFAULT_PATH)

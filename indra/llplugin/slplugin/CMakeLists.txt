@@ -26,6 +26,12 @@ if (DARWIN)
   )
 endif (DARWIN)
 
+if (WINDOWS)
+  list(APPEND SLPlugin_HEADER_FILES
+    slplugin.manifest
+  )
+endif ()
+
 if (SLPlugin_HEADER_FILES)
   list(APPEND SLPlugin_SOURCE_FILES ${SLPlugin_HEADER_FILES})
 endif (SLPlugin_HEADER_FILES)
