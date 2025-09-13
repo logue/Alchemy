@@ -731,7 +731,7 @@ class Windows_x86_64_Manifest(ViewerManifest):
         if not self.is_packaging_viewer():
             self.package_file = "copied_deps"
 
-    def nsi_file_commands(self, install=True):
+    def isc_file_commands(self):
         def INSTDIR(path):
             # Note that '$INSTDIR' is purely textual here: we write
             # exactly that into the .nsi file for NSIS to interpret.
@@ -740,7 +740,7 @@ class Windows_x86_64_Manifest(ViewerManifest):
             # Unfortunately, if that's the last item on a line, NSIS takes
             # that as line continuation and misinterprets the following line.
             # Ensure we don't emit a trailing backslash.
-            return os.path.normpath(os.path.join('$INSTDIR', path))
+            return os.path.normpath(os.path.join('{app}', path))
 
         result = []
         dest_files = [pair[1] for pair in self.file_list if pair[0] and os.path.isfile(pair[1])]
@@ -751,25 +751,7 @@ class Windows_x86_64_Manifest(ViewerManifest):
             pkg_file = os.path.normpath(pkg_file)
             rel_file = self.relpath(pkg_file)
             installed_dir = INSTDIR(os.path.dirname(rel_file))
-            if install and installed_dir != out_path:
-                out_path = installed_dir
-                # emit SetOutPath every time it changes
-                result.append('SetOutPath ' + out_path)
-            if install:
-                result.append('File ' + rel_file)
-            else:
-                result.append('Delete ' + INSTDIR(rel_file))
-
-        # at the end of a delete, just rmdir all the directories
-        if not install:
-            deleted_file_dirs = [os.path.dirname(self.relpath(f)) for f in dest_files]
-            # find all ancestors so that we don't skip any dirs that happened
-            # to have no non-dir children
-            deleted_dirs = set(itertools.chain.from_iterable(path_ancestors(d)
-                                                             for d in deleted_file_dirs))
-            # sort deepest hierarchy first
-            for d in sorted(deleted_dirs, key=lambda f: (f.count(os.path.sep), f), reverse=True):
-                result.append('RMDir ' + INSTDIR(d))
+            result.append('Source: "{}"; DestDir: "{}"; Flags: ignoreversion'.format(rel_file, installed_dir))
 
         return '\n'.join(result)
 
@@ -787,16 +769,7 @@ class Windows_x86_64_Manifest(ViewerManifest):
             }
 
         installer_file = self.installer_base_name() + '_Setup.exe'
-        substitution_strings['installer_file'] = installer_file
-
-        version_vars = """
-        !define INSTEXE "%(final_exe)s"
-        !define VERSION "%(version_short)s"
-        !define VERSION_LONG "%(version)s"
-        !define VERSION_DASHES "%(version_dashes)s"
-        !define VERSION_REGISTRY "%(version_registry)s"
-        !define VIEWER_EXE "%(final_exe)s"
-        """ % substitution_strings
+        substitution_strings['installer_file'] = self.installer_base_name() + '_Setup'
 
         if self.channel_type() == 'release':
             substitution_strings['caption'] = CHANNEL_VENDOR_BASE
@@ -804,15 +777,13 @@ class Windows_x86_64_Manifest(ViewerManifest):
             substitution_strings['caption'] = self.app_name() + ' ${VERSION}'
 
         inst_vars_template = """
-            OutFile "%(installer_file)s"
-            !define INSTNAME   "%(app_name_oneword)s"
-            !define SHORTCUT   "%(app_name)s"
-            !define URLNAME   "secondlife"
-            Caption "%(caption)s"
+#define MyAppName "%(app_name)s"
+#define MyAppNameShort "%(app_name_oneword)s"
+#define MyAppVersion "%(version)s"
+#define MyAppShortVersion "%(version_short)s"
+#define MyAppExeName "%(final_exe)s"
+#define MyAppInstFile "%(installer_file)s"
             """
-
-        engage_registry="SetRegView 64"
-        program_files="!define MULTIUSER_USE_PROGRAMFILES64"
 
         # Dump the installers/windows directory into the raw app image tree
         # because NSIS needs those files. But don't use path() because we
@@ -822,20 +793,13 @@ class Windows_x86_64_Manifest(ViewerManifest):
                         os.path.join(self.get_dst_prefix(), 'installers', 'windows'),
                         dirs_exist_ok=True)
 
-        tempfile = "secondlife_setup_tmp.nsi"
-        # the following replaces strings in the nsi template
+        tempfile = "alchemy_setup_tmp.iss"
+        # the following replaces strings in the iss template
         # it also does python-style % substitution
-        self.replace_in("installers/windows/installer_template.nsi", tempfile, {
-                "%%VERSION%%":version_vars,
-                # The template references "%%SOURCE%%\installers\windows\...".
-                # Now that we've copied that directory into the app image
-                # tree, we can just replace %%SOURCE%% with '.'.
-                "%%SOURCE%%":'.',
+        self.replace_in("installers/windows/installer_template.iss", tempfile, {
+                "%%SOURCE%%":self.get_src_prefix(),
                 "%%INST_VARS%%":inst_vars_template % substitution_strings,
-                "%%INSTALL_FILES%%":self.nsi_file_commands(True),
-                "%%PROGRAMFILES%%":program_files,
-                "%%ENGAGEREGISTRY%%":engage_registry,
-                "%%DELETE_FILES%%":self.nsi_file_commands(False)})
+                "%%INSTALL_FILES%%":self.isc_file_commands()})
 
         self.package_file = installer_file
 

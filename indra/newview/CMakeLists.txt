@@ -1656,6 +1656,11 @@ if (WINDOWS)
         "${LIBS_PREBUILT_DIR}/branding/installer/icons/uninstall_icon.ico"
         "${CMAKE_CURRENT_SOURCE_DIR}/installers/windows/uninstall_icon.ico"
       )
+    execute_process(
+      COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${LIBS_PREBUILT_DIR}/branding/viewer/icons/${ICON_PATH}/alchemy_256.png"
+        "${CMAKE_CURRENT_SOURCE_DIR}/installers/windows/install_wizard_small.png"
+      )
 
     # Add resource files to the project.
     # viewerRes.rc is the only buildable file, but
@@ -1825,7 +1830,7 @@ set_source_files_properties(${viewer_MISC_FILES}
 list(APPEND viewer_SOURCE_FILES ${viewer_MISC_FILES})
 
 if (WINDOWS)
-  file(GLOB viewer_INSTALLER_FILES installers/windows/*.nsi)
+  file(GLOB viewer_INSTALLER_FILES installers/windows/*.iss)
 
   source_group("Installer Files" FILES ${viewer_INSTALLER_FILES})
 
