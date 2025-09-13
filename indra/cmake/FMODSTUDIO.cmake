@@ -38,6 +38,7 @@ if (USE_FMODSTUDIO)
         fmod_vc
         fmod
         libfmod
+        libfmod.so
         libfmod.dylib
         PATHS "${ARCH_PREBUILT_DIRS_RELEASE}" REQUIRED NO_DEFAULT_PATH)
 

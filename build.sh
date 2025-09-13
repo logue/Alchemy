@@ -154,8 +154,8 @@ pre_build()
     then
         # Proprietary builds
 
-        RELEASE_CRASH_REPORTING=ON
-        HAVOK=ON
+        # RELEASE_CRASH_REPORTING=ON
+        # HAVOK=ON
 
         if [[ "$arch" == "Darwin" ]]
         then

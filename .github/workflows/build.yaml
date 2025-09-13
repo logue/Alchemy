@@ -29,17 +29,15 @@ jobs:
         shell: bash
         run: |
           echo "release_run=$RELEASE_RUN" >> "$GITHUB_OUTPUT"
-          echo 'configurations=["ReleaseOS"]' >> $GITHUB_OUTPUT
-          echo "bugsplat_db=" >> $GITHUB_OUTPUT
 
-          # if [[ "$FROM_FORK" == "true" ]]; then
-          #   # PR from fork; don't build with Bugsplat, proprietary libs
-          #   echo 'configurations=["ReleaseOS"]' >> $GITHUB_OUTPUT
-          #   echo "bugsplat_db=" >> $GITHUB_OUTPUT
-          # else
-          #   echo 'configurations=["Release"]' >> $GITHUB_OUTPUT
-          #   echo "bugsplat_db=SecondLife_Viewer_2018" >> $GITHUB_OUTPUT
-          # fi
+          if [[ "$FROM_FORK" == "true" ]]; then
+            # PR from fork; don't build with Bugsplat, proprietary libs
+            echo 'configurations=["ReleaseOS"]' >> $GITHUB_OUTPUT
+            echo "bugsplat_db=" >> $GITHUB_OUTPUT
+          else
+            echo 'configurations=["Release"]' >> $GITHUB_OUTPUT
+            echo "bugsplat_db=" >> $GITHUB_OUTPUT
+          fi
   build:
     needs: setup
     strategy:
@@ -91,6 +89,24 @@ jobs:
         uses: actions/checkout@v5
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Linux Disk Cleanup
+        if: runner.os == 'Linux'
+        run: |
+          df -h
+          sudo docker container prune -f
+          sudo docker image prune -a -f
+          # 3.9GB
+          sudo rm -rf /usr/local/share/boost
+          # 17GB
+          sudo rm -rf /usr/share/dotnet
+          # Android
+          sudo rm -rf /usr/local/lib/android
+          # Haskell
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /usr/local/.ghcup
+
+          df -h
 
       - name: Setup python
         uses: actions/setup-python@v6
@@ -264,7 +280,23 @@ jobs:
 
           ./build.sh
 
-          echo "artifact=$RUNNER_OS" >> $GITHUB_OUTPUT
+          # Each artifact is downloaded as a distinct .zip file. Multiple jobs
+          # (per the matrix above) writing the same filepath to the same
+          # artifact name will *overwrite* that file. Moreover, they can
+          # interfere with each other, causing the upload to fail.
+          # https://github.com/actions/upload-artifact#uploading-to-the-same-artifact
+          # Given the size of our installers, and the fact that we typically
+          # only want to download just one instead of a single zip containing
+          # several, generate a distinct artifact name for each installer.
+          # If the matrix above can run multiple builds on the same
+          # platform, we must disambiguate on more than the platform name.
+          # e.g. if we were still running Windows 32-bit builds, we'd need to
+          # qualify the artifact with bit width.
+          if [[ "$AUTOBUILD_CONFIGURATION" == "ReleaseOS" ]]
+          then cfg_suffix='OS'
+          else cfg_suffix=''
+          fi
+          echo "artifact=$RUNNER_OS$cfg_suffix" >> $GITHUB_OUTPUT
 
       - name: Upload executable
         if: matrix.build_variant == 'Viewer' && steps.build.outputs.viewer_app
