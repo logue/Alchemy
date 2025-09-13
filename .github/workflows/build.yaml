@@ -157,7 +157,7 @@ jobs:
 
       - name: Determine source branch
         id: which-branch
-        uses: AlchemyViewer/viewer-build-util/which-branch@v2
+        uses: AlchemyViewer/viewer-build-util/which-branch@v3
         with:
           token: ${{ github.token }}
 
@@ -345,7 +345,7 @@ jobs:
     runs-on: windows-2022
     steps:
       - name: Sign and package Windows viewer
-        uses: AlchemyViewer/viewer-build-util/sign-pkg-windows@v2
+        uses: AlchemyViewer/viewer-build-util/sign-pkg-windows@v3
         with:
           vault_uri: "${{ env.AZURE_KEY_VAULT_URI }}"
           cert_name: "${{ env.AZURE_CERT_NAME }}"
@@ -383,7 +383,7 @@ jobs:
           [[ -n "$USERNAME" && -n "$PASSWORD" && -n "$TEAM_ID" ]]
 
       - name: Sign and package Mac viewer
-        uses: AlchemyViewer/viewer-build-util/sign-pkg-mac@v2
+        uses: AlchemyViewer/viewer-build-util/sign-pkg-mac@v3
         with:
           channel: ${{ needs.build.outputs.viewer_channel }}
           imagename: ${{ needs.build.outputs.imagename }}
