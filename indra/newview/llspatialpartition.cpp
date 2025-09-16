@@ -1659,12 +1659,12 @@ void renderOctree(LLSpatialGroup* group)
 
             gGL.diffuseColor4f(1,0,0,group->mBuilt);
             gGL.flush();
-            glLineWidth(5.f);
+            gGL.setLineWidth(5.f);
 
             const LLVector4a* bounds = group->getObjectBounds();
             drawBoxOutline(bounds[0], bounds[1]);
             gGL.flush();
-            glLineWidth(1.f);
+            gGL.setLineWidth(1.f);
             gGL.flush();
 
             const LLVOAvatar* lastAvatar = nullptr;
@@ -1974,12 +1974,12 @@ void renderBoundingBox(LLDrawable* drawable, bool set_color = true)
     if (vobj && vobj->onActiveList())
     {
         gGL.flush();
-        glLineWidth(llmax(4.f*sinf(gFrameTimeSeconds*2.f)+1.f, 1.f));
-        //glLineWidth(4.f*(sinf(gFrameTimeSeconds*2.f)*0.25f+0.75f));
+        gGL.setLineWidth(llmax(4.f*sinf(gFrameTimeSeconds*2.f)+1.f, 1.f));
+        //gGL.setLineWidth(4.f*(sinf(gFrameTimeSeconds*2.f)*0.25f+0.75f));
         stop_glerror();
         drawBoxOutline(pos,size);
         gGL.flush();
-        glLineWidth(1.f);
+        gGL.setLineWidth(1.f);
     }
     else
     {
@@ -2888,7 +2888,7 @@ public:
             if (i == 1)
             {
                 gGL.flush();
-                glLineWidth(3.f);
+                gGL.setLineWidth(3.f);
             }
 
             gGL.begin(LLRender::TRIANGLES);
@@ -2907,7 +2907,7 @@ public:
             if (i == 1)
             {
                 gGL.flush();
-                glLineWidth(1.f);
+                gGL.setLineWidth(1.f);
             }
         }
     }

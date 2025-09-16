@@ -475,6 +475,8 @@ public:
 
     void clearErrors();
 
+    void setLineWidth(F32 width);
+
     struct Vertex
     {
         GLfloat v[3];

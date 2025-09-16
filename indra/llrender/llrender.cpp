@@ -1959,6 +1959,14 @@ void LLRender::debugTexUnits(void)
     LL_INFOS("TextureUnit") << "Active TexUnit Enabled : " << active_enabled << LL_ENDL;
 }
 
+void LLRender::setLineWidth(F32 width)
+{
+    if(sGLCoreProfile) // We only support default line width under core
+        return;
+
+    glLineWidth(width);
+}
+
 glm::mat4 get_current_modelview()
 {
     return glm::make_mat4(gGLModelView);

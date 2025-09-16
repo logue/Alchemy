@@ -6632,7 +6632,7 @@ void LLSelectMgr::renderSilhouettes(bool for_hud)
         gGL.popMatrix();
         gGL.popMatrix();
 
-        glLineWidth(1.f);
+        gGL.setLineWidth(1.f);
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
         if (shader)

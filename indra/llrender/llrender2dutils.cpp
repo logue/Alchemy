@@ -833,8 +833,7 @@ void gl_line_3d( const LLVector3& start, const LLVector3& end, const LLColor4& c
 {
     gGL.color4f(color.mV[VRED], color.mV[VGREEN], color.mV[VBLUE], color.mV[VALPHA]);
 
-    gGL.flush();
-    glLineWidth(2.5f);
+    LLRender2D::setLineWidth(2.5f);
 
     gGL.begin(LLRender::LINES);
     {
@@ -1799,6 +1798,10 @@ void LLRender2D::loadIdentity()
 void LLRender2D::setLineWidth(F32 width)
 {
     gGL.flush();
+    if(LLRender::sGLCoreProfile)
+    {
+        return;
+    }
     // If outside the allowed range, glLineWidth fails with "invalid value".
     // On Darwin, the range is [1, 1].
     static GLfloat range[2]{0.0};
