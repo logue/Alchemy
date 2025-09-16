@@ -474,9 +474,9 @@ void LLTexUnit::setTextureAddressModeFast(eTextureAddressMode mode)
 {
     glTexParameteri(sGLTextureType[mCurrTexType], GL_TEXTURE_WRAP_S, sGLAddressMode[mode]);
     glTexParameteri(sGLTextureType[mCurrTexType], GL_TEXTURE_WRAP_T, sGLAddressMode[mode]);
-    if (mCurrTexType == TT_CUBE_MAP)
+    if (mCurrTexType == TT_CUBE_MAP || mCurrTexType == TT_CUBE_MAP_ARRAY || mCurrTexType == TT_TEXTURE_3D)
     {
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, sGLAddressMode[mode]);
+        glTexParameteri(sGLTextureType[mCurrTexType], GL_TEXTURE_WRAP_R, sGLAddressMode[mode]);
     }
 }
 
