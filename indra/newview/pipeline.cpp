@@ -7556,7 +7556,6 @@ void LLPipeline::applyFXAA(LLRenderTarget* src, LLRenderTarget* dst)
 
             // bake out texture2D with RGBL for FXAA shader
             mFXAAMap.bindTarget();
-            mFXAAMap.clear(GL_COLOR_BUFFER_BIT);
 
             LLGLSLShader* shader = &gGlowCombineFXAAProgram;
             shader->bind();
@@ -7774,7 +7773,6 @@ void LLPipeline::applySMAA(LLRenderTarget* src, LLRenderTarget* dst)
             LLGLSLShader& blend_shader = gSMAANeighborhoodBlendProgram[fsaa_quality];
 
             bound_target->bindTarget();
-            bound_target->clear(GL_COLOR_BUFFER_BIT);
 
             blend_shader.bind();
             blend_shader.uniform4fv(sSmaaRTMetrics, 1, rt_metrics);
